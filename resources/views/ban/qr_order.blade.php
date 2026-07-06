@@ -418,7 +418,9 @@
             <div id="qrPaymentArea" class="d-none text-center">
               <h6 class="text-secondary small mb-3">Quét mã VietQR để thanh toán hóa đơn của bạn</h6>
               
-              <img src="https://img.vietqr.io/image/970422-0901234567-compact2.png?amount={{ $totalBill }}&addInfo=Thanh+Toan+MS+Ban+{{ $ban->id }}&accountName=Nha+Hang+MS+Cuisine" alt="VietQR M&S Payment" class="img-fluid rounded mb-3 border shadow-sm" style="max-height: 250px;">
+              <a href="https://img.vietqr.io/image/momo-PSG2618416000000006-compact2.png?amount={{ $totalBill }}&addInfo=Thanh+Toan+MS+Ban+{{ $ban->id }}&accountName=NGUYEN+HOANG+HUNG" target="_blank" title="Bấm để xem ảnh lớn">
+                <img src="https://img.vietqr.io/image/momo-PSG2618416000000006-compact2.png?amount={{ $totalBill }}&addInfo=Thanh+Toan+MS+Ban+{{ $ban->id }}&accountName=NGUYEN+HOANG+HUNG" alt="VietQR M&S Payment" class="img-fluid rounded mb-3 border shadow-sm" style="max-height: 250px; cursor: pointer;">
+              </a>
               
               <div class="p-2 mb-3 bg-light rounded text-dark font-weight-bold" style="font-size:13px;">
                 Số tiền: <strong class="text-primary">{{ number_format($totalBill) }}đ</strong><br>
