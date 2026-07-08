@@ -417,18 +417,7 @@
           </ul>
         @endif
 
-        <!-- Tài liệu hệ thống Group -->
-        <div class="px-3 pt-2 pb-1 text-uppercase text-secondary small fw-bold" style="font-size: 11px; letter-spacing: 1px;">
-          <i class="bi bi-book me-1 text-warning"></i>Tài liệu hệ thống
-        </div>
-        <ul class="nav-menu mb-2">
-          <li class="nav-menu-item">
-            <a href="{{ route('quan_ly.download_docx') }}" class="nav-menu-link">
-              <i class="bi bi-file-earmark-word text-primary"></i>
-              <span>Tải HDSD (Word)</span>
-            </a>
-          </li>
-        </ul>
+
       @endauth
       
       <!-- Quick QR link card -->

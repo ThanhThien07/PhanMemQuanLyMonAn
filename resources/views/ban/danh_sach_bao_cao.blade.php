@@ -6,7 +6,7 @@
   <div class="d-flex align-items-center justify-content-between mb-4">
     <div>
       <h1 class="h3 mb-1 fw-bold text-dark"><i class="bi bi-journal-text me-2 text-primary"></i>Lịch Sử Báo Cáo Ca & Quản Lý</h1>
-      <p class="text-secondary small mb-0">Danh sách các báo cáo 7 phần định kỳ được lưu trữ trên hệ thống Cơ sở dữ liệu.</p>
+      <p class="text-secondary small mb-0">Danh sách các báo cáo định kỳ được lưu trữ trên hệ thống Cơ sở dữ liệu.</p>
     </div>
     <div class="d-flex gap-2">
       <a href="{{ route('quan_ly.index') }}" class="btn btn-outline-secondary py-2">

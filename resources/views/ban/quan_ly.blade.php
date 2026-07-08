@@ -1,6 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+  // Tính toán doanh thu 7 ngày qua cho biểu đồ đường
+  $last7Days = [];
+  for ($i = 6; $i >= 0; $i--) {
+      $date = now()->subDays($i)->toDateString();
+      $dateLabel = now()->subDays($i)->format('d/m');
+      
+      $revenue = \App\Models\DatMon::whereIn('trang_thai', ['da_giao', 'da_thanh_toan'])
+          ->whereDate('created_at', $date)
+          ->get()
+          ->sum(function($item) {
+              return $item->so_luong * $item->don_gia;
+          });
+          
+      $last7Days[$dateLabel] = $revenue;
+  }
+@endphp
 <div class="container-fluid p-0">
   @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert" style="border-radius: 12px;">
@@ -19,7 +36,7 @@
   <div class="d-flex align-items-center justify-content-between mb-4">
     <div>
       <h1 class="h3 mb-1 fw-bold text-dark"><i class="bi bi-sliders me-2 text-primary"></i>Báo Cáo & Quản Lý Chung</h1>
-      <p class="text-secondary small mb-0">Hệ thống giám sát điều hành toàn diện M&S. Lập báo cáo 7 phần định kỳ lưu trữ CSDL.</p>
+      <p class="text-secondary small mb-0">Hệ thống giám sát điều hành toàn diện M&S. Lập báo cáo định kỳ lưu trữ CSDL.</p>
     </div>
     <div class="d-flex gap-2 align-items-center">
       <form action="{{ route('quan_ly.report_trigger_auto') }}" method="POST" class="d-inline-flex gap-2 align-items-center mb-0">
@@ -88,7 +105,7 @@
 
   <!-- 7-SECTION INTERACTIVE REPORT SUBMISSION FORM -->
   <div class="card-premium bg-white p-4 mb-4 border-start border-4 border-warning">
-    <h5 class="fw-bold text-dark mb-3"><i class="bi bi-clipboard-check text-warning me-2"></i>Lập báo cáo ca làm việc & quản lý định kỳ (7 phần)</h5>
+    <h5 class="fw-bold text-dark mb-3"><i class="bi bi-clipboard-check text-warning me-2"></i>Lập báo cáo ca làm việc & quản lý định kỳ</h5>
     <form action="{{ route('quan_ly.store_bao_cao') }}" method="POST">
       @csrf
       <input type="hidden" name="ngay_lap" value="{{ $customDate ?: date('Y-m-d') }}">
@@ -116,20 +133,20 @@
         </div>
         
         <div class="col-md-4">
-          <label class="form-label small fw-bold text-secondary">Phản hồi của khách hàng (Mục 1 & 7)</label>
+          <label class="form-label small fw-bold text-secondary">Phản hồi của khách hàng</label>
           <textarea name="phan_hoi_khach" class="form-control bg-light border-0" rows="2" placeholder="Ví dụ: Khách rất hài lòng với chất lượng đồ ăn và thái độ phục vụ nhanh chóng."></textarea>
         </div>
         <div class="col-md-4">
-          <label class="form-label small fw-bold text-secondary">Ghi nhận Sự cố phát sinh (Mục 7)</label>
+          <label class="form-label small fw-bold text-secondary">Ghi nhận Sự cố phát sinh</label>
           <textarea name="su_co" class="form-control bg-light border-0" rows="2" placeholder="Ví dụ: Máy in nhiệt hóa đơn bị kẹt giấy lúc 19h, đã sửa chữa xong."></textarea>
         </div>
         <div class="col-md-4">
-          <label class="form-label small fw-bold text-secondary">Đề xuất / Kế hoạch (Mục 7)</label>
+          <label class="form-label small fw-bold text-secondary">Đề xuất / Kế hoạch </label>
           <textarea name="de_xuat" class="form-control bg-light border-0" rows="2" placeholder="Ví dụ: Đề xuất bổ sung thêm 1 nhân viên chạy bàn cho ca tối cuối tuần."></textarea>
         </div>
       </div>
       <div class="mt-3 text-end">
-        <button type="submit" class="btn btn-premium"><i class="bi bi-save me-1"></i> Lưu & Lưu trữ Báo cáo 7 Mục vào DB</button>
+        <button type="submit" class="btn btn-premium"><i class="bi bi-save me-1"></i> Lưu & Lưu trữ Báo cáo vào DB</button>
       </div>
     </form>
   </div>
@@ -137,7 +154,7 @@
   <!-- VIEW PREVIEW OF 7 SECTIONS OF REPORT -->
   <div class="card-premium bg-white mb-4">
     <div class="card-premium-header">
-      <h5 class="card-premium-title"><i class="bi bi-file-earmark-text text-primary"></i>Xem trước nội dung chi tiết báo cáo 7 phần</h5>
+      <h5 class="card-premium-title"><i class="bi bi-file-earmark-text text-primary"></i>Xem trước nội dung chi tiết báo cáo</h5>
       <span class="badge bg-secondary">Xem trước dữ liệu kỳ lọc</span>
     </div>
     
@@ -325,11 +342,38 @@
     </div>
   </div>
 
+  <!-- Charts Section (Donut & Line charts) -->
+  <div class="row g-4 mb-4">
+    <!-- Donut Chart Card -->
+    <div class="col-12 col-lg-5">
+      <div class="card-premium bg-white h-100 p-0">
+        <div class="card-premium-header">
+          <h5 class="card-premium-title"><i class="bi bi-pie-chart-fill text-primary"></i> Mật Độ Trạng Thái Bàn Ăn</h5>
+          <span class="text-xs text-secondary font-semibold bg-light px-2.5 py-1 rounded-lg">Trực quan hóa thực tế</span>
+        </div>
+        <div class="p-4 d-flex align-items-center justify-content-center" style="min-height: 300px;">
+          <div id="donutChart" class="w-100"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Line Chart Card -->
+    <div class="col-12 col-lg-7">
+      <div class="card-premium bg-white h-100 p-0">
+        <div class="card-premium-header">
+          <h5 class="card-premium-title"><i class="bi bi-graph-up-fill text-danger"></i> Thống Kê Doanh Thu (7 ngày qua)</h5>
+          <span class="text-xs text-secondary font-semibold bg-light px-2.5 py-1 rounded-lg">Tốc độ tăng trưởng</span>
+        </div>
+        <div class="p-4" style="min-height: 300px;">
+          <div id="lineChart" class="w-100"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Historical Statistics Dashboard Grid -->
   <div class="row g-4">
-    <!-- Left Column: Tables Grid & Best Sellers -->
-    <div class="col-12 col-lg-8">
-      
+    <div class="col-12">
       <!-- 1. Best Selling Dishes (TOP 5) -->
       <div class="card-premium bg-white mb-4">
         <div class="card-premium-header">
@@ -368,97 +412,6 @@
             <div class="text-center py-5 text-muted">
               <i class="bi bi-bar-chart-line fs-1 mb-2 d-block text-secondary"></i>
               Không tìm thấy món ăn nào được bán ra trong kỳ báo cáo đã lọc.
-            </div>
-          @endif
-        </div>
-      </div>
-
-      <!-- 2. Tables Status Grid -->
-      <div class="card-premium bg-white mb-4">
-        <div class="card-premium-header">
-          <h5 class="card-premium-title"><i class="bi bi-door-open text-primary"></i>Mật Độ Hoạt Động Bàn Ăn Hiện Tại</h5>
-          <div class="d-flex gap-2 text-secondary small fw-bold">
-            <span class="text-success"><i class="bi bi-circle-fill small me-1"></i>Trống: {{ $freeTables }}</span>
-            <span class="text-primary"><i class="bi bi-circle-fill small me-1"></i>Có khách: {{ $occupiedTables }}</span>
-            <span class="text-danger"><i class="bi bi-circle-fill small me-1"></i>Đã gọi: {{ $orderedTables }}</span>
-          </div>
-        </div>
-        <div class="p-4">
-          <div class="row g-2">
-            @foreach ($tables as $t)
-              @php
-                $bg = 'bg-success';
-                $text = 'Trống';
-                if ($t->trang_thai === 'Co_khach') {
-                    $bg = 'bg-primary';
-                    $text = 'Có khách';
-                } elseif ($t->trang_thai === 'Da_goi') {
-                    $bg = 'bg-danger animate-pulse';
-                    $text = 'Đã gọi món';
-                }
-              @endphp
-              <div class="col-6 col-sm-4 col-md-3">
-                <div class="p-3 rounded text-white text-center shadow-sm {{ $bg }}" style="min-height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                  <strong class="fs-6">{{ $t->ten }}</strong>
-                  <span class="small opacity-75 mt-1" style="font-size: 11px;">{{ $text }}</span>
-                </div>
-              </div>
-            @endforeach
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Right Column: Timeline of Recent Orders -->
-    <div class="col-12 col-lg-4">
-      <div class="card-premium bg-white h-100">
-        <div class="card-premium-header">
-          <h5 class="card-premium-title"><i class="bi bi-clock-history text-warning"></i>Món Ăn Được Gọi Gần Đây</h5>
-        </div>
-        <div class="p-3">
-          @if ($recentOrders->count() > 0)
-            <div class="position-relative ps-3 border-start border-secondary border-opacity-25" style="margin-left: 10px;">
-              @foreach ($recentOrders as $order)
-                @php
-                  $color = 'bg-secondary';
-                  if ($order->trang_thai === 'dang_cho') $color = 'bg-warning text-dark';
-                  elseif ($order->trang_thai === 'dang_lam') $color = 'bg-primary';
-                  elseif ($order->trang_thai === 'dang_giao') $color = 'bg-info text-dark';
-                  elseif ($order->trang_thai === 'da_giao') $color = 'bg-success';
-                  elseif ($order->trang_thai === 'da_thanh_toan') $color = 'bg-dark';
-                @endphp
-                <div class="mb-4 position-relative">
-                  <!-- Timeline dot -->
-                  <span class="position-absolute rounded-circle {{ $color }}" style="width: 12px; height: 12px; left: -20px; top: 6px; border: 2px solid white;"></span>
-                  
-                  <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                      <strong class="text-dark">{{ $order->ten_mon }}</strong>
-                      <span class="badge bg-dark ms-1 small" style="font-size: 9px;">{{ $order->ban->ten ?? 'Bàn' }}</span>
-                      <div class="text-muted small">x{{ $order->so_luong }} &bull; {{ number_format($order->so_luong * $order->don_gia) }}đ</div>
-                    </div>
-                    <span class="text-secondary small" style="font-size: 10px;">{{ $order->created_at->diffForHumans() }}</span>
-                  </div>
-                  <div class="mt-1">
-                    @if ($order->trang_thai === 'dang_cho')
-                      <span class="badge bg-warning bg-opacity-10 text-dark border border-warning" style="font-size: 9px;">Chờ bếp</span>
-                    @elseif ($order->trang_thai === 'dang_lam')
-                      <span class="badge bg-primary bg-opacity-10 text-primary border border-primary" style="font-size: 9px;">Bếp đang nấu</span>
-                    @elseif ($order->trang_thai === 'dang_giao')
-                      <span class="badge bg-info bg-opacity-10 text-info border border-info" style="font-size: 9px;">Đang giao</span>
-                    @elseif ($order->trang_thai === 'da_giao')
-                      <span class="badge bg-success bg-opacity-10 text-success border border-success" style="font-size: 9px;">Đã giao</span>
-                    @else
-                      <span class="badge bg-dark bg-opacity-10 text-dark border border-dark" style="font-size: 9px;"><i class="bi bi-check-all me-1"></i>Đã thanh toán</span>
-                    @endif
-                  </div>
-                </div>
-              @endforeach
-            </div>
-          @else
-            <div class="text-center py-5 text-muted">
-              <i class="bi bi-clock-history fs-1 mb-2 d-block"></i>
-              Không có giao dịch nào được ghi nhận gần đây.
             </div>
           @endif
         </div>
@@ -572,7 +525,140 @@
 @endsection
 
 @section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // 1. Donut Chart Setup
+    const donutOptions = {
+      chart: {
+        type: 'donut',
+        height: 280,
+        fontFamily: 'Outfit, sans-serif'
+      },
+      series: [{{ $freeTables }}, {{ $occupiedTables }}, {{ $orderedTables }}],
+      labels: ['Bàn trống', 'Bàn có khách', 'Bàn đã gọi món'],
+      colors: ['#10b981', '#0ea5e9', '#ef4444'], // Green (Success), Blue (Primary), Red (Danger)
+      legend: {
+        position: 'bottom',
+        fontSize: '13px',
+        fontWeight: 500,
+        markers: {
+          radius: 12
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        formatter: function (val, opts) {
+          if (opts.w.globals.series[opts.seriesIndex] === 0) return '';
+          return val.toFixed(1) + "%";
+        }
+      },
+      plotOptions: {
+        pie: {
+          donut: {
+            size: '72%',
+            labels: {
+              show: true,
+              total: {
+                show: true,
+                label: 'Tổng số bàn',
+                fontSize: '14px',
+                fontWeight: 600,
+                color: '#64748b',
+                formatter: function (w) {
+                  return w.globals.seriesTotals.reduce((a, b) => a + b, 0) + ' Bàn';
+                }
+              }
+            }
+          }
+        }
+      },
+      responsive: [{
+        breakpoint: 480,
+        options: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }]
+    };
+
+    const donutChart = new ApexCharts(document.querySelector("#donutChart"), donutOptions);
+    donutChart.render();
+
+    // 2. Line/Area Chart Setup
+    const lineSeries = @json(array_values($last7Days));
+    const lineCategories = @json(array_keys($last7Days));
+
+    const lineOptions = {
+      chart: {
+        type: 'area',
+        height: 280,
+        fontFamily: 'Outfit, sans-serif',
+        toolbar: {
+          show: false
+        }
+      },
+      stroke: {
+        curve: 'smooth',
+        width: 3
+      },
+      series: [{
+        name: 'Doanh thu',
+        data: lineSeries
+      }],
+      colors: ['#8e192a'], // Brand Crimson Red
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.35,
+          opacityTo: 0.05,
+          stops: [0, 100]
+        }
+      },
+      xaxis: {
+        categories: lineCategories,
+        labels: {
+          style: {
+            colors: '#64748b',
+            fontSize: '12px'
+          }
+        },
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        }
+      },
+      yaxis: {
+        labels: {
+          style: {
+            colors: '#64748b',
+            fontSize: '12px'
+          },
+          formatter: function(val) {
+            return val.toLocaleString('vi-VN') + 'đ';
+          }
+        }
+      },
+      grid: {
+        borderColor: '#f1f5f9',
+        strokeDashArray: 4
+      },
+      dataLabels: {
+        enabled: false
+      },
+      tooltip: {
+        theme: 'light'
+      }
+    };
+
+    const lineChart = new ApexCharts(document.querySelector("#lineChart"), lineOptions);
+    lineChart.render();
+  });
+
   function toggleFilterFields() {
     const filterType = $('#filterTypeSelect').val();
     
@@ -598,29 +684,16 @@
 
   // Dynamic dashboard reload on event broadcast
   function refreshDashboardHtml() {
-    // TODO: Tối ưu bằng cách tạo API JSON riêng thay vì tải và parse toàn bộ trang HTML khi nhận event Echo
     $.get(window.location.href, function(html) {
       const doc = new DOMParser().parseFromString(html, 'text/html');
       
       // Update the 6 sections preview tabs content
       $('#reportTabsContent').html($(doc).find('#reportTabsContent').html());
       
-      // Update table status grid density card
-      const newTableDensity = $(doc).find('.card-premium:has(.bi-door-open)').html();
-      if (newTableDensity) {
-        $('.card-premium:has(.bi-door-open)').html(newTableDensity);
-      }
-      
       // Update TOP 5 Best sellers card
       const newBestSellers = $(doc).find('.card-premium:has(.bi-graph-up)').html();
       if (newBestSellers) {
         $('.card-premium:has(.bi-graph-up)').html(newBestSellers);
-      }
-      
-      // Update Recent Orders timeline card
-      const newTimeline = $(doc).find('.card-premium:has(.bi-clock-history)').html();
-      if (newTimeline) {
-        $('.card-premium:has(.bi-clock-history)').html(newTimeline);
       }
     });
   }
@@ -633,7 +706,6 @@
         refreshDashboardHtml();
       });
 
-    // Also listen to orders and table changes to auto-update dashboard
     window.Echo.channel('orders')
       .listen('OrderStatusUpdated', (e) => {
         console.log('Echo OrderStatusUpdated on dashboard:', e);
