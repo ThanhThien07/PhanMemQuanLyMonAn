@@ -47,17 +47,13 @@ class DatMonController extends Controller
 
     /**
      * 2. Màn hình điều phối chế biến Bếp nấu ăn KDS (Kitchen Display System)
-     * 
+     *
      * GET /dat-mon/bep
      */
     public function bep()
     {
-        // Lấy tất cả các món ăn chưa hoàn thành (chờ nấu, đang nấu, đang giao)
-        // Sắp xếp theo thời gian đặt cũ nhất lên trước (FIFO - First In First Out) để phục vụ công bằng
-        $orders = DatMon::with('ban')
-            ->whereIn('trang_thai', ['dang_cho', 'dang_lam', 'dang_giao'])
-            ->orderBy('created_at', 'asc')
-            ->get();
+        // Dùng scope kdsVisible() + queueOrder() thay vì whereIn/orderBy thủ công
+        $orders = DatMon::with('ban')->kdsVisible()->queueOrder()->get();
 
         return view('dat_mon.bep', compact('orders'));
     }
@@ -69,23 +65,19 @@ class DatMonController extends Controller
      */
     public function qrOrder($ban_id)
     {
-        // Tra cứu bàn ăn kèm theo danh sách các món ăn bàn này đã đặt chưa thanh toán
         $ban = Ban::with('activeDatMons')->findOrFail($ban_id);
-        
-        // CƠ CHẾ DỄ HIỂU: Nếu bàn đang ở trạng thái trống (Trong), 
-        // tự động chuyển sang trạng thái "Có khách" khi họ vừa quét mã truy cập menu.
+
+        // Tự động chuyển bàn sang 'Co_khach' khi có người quét mã
         if ($ban->trang_thai === 'Trong') {
             $ban->update(['trang_thai' => 'Co_khach']);
         }
 
-        // Lấy danh sách thực đơn món ăn từ database để hiển thị cho khách chọn
-        $menuItems = MonAn::with('loaiMon')->orderBy('ten')->get();
+        // Chỉ select cột cần thiết để giảm dữ liệu truyền tải
+        $menuItems  = MonAn::with('loaiMon')->select(['id', 'ten', 'gia', 'time', 'loai', 'loai_mon_id', 'mota'])->orderBy('ten')->get();
         $categories = \App\Models\LoaiMon::orderBy('ma_loai')->get();
 
-        // Tính tổng số tiền các món ăn đã được gọi và chấp nhận tại bàn này để khách theo dõi bill
-        $totalBill = $ban->activeDatMons->sum(function($item) {
-            return $item->so_luong * $item->don_gia;
-        });
+        // Dùng ->total accessor thay vì closure lặp lại
+        $totalBill = $ban->activeDatMons->sum(fn($item) => $item->total);
 
         return view('ban.qr_order', compact('ban', 'menuItems', 'categories', 'totalBill'));
     }
@@ -109,10 +101,8 @@ class DatMonController extends Controller
             'thu_tu_uu_tien' => 'nullable|integer|min:1',
         ]);
 
-        // Kiểm tra xem bàn đã có món nào đang trong tiến trình phục vụ hay chưa
-        $hasActive = DatMon::where('ban_id', $ban_id)
-            ->where('trang_thai', '!=', 'da_thanh_toan')
-            ->exists();
+        // Kiểm tra xem bàn đã có món active chưa để quyết định gán so_luong_khach
+        $hasActive = DatMon::where('ban_id', $ban_id)->active()->exists();
             
         // LUẬT: Số lượng khách chỉ được gán vào hóa đơn đầu tiên (su suất đầu) của bàn ăn
         // để tránh việc tính lặp lại số lượng khách khi họ gọi thêm món lẻ tẻ sau đó.
@@ -290,8 +280,9 @@ class DatMonController extends Controller
      */
     public function nhanVien()
     {
-        $tables = Ban::with('activeDatMons')->get();
-        $menuItems = MonAn::all();
+        $tables    = Ban::withActiveOrders()->get();
+        // Chỉ select các cột cần thiết hiển thị — giảm lượng dữ liệu transfer
+        $menuItems = MonAn::select(['id', 'ten', 'gia', 'time', 'loai_mon_id'])->get();
 
         return view('dat_mon.nhan_vien', compact('tables', 'menuItems'));
     }
@@ -306,73 +297,58 @@ class DatMonController extends Controller
      */
     public function getRealtimeUpdates(Request $request): JsonResponse
     {
-        $chefCount = (int)$request->input('chefs', 3);
-        if ($chefCount < 1) $chefCount = 1;
+        $chefCount = max(1, (int) $request->input('chefs', 3));
 
-        // Lấy tất cả các món ăn đang trong hàng đợi chế biến (chờ nấu và đang nấu)
-        $activeQueue = DatMon::whereIn('trang_thai', ['dang_cho', 'dang_lam'])
-            ->orderBy('thu_tu_uu_tien', 'desc')
-            ->orderBy('created_at', 'asc')
-            ->get();
+        // 1 query lấy tất cả món KDS visible (đang chờ, đang làm, đang giao) — sorted đúng thứ tự
+        $allKdsOrders = DatMon::with('ban')->kdsVisible()->queueOrder()->get();
 
-        // Thuật toán lập lịch bếp để tính thời gian chờ của từng món ăn
-        $estimatedWaitTimes = $this->tinhThoiGianChoUocTinh($activeQueue, $chefCount);
+        // Tách riêng hàng đợi bếp (chỉ dang_cho + dang_lam) để tính thời gian chờ
+        $kitchenQueue        = $allKdsOrders->whereIn('trang_thai', ['dang_cho', 'dang_lam'])->values();
+        $estimatedWaitTimes  = $this->tinhThoiGianChoUocTinh($kitchenQueue, $chefCount);
 
-        $tables = Ban::with('activeDatMons')->get();
+        $tables = Ban::withActiveOrders()->get();
 
-        // Chuẩn bị dữ liệu gửi về Client
-        $orders = DatMon::with('ban')
-            ->whereIn('trang_thai', ['dang_cho', 'dang_lam', 'dang_giao'])
-            ->orderBy('thu_tu_uu_tien', 'desc')
-            ->orderBy('created_at', 'asc')
-            ->get()
-            ->map(function($o) use ($estimatedWaitTimes) {
-                return [
-                    'id' => $o->id,
-                    'ban_id' => $o->ban_id,
-                    'ban_ten' => $o->ban->ten ?? 'Bàn',
-                    'ten_mon' => $o->ten_mon,
-                    'so_luong' => $o->so_luong,
-                    'don_gia' => $o->don_gia,
-                    'trang_thai' => $o->trang_thai,
-                    'thoi_gian_uoc_tinh' => $o->thoi_gian_uoc_tinh,
-                    'thu_tu_uu_tien' => $o->thu_tu_uu_tien,
-                    'real_wait_time' => $estimatedWaitTimes[$o->id] ?? 0,
-                    'minutes_elapsed' => $o->minutes_elapsed,
-                    'is_late_warning' => $o->is_late_warning,
-                    'ghi_chu' => $o->ghi_chu,
-                    'created_at' => $o->created_at->toIso8601String()
-                ];
-            });
+        // Map dữ liệu trả về client
+        $orders = $allKdsOrders->map(fn($o) => [
+            'id'                  => $o->id,
+            'ban_id'              => $o->ban_id,
+            'ban_ten'             => $o->ban->ten ?? 'Bàn',
+            'ten_mon'             => $o->ten_mon,
+            'so_luong'            => $o->so_luong,
+            'don_gia'             => $o->don_gia,
+            'trang_thai'          => $o->trang_thai,
+            'thoi_gian_uoc_tinh'  => $o->thoi_gian_uoc_tinh,
+            'thu_tu_uu_tien'      => $o->thu_tu_uu_tien,
+            'real_wait_time'      => $estimatedWaitTimes[$o->id] ?? 0,
+            'minutes_elapsed'     => $o->minutes_elapsed,
+            'is_late_warning'     => $o->is_late_warning,
+            'ghi_chu'             => $o->ghi_chu,
+            'created_at'          => $o->created_at->toIso8601String(),
+        ]);
 
-        // Danh sách bàn đang bấm nút yêu cầu thanh toán
-        $paymentRequests = $tables->whereNotNull('yeu_cau_thanh_toan')
-            ->map(function($t) {
-                return [
-                    'id' => $t->id,
-                    'ten' => $t->ten,
-                    'yeu_cau_thanh_toan' => $t->yeu_cau_thanh_toan,
-                    'tong_tien' => $t->activeDatMons->sum(function($item) { return $item->so_luong * $item->don_gia; })
-                ];
-            })->values();
+        // Bàn đang chờ thanh toán
+        $paymentRequests = $tables->pendingCheckout()->map(fn($t) => [
+            'id'                 => $t->id,
+            'ten'                => $t->ten,
+            'yeu_cau_thanh_toan' => $t->yeu_cau_thanh_toan,
+            'tong_tien'          => $t->activeDatMons->sum(fn($item) => $item->total),
+        ])->values();
 
-        // Cảnh báo nguyên liệu sắp hết trong kho (tồn kho tổng dưới 5)
-        $lowStockIngredients = NguyenLieu::where('so_luong_ton', '<', 5)
-            ->get()
-            ->map(function($i) {
-                return [
-                    'id' => $i->id,
-                    'ten' => $i->ten,
-                    'so_luong_ton' => $i->so_luong_ton,
-                    'don_vi' => $i->don_vi
-                ];
-            });
+        // Cảnh báo nguyên liệu sắp hết
+        $lowStockIngredients = NguyenLieu::lowStock()
+            ->get(['id', 'ten', 'so_luong_ton', 'don_vi'])
+            ->map(fn($i) => [
+                'id'          => $i->id,
+                'ten'         => $i->ten,
+                'so_luong_ton' => $i->so_luong_ton,
+                'don_vi'      => $i->don_vi,
+            ]);
 
         return response()->json([
-            'success' => true,
-            'orders' => $orders,
-            'payment_requests' => $paymentRequests,
-            'low_stock_materials' => $lowStockIngredients
+            'success'             => true,
+            'orders'              => $orders,
+            'payment_requests'    => $paymentRequests,
+            'low_stock_materials' => $lowStockIngredients,
         ]);
     }
 
@@ -411,11 +387,8 @@ class DatMonController extends Controller
      */
     public function bepGridHtml(Request $request)
     {
-        $orders = DatMon::with('ban')
-            ->whereIn('trang_thai', ['dang_cho', 'dang_lam', 'dang_giao'])
-            ->orderBy('created_at', 'asc')
-            ->get();
-
+        // Dùng scopes thay vì whereIn/orderBy thủ công
+        $orders = DatMon::with('ban')->kdsVisible()->orderBy('created_at', 'asc')->get();
         return view('dat_mon.bep_grid', compact('orders'));
     }
 
@@ -426,7 +399,7 @@ class DatMonController extends Controller
      */
     public function nhanVienGridHtml(Request $request)
     {
-        $tables = Ban::with('activeDatMons')->get();
+        $tables = Ban::withActiveOrders()->get();
         return view('dat_mon.nhan_vien_grid', compact('tables'));
     }
 

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BanController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DatMonController;
 use App\Http\Controllers\NguyenLieuController;
 use App\Http\Controllers\MonAnController;
@@ -57,7 +58,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/api/nhan-vien-grid-html', [DatMonController::class, 'nhanVienGridHtml'])->name('api.nhan_vien_grid_html');
 
     // Tải tài liệu hướng dẫn Word (.doc) dành cho mọi thành viên đã đăng nhập hệ thống
-    Route::get('/tai-lieu/tai-ve', [BanController::class, 'downloadDocx'])->name('quan_ly.download_docx');
+    Route::get('/tai-lieu/tai-ve', [ReportController::class, 'downloadDocx'])->name('quan_ly.download_docx');
 
     // ---------------------------------------------------------------------
     // --- VAI TRÒ 1: BAN ĐIỀU HÀNH (ADMIN) ---
@@ -65,23 +66,23 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:admin'])->group(function () {
         
         // Dashboard tổng hợp doanh thu, biểu đồ TOP món ăn và cảnh báo kho nguyên vật liệu
-        Route::get('/quan-ly', [BanController::class, 'quanLy'])->name('quan_ly.index');
-        
-        // Xuất file Excel báo cáo doanh số tương thích UTF-8
-        Route::get('/quan-ly/bao-cao/export', [BanController::class, 'exportReport'])->name('quan_ly.export_report');
-        
-        // Lưu trữ báo cáo ca trực và Xem lịch sử báo cáo ngày
-        Route::post('/quan-ly/bao-cao/luu', [BanController::class, 'storeBaoCao'])->name('quan_ly.store_bao_cao');
-        Route::get('/quan-ly/bao-cao/danh-sach', [BanController::class, 'listBaoCao'])->name('quan_ly.list_bao_cao');
-        
-        // Lệnh kích hoạt sinh báo cáo tự động (Tuần/Tháng) bằng Artisan console
-        Route::post('/quan-ly/bao-cao/trigger-auto', [BanController::class, 'triggerAutoReport'])->name('quan_ly.report_trigger_auto');
+        Route::get('/quan-ly', [ReportController::class, 'quanLy'])->name('quan_ly.index');
 
-        // Công cụ quản lý Sao lưu (Backup Management) hệ thống: Tải xuống hoặc Xóa file zip/sql
-        Route::post('/quan-ly/backup/trigger-db', [BanController::class, 'triggerDbBackup'])->name('quan_ly.backup_trigger_db');
-        Route::post('/quan-ly/backup/trigger-system', [BanController::class, 'triggerSystemBackup'])->name('quan_ly.backup_trigger_system');
-        Route::get('/quan-ly/backup/download/{filename}', [BanController::class, 'downloadBackup'])->name('quan_ly.backup_download');
-        Route::delete('/quan-ly/backup/delete/{filename}', [BanController::class, 'deleteBackup'])->name('quan_ly.backup_delete');
+        // Xuất file Excel báo cáo doanh số tương thích UTF-8
+        Route::get('/quan-ly/bao-cao/export', [ReportController::class, 'exportReport'])->name('quan_ly.export_report');
+
+        // Lưu trữ báo cáo ca trực và Xem lịch sử báo cáo ngày
+        Route::post('/quan-ly/bao-cao/luu', [ReportController::class, 'storeBaoCao'])->name('quan_ly.store_bao_cao');
+        Route::get('/quan-ly/bao-cao/danh-sach', [ReportController::class, 'listBaoCao'])->name('quan_ly.list_bao_cao');
+
+        // Lệnh kích hoạt sinh báo cáo tự động (Tuần/Tháng) bằng Artisan console
+        Route::post('/quan-ly/bao-cao/trigger-auto', [ReportController::class, 'triggerAutoReport'])->name('quan_ly.report_trigger_auto');
+
+        // Công cụ quản lý Sao lưu (Backup Management) hệ thống
+        Route::post('/quan-ly/backup/trigger-db', [ReportController::class, 'triggerDbBackup'])->name('quan_ly.backup_trigger_db');
+        Route::post('/quan-ly/backup/trigger-system', [ReportController::class, 'triggerSystemBackup'])->name('quan_ly.backup_trigger_system');
+        Route::get('/quan-ly/backup/download/{filename}', [ReportController::class, 'downloadBackup'])->name('quan_ly.backup_download');
+        Route::delete('/quan-ly/backup/delete/{filename}', [ReportController::class, 'deleteBackup'])->name('quan_ly.backup_delete');
 
         // Quản lý Thực đơn Món ăn (Sử dụng Resource Route tự động định nghĩa 7 hàm CRUD chuẩn)
         Route::resource('/quan-ly/mon-an', MonAnController::class)->names([

@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>M&S - Quản lý ẩm thực thông minh</title>
+    <meta name="description" content="M&S Cuisine - Hệ thống quản lý nhà hàng thông minh: sơ đồ bàn, gọi món QR, bếp KDS, báo cáo doanh thu và quản lý kho nguyên liệu theo thời gian thực.">
+    <title>@yield('title', 'M&S - Quản lý ẩm thực thông minh')</title>
 
     <!-- Google Fonts: Outfit -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -389,6 +390,7 @@
         $('.ms-sidebar').toggleClass('active');
       });
     </script>
+    @stack('scripts')
     @yield('scripts')
   </body>
 </html>

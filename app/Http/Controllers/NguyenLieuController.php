@@ -6,6 +6,7 @@ use App\Models\NguyenLieu;
 use App\Models\DonNhapHang;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 /**
  * NguyenLieuController - Bộ điều khiển quản lý Kho nguyên liệu nhập khẩu và Đặt hàng
@@ -150,45 +151,39 @@ class NguyenLieuController extends Controller
      */
     public function verifyImport(Request $request, $id)
     {
-        // Xác thực số lượng thực nhận (không được âm)
-        $request->validate([
-            'so_luong_nhan' => 'required|numeric|min:0',
-        ]);
+        $request->validate(['so_luong_nhan' => 'required|numeric|min:0']);
 
-        $order = DonNhapHang::findOrFail($id);
-        $soLuongNhan = $request->so_luong_nhan;
+        $order      = DonNhapHang::findOrFail($id);
+        $soLuongNhan = (float) $request->so_luong_nhan;
 
-        // Cập nhật thông tin thực tế nhận vào đơn nhập
-        $order->update([
-            'so_luong_nhan' => $soLuongNhan,
-            'trang_thai' => 'da_nhap_kho'
-        ]);
-
-        // CƠ CHẾ TỰ KHỞI TẠO NGUYÊN LIỆU:
-        // Tra cứu nguyên liệu theo tên trong kho chính (nguyen_lieu)
-        $ingredient = NguyenLieu::where('ten', $order->ten_nguyen_lieu)->first();
-        if (!$ingredient) {
-            // Nếu đây là loại nguyên liệu mới hoàn toàn chưa từng có trong kho,
-            // hệ thống sẽ tự động tạo mới bản ghi nguyên liệu với số lượng tồn ban đầu bằng 0.
-            $ingredient = NguyenLieu::create([
-                'ten' => $order->ten_nguyen_lieu,
-                'so_luong_ton' => 0,
-                'don_vi' => 'kg' // Mặc định đơn vị tính là kg
+        // Bọc toàn bộ trong DB transaction — đảm bảo atomic:
+        // Nếu một bước thất bại (ví dụ lỗi kết nối), toàn bộ rollback không lệch kho.
+        DB::transaction(function () use ($order, $soLuongNhan) {
+            // Cập nhật trạng thái đơn nhập sang "đã nhập kho"
+            $order->update([
+                'so_luong_nhan' => $soLuongNhan,
+                'trang_thai'    => 'da_nhap_kho',
             ]);
-        }
 
-        // Tăng số lượng tồn của nguyên liệu trong kho tổng lên tương ứng với số lượng thực nhận
-        $ingredient->increment('so_luong_ton', $soLuongNhan);
+            // Tìm nguyên liệu theo tên; nếu chưa tồn tại thì tự khởi tạo mới
+            $ingredient = NguyenLieu::firstOrCreate(
+                ['ten' => $order->ten_nguyen_lieu],
+                ['so_luong_ton' => 0, 'don_vi' => 'kg']
+            );
 
-        // Tính toán độ lệch giữa thực nhận và đơn đặt mua ban đầu để đưa ra cảnh báo thích hợp
+            // Tăng tồn kho tổng tương ứng với số lượng thực nhận
+            $ingredient->increment('so_luong_ton', $soLuongNhan);
+        });
+
+        // Trả về thông báo phù hợp dựa trên độ lệch thực nhận so với đơn đặt
         $difference = $soLuongNhan - $order->so_luong_dat;
 
         if ($difference == 0) {
-            return redirect()->back()->with('success', 'Đã kiểm kê xong: Nhận ĐỦ đơn hàng ' . $order->ten_nguyen_lieu . ' (' . $soLuongNhan . ' kg). Kho đã tự động tăng số lượng tồn!');
-        } else if ($difference < 0) {
-            return redirect()->back()->with('warning', 'Đã kiểm kê xong: Nhận THIẾU ' . abs($difference) . ' kg so với đơn đặt ban đầu (' . $order->so_luong_dat . ' kg). Hệ thống đã ghi nhận đúng số lượng thực tế (' . $soLuongNhan . ' kg) vào kho.');
-        } else {
-            return redirect()->back()->with('success', 'Đã kiểm kê xong: Nhận DƯ ' . $difference . ' kg so với đơn đặt (' . $order->so_luong_dat . ' kg). Hệ thống đã tăng toàn bộ ' . $soLuongNhan . ' kg vào kho.');
+            return redirect()->back()->with('success', "Kiểm kê xong: Nhận ĐỦ {$order->ten_nguyen_lieu} ({$soLuongNhan} kg). Kho đã tự động tăng tồn!");
+        } elseif ($difference < 0) {
+            return redirect()->back()->with('warning', "Kiểm kê xong: Nhận THIẾU " . abs($difference) . " kg so với đơn đặt ({$order->so_luong_dat} kg). Ghi nhận thực tế ({$soLuongNhan} kg).");
         }
+
+        return redirect()->back()->with('success', "Kiểm kê xong: Nhận DƯ {$difference} kg so với đơn đặt ({$order->so_luong_dat} kg). Tăng toàn bộ {$soLuongNhan} kg vào kho.");
     }
 }
