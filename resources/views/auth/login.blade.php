@@ -13,21 +13,20 @@
   
   <style>
     :root {
-      --primary-color: #8c1d40; /* Crimson Red */
-      --secondary-color: #d4af37; /* Gold */
-      --dark-color: #1a1a1a;
-      --bg-cream: #faf7f2;
+      --primary-color: #8e192a; /* Premium Crimson Red */
+      --secondary-color: #e6b15c; /* Warm Gold */
+      --dark-color: #121212;
+      --bg-cream: #f6f3eb; /* Soft cream */
     }
     
     body {
       font-family: 'Outfit', sans-serif;
-      background: radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.08) 0%, rgba(140, 29, 64, 0.04) 50%, #faf7f2 100%);
-      background-size: cover;
+      background: radial-gradient(circle at 50% -20%, #fdfaf6 0%, #f6f3eb 50%, #eae5d8 100%);
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #333;
+      color: #2b2b2b;
       overflow-x: hidden;
     }
 
@@ -38,13 +37,11 @@
     }
 
     .login-card {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(140, 29, 64, 0.08);
+      background: #ffffff;
+      border: none;
       border-radius: 24px;
       padding: 40px 30px;
-      box-shadow: 0 15px 35px rgba(140, 29, 64, 0.08);
+      box-shadow: 0 15px 45px rgba(142, 25, 42, 0.06);
       position: relative;
       overflow: hidden;
     }
@@ -75,7 +72,7 @@
       color: #fff;
       font-size: 2rem;
       font-weight: 700;
-      box-shadow: 0 8px 20px rgba(140, 29, 64, 0.4);
+      box-shadow: 0 8px 20px rgba(142, 25, 42, 0.3);
       margin-bottom: 15px;
       border: 2px solid rgba(255, 255, 255, 0.2);
     }
@@ -87,43 +84,47 @@
     }
 
     .form-control {
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px solid rgba(0, 0, 0, 0.12);
+      background: #ffffff;
+      border: 1px solid rgba(142, 25, 42, 0.14);
       border-radius: 12px;
-      color: #333;
+      color: #2b2b2b;
       padding: 12px 16px;
       transition: all 0.3s ease;
     }
 
     .form-control:focus {
-      background: #fff;
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 0.25rem rgba(140, 29, 64, 0.15);
-      color: #333;
+      background: #ffffff;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 0.25rem rgba(230, 177, 92, 0.2);
+      color: #2b2b2b;
+    }
+
+    .input-group:focus-within .input-group-text {
+      border-color: var(--secondary-color) !important;
     }
 
     .btn-premium {
-      background: linear-gradient(135deg, var(--primary-color) 0%, #63122b 100%);
+      background: linear-gradient(135deg, var(--primary-color) 0%, #72121f 100%);
       color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: none;
       border-radius: 12px;
       padding: 12px 20px;
       font-weight: 600;
       letter-spacing: 0.5px;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(140, 29, 64, 0.3);
+      box-shadow: 0 4px 15px rgba(142, 25, 42, 0.25);
     }
 
     .btn-premium:hover {
-      background: linear-gradient(135deg, #a0224a 0%, #7d1837 100%);
+      background: linear-gradient(135deg, #a62033 0%, #72121f 100%);
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(140, 29, 64, 0.5);
+      box-shadow: 0 6px 20px rgba(142, 25, 42, 0.35);
       color: #fff;
     }
 
     .quick-login-btn {
-      background: rgba(140, 29, 64, 0.04);
-      border: 1px solid rgba(140, 29, 64, 0.1);
+      background: rgba(142, 25, 42, 0.04);
+      border: 1px solid rgba(142, 25, 42, 0.1);
       border-radius: 10px;
       color: #555;
       font-size: 0.8rem;
@@ -132,7 +133,7 @@
     }
 
     .quick-login-btn:hover {
-      background: rgba(140, 29, 64, 0.08);
+      background: rgba(142, 25, 42, 0.08);
       border-color: var(--primary-color);
       color: var(--primary-color);
     }
@@ -185,7 +186,7 @@
         <div class="mb-3">
           <label for="email" class="form-label">Tài khoản Email</label>
           <div class="input-group">
-            <span class="input-group-text bg-transparent border-end-0 text-secondary" style="border: 1px solid rgba(0, 0, 0, 0.12); border-radius: 12px 0 0 12px;"><i class="bi bi-envelope"></i></span>
+            <span class="input-group-text bg-transparent border-end-0 text-secondary" style="border: 1px solid rgba(142, 25, 42, 0.14); border-radius: 12px 0 0 12px; color: var(--primary-color) !important;"><i class="bi bi-envelope"></i></span>
             <input type="email" name="email" id="email" class="form-control border-start-0" style="border-radius: 0 12px 12px 0;" placeholder="nhap@example.com" value="{{ old('email') }}" required>
           </div>
         </div>
@@ -195,7 +196,7 @@
             <label for="password" class="form-label mb-0">Mật khẩu</label>
           </div>
           <div class="input-group">
-            <span class="input-group-text bg-transparent border-end-0 text-secondary" style="border: 1px solid rgba(0, 0, 0, 0.12); border-radius: 12px 0 0 12px;"><i class="bi bi-lock"></i></span>
+            <span class="input-group-text bg-transparent border-end-0 text-secondary" style="border: 1px solid rgba(142, 25, 42, 0.14); border-radius: 12px 0 0 12px; color: var(--primary-color) !important;"><i class="bi bi-lock"></i></span>
             <input type="password" name="password" id="password" class="form-control border-start-0" style="border-radius: 0 12px 12px 0;" placeholder="••••••••" required>
           </div>
         </div>
