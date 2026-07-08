@@ -10,10 +10,9 @@
     </div>
     <div class="d-flex align-items-center gap-2">
       <!-- Enable Audio Button for Browser Restrictions -->
-      <button id="enableAudioBtn" class="btn btn-warning fw-bold text-dark" onclick="initAudio()">
-        <i class="bi bi-volume-up-fill me-2 animate-bounce"></i>Kích hoạt Âm Thanh Chuông Báo
+      <button id="enableAudioBtn" class="btn btn-warning fw-bold text-dark" onclick="toggleAudio()">
+        <i class="bi bi-volume-mute-fill me-2"></i>Âm Thanh: TẮT (Click để bật)
       </button>
-      <span class="badge bg-success bg-opacity-10 text-success p-2 small"><i class="bi bi-arrow-repeat me-1 animate-spin"></i>Đang theo dõi realtime</span>
     </div>
   </div>
 
@@ -100,18 +99,48 @@
   let audioEnabled = false;
 
   // Initialize Web Audio API
-  function initAudio() {
-    if (!audioContext) {
-      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  function initAudio(silent = false) {
+    try {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+      audioEnabled = true;
+      localStorage.setItem('staff_audio_enabled', 'true');
+      updateAudioUI(true);
+      
+      // Play a quick test sound to confirm initialization
+      if (!silent) {
+        playSynthBeep(523.25, 0.1, 'sine'); // C5
+      }
+    } catch(e) {
+      console.error("Audio init error", e);
     }
-    if (audioContext.state === 'suspended') {
-      audioContext.resume();
+  }
+
+  function toggleAudio() {
+    if (audioEnabled) {
+      audioEnabled = false;
+      localStorage.setItem('staff_audio_enabled', 'false');
+      updateAudioUI(false);
+    } else {
+      initAudio(false);
     }
-    audioEnabled = true;
-    $('#enableAudioBtn').removeClass('btn-warning').addClass('btn-outline-success').html('<i class="bi bi-volume-up-fill me-2"></i>Âm Thanh Đã Bật');
-    
-    // Play a quick test sound to confirm initialization
-    playSynthBeep(523.25, 0.1, 'sine'); // C5
+  }
+
+  function updateAudioUI(enabled) {
+    const btn = $('#enableAudioBtn');
+    if (enabled) {
+      btn.removeClass('btn-warning btn-danger btn-outline-warning text-dark')
+         .addClass('btn-success text-white fw-bold')
+         .html('<i class="bi bi-volume-up-fill me-2 animate-bounce"></i>Âm Thanh: BẬT');
+    } else {
+      btn.removeClass('btn-success text-white')
+         .addClass('btn-warning fw-bold text-dark')
+         .html('<i class="bi bi-volume-mute-fill me-2"></i>Âm Thanh: TẮT (Click để bật)');
+    }
   }
 
   // Synthesize sound beep using Web Audio API Oscillators
@@ -422,6 +451,32 @@
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
+
+  $(document).ready(function() {
+    if (localStorage.getItem('staff_audio_enabled') === 'true') {
+      initAudio(true);
+      
+      const resumeAudioOnInteraction = () => {
+        if (localStorage.getItem('staff_audio_enabled') === 'true') {
+          if (audioContext && audioContext.state === 'suspended') {
+            audioContext.resume().then(() => {
+              audioEnabled = true;
+              updateAudioUI(true);
+            });
+          } else if (!audioContext) {
+            initAudio(true);
+          }
+        }
+        document.removeEventListener('click', resumeAudioOnInteraction);
+        document.removeEventListener('keydown', resumeAudioOnInteraction);
+      };
+      
+      document.addEventListener('click', resumeAudioOnInteraction);
+      document.addEventListener('keydown', resumeAudioOnInteraction);
+    } else {
+      updateAudioUI(false);
+    }
+  });
 </script>
 
 <style>
