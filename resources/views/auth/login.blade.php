@@ -21,13 +21,13 @@
     
     body {
       font-family: 'Outfit', sans-serif;
-      background: radial-gradient(circle at 10% 20%, rgba(140, 29, 64, 0.15) 0%, rgba(26, 26, 26, 0.95) 80%);
+      background: radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.08) 0%, rgba(140, 29, 64, 0.04) 50%, #faf7f2 100%);
       background-size: cover;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
+      color: #333;
       overflow-x: hidden;
     }
 
@@ -38,13 +38,13 @@
     }
 
     .login-card {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(140, 29, 64, 0.08);
       border-radius: 24px;
       padding: 40px 30px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 15px 35px rgba(140, 29, 64, 0.08);
       position: relative;
       overflow: hidden;
     }
@@ -72,7 +72,7 @@
       height: 70px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-      color: #white;
+      color: #fff;
       font-size: 2rem;
       font-weight: 700;
       box-shadow: 0 8px 20px rgba(140, 29, 64, 0.4);
@@ -81,25 +81,25 @@
     }
 
     .form-label {
-      color: #ddd;
+      color: #4a4a4a;
       font-size: 0.9rem;
       font-weight: 500;
     }
 
     .form-control {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(0, 0, 0, 0.12);
       border-radius: 12px;
-      color: #fff;
+      color: #333;
       padding: 12px 16px;
       transition: all 0.3s ease;
     }
 
     .form-control:focus {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: var(--secondary-color);
-      box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
-      color: #fff;
+      background: #fff;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.25rem rgba(140, 29, 64, 0.15);
+      color: #333;
     }
 
     .btn-premium {
@@ -122,32 +122,32 @@
     }
 
     .quick-login-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(140, 29, 64, 0.04);
+      border: 1px solid rgba(140, 29, 64, 0.1);
       border-radius: 10px;
-      color: #ccc;
+      color: #555;
       font-size: 0.8rem;
       padding: 6px 12px;
       transition: all 0.2s ease;
     }
 
     .quick-login-btn:hover {
-      background: rgba(212, 175, 55, 0.15);
-      border-color: var(--secondary-color);
-      color: #fff;
+      background: rgba(140, 29, 64, 0.08);
+      border-color: var(--primary-color);
+      color: var(--primary-color);
     }
 
     .alert-custom {
-      background: rgba(220, 53, 69, 0.15);
-      border: 1px solid rgba(220, 53, 69, 0.3);
-      color: #f8d7da;
+      background: rgba(220, 53, 69, 0.1);
+      border: 1px solid rgba(220, 53, 69, 0.2);
+      color: #842029;
       border-radius: 12px;
     }
     
     .alert-success-custom {
-      background: rgba(25, 135, 84, 0.15);
-      border: 1px solid rgba(25, 135, 84, 0.3);
-      color: #d1e7dd;
+      background: rgba(25, 135, 84, 0.1);
+      border: 1px solid rgba(25, 135, 84, 0.2);
+      color: #0f5132;
       border-radius: 12px;
     }
   </style>
@@ -158,7 +158,7 @@
     <div class="login-card">
       <div class="logo-container">
         <div class="logo-badge">M&S</div>
-        <h3 class="fw-bold mb-1 text-white">ĐĂNG NHẬP</h3>
+        <h3 class="fw-bold mb-1" style="color: var(--primary-color);">ĐĂNG NHẬP</h3>
         <p class="text-secondary small">Hệ thống quản lý nhà hàng ẩm thực cao cấp M&S</p>
       </div>
 
@@ -185,7 +185,7 @@
         <div class="mb-3">
           <label for="email" class="form-label">Tài khoản Email</label>
           <div class="input-group">
-            <span class="input-group-text bg-transparent border-end-0 text-secondary" style="border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px 0 0 12px;"><i class="bi bi-envelope"></i></span>
+            <span class="input-group-text bg-transparent border-end-0 text-secondary" style="border: 1px solid rgba(0, 0, 0, 0.12); border-radius: 12px 0 0 12px;"><i class="bi bi-envelope"></i></span>
             <input type="email" name="email" id="email" class="form-control border-start-0" style="border-radius: 0 12px 12px 0;" placeholder="nhap@example.com" value="{{ old('email') }}" required>
           </div>
         </div>
@@ -195,7 +195,7 @@
             <label for="password" class="form-label mb-0">Mật khẩu</label>
           </div>
           <div class="input-group">
-            <span class="input-group-text bg-transparent border-end-0 text-secondary" style="border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px 0 0 12px;"><i class="bi bi-lock"></i></span>
+            <span class="input-group-text bg-transparent border-end-0 text-secondary" style="border: 1px solid rgba(0, 0, 0, 0.12); border-radius: 12px 0 0 12px;"><i class="bi bi-lock"></i></span>
             <input type="password" name="password" id="password" class="form-control border-start-0" style="border-radius: 0 12px 12px 0;" placeholder="••••••••" required>
           </div>
         </div>
@@ -223,7 +223,7 @@
 
       <div class="text-center mt-4">
         <span class="text-secondary small">Chưa có tài khoản nhân viên? </span>
-        <a href="{{ route('register') }}" class="small fw-semibold" style="color: var(--secondary-color); text-decoration: none;">Đăng ký ngay</a>
+        <a href="{{ route('register') }}" class="small fw-semibold" style="color: var(--primary-color); text-decoration: none;">Đăng ký ngay</a>
       </div>
     </div>
   </div>
