@@ -13,30 +13,79 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Premium Custom Styles -->
-    <style>
-      :root {
-        --ms-primary: #8e192a; /* Premium Crimson Red */
-        --ms-secondary: #e6b15c; /* Warm Gold */
-        --ms-dark: #121212;
-        --ms-light: #fdfaf6; /* Soft cream */
-        --ms-sidebar: #f3efe2; /* Linen Cream */
-        --font-outfit: 'Outfit', sans-serif;
+    <!-- Cấu hình và tích hợp Tailwind CSS Play CDN để biên dịch trực tiếp các Class tiện ích -->
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Thiết lập bảng màu và font chữ đặc trưng của hệ thống nhà hàng M&S
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ms: {
+                primary: '#8e192a', // Màu đỏ Crimson sang trọng chủ đạo
+                secondary: '#e6b15c', // Màu vàng Gold ấm áp của thương hiệu
+                dark: '#121212', // Tông tối đen sâu cho văn bản/giao diện tối
+                light: '#fdfaf6', // Màu kem sáng nhẹ làm nền ambient
+                sidebar: '#f3efe2', // Màu kem Linen thanh lịch cho thanh menu bên
+              }
+            },
+            fontFamily: {
+              sans: ['Outfit', 'sans-serif'], // Sử dụng font chữ hiện đại Outfit nhập từ Google Fonts
+            }
+          }
+        }
       }
+    </script>
 
+    <!-- Hybrid Bootstrap & Tailwind Custom Styles -->
+    <!-- Định nghĩa các class tiện ích dùng chung bằng cú pháp @apply của Tailwind -->
+    <style type="text/tailwindcss">
+      @layer utilities {
+        /* Khung thẻ cao cấp (card-premium) có bóng đổ mịn, bo góc 16px và hiệu ứng nâng lên khi di chuột */
+        .card-premium {
+          @apply bg-white border-0 rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.03)] transition-all duration-300 overflow-hidden hover:-translate-y-1 hover:shadow-[0_12px_35px_rgba(142,25,42,0.06)];
+        }
+        /* Nút nhấn đỏ Crimson (btn-premium) thương hiệu với bo góc 12px và hiệu ứng trượt nhẹ */
+        .btn-premium {
+          @apply bg-ms-primary text-white border-0 rounded-xl px-5 py-2.5 font-semibold transition-all duration-200 hover:bg-[#72121f] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(142,25,42,0.2)];
+        }
+        /* Nút nhấn phụ vàng Gold (btn-premium-gold) tạo điểm nhấn sang trọng */
+        .btn-premium-gold {
+          @apply bg-ms-secondary text-ms-dark border-0 rounded-xl px-5 py-2.5 font-semibold transition-all duration-200 hover:bg-[#d19f4d] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(230,177,92,0.3)];
+        }
+        /* Thiết lập đường dẫn liên kết menu bên của sidebar, chuyển đổi màu khi active/hover */
+        .nav-menu-link {
+          @apply flex items-center px-5 py-3 text-[#4a4a4a] font-medium border-l-4 border-transparent transition-all duration-200 hover:bg-gradient-to-r hover:from-ms-primary/5 hover:to-transparent hover:text-ms-primary hover:border-ms-primary;
+        }
+        /* Trạng thái menu đang được chọn: Nền đỏ mờ, chỉ viền bên trái đổi thành màu vàng Gold */
+        .nav-menu-link.active {
+          @apply bg-gradient-to-r from-ms-primary/8 to-transparent text-ms-primary border-ms-secondary font-semibold;
+        }
+        /* Thiết lập chuyển động mượt cho biểu tượng icon đi kèm menu link */
+        .nav-menu-link i {
+          @apply text-[18px] mr-[15px] transition-transform duration-200;
+        }
+        .nav-menu-link:hover i {
+          @apply scale-110;
+        }
+        .nav-menu-link.active i {
+          @apply text-ms-primary;
+        }
+      }
+    </style>
+    
+    <style>
       body {
-        font-family: var(--font-outfit);
+        font-family: 'Outfit', sans-serif;
         background-color: #f6f3eb;
         color: #2b2b2b;
         overflow-x: hidden;
       }
-
-      /* Premium Glassmorphic Top Navbar */
       .ms-header {
         background: rgba(142, 25, 42, 0.95);
         backdrop-filter: blur(10px);
-        border-bottom: 2px solid var(--ms-secondary);
-        color: white;
+        border-bottom: 2px solid #e6b15c;
         height: 70px;
         position: fixed;
         top: 0;
@@ -44,21 +93,17 @@
         right: 0;
         z-index: 1030;
       }
-
       .brand-title {
         font-weight: 800;
         font-size: 24px;
         letter-spacing: 2px;
         color: white;
       }
-
       .brand-title span {
-        color: var(--ms-secondary);
+        color: #e6b15c;
       }
-
-      /* Premium Sidebar */
       .ms-sidebar {
-        background-color: var(--ms-sidebar);
+        background-color: #f3efe2;
         width: 260px;
         position: fixed;
         top: 70px;
@@ -69,62 +114,6 @@
         padding-top: 20px;
         transition: all 0.3s ease;
       }
-
-      .ms-sidebar .text-uppercase {
-        color: rgba(142, 25, 42, 0.7) !important;
-        font-weight: 700 !important;
-        font-size: 10px !important;
-        letter-spacing: 0.8px !important;
-      }
-
-      .nav-menu {
-        padding: 0;
-        list-style: none;
-      }
-
-      .nav-menu-item {
-        margin-bottom: 5px;
-      }
-
-      .nav-menu-link {
-        display: flex;
-        align-items: center;
-        padding: 12px 20px;
-        color: #4a4a4a;
-        text-decoration: none;
-        font-weight: 500;
-        border-left: 4px solid transparent;
-        transition: all 0.2s ease;
-      }
-
-      .nav-menu-link i {
-        font-size: 18px;
-        margin-right: 15px;
-        transition: transform 0.2s ease;
-      }
-
-      .nav-menu-link:hover {
-        background: linear-gradient(90deg, rgba(142, 25, 42, 0.05) 0%, rgba(142, 25, 42, 0) 100%);
-        color: var(--ms-primary);
-        border-left-color: var(--ms-primary);
-      }
-
-      .nav-menu-link:hover i {
-        transform: scale(1.15);
-      }
-
-      .nav-menu-link.active {
-        background: linear-gradient(90deg, rgba(142, 25, 42, 0.08) 0%, rgba(142, 25, 42, 0.01) 100%);
-        color: var(--ms-primary);
-        border-left-color: var(--ms-secondary);
-        font-weight: 600;
-      }
-
-      .nav-menu-link.active i {
-        color: var(--ms-primary);
-      }
-
-      /* Main Content Area */
       .ms-main {
         margin-left: 260px;
         margin-top: 70px;
@@ -132,77 +121,15 @@
         min-height: calc(100vh - 70px);
         transition: all 0.3s ease;
       }
-
-      /* Cards & Elevate Components */
-      .card-premium {
-        background: white;
-        border: none;
-        border-radius: 16px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        overflow: hidden;
+      .ms-footer {
+        background: #f3efe2;
+        color: #666;
+        text-align: center;
+        padding: 20px 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        font-size: 13px;
+        margin-left: 260px;
       }
-
-      .card-premium:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 35px rgba(142, 25, 42, 0.06);
-      }
-
-      .card-premium-header {
-        background: transparent;
-        border-bottom: 1px solid #f0edf4;
-        padding: 20px 24px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .card-premium-title {
-        font-weight: 700;
-        font-size: 18px;
-        color: var(--ms-primary);
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      /* Buttons Premium */
-      .btn-premium {
-        background-color: var(--ms-primary);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        padding: 10px 20px;
-        font-weight: 600;
-        transition: all 0.2s ease;
-      }
-
-      .btn-premium:hover {
-        background-color: #72121f;
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(142, 25, 42, 0.2);
-      }
-
-      .btn-premium-gold {
-        background-color: var(--ms-secondary);
-        color: var(--ms-dark);
-        border: none;
-        border-radius: 10px;
-        padding: 10px 20px;
-        font-weight: 600;
-        transition: all 0.2s ease;
-      }
-
-      .btn-premium-gold:hover {
-        background-color: #d19f4d;
-        color: var(--ms-dark);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(230, 177, 92, 0.3);
-      }
-
-      /* Kitchen Late Warn Animation */
       @keyframes pulse-red-border {
         0% {
           box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
@@ -217,33 +144,11 @@
           border-color: rgba(220, 53, 69, 0.7);
         }
       }
-
       .kitchen-late-warning {
         border: 2px solid #dc3545 !important;
         animation: pulse-red-border 1.5s infinite;
         background-color: #fff8f8 !important;
       }
-
-      /* Custom Badges */
-      .badge-premium {
-        border-radius: 8px;
-        padding: 6px 12px;
-        font-weight: 600;
-        font-size: 12px;
-      }
-
-      /* Footer */
-      .ms-footer {
-        background: var(--ms-sidebar);
-        color: #666;
-        text-align: center;
-        padding: 20px 0;
-        border-top: 1px solid rgba(0, 0, 0, 0.06);
-        font-size: 13px;
-        margin-left: 260px;
-      }
-
-      /* Mobile responsiveness */
       @media (max-width: 991.98px) {
         .ms-sidebar {
           margin-left: -260px;
@@ -252,7 +157,7 @@
           margin-left: 0;
         }
         .ms-main, .ms-footer {
-          margin-left: 0;
+          margin-left: 0 !important;
         }
       }
     </style>

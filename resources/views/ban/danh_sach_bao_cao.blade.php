@@ -2,20 +2,21 @@
 
 @section('content')
 <div class="container-fluid p-0">
-  <!-- Page Header -->
+  <!-- Tiêu đề trang xem lịch sử báo cáo -->
   <div class="d-flex align-items-center justify-content-between mb-4">
     <div>
       <h1 class="h3 mb-1 fw-bold text-dark"><i class="bi bi-journal-text me-2 text-primary"></i>Lịch Sử Báo Cáo Ca & Quản Lý</h1>
       <p class="text-secondary small mb-0">Danh sách các báo cáo định kỳ được lưu trữ trên hệ thống Cơ sở dữ liệu.</p>
     </div>
     <div class="d-flex gap-2">
+      <!-- Nút quay lại tổng quan điều hành -->
       <a href="{{ route('quan_ly.index') }}" class="btn btn-outline-secondary py-2">
         <i class="bi bi-arrow-left me-1"></i> Quay lại Tổng quan
       </a>
     </div>
   </div>
 
-  <!-- Table Card -->
+  <!-- Bảng danh sách các báo cáo đã lưu -->
   <div class="card-premium bg-white p-4">
     @if ($reports->count() > 0)
       <div class="table-responsive">
@@ -36,23 +37,29 @@
           <tbody>
             @foreach ($reports as $rep)
               <tr>
+                <!-- Mã báo cáo và Ngày lập -->
                 <td><strong class="text-primary">{{ $rep->ma_bao_cao }}</strong></td>
                 <td>{{ $rep->ngay_lap->format('d/m/Y') }}</td>
                 <td><span class="badge bg-secondary bg-opacity-10 text-secondary fw-semibold">{{ $rep->nguoi_lap }}</span></td>
                 <td><span class="badge bg-info bg-opacity-10 text-info fw-semibold">{{ $rep->ca_lam_viec }}</span></td>
+                <!-- Doanh thu ca -->
                 <td class="text-end fw-bold text-success">{{ number_format($rep->tong_doanh_thu) }}đ</td>
+                <!-- Số đơn thành công / hủy và số lượng khách hàng phục vụ -->
                 <td class="text-center">
                   <span class="text-success fw-bold" title="Hoàn thành">{{ $rep->don_hoan_thanh }}</span> / 
                   <span class="text-danger fw-bold" title="Hủy">{{ $rep->don_huy }}</span>
                   <div class="small text-muted fw-semibold mt-1" title="Lượng khách"><i class="bi bi-people-fill text-warning me-1"></i>{{ $rep->tong_luong_khach ?: 0 }} khách</div>
                 </td>
+                <!-- Số nhân viên trực ca và giờ công -->
                 <td class="text-center">{{ $rep->so_nhan_vien }} NV ({{ $rep->so_gio_lam }}h)</td>
+                <!-- Ghi nhận sự cố phát sinh ngắn -->
                 <td>
                   <span class="text-truncate d-inline-block" style="max-width: 150px;" title="{{ $rep->su_co }}">
                     {{ $rep->su_co ?: 'Không có sự cố' }}
                   </span>
                 </td>
                 <td class="text-end">
+                  <!-- Nút mở modal xem chi tiết 7 phần báo cáo -->
                   <button class="btn btn-sm btn-outline-primary" onclick="showReportDetails({{ $rep->id }})">
                     <i class="bi bi-eye"></i> Chi tiết
                   </button>
@@ -63,6 +70,7 @@
         </table>
       </div>
     @else
+      <!-- Hiển thị mặc định nếu chưa lưu báo cáo nào -->
       <div class="text-center py-5 text-muted">
         <i class="bi bi-journal-x fs-1 mb-2 d-block"></i>
         Không tìm thấy báo cáo nào được lưu trong Cơ sở dữ liệu.
@@ -71,7 +79,9 @@
   </div>
 </div>
 
-<!-- Modal Chi tiết Báo cáo -->
+<!-- =========================================================================
+     CÁC MODAL HIỂN THỊ CHI TIẾT BÁO CÁO KHI CLICK XEM
+     ========================================================================= -->
 @foreach ($reports as $rep)
   <div class="modal fade" id="reportModal-{{ $rep->id }}" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -81,6 +91,7 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body p-4">
+          <!-- Thông tin tóm tắt hàng đầu -->
           <div class="row g-3 mb-4">
             <div class="col-md-4">
               <div class="p-3 bg-light rounded">
@@ -102,43 +113,44 @@
             </div>
           </div>
 
-          <h6 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="bi bi-grid-fill text-primary me-2"></i>Phân bổ 7 mục chi tiết</h6>
+          <!-- Chi tiết phân bổ các mục báo cáo -->
+          <h6 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="bi bi-grid-fill text-primary me-2"></i>Phân bổ các mục chi tiết</h6>
           <div class="row g-3">
-            <!-- Shift & HR Info -->
+            <!-- Mục 1 & 6: Nhân sự và ca trực -->
             <div class="col-md-6">
               <div class="card border-0 bg-light p-3 h-100" style="border-radius:12px;">
-                <h6 class="fw-bold text-secondary mb-2" style="font-size: 13px;">1. Ca trực & 6. Nhân sự</h6>
+                <h6 class="fw-bold text-secondary mb-2" style="font-size: 13px;">1. Ca trực & Nhân sự</h6>
                 <p class="small mb-1">Số lượng nhân sự: <strong>{{ $rep->so_nhan_vien }} phục vụ</strong></p>
                 <p class="small mb-1">Số giờ làm: <strong>{{ $rep->so_gio_lam }} giờ công</strong></p>
                 <p class="small mb-0">Hiệu suất ca: <span class="badge bg-success">{{ $rep->hieu_suat ?: 'Tốt' }}</span></p>
               </div>
             </div>
-            <!-- Financial breakdown -->
+            <!-- Mục 2: Phân bổ tài chính và giá thành Recipe -->
             <div class="col-md-6">
               <div class="card border-0 bg-light p-3 h-100" style="border-radius:12px;">
                 <h6 class="fw-bold text-secondary mb-2" style="font-size: 13px;">2. Phân bổ Doanh thu</h6>
-                <p class="small mb-1">Tiền mặt: <strong>{{ number_format($rep->doanh_thu_tien_mat) }}đ</strong></p>
-                <p class="small mb-1">Chuyển khoản QR: <strong>{{ number_format($rep->doanh_thu_chuyen_khoan) }}đ</strong></p>
-                <p class="small mb-0">ROI vốn recipe (60%): <strong>{{ number_format($rep->tong_doanh_thu * 0.6) }}đ</strong></p>
+                <p class="small mb-1">Tiền mặt tại quầy: <strong>{{ number_format($rep->doanh_thu_tien_mat) }}đ</strong></p>
+                <p class="small mb-1">Chuyển khoản VietQR: <strong>{{ number_format($rep->doanh_thu_chuyen_khoan) }}đ</strong></p>
+                <p class="small mb-0">Chi phí nguyên liệu định mức (60%): <strong>{{ number_format($rep->tong_doanh_thu * 0.6) }}đ</strong></p>
               </div>
             </div>
 
-            <!-- Orders stats -->
+            <!-- Mục 3 & 4: Doanh số đơn hàng và xếp hạng món ăn -->
             <div class="col-md-6">
               <div class="card border-0 bg-light p-3 h-100" style="border-radius:12px;">
-                <h6 class="fw-bold text-secondary mb-2" style="font-size: 13px;">3. Đơn hàng & 4. Món ăn chạy nhất</h6>
-                <p class="small mb-1">Tổng số đơn hàng đặt: <strong>{{ $rep->tong_don_hang }}</strong> (Phục vụ <strong>{{ $rep->tong_luong_khach ?: 0 }}</strong> khách)</p>
+                <h6 class="fw-bold text-secondary mb-2" style="font-size: 13px;">3. Đơn hàng & Món ăn tiêu biểu</h6>
+                <p class="small mb-1">Tổng đơn hàng: <strong>{{ $rep->tong_don_hang }} đơn</strong> (Phục vụ <strong>{{ $rep->tong_luong_khach ?: 0 }}</strong> khách)</p>
                 <p class="small mb-1">Món bán chạy nhất: <strong class="text-danger">{{ $rep->mon_ban_chay ?: 'N/A' }}</strong></p>
                 <p class="small mb-0">Món ít được gọi: <strong>{{ $rep->mon_ban_it ?: 'N/A' }}</strong></p>
               </div>
             </div>
             
-            <!-- Materials info -->
+            <!-- Mục 5: Kho nguyên liệu và hao phí -->
             <div class="col-md-6">
               <div class="card border-0 bg-light p-3 h-100" style="border-radius:12px;">
                 <h6 class="fw-bold text-secondary mb-2" style="font-size: 13px;">5. Nguyên liệu & Thất thoát</h6>
-                <p class="small mb-1">Nguyên liệu nhập ca: <strong>Thịt bò, Hải sản, Rau xanh</strong></p>
-                <p class="small mb-1">Cảnh báo tồn thấp: 
+                <p class="small mb-1">Nguyên liệu tiêu dùng chính: <strong>Thịt bò, Hải sản, Rau xanh</strong></p>
+                <p class="small mb-1">Cảnh báo cạn kho (<5kg): 
                   @if (is_array($rep->nguyen_lieu_sap_het) && count($rep->nguyen_lieu_sap_het) > 0)
                     <strong class="text-danger">{{ implode(', ', $rep->nguyen_lieu_sap_het) }}</strong>
                   @else
@@ -149,7 +161,7 @@
               </div>
             </div>
 
-            <!-- Incidents & Notes -->
+            <!-- Mục 7: Ý kiến phản hồi, sự cố và đề xuất tối ưu -->
             <div class="col-12">
               <div class="card border-0 bg-warning bg-opacity-10 text-warning-emphasis p-3" style="border-radius:12px;">
                 <h6 class="fw-bold mb-2 text-dark" style="font-size: 13px;">7. Phản hồi khách hàng & Sự cố ca</h6>
@@ -172,6 +184,7 @@
 
 @section('scripts')
 <script>
+  // Hàm hiển thị hộp thoại Modal chi tiết của báo cáo tương ứng
   function showReportDetails(id) {
     const modal = new bootstrap.Modal(document.getElementById(`reportModal-${id}`));
     modal.show();

@@ -5,10 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\KhachHang;
 use Illuminate\Http\Request;
 
+/**
+ * Lớp KhachHangController - Quản lý Khách hàng thân thiết (CRM)
+ * 
+ * Thực hiện các chức năng Xem danh sách khách hàng, Tìm kiếm khách hàng theo tên/sđt,
+ * Thêm mới, Cập nhật thông tin khách hàng và Xóa hồ sơ khách hàng.
+ */
 class KhachHangController extends Controller
 {
     /**
-     * Display a listing of the customers.
+     * Hiển thị danh sách khách hàng thân thiết kèm thanh tìm kiếm
+     * 
+     * GET /quan-ly/khach-hang
      */
     public function index(Request $request)
     {
@@ -16,6 +24,7 @@ class KhachHangController extends Controller
 
         $query = KhachHang::query();
 
+        // Tìm kiếm khách hàng theo tên hoặc số điện thoại (nếu có nhập)
         if ($search) {
             $query->where(function($q) use ($search) {
                 $q->where('ten', 'like', '%' . $search . '%')
@@ -39,10 +48,13 @@ class KhachHangController extends Controller
     }
 
     /**
-     * Store a newly created customer in storage.
+     * Tạo mới hồ sơ khách hàng thân thiết
+     * 
+     * POST /quan-ly/khach-hang
      */
     public function store(Request $request)
     {
+        // Xác thực dữ liệu: Số điện thoại phải là duy nhất trong hệ thống
         $request->validate([
             'ten' => 'required|string|max:100',
             'sdt' => 'required|string|max:20|unique:khach_hang,sdt',
@@ -59,12 +71,15 @@ class KhachHangController extends Controller
     }
 
     /**
-     * Update the specified customer in storage.
+     * Cập nhật thông tin khách hàng thân thiết
+     * 
+     * PUT/PATCH /quan-ly/khach-hang/{id}
      */
     public function update(Request $request, $id)
     {
         $customer = KhachHang::findOrFail($id);
 
+        // Xác thực dữ liệu: sđt cập nhật phải duy nhất ngoại trừ chính bản ghi hiện tại
         $request->validate([
             'ten' => 'required|string|max:100',
             'sdt' => 'required|string|max:20|unique:khach_hang,sdt,' . $id,
@@ -77,7 +92,9 @@ class KhachHangController extends Controller
     }
 
     /**
-     * Remove the specified customer from storage.
+     * Xóa hồ sơ khách hàng thân thiết
+     * 
+     * DELETE /quan-ly/khach-hang/{id}
      */
     public function destroy($id)
     {

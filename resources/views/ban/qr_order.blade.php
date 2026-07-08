@@ -496,10 +496,14 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      // Active states variables
+      // =========================================================================
+      // CẤU HÌNH & XỬ LÝ KHÁCH HÀNG QUÉT QR TỰ ĐẶT MÓN TẠI BÀN
+      // =========================================================================
+      // Biến lưu thông tin ID bàn hiện tại và món ăn đang được thao tác trong Modal
       const banId = {{ $ban->id }};
       let activeItem = { ten: '', gia: 0, time: 0 };
 
+      // Hàm chuyển đổi tab giữa "Thực Đơn Gọi Món" và "Trạng Thái Bếp"
       function switchTab(tab) {
         if (tab === 'menu') {
           $('#tab-menu-content').show();
@@ -514,6 +518,7 @@
         }
       }
 
+      // Hàm lọc danh sách món ăn hiển thị theo danh mục (Loại món ăn) được nhấn
       function filterMenu(catId, btn) {
         $('.menu-category-btn').removeClass('active');
         $(btn).addClass('active');
@@ -526,6 +531,7 @@
         }
       }
 
+      // Hàm mở Modal cấu hình chi tiết món ăn (Số lượng, Ghi chú, Thứ tự ưu tiên) khi khách chọn món
       function openOrderModal(ten, gia, time) {
         activeItem = { ten, gia, time };
         $('#orderModalTitle').text(ten);
@@ -533,18 +539,20 @@
         $('#orderModalTime').text(time);
         $('#orderQtyInput').val(1);
         $('#orderNoteInput').val('');
-        $('#orderPriorityInput').val('1'); // Reset to default Normal priority
+        $('#orderPriorityInput').val('1'); // Mặc định thứ tự ưu tiên là 1 (Bình thường)
         
         const myModal = new bootstrap.Modal(document.getElementById('orderItemModal'));
         myModal.show();
       }
 
+      // Tăng hoặc giảm số lượng phần ăn gọi trong Modal đặt món
       function changeQty(delta) {
         let val = parseInt($('#orderQtyInput').val()) + delta;
         if (val < 1) val = 1;
         $('#orderQtyInput').val(val);
       }
 
+      // Gửi yêu cầu đặt món ăn qua API AJAX POST lên server
       function submitOrder() {
         $('#submitOrderBtn').prop('disabled', true).text('Đang gửi...');
 
@@ -552,7 +560,6 @@
         const note = $('#orderNoteInput').val();
         const priority = $('#orderPriorityInput').val();
 
-        // AJAX POST to place order
         $.ajax({
           url: `/qr-order/${banId}/order`,
           type: 'POST',
@@ -567,11 +574,12 @@
           },
           success: function(res) {
             if (res.success) {
+              // Ẩn modal chọn món và thông báo thành công
               bootstrap.Modal.getInstance(document.getElementById('orderItemModal')).hide();
               alert(res.message);
               $('#submitOrderBtn').prop('disabled', false).text('Gửi xuống bếp');
               
-              // Cập nhật động danh sách món ăn đã đặt
+              // Cập nhật động lại bảng tiến trình nấu món và chuyển ngay sang tab "Trạng Thái Bếp"
               refreshOrderedItemsGrid(function() {
                 switchTab('ordered');
               });
@@ -584,6 +592,7 @@
         });
       }
 
+      // Tải lại ngầm HTML của bảng tiến độ món ăn đã đặt và cập nhật Badge số lượng
       function refreshOrderedItemsGrid(onSuccess = null) {
         $.ajax({
           url: `/api/qr-ordered-grid-html/${banId}`,
@@ -591,11 +600,12 @@
           success: function(html) {
             $('#orderedItemsContainer').html(html);
             
-            // Cập nhật số lượng món trên badge
+            // Đếm số lượng món đang có trong grid để hiển thị lên huy hiệu thông báo
             const totalItemsCount = $('#orderedItemsContainer .ordered-item-card').length;
             if (totalItemsCount > 0) {
               $('#orderedCountBadge').text(totalItemsCount).removeClass('d-none');
               
+              // Thay đổi hiển thị thanh thanh toán nổi ở cuối trang
               const newBottomHtml = `
                 <button class="btn btn-payment btn-payment-qr w-100 py-3 fw-bold fs-5 shadow-sm" onclick="openPaymentMethodModal()" style="background: linear-gradient(135deg, #8e192a, #dc3545);">
                   <i class="bi bi-wallet2 me-2"></i>Yêu cầu Thanh toán (Tiền mặt / QR)
@@ -618,7 +628,7 @@
         });
       }
 
-      // Connect to Echo channels for client side auto-refresh without F5
+      // Kết nối Pusher/Laravel Echo cập nhật giao diện tự động khi Bếp thay đổi trạng thái món
       if (window.Echo) {
         window.Echo.channel('orders')
           .listen('OrderStatusUpdated', (e) => {
@@ -633,7 +643,7 @@
             console.log('Echo TableStateUpdated event:', e);
             if (e.id == banId) {
               if (e.action === 'checkout') {
-                // Show payment success overlay instantly
+                // Hiển thị ngay màn hình thanh toán thành công nếu thu ngân đã đóng bàn
                 $('#successScreen').css('display', 'flex');
               } else {
                 refreshOrderedItemsGrid();
@@ -642,8 +652,9 @@
           });
       }
 
+      // Mở Modal lựa chọn phương thức thanh toán
       function openPaymentMethodModal() {
-        // Reset modal state
+        // Reset giao diện các bước thanh toán trong modal
         $('#paymentSelectionArea').removeClass('d-none');
         $('#cashSuccessArea').addClass('d-none');
         $('#qrPaymentArea').addClass('d-none');
@@ -652,6 +663,7 @@
         myModal.show();
       }
 
+      // Xử lý khi khách chọn thanh toán bằng "Tiền mặt tại quầy"
       function selectCashPayment() {
         requestPayment('tien_mat');
         
@@ -659,6 +671,7 @@
         $('#cashSuccessArea').removeClass('d-none');
       }
 
+      // Xử lý khi khách chọn chuyển khoản "VietQR" tự động
       function selectQrPayment() {
         requestPayment('qr');
         
@@ -666,6 +679,7 @@
         $('#qrPaymentArea').removeClass('d-none');
       }
 
+      // Gửi yêu cầu thanh toán loại tương ứng lên hệ thống để nhân viên ca trực tiếp nhận
       function requestPayment(type) {
         $.ajax({
           url: `/ban/yeu-cau-thanh-toan/${banId}`,
@@ -680,6 +694,7 @@
         });
       }
 
+      // Nút giả lập mô phỏng trường hợp khách hàng đã quét mã QR và ngân hàng báo có tiền thành công
       function simulateQrPaid() {
         $.ajax({
           url: `/ban/xac-nhan-chuyen-khoan/${banId}`,
@@ -696,6 +711,7 @@
         });
       }
 
+      // Hỏi thăm định kỳ (Polling) thời gian ước tính nấu xong còn lại của từng món dựa vào tải trọng bếp
       function pollRealtimeWaitTimes() {
         $.ajax({
           url: `/api/realtime-updates`,
@@ -712,21 +728,24 @@
         });
       }
 
-      // Interval fallback for wait times
+      // Cài đặt chu kỳ tự động cập nhật thời gian chờ cứ mỗi 6 giây
       setInterval(pollRealtimeWaitTimes, 6000);
 
+      // Thay đổi số lượng khách hàng khi nhập ban đầu
       function adjustInitGuest(delta) {
         let val = parseInt($('#initGuestInput').val()) + delta;
         if (val < 1) val = 1;
         $('#initGuestInput').val(val);
       }
 
+      // Thay đổi số lượng khách hàng khi muốn sửa đổi
       function adjustEditGuest(delta) {
         let val = parseInt($('#editGuestInput').val()) + delta;
         if (val < 1) val = 1;
         $('#editGuestInput').val(val);
       }
 
+      // Gửi số lượng khách ban đầu lên server để kích hoạt mở bàn ăn
       function submitInitGuestCount() {
         const count = $('#initGuestInput').val();
         $.ajax({
@@ -749,11 +768,13 @@
         });
       }
 
+      // Mở Modal thay đổi số lượng khách ăn tại bàn
       function openEditGuestCountModal() {
         const myModal = new bootstrap.Modal(document.getElementById('guestCountEditModal'));
         myModal.show();
       }
 
+      // Gửi cập nhật số khách đã thay đổi lên hệ thống
       function submitEditGuestCount() {
         const count = $('#editGuestInput').val();
         $.ajax({
@@ -775,10 +796,11 @@
         });
       }
 
+      // Khởi chạy khi tài liệu HTML tải xong hoàn toàn
       $(document).ready(function() {
         pollRealtimeWaitTimes();
         
-        // Show initial guest count modal if current guest count is 0
+        // Tự động bật Modal bắt buộc nhập số khách nếu bàn ăn này ghi nhận số khách bằng 0 (bàn trống mới)
         const currentGuests = {{ $ban->so_luong_khach ?: 0 }};
         if (currentGuests === 0) {
           const initModal = new bootstrap.Modal(document.getElementById('guestCountInitModal'));
@@ -786,6 +808,7 @@
         }
       });
 
+      // Hàm định dạng số hiển thị tiền tệ (ví dụ: 120000 -> 120,000)
       function numberWithCommas(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }

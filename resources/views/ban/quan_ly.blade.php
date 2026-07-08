@@ -2,12 +2,19 @@
 
 @section('content')
 @php
-  // Tính toán doanh thu 7 ngày qua cho biểu đồ đường
+  // =========================================================================
+  // TRUY VẤN DOANH THU HẰNG NGÀY TRONG 7 NGÀY QUA CHO BIỂU ĐỒ XU HƯỚNG
+  // =========================================================================
+  // Vòng lặp tính toán doanh thu thực tế từ CSDL để làm nguồn cấp cho biểu đồ đường (Line Chart).
+  // Chạy trực tiếp trên View để luôn cập nhật theo thời gian hệ thống mới nhất.
   $last7Days = [];
   for ($i = 6; $i >= 0; $i--) {
+      // Lấy ngày dưới dạng Y-m-d để so sánh chính xác với cột Date trong database
       $date = now()->subDays($i)->toDateString();
+      // Định dạng nhãn hiển thị ngày/tháng trên trục hoành của biểu đồ (ví dụ: "02/07")
       $dateLabel = now()->subDays($i)->format('d/m');
       
+      // Tính tổng tiền của toàn bộ các món ăn đã giao thành công hoặc đã thanh toán
       $revenue = \App\Models\DatMon::whereIn('trang_thai', ['da_giao', 'da_thanh_toan'])
           ->whereDate('created_at', $date)
           ->get()
@@ -525,19 +532,24 @@
 @endsection
 
 @section('scripts')
+<!-- Nạp thư viện ApexCharts vẽ biểu đồ từ CDN -->
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    // 1. Donut Chart Setup
+    // =========================================================================
+    // 1. CẤU HÌNH BIỂU ĐỒ TRÒN (DONUT CHART) - MẬT ĐỘ TRẠNG THÁI BÀN ĂN
+    // =========================================================================
+    // Biểu đồ tròn biểu thị tỷ lệ phần trăm phân bố trạng thái hoạt động hiện tại của tất cả các bàn ăn.
     const donutOptions = {
       chart: {
         type: 'donut',
         height: 280,
         fontFamily: 'Outfit, sans-serif'
       },
+      // Dữ liệu truyền từ Blade PHP: Số bàn Trống, Số bàn Có khách, Số bàn Đã gọi món
       series: [{{ $freeTables }}, {{ $occupiedTables }}, {{ $orderedTables }}],
       labels: ['Bàn trống', 'Bàn có khách', 'Bàn đã gọi món'],
-      colors: ['#10b981', '#0ea5e9', '#ef4444'], // Green (Success), Blue (Primary), Red (Danger)
+      colors: ['#10b981', '#0ea5e9', '#ef4444'], // Mã màu đại diện: Xanh lá (Trống), Xanh dương (Có khách), Đỏ (Đã gọi)
       legend: {
         position: 'bottom',
         fontSize: '13px',
@@ -549,6 +561,7 @@
       dataLabels: {
         enabled: true,
         formatter: function (val, opts) {
+          // Ẩn nhãn phần trăm nếu giá trị nhóm đó bằng 0 để tránh đè chữ
           if (opts.w.globals.series[opts.seriesIndex] === 0) return '';
           return val.toFixed(1) + "%";
         }
@@ -565,6 +578,7 @@
                 fontSize: '14px',
                 fontWeight: 600,
                 color: '#64748b',
+                // Hàm tính tổng số lượng bàn hiển thị ở tâm biểu đồ
                 formatter: function (w) {
                   return w.globals.seriesTotals.reduce((a, b) => a + b, 0) + ' Bàn';
                 }
@@ -586,9 +600,12 @@
     const donutChart = new ApexCharts(document.querySelector("#donutChart"), donutOptions);
     donutChart.render();
 
-    // 2. Line/Area Chart Setup
-    const lineSeries = @json(array_values($last7Days));
-    const lineCategories = @json(array_keys($last7Days));
+    // =========================================================================
+    // 2. CẤU HÌNH BIỂU ĐỒ VÙNG (AREA/LINE CHART) - DOANH THU 7 NGÀY GẦN NHẤT
+    // =========================================================================
+    // Biểu đồ dạng đường có tô màu vùng phía dưới biểu diễn xu hướng doanh thu tích lũy hằng ngày.
+    const lineSeries = @json(array_values($last7Days)); // Lấy mảng doanh thu 7 ngày từ PHP
+    const lineCategories = @json(array_keys($last7Days)); // Lấy mảng nhãn ngày (ngày/tháng) từ PHP
 
     const lineOptions = {
       chart: {
@@ -596,24 +613,24 @@
         height: 280,
         fontFamily: 'Outfit, sans-serif',
         toolbar: {
-          show: false
+          show: false // Ẩn thanh công cụ tải về/zoom mặc định của ApexCharts
         }
       },
       stroke: {
-        curve: 'smooth',
+        curve: 'smooth', // Thiết lập đường cong mềm mại thay vì các nét gập khúc
         width: 3
       },
       series: [{
         name: 'Doanh thu',
         data: lineSeries
       }],
-      colors: ['#8e192a'], // Brand Crimson Red
+      colors: ['#8e192a'], // Màu đỏ Crimson thương hiệu M&S làm chủ đạo cho đường vẽ
       fill: {
         type: 'gradient',
         gradient: {
           shadeIntensity: 1,
-          opacityFrom: 0.35,
-          opacityTo: 0.05,
+          opacityFrom: 0.35, // Độ mờ vùng trên của gradient dưới đường vẽ
+          opacityTo: 0.05, // Độ mờ vùng đáy của gradient
           stops: [0, 100]
         }
       },
@@ -638,6 +655,7 @@
             colors: '#64748b',
             fontSize: '12px'
           },
+          // Định dạng tiền tệ hiển thị trên trục đứng
           formatter: function(val) {
             return val.toLocaleString('vi-VN') + 'đ';
           }
@@ -645,10 +663,10 @@
       },
       grid: {
         borderColor: '#f1f5f9',
-        strokeDashArray: 4
+        strokeDashArray: 4 // Lưới nền dạng đường đứt nét
       },
       dataLabels: {
-        enabled: false
+        enabled: false // Không hiển thị nhãn số liệu trực tiếp trên từng mốc điểm
       },
       tooltip: {
         theme: 'light'
@@ -659,15 +677,19 @@
     lineChart.render();
   });
 
+  // =========================================================================
+  // 3. XỬ LÝ ẨN/HIỆN CÁC Ô NHẬP NGÀY THEO KIỂU BỘ LỌC ĐƯỢC CHỌN
+  // =========================================================================
+  // Hàm này kích hoạt khi người dùng thay đổi lựa chọn "Phạm vi thống kê" (Hôm nay, Tháng, Năm, Ngày cụ thể)
   function toggleFilterFields() {
     const filterType = $('#filterTypeSelect').val();
     
-    // Hide all
+    // Ẩn tất cả các container bộ lọc đặc thù trước
     $('#customDateContainer').addClass('d-none');
     $('#customMonthContainer').addClass('d-none');
     $('#customYearContainer').addClass('d-none');
     
-    // Show active
+    // Hiển thị container tương ứng với kiểu lọc đang chọn
     if (filterType === 'custom_date') {
       $('#customDateContainer').removeClass('d-none');
     } else if (filterType === 'month') {
@@ -677,20 +699,28 @@
     }
   }
 
+  // =========================================================================
+  // 4. KÍCH HOẠT XUẤT FILE EXCEL SAO LƯU DOANH THU
+  // =========================================================================
+  // Hàm nối toàn bộ tham số lọc từ form gửi lên Route xuất Excel XLS tải xuống máy khách
   function triggerCsvExport() {
     const formParams = $('#reportFilterForm').serialize();
     window.location.href = `/quan-ly/bao-cao/export?` + formParams;
   }
 
-  // Dynamic dashboard reload on event broadcast
+  // =========================================================================
+  // 5. TẢI LẠI MỘT PHẦN GIAO DIỆN (AJAX DYNAMIC RELOAD)
+  // =========================================================================
+  // Hàm được gọi tự động mỗi khi có sự kiện từ Laravel Echo gửi về,
+  // thực hiện gọi ngầm AJAX tải lại nội dung mới nhất và cập nhật các tab báo cáo mà không tải lại toàn bộ trang.
   function refreshDashboardHtml() {
     $.get(window.location.href, function(html) {
       const doc = new DOMParser().parseFromString(html, 'text/html');
       
-      // Update the 6 sections preview tabs content
+      // Cập nhật lại nội dung của 6 tab xem trước báo cáo
       $('#reportTabsContent').html($(doc).find('#reportTabsContent').html());
       
-      // Update TOP 5 Best sellers card
+      // Cập nhật lại danh sách bảng xếp hạng TOP 5 món ăn bán chạy nhất
       const newBestSellers = $(doc).find('.card-premium:has(.bi-graph-up)').html();
       if (newBestSellers) {
         $('.card-premium:has(.bi-graph-up)').html(newBestSellers);
@@ -698,20 +728,26 @@
     });
   }
 
-  // Connect to Echo channels
+  // =========================================================================
+  // 6. LẮNG NGHE SỰ KIỆN PHÁT SÓNG THỜI GIAN THỰC (LARAVEL ECHO REAL-TIME)
+  // =========================================================================
+  // Kết nối và cập nhật báo cáo tự động khi có bất kỳ thay đổi nào từ phía khách hàng (đặt món) hoặc nhân viên (thanh toán/bếp nấu)
   if (window.Echo) {
+    // Kênh 'dashboard': Lắng nghe thay đổi dữ liệu chung
     window.Echo.channel('dashboard')
       .listen('DashboardUpdated', (e) => {
         console.log('Echo DashboardUpdated event:', e);
         refreshDashboardHtml();
       });
 
+    // Kênh 'orders': Lắng nghe cập nhật trạng thái đơn đặt món
     window.Echo.channel('orders')
       .listen('OrderStatusUpdated', (e) => {
         console.log('Echo OrderStatusUpdated on dashboard:', e);
         refreshDashboardHtml();
       });
 
+    // Kênh 'tables': Lắng nghe cập nhật thay đổi trạng thái bàn ăn (Trống/Có khách/Đã gọi)
     window.Echo.channel('tables')
       .listen('TableStateUpdated', (e) => {
         console.log('Echo TableStateUpdated on dashboard:', e);
@@ -719,7 +755,7 @@
       });
   }
 
-  // Run on load
+  // Khởi chạy kiểm tra ẩn hiện bộ lọc ngay khi tải xong trang web
   $(document).ready(function() {
     toggleFilterFields();
   });
