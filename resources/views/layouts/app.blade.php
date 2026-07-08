@@ -20,7 +20,7 @@
         --ms-secondary: #e6b15c; /* Warm Gold */
         --ms-dark: #121212;
         --ms-light: #fdfaf6; /* Soft cream */
-        --ms-sidebar: #160c0e; /* Deep Burgundy Black */
+        --ms-sidebar: #f3efe2; /* Linen Cream */
         --font-outfit: 'Outfit', sans-serif;
       }
 
@@ -65,14 +65,14 @@
         bottom: 0;
         left: 0;
         z-index: 1020;
-        border-right: 1px solid rgba(255, 255, 255, 0.05);
+        border-right: 1px solid rgba(0, 0, 0, 0.06);
         padding-top: 20px;
         transition: all 0.3s ease;
       }
 
       .ms-sidebar .text-uppercase {
-        color: rgba(255, 255, 255, 0.45) !important;
-        font-weight: 650 !important;
+        color: rgba(142, 25, 42, 0.7) !important;
+        font-weight: 700 !important;
         font-size: 10px !important;
         letter-spacing: 0.8px !important;
       }
@@ -90,7 +90,7 @@
         display: flex;
         align-items: center;
         padding: 12px 20px;
-        color: #c9c9c9;
+        color: #4a4a4a;
         text-decoration: none;
         font-weight: 500;
         border-left: 4px solid transparent;
@@ -104,9 +104,9 @@
       }
 
       .nav-menu-link:hover {
-        background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 100%);
-        color: var(--ms-secondary);
-        border-left-color: var(--ms-secondary);
+        background: linear-gradient(90deg, rgba(142, 25, 42, 0.05) 0%, rgba(142, 25, 42, 0) 100%);
+        color: var(--ms-primary);
+        border-left-color: var(--ms-primary);
       }
 
       .nav-menu-link:hover i {
@@ -114,14 +114,14 @@
       }
 
       .nav-menu-link.active {
-        background: linear-gradient(90deg, rgba(142, 25, 42, 0.28) 0%, rgba(142, 25, 42, 0.03) 100%);
-        color: var(--ms-secondary);
+        background: linear-gradient(90deg, rgba(142, 25, 42, 0.08) 0%, rgba(142, 25, 42, 0.01) 100%);
+        color: var(--ms-primary);
         border-left-color: var(--ms-secondary);
         font-weight: 600;
       }
 
       .nav-menu-link.active i {
-        color: var(--ms-secondary);
+        color: var(--ms-primary);
       }
 
       /* Main Content Area */
@@ -235,10 +235,10 @@
       /* Footer */
       .ms-footer {
         background: var(--ms-sidebar);
-        color: #999;
+        color: #666;
         text-align: center;
         padding: 20px 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
         font-size: 13px;
         margin-left: 260px;
       }
