@@ -20,7 +20,7 @@
         --ms-secondary: #e6b15c; /* Warm Gold */
         --ms-dark: #121212;
         --ms-light: #fdfaf6; /* Soft cream */
-        --ms-sidebar: #1d1b1b;
+        --ms-sidebar: #160c0e; /* Deep Burgundy Black */
         --font-outfit: 'Outfit', sans-serif;
       }
 
@@ -70,6 +70,13 @@
         transition: all 0.3s ease;
       }
 
+      .ms-sidebar .text-uppercase {
+        color: rgba(255, 255, 255, 0.45) !important;
+        font-weight: 650 !important;
+        font-size: 10px !important;
+        letter-spacing: 0.8px !important;
+      }
+
       .nav-menu {
         padding: 0;
         list-style: none;
@@ -97,7 +104,7 @@
       }
 
       .nav-menu-link:hover {
-        background-color: rgba(255, 255, 255, 0.03);
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 100%);
         color: var(--ms-secondary);
         border-left-color: var(--ms-secondary);
       }
@@ -107,7 +114,7 @@
       }
 
       .nav-menu-link.active {
-        background-color: rgba(142, 25, 42, 0.1);
+        background: linear-gradient(90deg, rgba(142, 25, 42, 0.28) 0%, rgba(142, 25, 42, 0.03) 100%);
         color: var(--ms-secondary);
         border-left-color: var(--ms-secondary);
         font-weight: 600;
