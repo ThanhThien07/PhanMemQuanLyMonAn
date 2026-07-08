@@ -39,40 +39,121 @@
       }
     </script>
 
-    <!-- Hybrid Bootstrap & Tailwind Custom Styles -->
-    <!-- Định nghĩa các class tiện ích dùng chung bằng cú pháp @apply của Tailwind -->
-    <style type="text/tailwindcss">
-      @layer utilities {
-        /* Khung thẻ cao cấp (card-premium) có bóng đổ mịn, bo góc 16px và hiệu ứng nâng lên khi di chuột */
-        .card-premium {
-          @apply bg-white border-0 rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.03)] transition-all duration-300 overflow-hidden hover:-translate-y-1 hover:shadow-[0_12px_35px_rgba(142,25,42,0.06)];
-        }
-        /* Nút nhấn đỏ Crimson (btn-premium) thương hiệu với bo góc 12px và hiệu ứng trượt nhẹ */
-        .btn-premium {
-          @apply bg-ms-primary text-white border-0 rounded-xl px-5 py-2.5 font-semibold transition-all duration-200 hover:bg-[#72121f] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(142,25,42,0.2)];
-        }
-        /* Nút nhấn phụ vàng Gold (btn-premium-gold) tạo điểm nhấn sang trọng */
-        .btn-premium-gold {
-          @apply bg-ms-secondary text-ms-dark border-0 rounded-xl px-5 py-2.5 font-semibold transition-all duration-200 hover:bg-[#d19f4d] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(230,177,92,0.3)];
-        }
-        /* Thiết lập đường dẫn liên kết menu bên của sidebar, chuyển đổi màu khi active/hover */
-        .nav-menu-link {
-          @apply flex items-center px-5 py-3 text-[#4a4a4a] font-medium border-l-4 border-transparent transition-all duration-200 hover:bg-gradient-to-r hover:from-ms-primary/5 hover:to-transparent hover:text-ms-primary hover:border-ms-primary;
-        }
-        /* Trạng thái menu đang được chọn: Nền đỏ mờ, chỉ viền bên trái đổi thành màu vàng Gold */
-        .nav-menu-link.active {
-          @apply bg-gradient-to-r from-ms-primary/8 to-transparent text-ms-primary border-ms-secondary font-semibold;
-        }
-        /* Thiết lập chuyển động mượt cho biểu tượng icon đi kèm menu link */
-        .nav-menu-link i {
-          @apply text-[18px] mr-[15px] transition-transform duration-200;
-        }
-        .nav-menu-link:hover i {
-          @apply scale-110;
-        }
-        .nav-menu-link.active i {
-          @apply text-ms-primary;
-        }
+    <!-- Hybrid Bootstrap & Custom Premium CSS Styles -->
+    <style>
+      /* Khung thẻ cao cấp (card-premium) có bóng đổ mịn, bo góc 16px và hiệu ứng nâng lên khi di chuột */
+      .card-premium {
+        background-color: #ffffff;
+        border: 0;
+        border-radius: 1rem; /* 16px */
+        box-shadow: 0 8px 30px rgba(0,0,0,0.03);
+        transition: all 0.3s ease;
+        overflow: hidden;
+      }
+      .card-premium:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 35px rgba(142, 25, 42, 0.06);
+      }
+
+      /* Nút nhấn đỏ Crimson (btn-premium) thương hiệu với bo góc 12px và hiệu ứng trượt nhẹ */
+      .btn-premium {
+        background-color: #8e192a;
+        color: #ffffff !important;
+        border: 0;
+        border-radius: 0.75rem; /* 12px */
+        padding: 0.625rem 1.25rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none !important;
+      }
+      .btn-premium:hover {
+        background-color: #72121f;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(142, 25, 42, 0.2);
+        color: #ffffff !important;
+      }
+
+      /* Nút nhấn phụ vàng Gold (btn-premium-gold) tạo điểm nhấn sang trọng */
+      .btn-premium-gold {
+        background-color: #e6b15c;
+        color: #121212 !important;
+        border: 0;
+        border-radius: 0.75rem; /* 12px */
+        padding: 0.625rem 1.25rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none !important;
+      }
+      .btn-premium-gold:hover {
+        background-color: #d19f4d;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(230, 177, 92, 0.3);
+        color: #121212 !important;
+      }
+
+      /* Cấu hình danh sách menu sidebar để loại bỏ dấu bullet mặc định */
+      .nav-menu {
+        list-style: none !important;
+        padding-left: 0 !important;
+        margin: 0 !important;
+      }
+      
+      .nav-menu-item {
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 0 4px 0 !important;
+      }
+
+      /* Thiết lập đường dẫn liên kết menu bên của sidebar, chuyển đổi màu khi active/hover */
+      .nav-menu-link {
+        display: flex;
+        align-items: center;
+        padding: 10px 24px;
+        color: #4a4a4a !important;
+        font-weight: 500;
+        text-decoration: none !important;
+        border-left: 4px solid transparent;
+        transition: all 0.2s ease;
+      }
+      
+      /* Khi hover: nền chuyển gradient đỏ nhạt sang trong suốt */
+      .nav-menu-link:hover {
+        background: linear-gradient(to right, rgba(142, 25, 42, 0.05), transparent);
+        color: #8e192a !important;
+        border-left-color: #8e192a;
+        text-decoration: none !important;
+      }
+
+      /* Trạng thái menu đang được chọn: Nền đỏ mờ, chỉ viền bên trái đổi thành màu vàng Gold */
+      .nav-menu-link.active {
+        background: linear-gradient(to right, rgba(142, 25, 42, 0.08), transparent);
+        color: #8e192a !important;
+        border-left-color: #e6b15c;
+        font-weight: 600;
+        text-decoration: none !important;
+      }
+
+      /* Thiết lập chuyển động mượt cho biểu tượng icon đi kèm menu link */
+      .nav-menu-link i {
+        font-size: 18px;
+        margin-right: 15px;
+        transition: transform 0.2s ease;
+        color: inherit;
+        display: inline-block;
+      }
+
+      .nav-menu-link:hover i {
+        transform: scale(1.1);
+      }
+
+      .nav-menu-link.active i {
+        color: #8e192a !important;
       }
     </style>
     
