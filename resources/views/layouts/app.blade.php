@@ -55,6 +55,27 @@
         box-shadow: 0 12px 35px rgba(142, 25, 42, 0.06);
       }
 
+      /* Tiêu đề thẻ cao cấp (card-premium-header) với bo góc và đệm lề chuẩn */
+      .card-premium-header {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .card-premium-title {
+        font-size: 1.1rem !important;
+        font-weight: 700 !important;
+        color: #121212 !important;
+        margin: 0 !important;
+        display: inline-flex;
+        align-items: center;
+      }
+      .card-premium-title i {
+        margin-right: 0.75rem;
+        font-size: 1.25rem;
+      }
+
       /* Bo tròn các góc của table-responsive để không bị răng cưa/chờm ra ngoài card-premium */
       .card-premium .table-responsive {
         border-radius: 1rem;
