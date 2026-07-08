@@ -2,13 +2,13 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\BaoCaoQuanLy;
 use App\Models\DatMon;
 use App\Models\NguyenLieu;
-use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class GeneratePeriodicReport extends Command
 {
@@ -28,9 +28,10 @@ class GeneratePeriodicReport extends Command
     public function handle()
     {
         $type = $this->option('type') ?: 'weekly';
-        
-        if (!in_array($type, ['weekly', 'monthly'])) {
+
+        if (! in_array($type, ['weekly', 'monthly'])) {
             $this->error('Loại báo cáo không hợp lệ. Chỉ chấp nhận: weekly hoặc monthly.');
+
             return 1;
         }
 
@@ -45,28 +46,29 @@ class GeneratePeriodicReport extends Command
         if ($type === 'weekly') {
             $weekNum = $this->option('week') ?: $now->weekOfYear;
             $year = $now->year;
-            
+
             $carbonWeek = Carbon::now()->setISODate($year, $weekNum);
             $startRange = $carbonWeek->copy()->startOfWeek();
             $endRange = $carbonWeek->copy()->endOfWeek();
-            
-            $titleName = 'Tuần ' . $weekNum . ' (Từ ' . $startRange->format('d/m') . ' đến ' . $endRange->format('d/m/Y') . ')';
-            $fileName = 'bao_cao_tuan_' . $year . '_W' . sprintf('%02d', $weekNum) . '.xls';
-            $reportCodePrefix = 'BC-TUAN-' . $year . 'W' . sprintf('%02d', $weekNum);
+
+            $titleName = 'Tuần '.$weekNum.' (Từ '.$startRange->format('d/m').' đến '.$endRange->format('d/m/Y').')';
+            $fileName = 'bao_cao_tuan_'.$year.'_W'.sprintf('%02d', $weekNum).'.xls';
+            $reportCodePrefix = 'BC-TUAN-'.$year.'W'.sprintf('%02d', $weekNum);
         } else {
             $monthOption = $this->option('month') ?: $now->format('Y-m');
             try {
                 $carbonMonth = Carbon::createFromFormat('Y-m', $monthOption);
             } catch (\Exception $e) {
                 $this->error('Định dạng tháng không hợp lệ. Sử dụng YYYY-MM.');
+
                 return 1;
             }
             $startRange = $carbonMonth->copy()->startOfMonth();
             $endRange = $carbonMonth->copy()->endOfMonth();
-            
-            $titleName = 'Tháng ' . $carbonMonth->format('m/Y');
-            $fileName = 'bao_cao_thang_' . $carbonMonth->format('Y_m') . '.xls';
-            $reportCodePrefix = 'BC-THANG-' . $carbonMonth->format('Ym');
+
+            $titleName = 'Tháng '.$carbonMonth->format('m/Y');
+            $fileName = 'bao_cao_thang_'.$carbonMonth->format('Y_m').'.xls';
+            $reportCodePrefix = 'BC-THANG-'.$carbonMonth->format('Ym');
         }
 
         $this->info("Bắt đầu khởi tạo báo cáo {$type} cho: {$titleName}");
@@ -78,7 +80,7 @@ class GeneratePeriodicReport extends Command
 
         $tongSoHoaDon = $completedOrders->count();
         $tongLuongKhach = $completedOrders->sum('so_luong_khach') ?: 0;
-        $tongDoanhThu = $completedOrders->sum(function($o) {
+        $tongDoanhThu = $completedOrders->sum(function ($o) {
             return $o->so_luong * $o->don_gia;
         });
 
@@ -91,10 +93,12 @@ class GeneratePeriodicReport extends Command
         $dishesGrouped = $completedOrders->groupBy('ten_mon');
         $dishStats = [];
         $dishQty = [];
-        
+
         foreach ($dishesGrouped as $name => $group) {
             $qty = $group->sum('so_luong');
-            $rev = $group->sum(function($o) { return $o->so_luong * $o->don_gia; });
+            $rev = $group->sum(function ($o) {
+                return $o->so_luong * $o->don_gia;
+            });
             $dishStats[$name] = $rev;
             $dishQty[$name] = $qty;
         }
@@ -121,10 +125,10 @@ class GeneratePeriodicReport extends Command
         // 3. Tạo bản ghi Báo cáo trong CSDL
         try {
             $report = BaoCaoQuanLy::create([
-                'ma_bao_cao' => $reportCodePrefix . '-' . strtoupper(Str::random(4)),
+                'ma_bao_cao' => $reportCodePrefix.'-'.strtoupper(Str::random(4)),
                 'ngay_lap' => now(),
                 'nguoi_lap' => 'Hệ thống tự động (Artisan Command)',
-                'ca_lam_viec' => 'Báo cáo tổng kết ' . $titleName,
+                'ca_lam_viec' => 'Báo cáo tổng kết '.$titleName,
                 'tong_so_hoa_don' => $tongSoHoaDon,
                 'tong_luong_khach' => $tongLuongKhach,
                 'tong_doanh_thu' => $tongDoanhThu,
@@ -145,7 +149,7 @@ class GeneratePeriodicReport extends Command
                 'nguyen_lieu_sap_het' => $lowStockIngredients,
                 'so_nhan_vien' => 5,
                 'so_gio_lam' => ($type === 'weekly' ? 60 : 240),
-                'hieu_suat' => 'Doanh số và hiệu suất hoạt động đạt chỉ tiêu ' . ($type === 'weekly' ? 'tuần' : 'tháng'),
+                'hieu_suat' => 'Doanh số và hiệu suất hoạt động đạt chỉ tiêu '.($type === 'weekly' ? 'tuần' : 'tháng'),
                 'phan_hoi_khach' => 'Đại đa số khách hàng hài lòng về phong cách phục vụ và hương vị món ăn.',
                 'su_co' => 'Không có sự cố vận hành lớn.',
                 'de_xuat' => 'Duy trì hoạt động và tối ưu định mức nguyên liệu hao hụt.',
@@ -153,14 +157,15 @@ class GeneratePeriodicReport extends Command
 
             // 4. Khởi tạo file Excel có chứa biểu đồ in-cell bar chart
             $excelContent = $this->buildExcelReport($type, $titleName, $report, $dishQty, $dishStats);
-            
+
             $backupDir = storage_path('app/backups');
             File::ensureDirectoryExists($backupDir);
-            File::put($backupDir . '/' . $fileName, $excelContent);
+            File::put($backupDir.'/'.$fileName, $excelContent);
 
             $this->info("Báo cáo {$type} {$report->ma_bao_cao} và file Excel {$fileName} đã được tạo thành công!");
         } catch (\Exception $e) {
-            $this->error('Có lỗi xảy ra khi tạo báo cáo định kỳ: ' . $e->getMessage());
+            $this->error('Có lỗi xảy ra khi tạo báo cáo định kỳ: '.$e->getMessage());
+
             return 1;
         }
 
@@ -182,7 +187,7 @@ class GeneratePeriodicReport extends Command
                 <x:ExcelWorkbook>
                     <x:ExcelWorksheets>
                         <x:ExcelWorksheet>
-                            <x:Name>Bao Cao ' . ($type === 'weekly' ? 'Tuan' : 'Thang') . '</x:Name>
+                            <x:Name>Bao Cao '.($type === 'weekly' ? 'Tuan' : 'Thang').'</x:Name>
                             <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
                         </x:ExcelWorksheet>
                     </x:ExcelWorksheets>
@@ -205,8 +210,8 @@ class GeneratePeriodicReport extends Command
             <table>';
 
         // 1. Phần Header
-        $html .= '<tr><td colspan="5" class="title">BÁO CÁO DOANH THU & HOẠT ĐỘNG ĐỊNH KỲ ' . $typeNameUpper . ' ' . $titleName . '</td></tr>';
-        $html .= '<tr><td colspan="5" class="subtitle">M&S Restaurant Management System &bull; Mã báo cáo: ' . $report->ma_bao_cao . '</td></tr>';
+        $html .= '<tr><td colspan="5" class="title">BÁO CÁO DOANH THU & HOẠT ĐỘNG ĐỊNH KỲ '.$typeNameUpper.' '.$titleName.'</td></tr>';
+        $html .= '<tr><td colspan="5" class="subtitle">M&S Restaurant Management System &bull; Mã báo cáo: '.$report->ma_bao_cao.'</td></tr>';
         $html .= '<tr><td colspan="5" style="border: none;"></td></tr>';
 
         // 2. Chỉ số tổng quan
@@ -237,23 +242,23 @@ class GeneratePeriodicReport extends Command
         </tr>
         <tr>
             <td class="label" colspan="2">Tổng số hóa đơn thanh toán:</td>
-            <td class="text-center" colspan="3">' . number_format($report->tong_so_hoa_don) . ' hóa đơn</td>
+            <td class="text-center" colspan="3">'.number_format($report->tong_so_hoa_don).' hóa đơn</td>
         </tr>
         <tr>
             <td class="label" colspan="2">Tổng lượt khách hàng phục vụ:</td>
-            <td class="text-center" colspan="3">' . number_format($report->tong_luong_khach) . ' lượt khách</td>
+            <td class="text-center" colspan="3">'.number_format($report->tong_luong_khach).' lượt khách</td>
         </tr>
         <tr>
             <td class="label" colspan="2">Tổng doanh thu phát sinh:</td>
-            <td class="text-end" colspan="3" style="font-weight: bold; color: #8e192a;">' . number_format($report->tong_doanh_thu) . ' VND</td>
+            <td class="text-end" colspan="3" style="font-weight: bold; color: #8e192a;">'.number_format($report->tong_doanh_thu).' VND</td>
         </tr>
         <tr>
             <td class="label" colspan="2">&bull; Doanh thu tiền mặt (35%):</td>
-            <td class="text-end" colspan="3">' . number_format($report->doanh_thu_tien_mat) . ' VND</td>
+            <td class="text-end" colspan="3">'.number_format($report->doanh_thu_tien_mat).' VND</td>
         </tr>
         <tr>
             <td class="label" colspan="2">&bull; Doanh thu chuyển khoản QR (65%):</td>
-            <td class="text-end" colspan="3">' . number_format($report->doanh_thu_chuyen_khoan) . ' VND</td>
+            <td class="text-end" colspan="3">'.number_format($report->doanh_thu_chuyen_khoan).' VND</td>
         </tr>
         <tr><td colspan="5" style="border: none;"></td></tr>';
     }
@@ -264,7 +269,9 @@ class GeneratePeriodicReport extends Command
     private function buildDishStatsSection($dishQty, $dishStats)
     {
         $maxQty = count($dishQty) > 0 ? max($dishQty) : 1;
-        if ($maxQty == 0) $maxQty = 1;
+        if ($maxQty == 0) {
+            $maxQty = 1;
+        }
 
         $section = '
         <tr>
@@ -280,19 +287,19 @@ class GeneratePeriodicReport extends Command
         foreach ($dishQty as $name => $qty) {
             $rev = $dishStats[$name] ?? 0;
             $pct = round(($qty / $maxQty) * 100);
-            
+
             $section .= '<tr>
-                <td colspan="2">' . htmlspecialchars($name) . '</td>
-                <td class="text-center">' . $qty . '</td>
-                <td class="text-end">' . number_format($rev) . 'đ</td>
+                <td colspan="2">'.htmlspecialchars($name).'</td>
+                <td class="text-center">'.$qty.'</td>
+                <td class="text-end">'.number_format($rev).'đ</td>
                 <td class="bar-container">
                     <table style="width: 100%; border: none; border-collapse: collapse;">
                         <tr style="border: none;">
-                            <td style="width: ' . $pct . '%; background-color: #8e192a; border: none; height: 14px; font-size: 8pt; color: #ffffff; text-align: center;">
-                                ' . ($pct >= 15 ? $pct . '%' : '') . '
+                            <td style="width: '.$pct.'%; background-color: #8e192a; border: none; height: 14px; font-size: 8pt; color: #ffffff; text-align: center;">
+                                '.($pct >= 15 ? $pct.'%' : '').'
                             </td>
-                            <td style="width: ' . (100 - $pct) . '%; background-color: #f9f9f9; border: none; height: 14px; font-size: 8pt; color: #777777; padding-left: 4px;">
-                                ' . ($pct < 15 ? $pct . '%' : '') . '
+                            <td style="width: '.(100 - $pct).'%; background-color: #f9f9f9; border: none; height: 14px; font-size: 8pt; color: #777777; padding-left: 4px;">
+                                '.($pct < 15 ? $pct.'%' : '').'
                             </td>
                         </tr>
                     </table>
@@ -301,6 +308,7 @@ class GeneratePeriodicReport extends Command
         }
 
         $section .= '<tr><td colspan="5" style="border: none;"></td></tr>';
+
         return $section;
     }
 
@@ -309,8 +317,8 @@ class GeneratePeriodicReport extends Command
      */
     private function buildInventorySection($report)
     {
-        $lowStockMsg = count($report->nguyen_lieu_sap_het) > 0 
-            ? implode(', ', $report->nguyen_lieu_sap_het) 
+        $lowStockMsg = count($report->nguyen_lieu_sap_het) > 0
+            ? implode(', ', $report->nguyen_lieu_sap_het)
             : 'Không có cảnh báo';
 
         return '
@@ -319,7 +327,7 @@ class GeneratePeriodicReport extends Command
         </tr>
         <tr>
             <td class="label" colspan="2">Nguyên liệu sắp hết tồn kho (<5kg):</td>
-            <td colspan="3">' . $lowStockMsg . '</td>
+            <td colspan="3">'.$lowStockMsg.'</td>
         </tr>
         <tr><td colspan="5" style="border: none;"></td></tr>';
     }
@@ -335,15 +343,15 @@ class GeneratePeriodicReport extends Command
         </tr>
         <tr>
             <td class="label" colspan="2">Đánh giá chung hiệu suất:</td>
-            <td colspan="3">' . htmlspecialchars($report->hieu_suat) . '</td>
+            <td colspan="3">'.htmlspecialchars($report->hieu_suat).'</td>
         </tr>
         <tr>
             <td class="label" colspan="2">Phản hồi từ khách hàng:</td>
-            <td colspan="3">' . htmlspecialchars($report->phan_hoi_khach) . '</td>
+            <td colspan="3">'.htmlspecialchars($report->phan_hoi_khach).'</td>
         </tr>
         <tr>
             <td class="label" colspan="2">Đề xuất cải tiến:</td>
-            <td colspan="3">' . htmlspecialchars($report->de_xuat) . '</td>
+            <td colspan="3">'.htmlspecialchars($report->de_xuat).'</td>
         </tr>';
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 /**
  * Lớp NhanVienController - Quản lý Danh sách nhân sự và phân quyền tài khoản
- * 
+ *
  * Cho phép ban điều hành thực hiện các chức năng Xem danh sách, Thêm mới, Sửa quyền hạn,
  * Cập nhật mật khẩu mới và Xóa tài khoản nhân viên phục vụ, bếp, admin.
  */
@@ -15,7 +15,7 @@ class NhanVienController extends Controller
 {
     /**
      * Hiển thị danh sách nhân sự của nhà hàng, lọc theo tên/email hoặc vai trò
-     * 
+     *
      * GET /quan-ly/nhan-vien-quan-ly
      */
     public function index(Request $request)
@@ -27,9 +27,9 @@ class NhanVienController extends Controller
 
         // Tìm kiếm theo tên hoặc email
         if ($search) {
-            $query->where(function($q) use ($search) {
-                $q->where('name', 'like', '%' . $search . '%')
-                  ->orWhere('email', 'like', '%' . $search . '%');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('email', 'like', '%'.$search.'%');
             });
         }
 
@@ -45,7 +45,7 @@ class NhanVienController extends Controller
 
     /**
      * Tạo tài khoản nhân viên mới và mã hóa mật khẩu
-     * 
+     *
      * POST /quan-ly/nhan-vien-quan-ly
      */
     public function store(Request $request)
@@ -65,12 +65,12 @@ class NhanVienController extends Controller
             'role' => $request->role,
         ]);
 
-        return redirect()->back()->with('success', 'Đã thêm tài khoản nhân viên "' . $request->name . '" thành công!');
+        return redirect()->back()->with('success', 'Đã thêm tài khoản nhân viên "'.$request->name.'" thành công!');
     }
 
     /**
      * Cập nhật hồ sơ tài khoản nhân sự (Tên, Email, Quyền hạn, Mật khẩu tùy chọn)
-     * 
+     *
      * PUT/PATCH /quan-ly/nhan-vien-quan-ly/{id}
      */
     public function update(Request $request, $id)
@@ -80,7 +80,7 @@ class NhanVienController extends Controller
         // Xác thực: Loại trừ email của chính tài khoản đang sửa
         $request->validate([
             'name' => 'required|string|max:100',
-            'email' => 'required|string|email|max:100|unique:users,email,' . $id,
+            'email' => 'required|string|email|max:100|unique:users,email,'.$id,
             'password' => 'nullable|string|min:6', // Cho phép để trống nếu không đổi mật khẩu
             'role' => 'required|string|in:admin,nhan_vien,bep',
         ]);
@@ -98,18 +98,18 @@ class NhanVienController extends Controller
 
         $user->update($data);
 
-        return redirect()->back()->with('success', 'Đã cập nhật thông tin nhân viên "' . $request->name . '" thành công!');
+        return redirect()->back()->with('success', 'Đã cập nhật thông tin nhân viên "'.$request->name.'" thành công!');
     }
 
     /**
      * Xóa tài khoản nhân viên khỏi hệ thống (Có ràng buộc an toàn)
-     * 
+     *
      * DELETE /quan-ly/nhan-vien-quan-ly/{id}
      */
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        
+
         // Ngăn chặn xóa tài khoản quản trị tối cao mặc định để bảo vệ hệ thống không bị khóa quyền
         if ($user->email === 'admin@ms.com') {
             return redirect()->back()->with('warning', 'Không thể xóa tài khoản Quản trị viên hệ thống mặc định!');
@@ -118,6 +118,6 @@ class NhanVienController extends Controller
         $name = $user->name;
         $user->delete();
 
-        return redirect()->back()->with('success', 'Đã xóa tài khoản nhân viên "' . $name . '" thành công!');
+        return redirect()->back()->with('success', 'Đã xóa tài khoản nhân viên "'.$name.'" thành công!');
     }
 }

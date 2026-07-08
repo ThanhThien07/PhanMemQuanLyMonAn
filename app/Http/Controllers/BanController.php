@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DashboardUpdated;
+use App\Events\TableStateUpdated;
 use App\Models\Ban;
 use App\Models\DatMon;
 use App\Models\KhachHang;
 use App\Services\CrmService;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 /**
  * BanController - Bộ điều khiển quản lý Sơ đồ bàn và Thanh toán
@@ -46,18 +48,18 @@ class BanController extends Controller
         $tables = Ban::withActiveOrders()->get();
 
         // Thống kê trạng thái bàn từ Collection đã load (không query thêm)
-        $totalTables    = $tables->count();
+        $totalTables = $tables->count();
         $occupiedTables = $tables->where('trang_thai', 'Co_khach')->count();
-        $orderedTables  = $tables->where('trang_thai', 'Da_goi')->count();
-        $freeTables     = $tables->where('trang_thai', 'Trong')->count();
+        $orderedTables = $tables->where('trang_thai', 'Da_goi')->count();
+        $freeTables = $tables->where('trang_thai', 'Trong')->count();
 
         // Doanh thu hôm nay — dùng scope completed() + forDate() của DatMon
         $completedToday = DatMon::completed()->forDate()->get();
-        $totalRevenue   = $completedToday->sum(fn($item) => $item->total);
+        $totalRevenue = $completedToday->sum(fn ($item) => $item->total);
 
         // ROI ước tính từ config thay vì hardcode
         $estimatedProfit = $totalRevenue * config('restaurant.profit_margin', 0.40);
-        $savedFromLoss   = $totalRevenue * config('restaurant.saved_from_loss_rate', 0.15);
+        $savedFromLoss = $totalRevenue * config('restaurant.saved_from_loss_rate', 0.15);
 
         // Danh sách khách hàng CRM để dùng trong form tích điểm khi checkout
         $crmCustomers = KhachHang::orderBy('ten')->select(['id', 'ten', 'sdt', 'diem_tich_luy'])->get();
@@ -78,13 +80,13 @@ class BanController extends Controller
         $request->validate(['ten' => 'required|string|max:100|unique:ban,ten']);
 
         $ban = Ban::create([
-            'ten'         => $request->ten,
-            'trang_thai'  => 'Trong',
+            'ten' => $request->ten,
+            'trang_thai' => 'Trong',
         ]);
 
         // Phát WebSocket để tất cả màn hình đang mở cập nhật tức thì
-        event(new \App\Events\TableStateUpdated($ban, 'store'));
-        event(new \App\Events\DashboardUpdated('table_added'));
+        event(new TableStateUpdated($ban, 'store'));
+        event(new DashboardUpdated('table_added'));
 
         return redirect()->back()->with('success', "Đã thêm bàn {$ban->ten} thành công vào sơ đồ!");
     }
@@ -96,28 +98,28 @@ class BanController extends Controller
      */
     public function requestCheckout(Request $request, int $id): JsonResponse
     {
-        $ban  = Ban::findOrFail($id);
+        $ban = Ban::findOrFail($id);
         $type = $request->input('type');
 
-        if (!in_array($type, ['tien_mat', 'qr'])) {
+        if (! in_array($type, ['tien_mat', 'qr'])) {
             return response()->json(['success' => false, 'message' => 'Loại hình thanh toán không hợp lệ.'], 400);
         }
 
         $ban->update(['yeu_cau_thanh_toan' => $type]);
 
         $ban->load('activeDatMons');
-        event(new \App\Events\TableStateUpdated($ban, 'request_checkout'));
-        event(new \App\Events\DashboardUpdated('payment_requested'));
+        event(new TableStateUpdated($ban, 'request_checkout'));
+        event(new DashboardUpdated('payment_requested'));
 
         $message = $type === 'tien_mat'
             ? 'Đã gửi yêu cầu nhân viên đến thanh toán tiền mặt tại quầy!'
             : 'Đã gửi yêu cầu thanh toán chuyển khoản QR!';
 
         return response()->json([
-            'success'  => true,
-            'message'  => $message,
-            'ban_ten'  => $ban->ten,
-            'type'     => $type,
+            'success' => true,
+            'message' => $message,
+            'ban_ten' => $ban->ten,
+            'type' => $type,
         ]);
     }
 
@@ -132,8 +134,8 @@ class BanController extends Controller
         $ban->update(['yeu_cau_thanh_toan' => 'qr_paid']);
 
         $ban->load('activeDatMons');
-        event(new \App\Events\TableStateUpdated($ban, 'confirm_qr_paid'));
-        event(new \App\Events\DashboardUpdated('qr_paid_confirmed'));
+        event(new TableStateUpdated($ban, 'confirm_qr_paid'));
+        event(new DashboardUpdated('qr_paid_confirmed'));
 
         return response()->json([
             'success' => true,
@@ -148,18 +150,18 @@ class BanController extends Controller
      */
     public function checkout(Request $request, int $id)
     {
-        $ban          = Ban::with('activeDatMons')->findOrFail($id);
+        $ban = Ban::with('activeDatMons')->findOrFail($id);
         $activeOrders = $ban->activeDatMons;
 
         // Tính tổng hóa đơn — dùng ->total accessor của DatMon
-        $totalBill = $activeOrders->sum(fn($item) => $item->total);
+        $totalBill = $activeOrders->sum(fn ($item) => $item->total);
 
         // Tích điểm CRM qua Service
         $crm = $this->crm->tichDiem($request->input('sdt'), $request->input('khach_hang_ten'), $totalBill);
 
         // Đánh dấu toàn bộ món ăn là "đã thanh toán"
-        $activeOrders->each(fn($order) => $order->update([
-            'trang_thai'   => 'da_thanh_toan',
+        $activeOrders->each(fn ($order) => $order->update([
+            'trang_thai' => 'da_thanh_toan',
             'khach_hang_id' => $crm ? $crm['customer']->id : null,
         ]));
 
@@ -168,10 +170,10 @@ class BanController extends Controller
 
         // Phát WebSocket cập nhật sơ đồ bàn
         $ban->load('activeDatMons');
-        event(new \App\Events\TableStateUpdated($ban, 'checkout'));
-        event(new \App\Events\DashboardUpdated('checkout_completed'));
+        event(new TableStateUpdated($ban, 'checkout'));
+        event(new DashboardUpdated('checkout_completed'));
 
-        $msg = "Đã thanh toán " . number_format($totalBill) . "đ và giải phóng {$ban->ten}!";
+        $msg = 'Đã thanh toán '.number_format($totalBill)."đ và giải phóng {$ban->ten}!";
         if ($crm) {
             $msg .= " Tích lũy {$crm['diem_cong']} điểm cho {$crm['customer']->ten} (Tổng: {$crm['customer']->diem_tich_luy} điểm).";
         }
@@ -188,19 +190,19 @@ class BanController extends Controller
     {
         // Validate input trước khi foreach để tránh lỗi runtime
         $request->validate([
-            'splits'             => 'required|array|min:1',
-            'splits.*.order_id'  => 'required|integer',
-            'splits.*.pay_qty'   => 'required|integer|min:1',
+            'splits' => 'required|array|min:1',
+            'splits.*.order_id' => 'required|integer',
+            'splits.*.pay_qty' => 'required|integer|min:1',
         ]);
 
-        $ban         = Ban::findOrFail($id);
-        $splits      = $request->input('splits', []);
-        $totalBillA  = 0;
+        $ban = Ban::findOrFail($id);
+        $splits = $request->input('splits', []);
+        $totalBillA = 0;
         $paidOrderIds = [];
 
         foreach ($splits as $split) {
             $orderId = (int) $split['order_id'];
-            $payQty  = (int) $split['pay_qty'];
+            $payQty = (int) $split['pay_qty'];
 
             // Tìm đơn món còn active của bàn này
             $order = DatMon::where('ban_id', $ban->id)->active()->findOrFail($orderId);
@@ -214,8 +216,8 @@ class BanController extends Controller
                 // Thanh toán một phần — nhân bản dòng đã trả
                 $totalBillA += $payQty * $order->don_gia;
 
-                $paidOrder             = $order->replicate();
-                $paidOrder->so_luong   = $payQty;
+                $paidOrder = $order->replicate();
+                $paidOrder->so_luong = $payQty;
                 $paidOrder->trang_thai = 'da_thanh_toan';
                 $paidOrder->save();
                 $paidOrderIds[] = $paidOrder->id;
@@ -227,7 +229,7 @@ class BanController extends Controller
 
         // Tích điểm CRM cho Bill A
         $crm = $this->crm->tichDiem($request->input('sdt'), $request->input('khach_hang_ten'), $totalBillA);
-        if ($crm && !empty($paidOrderIds)) {
+        if ($crm && ! empty($paidOrderIds)) {
             DatMon::whereIn('id', $paidOrderIds)->update(['khach_hang_id' => $crm['customer']->id]);
         }
 
@@ -236,15 +238,15 @@ class BanController extends Controller
 
         if ($remainingCount === 0) {
             $ban->update(['trang_thai' => 'Trong', 'yeu_cau_thanh_toan' => null, 'so_luong_khach' => 0]);
-            $msg = "Đã thanh toán Bill A: " . number_format($totalBillA) . "đ. Bàn đã sạch bill và được giải phóng!";
+            $msg = 'Đã thanh toán Bill A: '.number_format($totalBillA).'đ. Bàn đã sạch bill và được giải phóng!';
         } else {
             $ban->update(['yeu_cau_thanh_toan' => null]);
-            $msg = "Đã thanh toán Bill A: " . number_format($totalBillA) . "đ. Bill B vẫn còn lưu trên bàn.";
+            $msg = 'Đã thanh toán Bill A: '.number_format($totalBillA).'đ. Bill B vẫn còn lưu trên bàn.';
         }
 
         $ban->load('activeDatMons');
-        event(new \App\Events\TableStateUpdated($ban, 'split_checkout'));
-        event(new \App\Events\DashboardUpdated('split_checkout_completed'));
+        event(new TableStateUpdated($ban, 'split_checkout'));
+        event(new DashboardUpdated('split_checkout_completed'));
 
         if ($crm) {
             $msg .= " Tích lũy {$crm['diem_cong']} điểm cho {$crm['customer']->ten}.";

@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\DatMon;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class DatMonSeeder extends Seeder
 {

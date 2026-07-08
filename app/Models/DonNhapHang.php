@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Lớp Model DonNhapHang - Đơn đặt mua/nhập hàng nguyên liệu từ Nhà cung cấp
- * 
+ *
  * Quản lý quy trình đặt mua nguyên vật liệu thô từ các đối tác, theo dõi số lượng
  * đặt hàng so với số lượng nhận thực tế khi kiểm kho, cùng với trạng thái đơn hàng.
  */

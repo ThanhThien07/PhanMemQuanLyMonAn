@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 /**
  * AuthController - Bộ điều khiển xử lý Xác thực (Đăng nhập, Đăng ký, Đăng xuất)
- * 
+ *
  * Bộ điều khiển này quản lý toàn bộ luồng đăng nhập, đăng ký tài khoản mới và
  * đăng xuất của hệ thống. Nó giải thích cách sử dụng thư viện Auth có sẵn của Laravel,
  * cách xác thực dữ liệu đầu vào (Validation) và cách làm việc với Session.
@@ -18,7 +18,7 @@ class AuthController extends Controller
 {
     /**
      * Hiển thị giao diện đăng nhập
-     * 
+     *
      * GET /login
      */
     public function showLogin()
@@ -35,7 +35,7 @@ class AuthController extends Controller
 
     /**
      * Xử lý đăng nhập khi người dùng bấm nút gửi form
-     * 
+     *
      * POST /login
      */
     public function login(Request $request)
@@ -59,7 +59,7 @@ class AuthController extends Controller
         // và so sánh với mật khẩu đã mã hóa trong bảng 'users'.
         // Tham số thứ hai ($request->has('remember')) dùng cho chức năng "Ghi nhớ đăng nhập" (Remember me).
         if (Auth::attempt($credentials, $request->has('remember'))) {
-            
+
             // Nếu đăng nhập thành công, tạo lại mã định danh Session để bảo mật và chống tấn công giả mạo phiên (Session Fixation).
             $request->session()->regenerate();
 
@@ -69,7 +69,7 @@ class AuthController extends Controller
             // Chuyển hướng người dùng tới trang họ đang cố truy cập trước đó (intended)
             // hoặc chuyển về trang chủ mặc định theo phân quyền kèm thông báo thành công.
             return redirect()->intended(route($this->getRedirectRoute($user->role)))
-                ->with('success', 'Chào mừng quay trở lại, ' . $user->name . ' (' . $roleName . ')!');
+                ->with('success', 'Chào mừng quay trở lại, '.$user->name.' ('.$roleName.')!');
         }
 
         // 3. Nếu đăng nhập thất bại (sai email hoặc mật khẩu)
@@ -81,7 +81,7 @@ class AuthController extends Controller
 
     /**
      * Hiển thị giao diện đăng ký tài khoản mới
-     * 
+     *
      * GET /register
      */
     public function showRegister()
@@ -92,7 +92,7 @@ class AuthController extends Controller
 
     /**
      * Xử lý đăng ký tài khoản mới khi người dùng gửi form
-     * 
+     *
      * POST /register
      */
     public function register(Request $request)
@@ -132,15 +132,15 @@ class AuthController extends Controller
         Auth::login($user);
 
         $roleName = $this->getRoleNameVi($user->role);
-        
+
         // Chuyển hướng người dùng về trang giao diện tương ứng với vai trò của họ
         return redirect()->route($this->getRedirectRoute($user->role))
-            ->with('success', 'Đăng ký tài khoản thành công! Bạn đã đăng nhập với vai trò ' . $roleName . '.');
+            ->with('success', 'Đăng ký tài khoản thành công! Bạn đã đăng nhập với vai trò '.$roleName.'.');
     }
 
     /**
      * Xử lý đăng xuất tài khoản
-     * 
+     *
      * POST /logout
      */
     public function logout(Request $request)
@@ -168,6 +168,7 @@ class AuthController extends Controller
             'nhan_vien' => 'Nhân viên phục vụ',
             'bep' => 'Nhà bếp',
         ];
+
         return $names[$role] ?? $role;
     }
 

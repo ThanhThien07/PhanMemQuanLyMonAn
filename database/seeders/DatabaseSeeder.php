@@ -2,12 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\NguyenLieu;
+use App\Models\BaoCaoQuanLy;
 use App\Models\DonNhapHang;
-use App\Models\MonAn;
 use App\Models\KhachHang;
+use App\Models\LoaiMon;
+use App\Models\LoHangNhap;
+use App\Models\MonAn;
+use App\Models\NguyenLieu;
 use App\Models\NhaCungCap;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -53,7 +56,7 @@ class DatabaseSeeder extends Seeder
 
         $catIds = [];
         foreach ($categories as $cat) {
-            $loaiMon = \App\Models\LoaiMon::create($cat);
+            $loaiMon = LoaiMon::create($cat);
             $catIds[$cat['ma_loai']] = $loaiMon->id;
         }
 
@@ -157,7 +160,7 @@ class DatabaseSeeder extends Seeder
         $nccAsia = NhaCungCap::where('ten', 'AsiaImport Co.')->first();
 
         // Lô Thị Bò Úc ngày 06/04 (Hạn dùng cận hơn: 01/06/2026)
-        \App\Models\LoHangNhap::create([
+        LoHangNhap::create([
             'ma_lo' => 'LOT-BO-0604',
             'nguyen_lieu_id' => $ingredients['Thịt Bò Úc nhập khẩu']->id,
             'don_nhap_hang_id' => 1,
@@ -171,7 +174,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Lô Thị Bò Úc ngày 08/04 (Hạn dùng xa hơn: 15/06/2026)
-        \App\Models\LoHangNhap::create([
+        LoHangNhap::create([
             'ma_lo' => 'LOT-BO-0804',
             'nguyen_lieu_id' => $ingredients['Thịt Bò Úc nhập khẩu']->id,
             'don_nhap_hang_id' => 1,
@@ -185,7 +188,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Các lô hàng nhập cho nguyên liệu khác
-        \App\Models\LoHangNhap::create([
+        LoHangNhap::create([
             'ma_lo' => 'LOT-BO-FRANCE',
             'nguyen_lieu_id' => $ingredients['Bơ Lạt Pháp cao cấp']->id,
             'don_nhap_hang_id' => 2,
@@ -198,7 +201,7 @@ class DatabaseSeeder extends Seeder
             'vi_tri_kho' => 'Tủ mát B-01',
         ]);
 
-        \App\Models\LoHangNhap::create([
+        LoHangNhap::create([
             'ma_lo' => 'LOT-SUA-NZ',
             'nguyen_lieu_id' => $ingredients['Sữa Tươi New Zealand']->id,
             'don_nhap_hang_id' => 3,
@@ -211,7 +214,7 @@ class DatabaseSeeder extends Seeder
             'vi_tri_kho' => 'Tủ mát B-02',
         ]);
 
-        \App\Models\LoHangNhap::create([
+        LoHangNhap::create([
             'ma_lo' => 'LOT-CAFE-BMT',
             'nguyen_lieu_id' => $ingredients['Cà Phê Robusta Buôn Ma Thuột']->id,
             'don_nhap_hang_id' => null,
@@ -224,7 +227,7 @@ class DatabaseSeeder extends Seeder
             'vi_tri_kho' => 'Kệ khô tầng 1',
         ]);
 
-        \App\Models\LoHangNhap::create([
+        LoHangNhap::create([
             'ma_lo' => 'LOT-BOT-ITALY',
             'nguyen_lieu_id' => $ingredients['Bột Mì Ý thượng hạng']->id,
             'don_nhap_hang_id' => null,
@@ -267,8 +270,8 @@ class DatabaseSeeder extends Seeder
         }
 
         // 10. Seed Dữ liệu báo cáo mẫu định kỳ (Báo cáo 7 phần quản lý)
-        \App\Models\BaoCaoQuanLy::create([
-            'ma_bao_cao' => 'BC-' . now()->subDay()->format('Ymd') . '-01',
+        BaoCaoQuanLy::create([
+            'ma_bao_cao' => 'BC-'.now()->subDay()->format('Ymd').'-01',
             'ngay_lap' => now()->subDay()->toDateString(),
             'nguoi_lap' => 'M&S Admin',
             'ca_lam_viec' => 'Sáng',
@@ -280,11 +283,11 @@ class DatabaseSeeder extends Seeder
             'doanh_thu_theo_mon' => [
                 'Phở Bò M&S' => 6,
                 'Bún Chả M&S' => 4,
-                'Nước Cam Ép' => 2
+                'Nước Cam Ép' => 2,
             ],
             'doanh_thu_theo_khu_vuc' => [
                 'Tầng 1' => 300000,
-                'Tầng 2' => 150000
+                'Tầng 2' => 150000,
             ],
             'tong_don_hang' => 12,
             'don_hoan_thanh' => 12,
@@ -295,19 +298,19 @@ class DatabaseSeeder extends Seeder
             'so_luong_mon_da_ban' => [
                 'Phở Bò M&S' => 6,
                 'Bún Chả M&S' => 4,
-                'Nước Cam Ép' => 2
+                'Nước Cam Ép' => 2,
             ],
             'nguyen_lieu_nhap' => [
-                'Thịt Bò Úc nhập khẩu' => '50 kg'
+                'Thịt Bò Úc nhập khẩu' => '50 kg',
             ],
             'nguyen_lieu_dung' => [
-                'Thịt Bò Úc' => '0.9 kg'
+                'Thịt Bò Úc' => '0.9 kg',
             ],
             'nguyen_lieu_ton_cuoi' => [
-                'Thịt Bò Úc' => '24.6 kg'
+                'Thịt Bò Úc' => '24.6 kg',
             ],
             'nguyen_lieu_sap_het' => [
-                'Bơ Lạt Pháp' => 'Tồn 8.2 kg'
+                'Bơ Lạt Pháp' => 'Tồn 8.2 kg',
             ],
             'so_nhan_vien' => 4,
             'so_gio_lam' => 8,
@@ -317,8 +320,8 @@ class DatabaseSeeder extends Seeder
             'de_xuat' => 'Duy trì chất lượng phục vụ hiện tại.',
         ]);
 
-        \App\Models\BaoCaoQuanLy::create([
-            'ma_bao_cao' => 'BC-' . now()->subDay()->format('Ymd') . '-02',
+        BaoCaoQuanLy::create([
+            'ma_bao_cao' => 'BC-'.now()->subDay()->format('Ymd').'-02',
             'ngay_lap' => now()->subDay()->toDateString(),
             'nguoi_lap' => 'M&S Admin',
             'ca_lam_viec' => 'Chiều',
@@ -330,11 +333,11 @@ class DatabaseSeeder extends Seeder
             'doanh_thu_theo_mon' => [
                 'Lẩu Thái Hải Sản' => 2,
                 'Bò Nướng Ngói' => 4,
-                'Cà Phê Sữa Đá M&S' => 6
+                'Cà Phê Sữa Đá M&S' => 6,
             ],
             'doanh_thu_theo_khu_vuc' => [
                 'Tầng 1' => 480000,
-                'Tầng 2' => 300000
+                'Tầng 2' => 300000,
             ],
             'tong_don_hang' => 19,
             'don_hoan_thanh' => 18,
@@ -345,16 +348,16 @@ class DatabaseSeeder extends Seeder
             'so_luong_mon_da_ban' => [
                 'Lẩu Thái Hải Sản' => 2,
                 'Bò Nướng Ngói' => 4,
-                'Cà Phê Sữa Đá M&S' => 6
+                'Cà Phê Sữa Đá M&S' => 6,
             ],
             'nguyen_lieu_nhap' => [],
             'nguyen_lieu_dung' => [
                 'Sữa Tươi' => '0.6 lít',
-                'Cà Phê' => '0.3 kg'
+                'Cà Phê' => '0.3 kg',
             ],
             'nguyen_lieu_ton_cuoi' => [
                 'Sữa Tươi New Zealand' => '44.4 lít',
-                'Cà Phê Buôn Ma Thuột' => '29.7 kg'
+                'Cà Phê Buôn Ma Thuột' => '29.7 kg',
             ],
             'nguyen_lieu_sap_het' => [],
             'so_nhan_vien' => 5,

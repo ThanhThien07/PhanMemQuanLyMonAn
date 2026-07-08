@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Builder;
-use Carbon\Carbon;
 
 /**
  * Model DatMon - Đại diện cho một lượt gọi món thực tế tại bàn của khách
@@ -35,10 +35,10 @@ class DatMon extends Model
 
     // Ép kiểu tự động
     protected $casts = [
-        'so_luong'           => 'integer',
-        'so_luong_khach'     => 'integer',
-        'thu_tu_uu_tien'     => 'integer',
-        'don_gia'            => 'integer',
+        'so_luong' => 'integer',
+        'so_luong_khach' => 'integer',
+        'thu_tu_uu_tien' => 'integer',
+        'don_gia' => 'integer',
         'thoi_gian_uoc_tinh' => 'integer',
     ];
 
@@ -94,8 +94,7 @@ class DatMon extends Model
     /**
      * Scope: Lọc đơn đặt theo ngày cụ thể.
      *
-     * @param  Builder  $query
-     * @param  string   $date  Ngày dạng 'Y-m-d' (mặc định hôm nay)
+     * @param  string  $date  Ngày dạng 'Y-m-d' (mặc định hôm nay)
      */
     public function scopeForDate(Builder $query, ?string $date = null): Builder
     {
@@ -109,7 +108,7 @@ class DatMon extends Model
     public function scopeQueueOrder(Builder $query): Builder
     {
         return $query->orderBy('thu_tu_uu_tien', 'desc')
-                     ->orderBy('created_at', 'asc');
+            ->orderBy('created_at', 'asc');
     }
 
     /**

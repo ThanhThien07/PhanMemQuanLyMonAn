@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Lớp Model MonAnNguyenLieu - Thực thể trung gian Định mức công thức (BOM)
- * 
+ *
  * Lưu trữ định lượng chi tiết cần tiêu hao của từng nguyên vật liệu
  * để chế biến ra một phần ăn tương ứng (ví dụ: món Lẩu Bò cần 0.5kg thịt bò).
  */
@@ -25,8 +25,6 @@ class MonAnNguyenLieu extends Model
 
     /**
      * Mối quan hệ: Bản ghi định mức thuộc về một món ăn cụ thể.
-     * 
-     * @return BelongsTo
      */
     public function monAn(): BelongsTo
     {
@@ -35,8 +33,6 @@ class MonAnNguyenLieu extends Model
 
     /**
      * Mối quan hệ: Bản ghi định mức thuộc về một nguyên vật liệu cụ thể.
-     * 
-     * @return BelongsTo
      */
     public function nguyenLieu(): BelongsTo
     {

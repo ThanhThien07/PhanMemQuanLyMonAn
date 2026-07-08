@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Ban;
+use Illuminate\Database\Seeder;
 
 class BanSeeder extends Seeder
 {

@@ -19,10 +19,10 @@ class CrmService
      * Quy tắc tích điểm: {CRM_POINTS_PER_VND} VND hóa đơn = 1 điểm.
      * Mặc định từ config('restaurant.crm_points_per_vnd') = 10.000 VND/điểm.
      *
-     * @param  string|null  $sdt          Số điện thoại khách hàng (nullable — bỏ qua nếu null)
-     * @param  string|null  $khachHangTen Tên khách hàng (có thể cập nhật nếu đã có hồ sơ)
-     * @param  float|int    $totalBill    Tổng giá trị hóa đơn thanh toán (VND)
-     * @return array|null   Trả về ['customer' => KhachHang, 'diem_cong' => int] hoặc null nếu không có SDT
+     * @param  string|null  $sdt  Số điện thoại khách hàng (nullable — bỏ qua nếu null)
+     * @param  string|null  $khachHangTen  Tên khách hàng (có thể cập nhật nếu đã có hồ sơ)
+     * @param  float|int  $totalBill  Tổng giá trị hóa đơn thanh toán (VND)
+     * @return array|null Trả về ['customer' => KhachHang, 'diem_cong' => int] hoặc null nếu không có SDT
      */
     public function tichDiem(?string $sdt, ?string $khachHangTen, float|int $totalBill): ?array
     {
@@ -34,14 +34,14 @@ class CrmService
         // Tra cứu hoặc tạo mới hồ sơ khách hàng theo số điện thoại
         $customer = KhachHang::where('sdt', $sdt)->first();
 
-        if (!$customer) {
+        if (! $customer) {
             // Khách hàng mới — khởi tạo hồ sơ với điểm ban đầu = 0
             $customer = KhachHang::create([
-                'ten'           => $khachHangTen ?: 'Khách hàng vãng lai',
-                'sdt'           => $sdt,
+                'ten' => $khachHangTen ?: 'Khách hàng vãng lai',
+                'sdt' => $sdt,
                 'diem_tich_luy' => 0,
             ]);
-        } elseif (!empty($khachHangTen)) {
+        } elseif (! empty($khachHangTen)) {
             // Khách cũ đổi tên — cập nhật tên mới
             $customer->update(['ten' => $khachHangTen]);
         }
@@ -56,7 +56,7 @@ class CrmService
         }
 
         return [
-            'customer'  => $customer,
+            'customer' => $customer,
             'diem_cong' => $diemCong,
         ];
     }

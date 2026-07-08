@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Lớp Model Ban - Đại diện cho thực thể Bàn ăn trong Cơ sở dữ liệu
@@ -51,7 +51,7 @@ class Ban extends Model
     public function activeDatMons(): HasMany
     {
         return $this->hasMany(DatMon::class, 'ban_id')
-                    ->whereNotIn('trang_thai', ['da_thanh_toan', 'huy']);
+            ->whereNotIn('trang_thai', ['da_thanh_toan', 'huy']);
     }
 
     // =========================================================================
@@ -70,8 +70,7 @@ class Ban extends Model
     /**
      * Scope: Lọc bàn theo trạng thái cụ thể.
      *
-     * @param  Builder  $query
-     * @param  string   $status  Trạng thái: 'Trong', 'Co_khach', 'Da_goi'
+     * @param  string  $status  Trạng thái: 'Trong', 'Co_khach', 'Da_goi'
      */
     public function scopeByStatus(Builder $query, string $status): Builder
     {
@@ -96,6 +95,6 @@ class Ban extends Model
      */
     public function getTongHoaDonAttribute(): int
     {
-        return (int) $this->activeDatMons->sum(fn($item) => $item->so_luong * $item->don_gia);
+        return (int) $this->activeDatMons->sum(fn ($item) => $item->so_luong * $item->don_gia);
     }
 }

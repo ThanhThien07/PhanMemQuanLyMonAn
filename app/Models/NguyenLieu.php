@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Lớp Model NguyenLieu - Quản lý Danh mục Nguyên vật liệu thô trong kho
@@ -48,8 +48,8 @@ class NguyenLieu extends Model
     public function monAn(): BelongsToMany
     {
         return $this->belongsToMany(MonAn::class, 'mon_an_nguyen_lieu', 'nguyen_lieu_id', 'mon_an_id')
-                    ->withPivot('so_luong_dinh_luong')
-                    ->withTimestamps();
+            ->withPivot('so_luong_dinh_luong')
+            ->withTimestamps();
     }
 
     /**
@@ -67,12 +67,12 @@ class NguyenLieu extends Model
     /**
      * Scope: Lọc các nguyên liệu có tồn kho ở mức thấp cần nhập thêm.
      *
-     * @param  Builder  $query
-     * @param  float    $threshold  Ngưỡng cảnh báo (mặc định lấy từ config)
+     * @param  float  $threshold  Ngưỡng cảnh báo (mặc định lấy từ config)
      */
     public function scopeLowStock(Builder $query, ?float $threshold = null): Builder
     {
         $threshold = $threshold ?? config('restaurant.low_stock_threshold', 5);
+
         return $query->where('so_luong_ton', '<', $threshold);
     }
 
@@ -82,6 +82,7 @@ class NguyenLieu extends Model
     public function scopeAdequateStock(Builder $query, ?float $threshold = null): Builder
     {
         $threshold = $threshold ?? config('restaurant.low_stock_threshold', 5);
+
         return $query->where('so_luong_ton', '>=', $threshold);
     }
 }

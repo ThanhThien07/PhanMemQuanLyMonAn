@@ -59,7 +59,7 @@ return [
     | Tổng phải bằng 1.0
     */
     'payment_split' => [
-        'qr'       => env('PAYMENT_SPLIT_QR', 0.65),   // Chuyển khoản QR
+        'qr' => env('PAYMENT_SPLIT_QR', 0.65),   // Chuyển khoản QR
         'tien_mat' => env('PAYMENT_SPLIT_CASH', 0.35), // Tiền mặt
     ],
 

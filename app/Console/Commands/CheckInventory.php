@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\NguyenLieu;
 use App\Models\LoHangNhap;
+use App\Models\NguyenLieu;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
 class CheckInventory extends Command
@@ -37,7 +37,7 @@ class CheckInventory extends Command
             foreach ($lowStockIngredients as $nl) {
                 $msg = "- Nguyên liệu '{$nl->ten}': Hiện tại chỉ còn {$nl->so_luong_ton} {$nl->don_vi} (Định mức cảnh báo: < 5).";
                 $this->line($msg);
-                Log::warning('InventoryCheck: Low Stock: ' . $msg);
+                Log::warning('InventoryCheck: Low Stock: '.$msg);
             }
         } else {
             $this->info("\nTất cả nguyên liệu đều ở mức tồn kho an toàn.");
@@ -57,11 +57,11 @@ class CheckInventory extends Command
                 $tenNguyenLieu = $batch->nguyenLieu->ten ?? 'Không xác định';
 
                 if ($daysRemaining < 0) {
-                    $msg = "- Lô '{$batch->ma_lo}' (Nguyên liệu: {$tenNguyenLieu}): ĐÃ QUÁ HẠN " . abs($daysRemaining) . " ngày! (Hạn dùng: " . $batch->ngay_het_han . ", Tồn lô: {$batch->so_luong_ton})";
-                    Log::error('InventoryCheck: EXPIRED: ' . $msg);
+                    $msg = "- Lô '{$batch->ma_lo}' (Nguyên liệu: {$tenNguyenLieu}): ĐÃ QUÁ HẠN ".abs($daysRemaining).' ngày! (Hạn dùng: '.$batch->ngay_het_han.", Tồn lô: {$batch->so_luong_ton})";
+                    Log::error('InventoryCheck: EXPIRED: '.$msg);
                 } else {
-                    $msg = "- Lô '{$batch->ma_lo}' (Nguyên liệu: {$tenNguyenLieu}): Chỉ còn {$daysRemaining} ngày sử dụng! (Hạn dùng: " . $batch->ngay_het_han . ", Tồn lô: {$batch->so_luong_ton})";
-                    Log::warning('InventoryCheck: Expiring soon: ' . $msg);
+                    $msg = "- Lô '{$batch->ma_lo}' (Nguyên liệu: {$tenNguyenLieu}): Chỉ còn {$daysRemaining} ngày sử dụng! (Hạn dùng: ".$batch->ngay_het_han.", Tồn lô: {$batch->so_luong_ton})";
+                    Log::warning('InventoryCheck: Expiring soon: '.$msg);
                 }
                 $this->line($msg);
             }
@@ -70,6 +70,7 @@ class CheckInventory extends Command
         }
 
         $this->info("\n--- HOÀN THÀNH KIỂM TRA ---");
+
         return 0;
     }
 }

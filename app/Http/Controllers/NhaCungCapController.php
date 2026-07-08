@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\NhaCungCap;
 use App\Models\DonNhapHang;
+use App\Models\NhaCungCap;
 use Illuminate\Http\Request;
 
 /**
  * Lớp NhaCungCapController - Quản lý Danh sách đối tác Nhà cung cấp
- * 
+ *
  * Quản lý hoạt động Thêm, Sửa, Xóa thông tin nhà cung cấp và thống kê lịch sử giao dịch mua nguyên liệu.
  */
 class NhaCungCapController extends Controller
 {
     /**
      * Hiển thị danh sách các nhà cung cấp kèm bộ lọc tìm kiếm và tổng giá trị giao dịch nhập kho
-     * 
+     *
      * GET /quan-ly/nha-cung-cap
      */
     public function index(Request $request)
@@ -26,9 +26,9 @@ class NhaCungCapController extends Controller
 
         // Lọc nhà cung cấp theo tên hoặc địa chỉ (nếu có)
         if ($search) {
-            $query->where(function($q) use ($search) {
-                $q->where('ten', 'like', '%' . $search . '%')
-                  ->orWhere('dia_chi', 'like', '%' . $search . '%');
+            $query->where(function ($q) use ($search) {
+                $q->where('ten', 'like', '%'.$search.'%')
+                    ->orWhere('dia_chi', 'like', '%'.$search.'%');
             });
         }
 
@@ -39,11 +39,11 @@ class NhaCungCapController extends Controller
 
         // Duyệt qua từng nhà cung cấp để đối khớp đơn hàng nhập và cộng doanh số giao dịch
         foreach ($suppliers as $s) {
-            $related = $allOrders->filter(function($item) use ($s) {
+            $related = $allOrders->filter(function ($item) use ($s) {
                 return stripos($item->nha_cung_cap, $s->ten) !== false;
             });
             $s->don_nhap_count = $related->count();
-            $s->tong_nhap_gia_tri = $related->where('trang_thai', 'da_nhap_kho')->sum(function($item) {
+            $s->tong_nhap_gia_tri = $related->where('trang_thai', 'da_nhap_kho')->sum(function ($item) {
                 return ($item->so_luong_nhan ?? 0) * $item->don_gia;
             });
         }
@@ -53,7 +53,7 @@ class NhaCungCapController extends Controller
 
     /**
      * Lưu trữ nhà cung cấp mới
-     * 
+     *
      * POST /quan-ly/nha-cung-cap
      */
     public function store(Request $request)
@@ -67,12 +67,12 @@ class NhaCungCapController extends Controller
 
         NhaCungCap::create($request->all());
 
-        return redirect()->back()->with('success', 'Đã lưu trữ nhà cung cấp "' . $request->ten . '" thành công!');
+        return redirect()->back()->with('success', 'Đã lưu trữ nhà cung cấp "'.$request->ten.'" thành công!');
     }
 
     /**
      * Cập nhật thông tin nhà cung cấp
-     * 
+     *
      * PUT/PATCH /quan-ly/nha-cung-cap/{id}
      */
     public function update(Request $request, $id)
@@ -81,19 +81,19 @@ class NhaCungCapController extends Controller
 
         // Xác thực: Tên nhà cung cấp phải duy nhất trừ chính bản ghi đang cập nhật
         $request->validate([
-            'ten' => 'required|string|max:100|unique:nha_cung_cap,ten,' . $id,
+            'ten' => 'required|string|max:100|unique:nha_cung_cap,ten,'.$id,
             'sdt' => 'nullable|string|max:20',
             'dia_chi' => 'nullable|string|max:255',
         ]);
 
         $supplier->update($request->all());
 
-        return redirect()->back()->with('success', 'Đã cập nhật thông tin nhà cung cấp "' . $request->ten . '" thành công!');
+        return redirect()->back()->with('success', 'Đã cập nhật thông tin nhà cung cấp "'.$request->ten.'" thành công!');
     }
 
     /**
      * Xóa thông tin nhà cung cấp
-     * 
+     *
      * DELETE /quan-ly/nha-cung-cap/{id}
      */
     public function destroy($id)
@@ -102,6 +102,6 @@ class NhaCungCapController extends Controller
         $name = $supplier->ten;
         $supplier->delete();
 
-        return redirect()->back()->with('success', 'Đã xóa nhà cung cấp "' . $name . '"!');
+        return redirect()->back()->with('success', 'Đã xóa nhà cung cấp "'.$name.'"!');
     }
 }

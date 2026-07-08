@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Lớp Model ChiTietTieuHaoDatMon - Chi tiết tiêu hao nguyên liệu của từng đĩa gọi món
- * 
+ *
  * Lưu trữ vết cụ thể đĩa gọi món này đã tiêu hao bao nhiêu nguyên liệu,
  * lấy ra từ lô hàng nhập nào và giá vốn nhập tương ứng để phục vụ tính ROI/doanh thu thuần.
  */
@@ -27,8 +27,6 @@ class ChiTietTieuHaoDatMon extends Model
 
     /**
      * Mối quan hệ: Chi tiết tiêu hao thuộc về một đĩa gọi món (DatMon) nhất định.
-     * 
-     * @return BelongsTo
      */
     public function datMon(): BelongsTo
     {
@@ -37,8 +35,6 @@ class ChiTietTieuHaoDatMon extends Model
 
     /**
      * Mối quan hệ: Chi tiết tiêu hao thuộc về một nguyên vật liệu cụ thể.
-     * 
-     * @return BelongsTo
      */
     public function nguyenLieu(): BelongsTo
     {
@@ -47,8 +43,6 @@ class ChiTietTieuHaoDatMon extends Model
 
     /**
      * Mối quan hệ: Chi tiết tiêu hao trích xuất kho từ một lô hàng nhập cụ thể.
-     * 
-     * @return BelongsTo
      */
     public function loHangNhap(): BelongsTo
     {

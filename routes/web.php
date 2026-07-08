@@ -1,20 +1,20 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BanController;
-use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DatMonController;
-use App\Http\Controllers\NguyenLieuController;
-use App\Http\Controllers\MonAnController;
-use App\Http\Controllers\NhanVienController;
 use App\Http\Controllers\KhachHangController;
+use App\Http\Controllers\MonAnController;
+use App\Http\Controllers\NguyenLieuController;
 use App\Http\Controllers\NhaCungCapController;
+use App\Http\Controllers\NhanVienController;
+use App\Http\Controllers\ReportController;
+use Illuminate\Support\Facades\Route;
 
 /**
  * File routes/web.php - Khai báo các đường dẫn URL (Routes) của ứng dụng
- * 
- * Đây là nơi tiếp nhận mọi yêu cầu HTTP từ trình duyệt gửi lên, khớp đường dẫn URL 
+ *
+ * Đây là nơi tiếp nhận mọi yêu cầu HTTP từ trình duyệt gửi lên, khớp đường dẫn URL
  * và chuyển tiếp quyền xử lý sang phương thức (Action) tương ứng trong Controller.
  * File này được chia làm các nhóm định tuyến công cộng và nhóm định tuyến bảo mật cần đăng nhập/phân quyền.
  */
@@ -44,7 +44,6 @@ Route::post('/ban/xac-nhan-chuyen-khoan/{id}', [BanController::class, 'confirmQr
 Route::get('/api/realtime-updates', [DatMonController::class, 'getRealtimeUpdates'])->name('api.realtime_updates');
 Route::get('/api/qr-ordered-grid-html/{ban_id}', [DatMonController::class, 'qrOrderedGridHtml'])->name('api.qr_ordered_grid_html');
 
-
 // =========================================================================
 // 2. CÁC ROUTE YÊU CẦU ĐĂNG NHẬP (Sử dụng Middleware 'auth')
 // =========================================================================
@@ -64,7 +63,7 @@ Route::middleware(['auth'])->group(function () {
     // --- VAI TRÒ 1: BAN ĐIỀU HÀNH (ADMIN) ---
     // ---------------------------------------------------------------------
     Route::middleware(['role:admin'])->group(function () {
-        
+
         // Dashboard tổng hợp doanh thu, biểu đồ TOP món ăn và cảnh báo kho nguyên vật liệu
         Route::get('/quan-ly', [ReportController::class, 'quanLy'])->name('quan_ly.index');
 
@@ -114,24 +113,23 @@ Route::middleware(['auth'])->group(function () {
         ]);
     });
 
-
     // ---------------------------------------------------------------------
     // --- VAI TRÒ 2: ADMIN & NHÂN VIÊN PHỤC VỤ (ADMIN, NHAN_VIEN) ---
     // ---------------------------------------------------------------------
     Route::middleware(['role:admin,nhan_vien'])->group(function () {
-        
+
         // Trang sơ đồ bàn ăn và giao diện thu ngân chính
         Route::get('/ban', [BanController::class, 'index'])->name('ban.index');
         Route::post('/ban/them', [BanController::class, 'store'])->name('ban.store');
-        
+
         // Thanh toán toàn bộ và thanh toán tách hóa đơn (Split Bill)
         Route::post('/ban/thanh-toan/{id}', [BanController::class, 'checkout'])->name('ban.checkout');
         Route::post('/ban/tach-thanh-toan/{id}', [BanController::class, 'splitCheckout'])->name('ban.split_checkout');
-        
+
         // Tra cứu đơn gọi món chi tiết và giao diện phục vụ nhanh của nhân viên
         Route::get('/dat-mon', [DatMonController::class, 'index'])->name('dat_mon.index');
         Route::get('/nhan-vien', [DatMonController::class, 'nhanVien'])->name('nhan_vien.index');
-        
+
         // Hủy đĩa gọi món ăn của khách (Hệ thống tự động chạy quy trình hoàn trả nguyên vật liệu)
         Route::post('/dat-mon/huy/{id}', [DatMonController::class, 'destroy'])->name('dat_mon.destroy');
 
@@ -144,24 +142,22 @@ Route::middleware(['auth'])->group(function () {
         ]);
     });
 
-
     // ---------------------------------------------------------------------
     // --- VAI TRÒ 3: ADMIN & NHÀ BẾP (ADMIN, BEP) ---
     // ---------------------------------------------------------------------
     Route::middleware(['role:admin,bep'])->group(function () {
-        
+
         // Giao diện chế biến bếp KDS Pro (Kitchen Display System)
         Route::get('/dat-mon/bep', [DatMonController::class, 'bep'])->name('dat_mon.bep');
-        
+
         // Giao diện quản lý kho hàng nhập khẩu
         Route::get('/nguyen-lieu', [NguyenLieuController::class, 'index'])->name('nguyen_lieu.index');
-        
+
         // So sánh giá giữa các nhà cung ứng, đặt hàng nguyên liệu và kiểm kê nhập kho
         Route::get('/nguyen-lieu/so-sanh', [NguyenLieuController::class, 'comparePrice'])->name('nguyen_lieu.compare_price');
         Route::post('/nguyen-lieu/order', [NguyenLieuController::class, 'orderIngredient'])->name('nguyen_lieu.order');
         Route::post('/nguyen-lieu/verify/{id}', [NguyenLieuController::class, 'verifyImport'])->name('nguyen_lieu.verify');
     });
-
 
     // ---------------------------------------------------------------------
     // --- CHUNG CHO CẢ 3 VAI TRÒ (Cập nhật trạng thái món ăn bếp/nhân viên phục vụ) ---

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Lớp Model BienBanHaoHut - Đại diện cho Biên bản hao hụt nguyên vật liệu
- * 
+ *
  * Lưu trữ thông tin thất thoát nguyên vật liệu trong quá trình lưu kho hoặc chế biến dở dang,
  * liên kết với nguyên liệu bị hụt, lô hàng nhập và nhân sự lập biên bản.
  */
@@ -28,8 +28,6 @@ class BienBanHaoHut extends Model
 
     /**
      * Mối quan hệ: Biên bản hao hụt thuộc về một nguyên vật liệu cụ thể.
-     * 
-     * @return BelongsTo
      */
     public function nguyenLieu(): BelongsTo
     {
@@ -38,8 +36,6 @@ class BienBanHaoHut extends Model
 
     /**
      * Mối quan hệ: Biên bản hao hụt thuộc về một lô hàng nhập cụ thể.
-     * 
-     * @return BelongsTo
      */
     public function loHangNhap(): BelongsTo
     {
@@ -48,8 +44,6 @@ class BienBanHaoHut extends Model
 
     /**
      * Mối quan hệ: Biên bản hao hụt được tạo bởi một nhân viên cụ thể.
-     * 
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {

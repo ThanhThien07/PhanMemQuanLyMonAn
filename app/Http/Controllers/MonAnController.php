@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MonAn;
 use App\Models\LoaiMon;
+use App\Models\MonAn;
 use Illuminate\Http\Request;
 
 class MonAnController extends Controller
@@ -19,7 +19,7 @@ class MonAnController extends Controller
         $query = MonAn::with('loaiMon');
 
         if ($search) {
-            $query->where('ten', 'like', '%' . $search . '%');
+            $query->where('ten', 'like', '%'.$search.'%');
         }
 
         if ($loai_mon_id) {
@@ -52,7 +52,7 @@ class MonAnController extends Controller
         ]);
 
         $loaiMon = LoaiMon::findOrFail($request->loai_mon_id);
-        
+
         // Giữ cột loai cũ để tương thích ngược (LM08 là Đồ uống)
         $loai = ($loaiMon->ma_loai === 'LM08') ? 'DoUong' : 'MonAn';
 
@@ -65,7 +65,7 @@ class MonAnController extends Controller
             'mota' => $request->mota,
         ]);
 
-        return redirect()->back()->with('success', 'Đã thêm món ăn "' . $request->ten . '" vào thực đơn thành công!');
+        return redirect()->back()->with('success', 'Đã thêm món ăn "'.$request->ten.'" vào thực đơn thành công!');
     }
 
     /**
@@ -76,7 +76,7 @@ class MonAnController extends Controller
         $dish = MonAn::findOrFail($id);
 
         $request->validate([
-            'ten' => 'required|string|max:100|unique:mon_an,ten,' . $id,
+            'ten' => 'required|string|max:100|unique:mon_an,ten,'.$id,
             'gia' => 'required|numeric|min:0',
             'time' => 'required|integer|min:1',
             'loai_mon_id' => 'required|exists:loai_mon,id',
@@ -95,7 +95,7 @@ class MonAnController extends Controller
             'mota' => $request->mota,
         ]);
 
-        return redirect()->back()->with('success', 'Đã cập nhật món ăn "' . $request->ten . '" thành công!');
+        return redirect()->back()->with('success', 'Đã cập nhật món ăn "'.$request->ten.'" thành công!');
     }
 
     /**
@@ -107,7 +107,7 @@ class MonAnController extends Controller
         $name = $dish->ten;
         $dish->delete();
 
-        return redirect()->back()->with('success', 'Đã xóa món ăn "' . $name . '" khỏi thực đơn!');
+        return redirect()->back()->with('success', 'Đã xóa món ăn "'.$name.'" khỏi thực đơn!');
     }
 
     /**
@@ -126,7 +126,7 @@ class MonAnController extends Controller
 
         LoaiMon::create($request->all());
 
-        return redirect()->back()->with('success', 'Đã tạo danh mục loại món "' . $request->ten_loai . '" thành công!');
+        return redirect()->back()->with('success', 'Đã tạo danh mục loại món "'.$request->ten_loai.'" thành công!');
     }
 
     /**
@@ -137,13 +137,13 @@ class MonAnController extends Controller
         $category = LoaiMon::findOrFail($id);
 
         $request->validate([
-            'ma_loai' => 'required|string|max:20|unique:loai_mon,ma_loai,' . $id,
+            'ma_loai' => 'required|string|max:20|unique:loai_mon,ma_loai,'.$id,
             'ten_loai' => 'required|string|max:100',
         ]);
 
         $category->update($request->all());
 
-        return redirect()->back()->with('success', 'Đã cập nhật danh mục "' . $request->ten_loai . '" thành công!');
+        return redirect()->back()->with('success', 'Đã cập nhật danh mục "'.$request->ten_loai.'" thành công!');
     }
 
     /**
@@ -155,6 +155,6 @@ class MonAnController extends Controller
         $name = $category->ten_loai;
         $category->delete();
 
-        return redirect()->back()->with('success', 'Đã xóa danh mục "' . $name . '" thành công!');
+        return redirect()->back()->with('success', 'Đã xóa danh mục "'.$name.'" thành công!');
     }
 }

@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\Ban;
 use App\Models\DatMon;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 
 class AutoBackupSystemFiles extends Command
@@ -35,10 +35,10 @@ class AutoBackupSystemFiles extends Command
 
         // Định nghĩa các thư mục lưu trữ tạm thời trong storage/app/public trước khi nén
         $publicPath = storage_path('app/public');
-        $imgDir = $publicPath . '/mon_an';
-        $qrDir = $publicPath . '/qrcodes';
-        $reportDir = $publicPath . '/reports';
-        $docDir = $publicPath . '/documents';
+        $imgDir = $publicPath.'/mon_an';
+        $qrDir = $publicPath.'/qrcodes';
+        $reportDir = $publicPath.'/reports';
+        $docDir = $publicPath.'/documents';
 
         // Tạo thư mục nếu chưa tồn tại
         File::ensureDirectoryExists($imgDir);
@@ -59,7 +59,7 @@ class AutoBackupSystemFiles extends Command
             $files = File::files($sourceImgDir);
             foreach ($files as $file) {
                 if (in_array(strtolower($file->getExtension()), ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
-                    File::copy($file->getRealPath(), $imgDir . '/' . $file->getFilename());
+                    File::copy($file->getRealPath(), $imgDir.'/'.$file->getFilename());
                 }
             }
         }
@@ -69,47 +69,47 @@ class AutoBackupSystemFiles extends Command
         $tables = Ban::all();
         foreach ($tables as $ban) {
             $qrUrl = route('dat_mon.qr_order', $ban->id);
-            $apiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' . urlencode($qrUrl);
-            
+            $apiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data='.urlencode($qrUrl);
+
             try {
                 // Tải ảnh QR code bằng Http facade với timeout 5 giây và bỏ qua kiểm tra chứng chỉ SSL (cho môi trường local/Laragon)
                 $response = Http::withoutVerifying()->timeout(5)->get($apiUrl);
                 if ($response->successful()) {
-                    File::put($qrDir . "/ban_{$ban->id}_{$ban->ten}.png", $response->body());
+                    File::put($qrDir."/ban_{$ban->id}_{$ban->ten}.png", $response->body());
                 } else {
-                    $this->warn("Không thể tải QR cho {$ban->ten}: HTTP " . $response->status());
+                    $this->warn("Không thể tải QR cho {$ban->ten}: HTTP ".$response->status());
                 }
             } catch (\Exception $e) {
-                $this->warn("Không thể tải QR cho {$ban->ten}: " . $e->getMessage());
+                $this->warn("Không thể tải QR cho {$ban->ten}: ".$e->getMessage());
             }
         }
 
         // 3. Tạo và sao lưu tài liệu hướng dẫn chức năng (Word)
         $this->info('3. Sao lưu tài liệu hướng dẫn...');
         $docContent = $this->generateDocumentationHtml();
-        File::put($docDir . '/tai_lieu_chuc_nang.doc', $docContent);
+        File::put($docDir.'/tai_lieu_chuc_nang.doc', $docContent);
 
         // 4. Tạo và sao lưu báo cáo doanh thu CSV ngày hôm nay
         $this->info('4. Sao lưu báo cáo doanh thu xuất ra...');
         $csvContent = $this->generateRevenueCsv();
-        File::put($reportDir . '/bao_cao_doanh_thu_' . now()->format('Ymd') . '.csv', $csvContent);
+        File::put($reportDir.'/bao_cao_doanh_thu_'.now()->format('Ymd').'.csv', $csvContent);
 
         // 5. Nén toàn bộ tệp tin vào tệp ZIP lưu trữ trong storage/app/backups
         $this->info('5. Tiến hành nén dữ liệu hệ thống...');
         $backupDir = storage_path('app/backups');
         File::ensureDirectoryExists($backupDir);
-        
-        $zipFilename = 'backup-files-' . now()->format('Y-m-d_H-i-s') . '.zip';
-        $zipPath = $backupDir . '/' . $zipFilename;
 
-        $zip = new ZipArchive();
-        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+        $zipFilename = 'backup-files-'.now()->format('Y-m-d_H-i-s').'.zip';
+        $zipPath = $backupDir.'/'.$zipFilename;
+
+        $zip = new ZipArchive;
+        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
             $this->addFolderToZip($imgDir, 'mon_an', $zip);
             $this->addFolderToZip($qrDir, 'qrcodes', $zip);
             $this->addFolderToZip($docDir, 'documents', $zip);
             $this->addFolderToZip($reportDir, 'reports', $zip);
             $zip->close();
-            
+
             // Xóa sạch các thư mục tạm sau khi nén thành công để không chiếm dụng bộ nhớ ổ đĩa vô ích
             File::cleanDirectory($imgDir);
             File::cleanDirectory($qrDir);
@@ -119,6 +119,7 @@ class AutoBackupSystemFiles extends Command
             $this->info("Sao lưu file hệ thống thành công! Tệp được lưu tại: storage/app/backups/{$zipFilename}");
         } else {
             $this->error('Không thể tạo tệp nén ZIP sao lưu hệ thống.');
+
             return 1;
         }
 
@@ -133,7 +134,7 @@ class AutoBackupSystemFiles extends Command
         if (File::exists($folder)) {
             $files = File::files($folder);
             foreach ($files as $file) {
-                $zip->addFile($file->getRealPath(), $zipSubDir . '/' . $file->getFilename());
+                $zip->addFile($file->getRealPath(), $zipSubDir.'/'.$file->getFilename());
             }
         }
     }
@@ -151,7 +152,7 @@ class AutoBackupSystemFiles extends Command
         </head>
         <body>
             <h1>HƯỚNG DẪN CHỨC NĂNG HỆ THỐNG QUẢN LÝ NHÀ HÀNG M&S</h1>
-            <p><strong>Ngày lập:</strong> ' . date('d/m/Y') . '</p>
+            <p><strong>Ngày lập:</strong> '.date('d/m/Y').'</p>
             <p><strong>Phiên bản:</strong> 2.0 (Bản Tiếng Việt chính thức)</p>
             
             <h2>1. MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ (Authentication)</h2>
@@ -180,9 +181,9 @@ class AutoBackupSystemFiles extends Command
             ->get();
 
         $columns = ['ID Don Dat', 'Ban Phuc Vu', 'Ten Mon An', 'So Luong', 'Don Gia (VND)', 'Tong Tien (VND)', 'Khach Hang CRM', 'So Dien Thoai', 'Trang Thai', 'Thoi Gian Dat'];
-        
+
         $output = "\xEF\xBB\xBF"; // UTF-8 BOM
-        $output .= implode(',', $columns) . "\n";
+        $output .= implode(',', $columns)."\n";
 
         foreach ($orders as $order) {
             $tongTien = $order->so_luong * $order->don_gia;
@@ -200,15 +201,15 @@ class AutoBackupSystemFiles extends Command
                 $tenKhach,
                 $sdt,
                 $order->trang_thai,
-                $order->created_at->toDateTimeString()
+                $order->created_at->toDateTimeString(),
             ];
 
             // Clean csv value
-            $escapedRow = array_map(function($val) {
-                return '"' . str_replace('"', '""', $val) . '"';
+            $escapedRow = array_map(function ($val) {
+                return '"'.str_replace('"', '""', $val).'"';
             }, $row);
 
-            $output .= implode(',', $escapedRow) . "\n";
+            $output .= implode(',', $escapedRow)."\n";
         }
 
         return $output;

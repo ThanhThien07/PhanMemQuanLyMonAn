@@ -14,6 +14,7 @@ class TableStateUpdated implements ShouldBroadcastNow
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $ban;
+
     public $action; // 'update', 'checkout', 'request_checkout', 'confirm_paid', etc.
 
     /**
@@ -49,7 +50,7 @@ class TableStateUpdated implements ShouldBroadcastNow
             'so_luong_khach' => $this->ban->so_luong_khach,
             'yeu_cau_thanh_toan' => $this->ban->yeu_cau_thanh_toan,
             'action' => $this->action,
-            'tong_tien' => $this->ban->activeDatMons->sum(function($item) {
+            'tong_tien' => $this->ban->activeDatMons->sum(function ($item) {
                 return $item->so_luong * $item->don_gia;
             }),
         ];

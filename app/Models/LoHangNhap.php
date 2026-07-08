@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Lớp Model LoHangNhap - Lô hàng nguyên vật liệu nhập kho thực tế
- * 
+ *
  * Lưu trữ thông tin chi tiết các đợt nhập kho của từng nguyên vật liệu, quản lý
  * hạn sử dụng (FIFO), số lượng tồn thực tế của lô, giá mua và vị trí xếp trong kho.
  */
@@ -33,8 +33,6 @@ class LoHangNhap extends Model
 
     /**
      * Mối quan hệ: Lô hàng nhập thuộc về một nguyên vật liệu cụ thể.
-     * 
-     * @return BelongsTo
      */
     public function nguyenLieu(): BelongsTo
     {
@@ -43,8 +41,6 @@ class LoHangNhap extends Model
 
     /**
      * Mối quan hệ: Lô hàng nhập thuộc về một đơn đặt nhập hàng cụ thể.
-     * 
-     * @return BelongsTo
      */
     public function donNhapHang(): BelongsTo
     {
@@ -53,8 +49,6 @@ class LoHangNhap extends Model
 
     /**
      * Mối quan hệ: Lô hàng nhập được cung cấp bởi một nhà cung cấp cụ thể.
-     * 
-     * @return BelongsTo
      */
     public function nhaCungCap(): BelongsTo
     {
@@ -63,8 +57,6 @@ class LoHangNhap extends Model
 
     /**
      * Mối quan hệ: Lô hàng nhập có thể bị tiêu hao bởi nhiều đĩa gọi món (DatMon).
-     * 
-     * @return HasMany
      */
     public function chiTietTieuHao(): HasMany
     {

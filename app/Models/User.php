@@ -11,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 
 /**
  * Lớp Model User - Tài khoản Người dùng / Nhân sự trong hệ thống
- * 
+ *
  * Đại diện cho các thành viên nhân viên phục vụ, nhà bếp hoặc ban điều hành (admin).
  * Kế thừa Authenticatable để thực hiện chức năng đăng nhập, đăng xuất bảo mật.
  */
@@ -24,7 +24,7 @@ class User extends Authenticatable
 
     /**
      * Khai báo kiểu dữ liệu ép kiểu tự động (Casts) cho các thuộc tính đặc biệt.
-     * 
+     *
      * Mật khẩu tự động băm (hashed) khi gán giá trị mới.
      *
      * @return array<string, string>

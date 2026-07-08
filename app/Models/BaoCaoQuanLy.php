@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Lớp Model BaoCaoQuanLy - Đại diện cho thực thể Báo cáo Ca & Quản lý
- * 
+ *
  * Lưu trữ chi tiết toàn bộ báo cáo doanh số, số lượng đơn hàng, lượng khách,
  * tình hình nguyên vật liệu tiêu thụ và nhân sự sau mỗi ca trực hoặc ngày làm việc.
  */

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Lớp Model KhachHang - Quản lý thông tin Khách hàng thân thiết (CRM)
- * 
+ *
  * Lưu trữ họ tên, số điện thoại liên lạc của khách và điểm thưởng tích lũy tích lũy
  * qua các đơn hàng để áp dụng các chính sách chiết khấu, khuyến mãi.
  */
@@ -25,8 +25,6 @@ class KhachHang extends Model
 
     /**
      * Mối quan hệ: Một khách hàng thân thiết có thể có nhiều đĩa đặt món (DatMon) trong lịch sử.
-     * 
-     * @return HasMany
      */
     public function datMons(): HasMany
     {

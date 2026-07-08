@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\Ban;
-use App\Models\DatMon;
 use App\Models\BaoCaoQuanLy;
+use App\Models\DatMon;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class GuestCountTest extends TestCase
 {
@@ -22,7 +22,7 @@ class GuestCountTest extends TestCase
             'id' => 7,
             'ten' => 'Bàn 7',
             'trang_thai' => 'Trong',
-            'so_luong_khach' => 0
+            'so_luong_khach' => 0,
         ]);
 
         // 2. Kiểm tra truy cập trang QR Order lần đầu
@@ -33,12 +33,12 @@ class GuestCountTest extends TestCase
 
         // 3. Gọi API cập nhật số khách (ví dụ 4 khách)
         $response = $this->postJson("/qr-order/{$ban->id}/cap-nhat-so-khach", [
-            'so_luong_khach' => 4
+            'so_luong_khach' => 4,
         ]);
         $response->assertStatus(200);
         $response->assertJson([
             'success' => true,
-            'so_luong_khach' => 4
+            'so_luong_khach' => 4,
         ]);
 
         $ban->refresh();
@@ -51,7 +51,7 @@ class GuestCountTest extends TestCase
             'thoi_gian_uoc_tinh' => 12,
             'so_luong' => 2,
             'ghi_chu' => 'Không cay',
-            'thu_tu_uu_tien' => 1
+            'thu_tu_uu_tien' => 1,
         ]);
         $response->assertStatus(200);
 
@@ -66,7 +66,7 @@ class GuestCountTest extends TestCase
             'thoi_gian_uoc_tinh' => 3,
             'so_luong' => 2,
             'ghi_chu' => 'Lạnh',
-            'thu_tu_uu_tien' => 1
+            'thu_tu_uu_tien' => 1,
         ]);
         $response->assertStatus(200);
 
@@ -80,7 +80,7 @@ class GuestCountTest extends TestCase
 
         // 6. Test logic kết xuất báo cáo trong storeBaoCao
         // Đăng nhập một admin để gọi storeBaoCao
-        $admin = new User();
+        $admin = new User;
         $admin->name = 'Admin Test';
         $admin->email = 'admin@test.com';
         $admin->password = bcrypt('password');
@@ -88,13 +88,13 @@ class GuestCountTest extends TestCase
         $admin->save();
 
         $response = $this->actingAs($admin)
-            ->post("/quan-ly/bao-cao/luu", [
+            ->post('/quan-ly/bao-cao/luu', [
                 'ngay_lap' => date('Y-m-d'),
                 'ca_lam_viec' => 'Sáng',
                 'so_nhan_vien' => 4,
                 'so_gio_lam' => 8,
             ]);
-        
+
         $response->assertStatus(302); // Redirect back with success message
 
         // Lấy báo cáo vừa lưu để kiểm tra lượng khách
@@ -105,13 +105,13 @@ class GuestCountTest extends TestCase
 
         // 7. Test reset số lượng khách khi checkout bàn ăn
         $ban->update(['trang_thai' => 'Da_goi']); // Giả lập bàn đang có khách gọi tiếp
-        
+
         $response = $this->actingAs($admin)
             ->post("/ban/thanh-toan/{$ban->id}", [
                 'sdt' => '',
-                'khach_hang_ten' => ''
+                'khach_hang_ten' => '',
             ]);
-        
+
         $response->assertStatus(302);
         $ban->refresh();
         // Sau khi checkout, bàn ăn phải về trạng thái Trống và số lượng khách reset về 0

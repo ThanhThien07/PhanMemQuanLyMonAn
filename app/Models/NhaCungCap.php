@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Lớp Model NhaCungCap - Quản lý Danh sách đối tác Nhà cung cấp nguyên liệu
- * 
+ *
  * Lưu trữ tên đơn vị nhà cung cấp, số điện thoại hotline, địa chỉ kho/văn phòng
  * để liên hệ đặt mua hàng hóa nguyên liệu thô phục vụ chế biến của nhà hàng.
  */

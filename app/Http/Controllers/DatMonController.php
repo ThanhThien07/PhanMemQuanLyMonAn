@@ -2,20 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DashboardUpdated;
+use App\Events\OrderStatusUpdated;
+use App\Events\TableStateUpdated;
 use App\Models\Ban;
+use App\Models\ChiTietTieuHaoDatMon;
 use App\Models\DatMon;
+use App\Models\LoaiMon;
+use App\Models\LoHangNhap;
 use App\Models\MonAn;
 use App\Models\NguyenLieu;
-use App\Models\LoHangNhap;
-use App\Models\ChiTietTieuHaoDatMon;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /**
  * DatMonController - Bộ điều khiển xử lý Đơn gọi món và Điều phối bếp KDS
- * 
+ *
  * Bộ điều khiển này quản lý luồng đặt món của khách hàng qua QR tại bàn, điều phối bếp
  * KDS (Kitchen Display System), thay đổi trạng thái món ăn, hủy đơn hoàn tồn kho, và
  * đặc biệt là thuật toán tự động trừ kho theo FEFO và ước tính thời gian chờ đợi.
@@ -24,16 +28,16 @@ class DatMonController extends Controller
 {
     /**
      * 1. Danh sách tất cả đơn đặt món (Trang lịch sử đơn hàng của Quản trị viên)
-     * 
+     *
      * GET /dat-mon
      */
     public function index(Request $request)
     {
         $status = $request->input('status');
-        
+
         // Khởi tạo truy vấn liên kết với bảng bàn ăn (ban)
         $query = DatMon::with('ban');
-        
+
         // Nếu có bộ lọc trạng thái (ví dụ: đang chờ, đã phục vụ, đã thanh toán)
         if ($status) {
             $query->where('trang_thai', $status);
@@ -41,7 +45,7 @@ class DatMonController extends Controller
 
         // Thực thi lấy dữ liệu sắp xếp theo ngày đặt mới nhất lên trước
         $orders = $query->orderBy('created_at', 'desc')->get();
-        
+
         return view('dat_mon.index', compact('orders', 'status'));
     }
 
@@ -60,7 +64,7 @@ class DatMonController extends Controller
 
     /**
      * 3. Khách hàng quét mã QR tại bàn để xem thực đơn & gọi món ăn trực tuyến
-     * 
+     *
      * GET /qr-order/{ban_id}
      */
     public function qrOrder($ban_id)
@@ -73,24 +77,24 @@ class DatMonController extends Controller
         }
 
         // Chỉ select cột cần thiết để giảm dữ liệu truyền tải
-        $menuItems  = MonAn::with('loaiMon')->select(['id', 'ten', 'gia', 'time', 'loai', 'loai_mon_id', 'mota'])->orderBy('ten')->get();
-        $categories = \App\Models\LoaiMon::orderBy('ma_loai')->get();
+        $menuItems = MonAn::with('loaiMon')->select(['id', 'ten', 'gia', 'time', 'loai', 'loai_mon_id', 'mota'])->orderBy('ten')->get();
+        $categories = LoaiMon::orderBy('ma_loai')->get();
 
         // Dùng ->total accessor thay vì closure lặp lại
-        $totalBill = $ban->activeDatMons->sum(fn($item) => $item->total);
+        $totalBill = $ban->activeDatMons->sum(fn ($item) => $item->total);
 
         return view('ban.qr_order', compact('ban', 'menuItems', 'categories', 'totalBill'));
     }
 
     /**
      * 4. API nhận yêu cầu gọi món trực tuyến của khách qua QR bàn
-     * 
+     *
      * POST /qr-order/{ban_id}/order
      */
     public function placeOrder(Request $request, $ban_id): JsonResponse
     {
         $ban = Ban::findOrFail($ban_id);
-        
+
         // Xác thực thông tin món ăn gửi lên từ client
         $request->validate([
             'ten_mon' => 'required|string',
@@ -103,7 +107,7 @@ class DatMonController extends Controller
 
         // Kiểm tra xem bàn đã có món active chưa để quyết định gán so_luong_khach
         $hasActive = DatMon::where('ban_id', $ban_id)->active()->exists();
-            
+
         // LUẬT: Số lượng khách chỉ được gán vào hóa đơn đầu tiên (su suất đầu) của bàn ăn
         // để tránh việc tính lặp lại số lượng khách khi họ gọi thêm món lẻ tẻ sau đó.
         $soLuongKhachOrder = $hasActive ? 0 : $ban->so_luong_khach;
@@ -127,20 +131,20 @@ class DatMonController extends Controller
         // PHÁT SỰ KIỆN BROADCASTING: Sử dụng Laravel Reverb (WebSockets) để gửi dữ liệu đơn mới
         // xuống màn hình bếp KDS và sơ đồ bàn của nhân viên tức thì, giúp bếp tự động phát nhạc báo.
         $datMon->load('ban');
-        event(new \App\Events\OrderStatusUpdated($datMon));
-        event(new \App\Events\TableStateUpdated($ban, 'new_order'));
-        event(new \App\Events\DashboardUpdated('order_placed'));
+        event(new OrderStatusUpdated($datMon));
+        event(new TableStateUpdated($ban, 'new_order'));
+        event(new DashboardUpdated('order_placed'));
 
         return response()->json([
             'success' => true,
-            'message' => 'Đã gửi đơn món ' . $request->ten_mon . ' xuống nhà bếp thành công!',
-            'order' => $datMon
+            'message' => 'Đã gửi đơn món '.$request->ten_mon.' xuống nhà bếp thành công!',
+            'order' => $datMon,
         ]);
     }
 
     /**
      * 5. API cập nhật trạng thái chế biến (Bếp bắt đầu nấu / Phục vụ giao món)
-     * 
+     *
      * POST /dat-mon/doi-trang-thai/{id}
      */
     public function updateStatus(Request $request, $id): JsonResponse
@@ -148,25 +152,25 @@ class DatMonController extends Controller
         $order = DatMon::findOrFail($id);
         $status = $request->input('status'); // dang_cho (chờ), dang_lam (nấu), dang_giao (giao), da_giao (hoàn tất)
 
-        if (!in_array($status, ['dang_cho', 'dang_lam', 'dang_giao', 'da_giao'])) {
+        if (! in_array($status, ['dang_cho', 'dang_lam', 'dang_giao', 'da_giao'])) {
             return response()->json(['success' => false, 'message' => 'Trạng thái chuyển đổi không hợp lệ.'], 400);
         }
 
         // CƠ CHẾ KHẤU TRỪ KHO TỰ ĐỘNG:
         // Khi bếp bắt đầu chế biến món ăn (dang_lam, dang_giao, da_giao), hệ thống sẽ kiểm tra
-        // xem món ăn này đã từng thực hiện trừ kho nguyên liệu trước đó chưa. 
+        // xem món ăn này đã từng thực hiện trừ kho nguyên liệu trước đó chưa.
         // Nếu chưa, hệ thống tự động chạy quy trình trừ kho theo nguyên tắc cận date dùng trước (FEFO).
         if (in_array($status, ['dang_lam', 'dang_giao', 'da_giao'])) {
             $daTieuHao = ChiTietTieuHaoDatMon::where('dat_mon_id', $order->id)->exists();
 
-            if (!$daTieuHao) {
+            if (! $daTieuHao) {
                 try {
                     $this->khauTruKhoFEFO($order);
                 } catch (\Exception $e) {
                     // Nếu thiếu hụt nguyên liệu trong kho, trả về lỗi ngăn không cho chế biến
                     return response()->json([
                         'success' => false,
-                        'message' => $e->getMessage()
+                        'message' => $e->getMessage(),
                     ], 400);
                 }
             }
@@ -182,8 +186,8 @@ class DatMonController extends Controller
             $undeliveredCount = $ban->activeDatMons->where('trang_thai', '!=', 'da_giao')->count();
             if ($undeliveredCount == 0 && $ban->trang_thai === 'Da_goi') {
                 // Nếu toàn bộ món ăn đã phục vụ xong -> Đổi trạng thái bàn về "Có khách" (đang ăn)
-                $ban->update(['trang_thai' => 'Co_khach']); 
-            } else if ($undeliveredCount > 0) {
+                $ban->update(['trang_thai' => 'Co_khach']);
+            } elseif ($undeliveredCount > 0) {
                 // Nếu vẫn còn món đang chờ -> Giữ trạng thái bàn là "Đã gọi"
                 $ban->update(['trang_thai' => 'Da_goi']);
             }
@@ -191,26 +195,26 @@ class DatMonController extends Controller
 
         // Phát tín hiệu đồng bộ WebSocket tức thì lên các màn hình giám sát
         $order->load('ban');
-        event(new \App\Events\OrderStatusUpdated($order));
+        event(new OrderStatusUpdated($order));
         if ($ban) {
-            event(new \App\Events\TableStateUpdated($ban, 'status_updated'));
+            event(new TableStateUpdated($ban, 'status_updated'));
         }
-        event(new \App\Events\DashboardUpdated('status_updated'));
+        event(new DashboardUpdated('status_updated'));
 
         return response()->json([
             'success' => true,
             'message' => 'Đã cập nhật trạng thái chế biến món ăn và tự động khấu trừ kho thành công!',
-            'new_status' => $status
+            'new_status' => $status,
         ]);
     }
 
     /**
      * 6. API hủy/xóa món ăn (Có cơ chế tự động hoàn trả nguyên vật liệu vào kho)
-     * 
+     *
      * Khi khách hoặc phục vụ muốn hủy món, hệ thống phải thực hiện:
      * 1. Hủy món khỏi hóa đơn.
      * 2. Tìm kiếm lịch sử tiêu hao và cộng trả lại số lượng nguyên liệu vào kho tổng và lô hàng ban đầu.
-     * 
+     *
      * POST /dat-mon/huy/{id}
      */
     public function destroy($id)
@@ -246,14 +250,14 @@ class DatMonController extends Controller
             DB::commit(); // Xác nhận giao dịch hoàn kho thành công
         } catch (\Exception $e) {
             DB::rollBack(); // Hủy bỏ các thao tác nếu có lỗi xảy ra
-            Log::warning('Không thể hoàn lại tồn kho khi hủy đơn #' . $order->id . ': ' . $e->getMessage());
+            Log::warning('Không thể hoàn lại tồn kho khi hủy đơn #'.$order->id.': '.$e->getMessage());
         }
 
         // Phát sự kiện xóa đơn cho Client biết để ẩn dòng khỏi bảng
         $deletedOrder = clone $order;
         $deletedOrder->trang_thai = 'deleted';
         $deletedOrder->load('ban');
-        event(new \App\Events\OrderStatusUpdated($deletedOrder));
+        event(new OrderStatusUpdated($deletedOrder));
 
         // Tiến hành xóa món ăn khỏi CSDL
         $order->delete();
@@ -266,21 +270,21 @@ class DatMonController extends Controller
 
         if ($ban) {
             $ban->load('activeDatMons');
-            event(new \App\Events\TableStateUpdated($ban, 'order_cancelled'));
+            event(new TableStateUpdated($ban, 'order_cancelled'));
         }
-        event(new \App\Events\DashboardUpdated('order_cancelled'));
+        event(new DashboardUpdated('order_cancelled'));
 
         return redirect()->back()->with('success', 'Đã hủy món ăn và hoàn trả lại số lượng tồn kho nguyên liệu thành công!');
     }
 
     /**
      * 7. Màn hình giám sát và phục vụ của nhân viên chạy bàn
-     * 
+     *
      * GET /nhan-vien
      */
     public function nhanVien()
     {
-        $tables    = Ban::withActiveOrders()->get();
+        $tables = Ban::withActiveOrders()->get();
         // Chỉ select các cột cần thiết hiển thị — giảm lượng dữ liệu transfer
         $menuItems = MonAn::select(['id', 'ten', 'gia', 'time', 'loai_mon_id'])->get();
 
@@ -289,10 +293,10 @@ class DatMonController extends Controller
 
     /**
      * 8. API lấy dữ liệu cập nhật thời gian thực (Hỗ trợ cơ chế Polling)
-     * 
+     *
      * Trả về danh sách đơn chờ, ước tính thời gian chờ thực tế, bàn yêu cầu thanh toán
      * và cảnh báo nguyên vật liệu sắp cạn kiệt dưới dạng JSON.
-     * 
+     *
      * GET /api/realtime-updates
      */
     public function getRealtimeUpdates(Request $request): JsonResponse
@@ -303,64 +307,64 @@ class DatMonController extends Controller
         $allKdsOrders = DatMon::with('ban')->kdsVisible()->queueOrder()->get();
 
         // Tách riêng hàng đợi bếp (chỉ dang_cho + dang_lam) để tính thời gian chờ
-        $kitchenQueue        = $allKdsOrders->whereIn('trang_thai', ['dang_cho', 'dang_lam'])->values();
-        $estimatedWaitTimes  = $this->tinhThoiGianChoUocTinh($kitchenQueue, $chefCount);
+        $kitchenQueue = $allKdsOrders->whereIn('trang_thai', ['dang_cho', 'dang_lam'])->values();
+        $estimatedWaitTimes = $this->tinhThoiGianChoUocTinh($kitchenQueue, $chefCount);
 
         $tables = Ban::withActiveOrders()->get();
 
         // Map dữ liệu trả về client
-        $orders = $allKdsOrders->map(fn($o) => [
-            'id'                  => $o->id,
-            'ban_id'              => $o->ban_id,
-            'ban_ten'             => $o->ban->ten ?? 'Bàn',
-            'ten_mon'             => $o->ten_mon,
-            'so_luong'            => $o->so_luong,
-            'don_gia'             => $o->don_gia,
-            'trang_thai'          => $o->trang_thai,
-            'thoi_gian_uoc_tinh'  => $o->thoi_gian_uoc_tinh,
-            'thu_tu_uu_tien'      => $o->thu_tu_uu_tien,
-            'real_wait_time'      => $estimatedWaitTimes[$o->id] ?? 0,
-            'minutes_elapsed'     => $o->minutes_elapsed,
-            'is_late_warning'     => $o->is_late_warning,
-            'ghi_chu'             => $o->ghi_chu,
-            'created_at'          => $o->created_at->toIso8601String(),
+        $orders = $allKdsOrders->map(fn ($o) => [
+            'id' => $o->id,
+            'ban_id' => $o->ban_id,
+            'ban_ten' => $o->ban->ten ?? 'Bàn',
+            'ten_mon' => $o->ten_mon,
+            'so_luong' => $o->so_luong,
+            'don_gia' => $o->don_gia,
+            'trang_thai' => $o->trang_thai,
+            'thoi_gian_uoc_tinh' => $o->thoi_gian_uoc_tinh,
+            'thu_tu_uu_tien' => $o->thu_tu_uu_tien,
+            'real_wait_time' => $estimatedWaitTimes[$o->id] ?? 0,
+            'minutes_elapsed' => $o->minutes_elapsed,
+            'is_late_warning' => $o->is_late_warning,
+            'ghi_chu' => $o->ghi_chu,
+            'created_at' => $o->created_at->toIso8601String(),
         ]);
 
         // Bàn đang chờ thanh toán
-        $paymentRequests = $tables->pendingCheckout()->map(fn($t) => [
-            'id'                 => $t->id,
-            'ten'                => $t->ten,
+        $paymentRequests = $tables->pendingCheckout()->map(fn ($t) => [
+            'id' => $t->id,
+            'ten' => $t->ten,
             'yeu_cau_thanh_toan' => $t->yeu_cau_thanh_toan,
-            'tong_tien'          => $t->activeDatMons->sum(fn($item) => $item->total),
+            'tong_tien' => $t->activeDatMons->sum(fn ($item) => $item->total),
         ])->values();
 
         // Cảnh báo nguyên liệu sắp hết
         $lowStockIngredients = NguyenLieu::lowStock()
             ->get(['id', 'ten', 'so_luong_ton', 'don_vi'])
-            ->map(fn($i) => [
-                'id'          => $i->id,
-                'ten'         => $i->ten,
+            ->map(fn ($i) => [
+                'id' => $i->id,
+                'ten' => $i->ten,
                 'so_luong_ton' => $i->so_luong_ton,
-                'don_vi'      => $i->don_vi,
+                'don_vi' => $i->don_vi,
             ]);
 
         return response()->json([
-            'success'             => true,
-            'orders'              => $orders,
-            'payment_requests'    => $paymentRequests,
+            'success' => true,
+            'orders' => $orders,
+            'payment_requests' => $paymentRequests,
             'low_stock_materials' => $lowStockIngredients,
         ]);
     }
 
     /**
      * 9. API cập nhật số khách ngồi tại bàn ăn khi quét QR
-     * 
+     *
      * POST /qr-order/{ban_id}/cap-nhat-so-khach
      */
     public function updateGuestCount(Request $request, $ban_id): JsonResponse
     {
         $ban = Ban::findOrFail($ban_id);
-        $soKhach = (int)$request->input('so_luong_khach', 1);
+        $soKhach = (int) $request->input('so_luong_khach', 1);
 
         if ($soKhach < 1) {
             return response()->json(['success' => false, 'message' => 'Số lượng khách không hợp lệ.'], 400);
@@ -370,47 +374,50 @@ class DatMonController extends Controller
 
         // Phát WebSocket cập nhật dữ liệu Dashboard quản lý doanh số
         $ban->load('activeDatMons');
-        event(new \App\Events\TableStateUpdated($ban, 'guest_count_updated'));
-        event(new \App\Events\DashboardUpdated('guest_count_updated'));
+        event(new TableStateUpdated($ban, 'guest_count_updated'));
+        event(new DashboardUpdated('guest_count_updated'));
 
         return response()->json([
             'success' => true,
             'message' => 'Cập nhật số lượng khách thành công!',
-            'so_luong_khach' => $soKhach
+            'so_luong_khach' => $soKhach,
         ]);
     }
 
     /**
      * 10. API: Trả về HTML màn hình bếp (Phục vụ AJAX Grid cập nhật mượt mà không cần F5)
-     * 
+     *
      * GET /api/bep-grid-html
      */
     public function bepGridHtml(Request $request)
     {
         // Dùng scopes thay vì whereIn/orderBy thủ công
         $orders = DatMon::with('ban')->kdsVisible()->orderBy('created_at', 'asc')->get();
+
         return view('dat_mon.bep_grid', compact('orders'));
     }
 
     /**
      * 11. API: Trả về HTML sơ đồ bàn của nhân viên
-     * 
+     *
      * GET /api/nhan-vien-grid-html
      */
     public function nhanVienGridHtml(Request $request)
     {
         $tables = Ban::withActiveOrders()->get();
+
         return view('dat_mon.nhan_vien_grid', compact('tables'));
     }
 
     /**
      * 12. API: Trả về HTML danh sách món ăn đã đặt tại bàn (dành cho màn hình khách hàng tự theo dõi)
-     * 
+     *
      * GET /api/qr-ordered-grid-html/{ban_id}
      */
     public function qrOrderedGridHtml($ban_id)
     {
         $ban = Ban::with('activeDatMons')->findOrFail($ban_id);
+
         return view('ban.ordered_items_grid', compact('ban'));
     }
 
@@ -420,27 +427,27 @@ class DatMonController extends Controller
 
     /**
      * Helper: Khấu trừ nguyên vật liệu kho theo công thức định lượng (BOM) và nguyên tắc FEFO
-     * 
+     *
      * FEFO (First Expired, First Out): Ưu tiên trừ nguyên liệu thuộc lô hàng có Hạn sử dụng gần nhất.
      */
     private function khauTruKhoFEFO(DatMon $order)
     {
         // 1. Tìm thông tin định nghĩa món ăn trong thực đơn dựa trên tên món
         $monAn = MonAn::where('ten', $order->ten_mon)->first();
-        
+
         // Nếu món ăn này không định nghĩa nguyên liệu cấu thành (ví dụ đồ đóng chai lon uống liền), bỏ qua trừ kho.
-        if (!$monAn || $monAn->nguyenLieu()->count() === 0) {
+        if (! $monAn || $monAn->nguyenLieu()->count() === 0) {
             return;
         }
 
-        DB::transaction(function() use ($monAn, $order) {
+        DB::transaction(function () use ($monAn, $order) {
             // BƯỚC 1: Kiểm tra trước tổng tồn kho của tất cả nguyên liệu liên quan.
             // Nếu có bất kỳ nguyên liệu nào bị thiếu hụt, lập tức bắn Exception để rollback toàn bộ.
             foreach ($monAn->nguyenLieu as $ing) {
                 // Lượng nguyên liệu cần = (định lượng cho 1 suất món) * (số lượng đĩa gọi)
                 $qtyNeeded = $ing->pivot->so_luong_dinh_luong * $order->so_luong;
                 if ($ing->so_luong_ton < $qtyNeeded) {
-                    throw new \Exception('Không đủ nguyên liệu [' . $ing->ten . '] để chế biến! Hệ thống yêu cầu ' . $qtyNeeded . ' ' . $ing->don_vi . ', tồn kho hiện tại chỉ còn: ' . $ing->so_luong_ton . ' ' . $ing->don_vi . '. Vui lòng báo kho nhập thêm hàng!');
+                    throw new \Exception('Không đủ nguyên liệu ['.$ing->ten.'] để chế biến! Hệ thống yêu cầu '.$qtyNeeded.' '.$ing->don_vi.', tồn kho hiện tại chỉ còn: '.$ing->so_luong_ton.' '.$ing->don_vi.'. Vui lòng báo kho nhập thêm hàng!');
                 }
             }
 
@@ -455,7 +462,9 @@ class DatMonController extends Controller
                     ->get();
 
                 foreach ($batches as $batch) {
-                    if ($remaining <= 0) break; // Đã trừ đủ số lượng cần thiết
+                    if ($remaining <= 0) {
+                        break;
+                    } // Đã trừ đủ số lượng cần thiết
 
                     if ($batch->so_luong_ton >= $remaining) {
                         // Trường hợp lô hàng hiện tại đủ cung cấp toàn bộ phần còn lại
@@ -497,7 +506,7 @@ class DatMonController extends Controller
 
     /**
      * Helper: Thuật toán xếp lịch và ước tính thời gian chờ chế biến
-     * 
+     *
      * Phân phối các món ăn đang xếp hàng chế biến vào các dòng thời gian của số đầu bếp trực ca.
      */
     private function tinhThoiGianChoUocTinh($activeQueue, $chefCount)
@@ -509,7 +518,7 @@ class DatMonController extends Controller
         foreach ($activeQueue as $order) {
             // Tổng thời gian nấu món này = (định mức nấu 1 suất) * (số suất gọi)
             $prepDuration = $order->thoi_gian_uoc_tinh * $order->so_luong;
-            
+
             // Tìm đầu bếp rảnh sớm nhất trong ca trực (người có thời gian bận ít nhất hiện tại)
             $earliestChefIndex = 0;
             $minFreeTime = $chefTimeline[0];
@@ -525,7 +534,7 @@ class DatMonController extends Controller
                 // Thời gian còn lại = Tổng thời gian nấu ước tính - số phút đã trôi qua kể từ lúc đặt
                 $elapsed = $order->minutes_elapsed;
                 $remaining = max(0, $prepDuration - $elapsed);
-                
+
                 // Cộng dồn vào dòng thời gian của đầu bếp được phân công nấu món này
                 $chefTimeline[$earliestChefIndex] += $remaining;
                 $estimatedWaitTimes[$order->id] = $chefTimeline[$earliestChefIndex];
