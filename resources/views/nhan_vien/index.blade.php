@@ -49,7 +49,7 @@
       @if ($employees->count() > 0)
         <table class="table table-hover align-middle mb-0">
           <thead class="table-light">
-            <tr>
+            <tr class="text-nowrap">
               <th class="ps-4" style="width: 50px;">ID</th>
               <th>Họ và tên nhân viên</th>
               <th>Địa chỉ Email</th>
@@ -62,7 +62,7 @@
           <tbody>
             @foreach ($employees as $emp)
               <tr>
-                <td class="ps-4 text-muted fw-semibold">#{{ $emp->id }}</td>
+                <td class="ps-4 text-muted fw-semibold text-nowrap">#{{ $emp->id }}</td>
                 <td>
                   <div class="d-flex align-items-center">
                     <div class="rounded-circle p-2 me-3 {{ $emp->role === 'admin' ? 'bg-danger bg-opacity-10 text-danger' : ($emp->role === 'bep' ? 'bg-warning bg-opacity-10 text-warning' : 'bg-primary bg-opacity-10 text-primary') }}" style="width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;">
@@ -74,7 +74,7 @@
                   </div>
                 </td>
                 <td class="text-muted fw-semibold">{{ $emp->email }}</td>
-                <td>
+                <td class="text-nowrap">
                   @if ($emp->role === 'admin')
                     <span class="badge bg-danger bg-opacity-10 text-danger px-2.5 py-1 fw-bold"><i class="bi bi-shield-fill me-1"></i>Ban điều hành</span>
                   @elseif ($emp->role === 'bep')
@@ -83,13 +83,13 @@
                     <span class="badge bg-primary bg-opacity-10 text-primary px-2.5 py-1 fw-bold"><i class="bi bi-people-fill me-1"></i>Nhân viên</span>
                   @endif
                 </td>
-                <td>
+                <td class="text-nowrap">
                   <span class="badge bg-success bg-opacity-10 text-success px-2 py-1 fw-semibold"><i class="bi bi-circle-fill small me-1"></i>Đang trực tuyến</span>
                 </td>
-                <td class="text-secondary small">
+                <td class="text-secondary small text-nowrap">
                   {{ $emp->created_at ? $emp->created_at->format('d/m/Y') : 'Hệ thống' }}
                 </td>
-                <td class="pe-4 text-end">
+                <td class="pe-4 text-end text-nowrap">
                   <div class="d-flex justify-content-end gap-1">
                     <button class="btn btn-sm btn-outline-primary" onclick="openEditModal({{ json_encode($emp) }})">
                       <i class="bi bi-pencil-square"></i>

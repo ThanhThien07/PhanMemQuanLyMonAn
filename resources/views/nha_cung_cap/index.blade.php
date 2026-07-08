@@ -41,7 +41,7 @@
       @if ($suppliers->count() > 0)
         <table class="table table-hover align-middle mb-0">
           <thead class="table-light">
-            <tr>
+            <tr class="text-nowrap">
               <th class="ps-4" style="width: 50px;">ID</th>
               <th>Tên nhà cung cấp / Đối tác</th>
               <th>Số điện thoại liên hệ</th>
@@ -55,7 +55,7 @@
           <tbody>
             @foreach ($suppliers as $s)
               <tr>
-                <td class="ps-4 text-muted fw-semibold">#{{ $s->id }}</td>
+                <td class="ps-4 text-muted fw-semibold text-nowrap">#{{ $s->id }}</td>
                 <td>
                   <div class="d-flex align-items-center">
                     <div class="rounded p-2 me-3 bg-light text-primary">
@@ -66,18 +66,18 @@
                     </div>
                   </div>
                 </td>
-                <td class="text-dark fw-bold">{{ $s->sdt ?: 'Chưa cập nhật' }}</td>
+                <td class="text-dark fw-bold text-nowrap">{{ $s->sdt ?: 'Chưa cập nhật' }}</td>
                 <td class="text-secondary small">{{ $s->dia_chi ?: 'Chưa cập nhật' }}</td>
-                <td>
+                <td class="text-nowrap">
                   <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary px-2 py-1">{{ $s->don_nhap_count }} đơn hàng</span>
                 </td>
-                <td>
+                <td class="text-nowrap">
                   <strong class="text-primary">{{ number_format($s->tong_nhap_gia_tri) }}đ</strong>
                 </td>
-                <td class="text-secondary small">
+                <td class="text-secondary small text-nowrap">
                   {{ $s->created_at ? $s->created_at->format('d/m/Y') : 'Hệ thống' }}
                 </td>
-                <td class="pe-4 text-end">
+                <td class="pe-4 text-end text-nowrap">
                   <div class="d-flex justify-content-end gap-1">
                     <button class="btn btn-sm btn-outline-primary" onclick="openEditModal({{ json_encode($s) }})">
                       <i class="bi bi-pencil-square"></i>
