@@ -55,6 +55,49 @@
         box-shadow: 0 12px 35px rgba(142, 25, 42, 0.06);
       }
 
+      /* Bo tròn các góc của table-responsive để không bị răng cưa/chờm ra ngoài card-premium */
+      .card-premium .table-responsive {
+        border-radius: 1rem;
+        overflow: hidden;
+      }
+      .card-premium .table-responsive:last-child {
+        border-bottom-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+      .card-premium .table-responsive:first-child {
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      .card-premium .table-responsive:only-child {
+        border-radius: 1rem;
+      }
+
+      /* Đồng bộ bo góc hoàn hảo cho các phần tử bên trong .input-group khi kết hợp với nút premium hoặc viền màu */
+      .input-group {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+      }
+      .input-group > .form-control {
+        border-radius: 0.75rem;
+      }
+      .input-group-sm > .form-control {
+        border-radius: 0.5rem;
+      }
+      .input-group > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+      }
+      .input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+        margin-left: -1px !important;
+      }
+
+
       /* Nút nhấn đỏ Crimson (btn-premium) thương hiệu với bo góc 12px và hiệu ứng trượt nhẹ */
       .btn-premium {
         background-color: #8e192a;
