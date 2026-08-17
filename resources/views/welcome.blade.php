@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ResManager - Phần Mềm Quản Lý Nhà Hàng & Đặt Món QR Thông Minh</title>
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Bootstrap 5 CSS & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -28,38 +28,102 @@
             --text-muted: #64748b;
         }
 
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden !important;
+            position: relative;
+        }
+
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg-light);
             color: var(--text-dark);
-            overflow-x: hidden;
         }
 
-        h1, h2, h3, h4, h5, .font-heading {
-            font-family: 'Outfit', sans-serif;
+        /* Top Scroll Progress Line */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8e192a 0%, #f59e0b 50%, #10b981 100%);
+            z-index: 1040;
+            width: 0%;
+            transition: width 0.1s ease-out;
         }
 
-        /* Ambient Glow Effects (Bright & Soft) */
+        /* Ambient Animated Glow Effects */
+        @keyframes float-glow-1 {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+            50% { transform: translate(40px, 30px) scale(1.1); opacity: 0.9; }
+            100% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+        }
+
+        @keyframes float-glow-2 {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+            50% { transform: translate(-30px, -30px) scale(1.15); opacity: 0.85; }
+            100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+        }
+
         .glow-bg-1 {
             position: absolute;
             top: -10%;
-            left: 20%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, rgba(253, 250, 245, 0) 70%);
+            left: 10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.18) 0%, rgba(253, 250, 245, 0) 70%);
             z-index: 0;
             pointer-events: none;
+            animation: float-glow-1 10s ease-in-out infinite;
         }
 
         .glow-bg-2 {
             position: absolute;
-            top: 30%;
-            right: -10%;
-            width: 650px;
-            height: 650px;
-            background: radial-gradient(circle, rgba(142, 25, 42, 0.08) 0%, rgba(253, 250, 245, 0) 70%);
+            top: 35%;
+            right: 0;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(142, 25, 42, 0.12) 0%, rgba(253, 250, 245, 0) 70%);
             z-index: 0;
             pointer-events: none;
+            animation: float-glow-2 12s ease-in-out infinite;
+        }
+
+        /* Live Pulsing Dot */
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+
+        /* Floating Hero Card Animation */
+        @keyframes float-card {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .hero-floating-card {
+            animation: float-card 5s ease-in-out infinite;
         }
 
         /* Bright Luxury Cards */
@@ -68,20 +132,22 @@
             border: 1px solid rgba(0, 0, 0, 0.06);
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(142, 25, 42, 0.05);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .glass-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(142, 25, 42, 0.2);
-            box-shadow: 0 20px 40px -10px rgba(142, 25, 42, 0.12);
+            transform: translateY(-8px) scale(1.01);
+            border-color: rgba(142, 25, 42, 0.25);
+            box-shadow: 0 22px 45px -10px rgba(142, 25, 42, 0.15);
         }
 
         .navbar-custom {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
         }
 
         .btn-crimson {
@@ -90,10 +156,28 @@
             font-weight: 700;
             border: none;
             border-radius: 12px;
-            padding: 12px 28px;
+            padding: 12px 26px;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(142, 25, 42, 0.25);
             text-decoration: none !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-crimson::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(60deg, transparent, rgba(255,255,255,0.25), transparent);
+            transform: rotate(30deg) translateY(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .btn-crimson:hover::after {
+            transform: rotate(30deg) translateY(100%);
         }
 
         .btn-crimson:hover {
@@ -109,7 +193,7 @@
             font-weight: 700;
             border: none;
             border-radius: 12px;
-            padding: 12px 28px;
+            padding: 12px 26px;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
             text-decoration: none !important;
@@ -128,7 +212,7 @@
             border: 1px solid #cbd5e1;
             font-weight: 600;
             border-radius: 12px;
-            padding: 12px 28px;
+            padding: 12px 26px;
             transition: all 0.3s ease;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
             text-decoration: none !important;
@@ -163,6 +247,11 @@
             justify-content: center;
             font-size: 26px;
             margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .glass-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .stat-number {
@@ -174,33 +263,66 @@
 </head>
 <body>
 
+    <!-- Top Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
     <div class="glow-bg-1"></div>
     <div class="glow-bg-2"></div>
 
     <!-- Navigation Header -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top navbar-custom px-3 px-lg-5 py-3">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top navbar-custom px-3 px-lg-5 py-2.5">
         <div class="container-fluid">
+            <!-- Brand Logo -->
             <a class="navbar-brand d-flex align-items-center gap-2 fw-bold fs-4 text-decoration-none" href="{{ url('/') }}">
-                <div class="text-white rounded-3 px-2.5 py-1 d-flex align-items-center justify-content-center shadow-sm" style="background: #8e192a;">
+                <div class="text-white rounded-3 px-2.5 py-1.5 d-flex align-items-center justify-content-center shadow-sm" style="background: #8e192a;">
                     <i class="bi bi-shop fs-4"></i>
                 </div>
-                <span class="text-slate-900 font-bold">Res<span style="color: #8e192a;">Manager</span></span>
+                <span class="text-slate-900 font-extrabold tracking-tight">Res<span style="color: #8e192a;">Manager</span></span>
             </a>
+
+            <!-- System Live Status Badge -->
+            <div class="d-none d-md-flex align-items-center ms-3">
+                <span class="badge bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-pill px-3 py-1.5 text-xs font-bold d-inline-flex align-items-center gap-2 shadow-xs">
+                    <span class="pulse-dot"></span>
+                    <span>Hệ Thống Live v2026</span>
+                </span>
+            </div>
 
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto gap-lg-3 my-2 my-lg-0">
-                    <li class="nav-item"><a class="nav-link text-slate-800 fw-bold active" href="#hero">Trang Chủ</a></li>
-                    <li class="nav-item"><a class="nav-link text-slate-600 fw-medium" href="#features">Tính Năng</a></li>
-                    <li class="nav-item"><a class="nav-link text-slate-600 fw-medium" href="#qr-demo">Thử Mã QR</a></li>
+            <!-- Navigation Links & Action Buttons -->
+            <div class="d-none d-lg-flex align-items-center justify-content-between flex-grow-1 ms-lg-4" id="navbarNav">
+
+                <ul class="navbar-nav mx-auto gap-lg-3 my-2 my-lg-0 align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link text-slate-900 font-bold active" href="#hero">
+                            <i class="bi bi-house-door me-1 text-ms-primary"></i>Trang Chủ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-slate-700 font-semibold" href="#features">
+                            <i class="bi bi-grid-fill me-1 text-amber-500"></i>Tính Năng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-slate-700 font-semibold position-relative" href="#qr-demo">
+                            <i class="bi bi-qr-code-scan me-1 text-emerald-600"></i>Thử Mã QR
+                            <span class="badge bg-amber-400 text-slate-900 rounded-pill px-2 py-0.5 text-xxs font-extrabold ms-1">Hot</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-slate-700 font-semibold" href="#support">
+                            <i class="bi bi-headset me-1 text-sky-600"></i>Hỗ Trợ 24/7
+                        </a>
+                    </li>
                 </ul>
 
+                <!-- Action Buttons -->
                 <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
                     @auth
-                        <a href="{{ route('ban.index') }}" class="btn btn-crimson">
+                        <a href="{{ route('ban.index') }}" class="btn btn-crimson shadow-sm">
                             <i class="bi bi-speedometer2 me-1"></i> Vào Hệ Thống
                         </a>
                     @else
@@ -223,7 +345,7 @@
                 <div class="col-lg-6">
                     <div class="mb-3">
                         <span class="badge-pill">
-                            <i class="bi bi-stars"></i> Giải Pháp F&B Đột Phá 2026
+                            <i class="bi bi-stars text-amber-500"></i> Giải Pháp F&B Đột Phá 2026
                         </span>
                     </div>
 
@@ -268,10 +390,10 @@
                 </div>
 
                 <div class="col-lg-6 text-center position-relative">
-                    <div class="glass-card p-3 p-lg-4 text-start">
+                    <div class="glass-card hero-floating-card p-3 p-lg-4 text-start">
                         <div class="d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom border-slate-100">
                             <div class="d-flex align-items-center gap-2">
-                                <span class="bg-success rounded-circle p-1 d-inline-block"></span>
+                                <span class="pulse-dot"></span>
                                 <strong class="text-slate-900">Màn Hình Quản Lý Bàn Live</strong>
                             </div>
                             <span class="badge bg-amber-100 text-amber-800 px-3 py-1 border border-amber-200">Sơ đồ Bàn</span>
@@ -301,7 +423,7 @@
                         <div class="bg-slate-50 rounded-3 p-3 text-slate-600 small border border-slate-200">
                             <div class="d-flex justify-content-between mb-1">
                                 <span class="fw-semibold text-slate-700"><i class="bi bi-bell-fill text-amber-500 me-1"></i> Bàn 05 vừa đặt thêm món</span>
-                                <span class="badge bg-danger">Mới</span>
+                                <span class="badge bg-danger animate-pulse">Mới</span>
                             </div>
                             <div class="d-flex justify-content-between text-slate-500">
                                 <span><i class="bi bi-check-circle-fill text-success me-1"></i> Bếp xác nhận hoàn thành đơn #1042</span>
@@ -400,17 +522,51 @@
         </div>
     </section>
 
+    <!-- Support Section -->
+    <section id="support" class="py-5">
+        <div class="container py-lg-4">
+            <div class="glass-card p-4 p-lg-5 bg-gradient-to-r from-red-900 via-ms-primary to-amber-900 text-white rounded-3xl shadow-xl">
+                <div class="row align-items-center gy-4">
+                    <div class="col-lg-8">
+                        <h3 class="fw-extrabold text-white text-3xl mb-2"><i class="bi bi-headset me-2 text-warning"></i>Cần Hỗ Trợ Kỹ Thuật Hoặc Tư Vấn Triển Khai?</h3>
+                        <p class="text-white opacity-90 mb-0">Đội ngũ kỹ sư M&S luôn sẵn sàng đồng hành 24/7 cùng hệ thống nhà hàng của bạn.</p>
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a href="tel:0287654321" class="btn btn-gold btn-lg fs-6 px-4">
+                            <i class="bi bi-telephone-fill me-2"></i>Gọi Hotline: 028.7654.321
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
-    <footer class="py-4 border-top border-slate-200 bg-slate-100">
-        <div class="container text-center text-md-between d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
-            <div class="d-flex align-items-center gap-2">
-                <span class="fw-bold text-slate-900">ResManager</span>
-                <span class="text-slate-500 small">© 2026 Hệ thống Quản Lý Nhà Hàng & Đặt Món QR.</span>
+    <footer class="py-4 border-top border-slate-200 bg-white w-100">
+        <div class="container-fluid px-3 px-lg-5">
+            <div class="d-flex flex-column flex-sm-row align-items-center justify-content-center text-center gap-3 w-100">
+                <div class="text-white rounded-3 px-2.5 py-1.5 d-flex align-items-center justify-content-center shadow-xs" style="background: #8e192a;">
+                    <i class="bi bi-shop fs-5"></i>
+                </div>
+                <div>
+                    <span class="fw-extrabold text-slate-900 fs-6">Res<span style="color: #8e192a;">Manager</span></span>
+                    <span class="text-slate-500 small ms-2">© 2026 Hệ thống Quản Lý Nhà Hàng & Đặt Món QR. Tất cả quyền được bảo lưu.</span>
+                </div>
             </div>
         </div>
     </footer>
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Animated Scroll Progress Script -->
+    <script>
+        window.onscroll = function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("scroll-progress").style.width = scrolled + "%";
+        };
+    </script>
 </body>
 </html>

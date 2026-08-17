@@ -8,7 +8,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Bootstrap 5 CSS & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -26,8 +26,11 @@
             --card-bg: #ffffff;
         }
 
+        body, h1, h2, h3, h4, h5, .font-heading {
+            font-family: 'Inter', sans-serif !important;
+        }
+
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
             background: radial-gradient(circle at 50% -20%, #fdfaf6 0%, #f6f3eb 50%, #eae5d8 100%);
             color: #1e293b;
             min-height: 100vh;
@@ -37,10 +40,6 @@
             position: relative;
             overflow-x: hidden;
             padding: 30px 15px;
-        }
-
-        h1, h2, h3, h4, h5, .font-heading {
-            font-family: 'Outfit', sans-serif;
         }
 
         /* Animated Particle Mesh Background (Bright) */

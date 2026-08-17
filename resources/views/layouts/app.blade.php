@@ -7,8 +7,10 @@
     <meta name="description" content="M&S Cuisine - Hệ thống quản lý nhà hàng thông minh: sơ đồ bàn, gọi món QR, bếp KDS, báo cáo doanh thu và quản lý kho nguyên liệu theo thời gian thực.">
     <title>@yield('title', 'M&S - Quản lý ẩm thực thông minh')</title>
 
-    <!-- Google Fonts: Outfit -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Bootstrap 5 & Bootstrap Icons CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -35,7 +37,7 @@
               }
             },
             fontFamily: {
-              sans: ['Outfit', 'sans-serif'], // Sử dụng font chữ hiện đại Outfit nhập từ Google Fonts
+              sans: ['Inter', 'sans-serif'], // Sử dụng font chữ chuẩn Inter từ Google Fonts
             }
           }
         }
@@ -225,15 +227,16 @@
     </style>
     
     <style>
+      body, h1, h2, h3, h4, h5, h6, input, button, select, textarea {
+        font-family: 'Inter', sans-serif !important;
+      }
       body {
-        font-family: 'Outfit', sans-serif;
         background-color: #f6f3eb;
         color: #2b2b2b;
         overflow-x: hidden;
       }
       .ms-header {
-        background: rgba(142, 25, 42, 0.95);
-        backdrop-filter: blur(10px);
+        background: linear-gradient(135deg, #8e192a 0%, #6e101f 100%) !important;
         border-bottom: 2px solid #e6b15c;
         height: 70px;
         position: fixed;
@@ -241,6 +244,28 @@
         left: 0;
         right: 0;
         z-index: 1030;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      }
+      .ms-header-link {
+        color: rgba(255, 255, 255, 0.85) !important;
+        font-weight: 600;
+        font-size: 13px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        text-decoration: none !important;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+      }
+      .ms-header-link:hover {
+        color: #ffffff !important;
+        background: rgba(255, 255, 255, 0.18);
+        transform: translateY(-1px);
+      }
+      .ms-header-link.active {
+        color: #121212 !important;
+        background: #e6b15c;
+        font-weight: 700;
       }
       .brand-title {
         font-weight: 800;
@@ -313,24 +338,81 @@
   </head>
   <body>
     <!-- Top Header -->
-    <header class="ms-header d-flex align-items-center px-4">
+    <header class="ms-header d-flex align-items-center px-3 px-lg-4">
       <div class="d-flex align-items-center w-100 justify-content-between">
-        <div class="d-flex align-items-center">
-          <button class="btn btn-outline-light d-lg-none me-3" id="sidebarToggle">
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-outline-light d-lg-none me-2" id="sidebarToggle">
             <i class="bi bi-list"></i>
           </button>
-          <div class="brand-title">
+          <a href="{{ url('/') }}" class="brand-title d-flex align-items-center text-decoration-none">
             <i class="bi bi-egg-fried me-2 text-warning"></i>M&S <span>CUISINE</span>
-          </div>
+          </a>
+          <span class="badge bg-emerald-500/20 text-amber-300 border border-amber-400/30 rounded-pill px-3 py-1.5 text-xs font-bold ms-2 d-none d-xl-inline-flex align-items-center gap-2">
+            <span class="bg-emerald-400 rounded-circle d-inline-block animate-ping" style="width:8px; height:8px;"></span>
+            <span>Hệ Thống Live 2026</span>
+          </span>
         </div>
-        <div class="d-flex align-items-center gap-3">
+
+        <!-- Center Quick Navigation Shortcuts -->
+        <div class="d-none d-lg-flex align-items-center gap-2 mx-auto">
           @auth
+            @if(Auth::user()->role === 'admin')
+              <a href="{{ route('quan_ly.index') }}" class="ms-header-link {{ Route::is('quan_ly.index') ? 'active' : '' }}">
+                <i class="bi bi-speedometer2 me-1.5 text-warning"></i>Báo Cáo
+              </a>
+            @endif
+            @if(Auth::user()->role === 'admin' || Auth::user()->role === 'nhan_vien')
+              <a href="{{ route('ban.index') }}" class="ms-header-link {{ Route::is('ban.index') ? 'active' : '' }}">
+                <i class="bi bi-grid-3x3-gap me-1.5 text-amber-300"></i>Sơ Đồ Bàn
+              </a>
+            @endif
+            @if(Auth::user()->role === 'admin' || Auth::user()->role === 'bep')
+              <a href="{{ route('nguyen_lieu.so_sanh_gia') }}" class="ms-header-link {{ Route::is('nguyen_lieu.so_sanh_gia') ? 'active' : '' }}">
+                <i class="bi bi-diagram-3-fill me-1.5 text-amber-300"></i>So Sánh Giá
+              </a>
+              <a href="{{ route('dat_mon.bep') }}" class="ms-header-link {{ Route::is('dat_mon.bep') ? 'active' : '' }}">
+                <i class="bi bi-fire me-1.5 text-danger"></i>Bếp KDS
+              </a>
+            @endif
+          @endauth
+        </div>
+
+        <!-- Right User & Notifications Menu -->
+        <div class="d-flex align-items-center gap-2 gap-md-3">
+          @auth
+            <!-- Notification Bell Dropdown -->
+            <div class="dropdown">
+              <button class="btn btn-outline-light border-0 position-relative p-2" type="button" data-bs-toggle="dropdown" title="Thông báo hệ thống">
+                <i class="bi bi-bell-fill text-warning fs-5"></i>
+                <span class="position-absolute top-1 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                  <span class="visually-hidden">Thông báo mới</span>
+                </span>
+              </button>
+              <div class="dropdown-menu dropdown-menu-end shadow-xl border-0 mt-2 p-3" style="width: 320px;">
+                <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                  <strong class="text-slate-900 text-sm"><i class="bi bi-bell me-1 text-ms-primary"></i>Thông Báo Realtime</strong>
+                  <span class="badge bg-danger">Mới</span>
+                </div>
+                <div class="small text-slate-600 mb-2">
+                  <div class="p-2 bg-slate-50 rounded-xl mb-1 border">
+                    <span class="fw-bold text-slate-900"><i class="bi bi-app-indicator text-warning me-1"></i>Bàn 05 vừa gọi món</span>
+                    <div class="text-xs text-slate-500">1 phút trước</div>
+                  </div>
+                  <div class="p-2 bg-slate-50 rounded-xl border">
+                    <span class="fw-bold text-slate-900"><i class="bi bi-check-circle-fill text-success me-1"></i>Bếp xác nhận đơn #1042</span>
+                    <div class="text-xs text-slate-500">3 phút trước</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- User Menu Dropdown -->
             <div class="dropdown">
               <a href="#" class="btn btn-outline-light dropdown-toggle d-flex align-items-center gap-2 border-0" id="userMenu" data-bs-toggle="dropdown">
                 <i class="bi bi-person-circle fs-5 text-warning"></i>
                 <span class="d-none d-md-inline">
                   {{ Auth::user()->name }} 
-                  <span class="badge bg-secondary ms-1" style="font-size:10px;">
+                  <span class="badge bg-amber-400 text-slate-900 ms-1 font-bold" style="font-size:10px;">
                     @if(Auth::user()->role === 'admin') Ban điều hành
                     @elseif(Auth::user()->role === 'nhan_vien') Nhân viên
                     @elseif(Auth::user()->role === 'bep') Nhà bếp
@@ -525,8 +607,14 @@
     </main>
 
     <!-- Footer -->
-    <footer class="ms-footer">
-      <div><strong>M&S Cuisine &copy; 2026</strong>. Tất cả quyền lợi được bảo lưu. Thiết kế hệ thống thông minh nâng cao hiệu suất.</div>
+    <footer class="ms-footer p-0">
+      <div class="px-4 py-3 bg-white border-top">
+        <div class="d-flex align-items-center justify-content-center text-center gap-2">
+          <i class="bi bi-egg-fried text-warning fs-5"></i>
+          <span class="text-slate-800 text-sm font-bold">M&S CUISINE &copy; 2026</span>
+          <span class="text-slate-500 font-normal text-xs ms-1">Hệ Thống Quản Lý Nhà Hàng Smart F&B. All rights reserved.</span>
+        </div>
+      </div>
     </footer>
 
     <!-- Canvas Confetti CDN -->

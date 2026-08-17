@@ -544,7 +544,7 @@
       chart: {
         type: 'donut',
         height: 280,
-        fontFamily: 'Outfit, sans-serif'
+        fontFamily: 'Inter, sans-serif'
       },
       // Dữ liệu truyền từ Blade PHP: Số bàn Trống, Số bàn Có khách, Số bàn Đã gọi món
       series: [{{ $freeTables }}, {{ $occupiedTables }}, {{ $orderedTables }}],
@@ -611,7 +611,7 @@
       chart: {
         type: 'area',
         height: 280,
-        fontFamily: 'Outfit, sans-serif',
+        fontFamily: 'Inter, sans-serif',
         toolbar: {
           show: false // Ẩn thanh công cụ tải về/zoom mặc định của ApexCharts
         }

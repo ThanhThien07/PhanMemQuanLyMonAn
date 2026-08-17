@@ -174,6 +174,7 @@ Route::middleware(['auth'])->group(function () {
         // Ma trận So sánh Giá đa Nhà Cung Cấp & Tự động Đấu thầu PO
         Route::get('/nguyen-lieu/so-sanh-gia', [ProcurementController::class, 'soSanhGia'])->name('nguyen_lieu.so_sanh_gia');
         Route::post('/nguyen-lieu/save-quote', [ProcurementController::class, 'saveQuote'])->name('nguyen_lieu.save_quote');
+        Route::post('/nguyen-lieu/parse-url-quote', [ProcurementController::class, 'parseUrlQuote'])->name('nguyen_lieu.parse_url_quote');
         Route::post('/nguyen-lieu/tao-po', [ProcurementController::class, 'taoDonMuaHang'])->name('nguyen_lieu.tao_po');
         Route::get('/nguyen-lieu/danh-sach-po', [ProcurementController::class, 'danhSachPo'])->name('nguyen_lieu.danh_sach_po');
 

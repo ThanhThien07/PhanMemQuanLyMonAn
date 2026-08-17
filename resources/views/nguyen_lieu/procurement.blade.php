@@ -17,7 +17,7 @@
                 <i class="bi bi-journal-text me-1"></i> Quản lý Đơn PO
             </a>
             <button class="btn btn-ms-primary font-semibold rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#modalAddQuote">
-                <i class="bi bi-plus-circle me-1"></i> Thêm Báo Giá NCC
+                <i class="bi bi-cloud-arrow-down me-1"></i> Nạp Báo Giá Từ Web
             </button>
         </div>
     </div>
@@ -92,7 +92,7 @@
                                 <th>Giao Hàng (Lead Time)</th>
                                 <th>Đánh Giá Uy Tín</th>
                                 <th>Đánh Giá Giá Cả</th>
-                                <th class="text-end">Hành Động</th>
+                                <th class="text-end">Nguồn Dữ Liệu & Thao Tác</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -130,16 +130,22 @@
                                         @endif
                                     </td>
                                     <td class="text-end">
-                                         <button class="btn btn-sm btn-outline-danger rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#modalAddQuote" 
-                                                 data-ncc="{{ $q->nha_cung_cap_id }}"
-                                                 data-nl="{{ $q->nguyen_lieu_id }}"
-                                                 data-gia="{{ $q->don_gia_chao }}"
-                                                 data-dvt="{{ $q->don_vi_tinh }}"
-                                                 data-moq="{{ $q->moq }}"
-                                                 data-lead="{{ $q->lead_time_days }}"
-                                                 onclick="editSupplierQuote(this)">
-                                             <i class="bi bi-pencil me-1"></i>Sửa giá
-                                         </button>
+                                        <div class="d-flex align-items-center justify-content-end gap-2">
+                                            <span class="badge bg-light text-secondary border px-2.5 py-1.5 text-xs font-semibold" title="Báo giá nhận trực tiếp từ nguồn Web Nhà cung cấp">
+                                                <i class="bi bi-globe text-primary me-1"></i>Trích xuất Web
+                                            </span>
+                                            <form method="POST" action="{{ route('nguyen_lieu.tao_po') }}" class="d-inline">
+                                                @csrf
+                                                <input type="hidden" name="nha_cung_cap_id" value="{{ $q->nha_cung_cap_id }}">
+                                                <input type="hidden" name="che_do_toi_uu" value="{{ $cheDoToiUu }}">
+                                                <input type="hidden" name="items[0][nguyen_lieu_id]" value="{{ $q->nguyen_lieu_id }}">
+                                                <input type="hidden" name="items[0][so_luong]" value="{{ max(10 - ($selectedNguyenLieu->so_luong_ton ?? 0), $q->moq) }}">
+                                                <input type="hidden" name="items[0][don_gia]" value="{{ $q->don_gia_chao }}">
+                                                <button type="submit" class="btn btn-sm btn-ms-primary rounded-pill px-3 font-semibold">
+                                                    <i class="bi bi-cart-plus me-1"></i>Chọn mua PO
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
@@ -243,12 +249,26 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded-2xl border-0">
             <div class="modal-header bg-ms-primary text-white">
-                <h5 class="modal-title font-bold"><i class="bi bi-tag-fill me-2"></i>Khai Báo / Cập Nhật Giá Nhà Cung Cấp</h5>
+                <h5 class="modal-title font-bold"><i class="bi bi-cloud-arrow-down-fill me-2"></i>Nạp Dữ Liệu Báo Giá Nhận Từ Web Nhà Cung Cấp</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <form method="POST" action="{{ route('nguyen_lieu.save_quote') }}">
                 @csrf
                 <div class="modal-body p-4">
+                    <!-- URL Auto Fetch Section -->
+                    <div class="mb-4 p-3 bg-amber-50 rounded-2xl border border-amber-200">
+                        <label class="form-label font-bold text-amber-900 text-sm mb-1 d-block">
+                            <i class="bi bi-link-45deg fs-5 me-1 text-amber-600"></i>Dán Link Website Báo Giá NCC để Nạp Tự Động:
+                        </label>
+                        <div class="input-group">
+                            <input type="url" id="web_quote_url" class="form-control rounded-l-xl border-amber-300" placeholder="VD: https://globalfood.vn/product/thit-bo-uc-nhap-khau">
+                            <button class="btn btn-warning font-bold text-slate-900 px-3 rounded-r-xl" type="button" onclick="fetchWebQuoteData()">
+                                <i class="bi bi-magic me-1"></i>Trích Xuất Link Web
+                            </button>
+                        </div>
+                        <div id="fetch_status_msg" class="text-xs text-amber-800 mt-2 font-semibold d-none"></div>
+                    </div>
+
                     <div class="mb-3">
                         <label class="form-label font-semibold">Nhà Cung Cấp</label>
                         <select name="nha_cung_cap_id" id="quote_ncc_id" class="form-select rounded-xl" required>
@@ -291,7 +311,7 @@
 
                     <div class="mb-3">
                         <label class="form-label font-semibold">Đánh Giá Uy Tín (1 - 5 Sao)</label>
-                        <select name="danh_gia_star" class="form-select rounded-xl">
+                        <select name="danh_gia_star" id="quote_star" class="form-select rounded-xl">
                             <option value="5.0">5.0 ★★★★★ (Rất uy tín)</option>
                             <option value="4.0">4.0 ★★★★☆ (Khá tốt)</option>
                             <option value="3.0">3.0 ★★★☆☆ (Trung bình)</option>
@@ -308,13 +328,48 @@
 </div>
 
 <script>
-function editSupplierQuote(btn) {
-    document.getElementById('quote_ncc_id').value = btn.getAttribute('data-ncc');
-    document.getElementById('quote_nl_id').value = btn.getAttribute('data-nl');
-    document.getElementById('quote_gia').value = btn.getAttribute('data-gia');
-    document.getElementById('quote_don_vi').value = btn.getAttribute('data-dvt');
-    document.getElementById('quote_moq').value = btn.getAttribute('data-moq');
-    document.getElementById('quote_lead_time').value = btn.getAttribute('data-lead');
+function fetchWebQuoteData() {
+    const url = document.getElementById('web_quote_url').value;
+    const msgDiv = document.getElementById('fetch_status_msg');
+    if (!url) {
+        alert('Vui lòng nhập hoặc dán đường link website báo giá!');
+        return;
+    }
+
+    msgDiv.classList.remove('d-none');
+    msgDiv.className = 'text-xs text-amber-800 mt-2 font-semibold d-block';
+    msgDiv.innerHTML = '<i class="bi bi-arrow-repeat me-1 animate-spin"></i>Đang bóc tách & nạp tự động dữ liệu từ link web...';
+
+    fetch('{{ route("nguyen_lieu.parse_url_quote") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ url: url })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            msgDiv.className = 'text-xs text-emerald-700 mt-2 font-bold d-block';
+            msgDiv.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i>' + data.message;
+
+            if (data.data.nha_cung_cap_id) document.getElementById('quote_ncc_id').value = data.data.nha_cung_cap_id;
+            if (data.data.nguyen_lieu_id) document.getElementById('quote_nl_id').value = data.data.nguyen_lieu_id;
+            if (data.data.don_gia_chao) document.getElementById('quote_gia').value = data.data.don_gia_chao;
+            if (data.data.don_vi_tinh) document.getElementById('quote_don_vi').value = data.data.don_vi_tinh;
+            if (data.data.moq) document.getElementById('quote_moq').value = data.data.moq;
+            if (data.data.lead_time_days) document.getElementById('quote_lead_time').value = data.data.lead_time_days;
+            if (data.data.danh_gia_star) document.getElementById('quote_star').value = data.data.danh_gia_star;
+        } else {
+            msgDiv.className = 'text-xs text-rose-700 mt-2 font-bold d-block';
+            msgDiv.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-1"></i>' + data.message;
+        }
+    })
+    .catch(err => {
+        msgDiv.className = 'text-xs text-rose-700 mt-2 font-bold d-block';
+        msgDiv.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-1"></i>Lỗi kết nối đến link web!';
+    });
 }
 </script>
 @endsection

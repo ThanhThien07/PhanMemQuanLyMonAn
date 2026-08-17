@@ -706,7 +706,7 @@
           <title>In mã QR - ${tableName}</title>
           <style>
             body {
-              font-family: 'Outfit', sans-serif;
+              font-family: 'Inter', sans-serif;
               text-align: center;
               padding: 40px;
               background-color: #fff;
@@ -778,7 +778,7 @@
           <title>In Tất Cả Mã QR Bàn Ăn</title>
           <style>
             body {
-              font-family: 'Outfit', sans-serif;
+              font-family: 'Inter', sans-serif;
               background-color: #fff;
               color: #2b2b2b;
               margin: 0;

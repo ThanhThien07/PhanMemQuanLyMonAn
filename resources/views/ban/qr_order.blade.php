@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>M&S QR Order - Bàn {{ $ban->id }}</title>
 
-    <!-- Google Fonts: Outfit -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Bootstrap 5 & Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -35,11 +37,11 @@
         --ms-secondary: #e6b15c;
         --ms-dark: #121212;
         --ms-light: #fdfaf6;
-        --font-outfit: 'Outfit', sans-serif;
+        --font-outfit: 'Inter', sans-serif;
       }
 
       body {
-        font-family: var(--font-outfit);
+        font-family: 'Inter', sans-serif !important;
         background-color: #f7f4ec;
         color: #2b2b2b;
         padding-bottom: 90px; /* Space for sticky bottom cart */
