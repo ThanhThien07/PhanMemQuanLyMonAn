@@ -164,7 +164,7 @@
                 <i class="bi bi-cpu-fill text-warning me-2"></i>Thuật toán Gợi ý Giỏ hàng Tự động mua Nguyên liệu
             </h2>
             <form method="GET" action="{{ route('nguyen_lieu.so_sanh_gia') }}" class="d-flex align-items-center gap-2">
-                <input type="hidden" name="nguyen_lieu_id" value="{{ $selectedNguyenLieuId }}">
+                <input type="hidden" name="nguyen_lieu_id" value="{{ $selectedNguyenLieuId ?? $selectedNguyenLieu?->id }}">
                 <span class="text-xs text-white opacity-90 me-2 font-semibold">Chế độ tối ưu:</span>
                 <select name="che_do" class="form-select form-select-sm rounded-pill text-xs font-bold" onchange="this.form.submit()">
                     <option value="lowest_cost" {{ $cheDoToiUu == 'lowest_cost' ? 'selected' : '' }}>Chế độ 1: Tổng Chi Phí Thấp Nhất (Lowest Cost)</option>

@@ -78,6 +78,7 @@ class ProcurementController extends Controller
             'nguyenLieus',
             'nhaCungCaps',
             'selectedNguyenLieu',
+            'selectedNguyenLieuId',
             'quotes',
             'allQuotes',
             'suggestedCart',

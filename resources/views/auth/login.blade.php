@@ -22,14 +22,14 @@
             --primary-gold: #f59e0b;
             --primary-crimson: #8e192a;
             --secondary-crimson: #72121f;
-            --dark-bg: #0b0f19;
-            --card-bg: rgba(15, 23, 42, 0.85);
+            --bg-light: #fcfaf5;
+            --card-bg: #ffffff;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--dark-bg);
-            color: #f8fafc;
+            background: radial-gradient(circle at 50% -20%, #fdfaf6 0%, #f6f3eb 50%, #eae5d8 100%);
+            color: #1e293b;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -43,14 +43,14 @@
             font-family: 'Outfit', sans-serif;
         }
 
-        /* Animated Particle Mesh Background */
+        /* Animated Particle Mesh Background (Bright) */
         .ambient-glow-1 {
             position: fixed;
             top: -15%;
             left: 15%;
             width: 550px;
             height: 550px;
-            background: radial-gradient(circle, rgba(245, 158, 11, 0.18) 0%, rgba(0,0,0,0) 70%);
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, rgba(253, 250, 245, 0) 70%);
             z-index: 0;
             pointer-events: none;
             animation: pulseGlow 8s ease-in-out infinite alternate;
@@ -62,7 +62,7 @@
             right: 15%;
             width: 600px;
             height: 600px;
-            background: radial-gradient(circle, rgba(142, 25, 42, 0.25) 0%, rgba(0,0,0,0) 70%);
+            background: radial-gradient(circle, rgba(142, 25, 42, 0.15) 0%, rgba(253, 250, 245, 0) 70%);
             z-index: 0;
             pointer-events: none;
             animation: pulseGlow 10s ease-in-out infinite alternate-reverse;
@@ -74,12 +74,10 @@
         }
 
         .login-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: #ffffff;
+            border: 1px solid rgba(142, 25, 42, 0.08);
             border-radius: 28px;
-            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 20px 50px -10px rgba(142, 25, 42, 0.12);
             width: 100%;
             max-width: 480px;
             position: relative;
@@ -119,63 +117,64 @@
         }
 
         /* Form styling */
-        .form-control-dark {
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #ffffff;
+        .form-control-light {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
             border-radius: 14px;
             padding: 13px 16px;
             transition: all 0.3s ease;
         }
 
-        .form-control-dark:focus {
-            background: rgba(15, 23, 42, 0.95);
-            border-color: var(--primary-gold);
-            color: #ffffff;
-            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
+        .form-control-light:focus {
+            background: #ffffff;
+            border-color: #8e192a;
+            color: #1e293b;
+            box-shadow: 0 0 0 4px rgba(142, 25, 42, 0.12);
         }
 
-        .input-group-text-dark {
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: var(--primary-gold);
+        .input-group-text-light {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #8e192a;
             border-radius: 14px;
         }
 
-        .btn-gold-action {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        .btn-crimson-action {
+            background: linear-gradient(135deg, #8e192a 0%, #72121f 100%);
             color: #ffffff;
             font-weight: 700;
             border: none;
             border-radius: 14px;
             padding: 14px;
             transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.35);
+            box-shadow: 0 6px 20px rgba(142, 25, 42, 0.25);
         }
 
-        .btn-gold-action:hover {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        .btn-crimson-action:hover {
+            background: linear-gradient(135deg, #a62033 0%, #8e192a 100%);
             color: #ffffff;
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.5);
+            box-shadow: 0 10px 30px rgba(142, 25, 42, 0.35);
         }
 
         .btn-google-login {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ffffff;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
             font-weight: 600;
             border-radius: 14px;
             padding: 12px;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
         }
 
         .btn-google-login:hover {
-            background: rgba(255, 255, 255, 0.15);
-            color: #ffffff;
+            background: #f8fafc;
+            color: #1e293b;
             border-color: #4285F4;
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(66, 133, 244, 0.25);
+            box-shadow: 0 8px 25px rgba(66, 133, 244, 0.15);
         }
 
         .role-badge {
@@ -184,13 +183,15 @@
             font-size: 11px;
             padding: 5px 12px;
             border-radius: 20px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            font-weight: 600;
         }
         .role-badge:hover {
-            background: var(--primary-gold);
-            color: #000;
-            border-color: var(--primary-gold);
+            background: #8e192a;
+            color: #ffffff;
+            border-color: #8e192a;
             font-weight: 700;
         }
 
@@ -203,7 +204,8 @@
             background: #ffffff;
             color: #202124;
             border-radius: 16px;
-            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+            border: 1px solid #e2e8f0;
             padding: 16px 20px;
             display: flex;
             align-items: center;
@@ -235,7 +237,7 @@
         </svg>
         <div>
             <div class="fw-bold text-dark text-xs">CẢNH BÁO BẢO MẬT GOOGLE ACCOUNT</div>
-            <div class="text-muted text-xs mt-0.5" id="toastMessage">Thông báo đăng nhập mới đã được gửi về Gmail của bạn!</div>
+            <div class="text-secondary text-xs mt-0.5" id="toastMessage">Thông báo đăng nhập mới đã được gửi về Gmail của bạn!</div>
         </div>
     </div>
 
@@ -249,7 +251,7 @@
                 <svg class="mascot-svg" viewBox="0 0 200 200">
                     <!-- Chef Hat -->
                     <g id="chefHat">
-                        <path d="M 60 45 C 50 25, 80 10, 100 20 C 120 10, 150 25, 140 45 Z" fill="#ffffff" stroke="#e2e8f0" stroke-width="3"/>
+                        <path d="M 60 45 C 50 25, 80 10, 100 20 C 120 10, 150 25, 140 45 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
                         <rect x="65" y="42" width="70" height="15" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
                         <rect x="75" y="46" width="50" height="4" rx="2" fill="#8e192a"/>
                     </g>
@@ -305,33 +307,33 @@
 
             <!-- Header Brand -->
             <div class="text-center mb-4">
-                <h3 class="fw-extrabold text-white mb-1 font-heading">ĐĂNG NHẬP <span class="text-warning">M&S CUISINE</span></h3>
-                <p class="text-secondary small mb-0">Hệ Thống Quản Lý & Vận Hành Nhà Hàng Thông Minh</p>
+                <h3 class="fw-extrabold text-slate-900 mb-1 font-heading">ĐĂNG NHẬP <span style="color: #8e192a;">M&S CUISINE</span></h3>
+                <p class="text-slate-500 small mb-0">Hệ Thống Quản Lý & Vận Hành Nhà Hàng Thông Minh</p>
             </div>
 
             <!-- Quick Demo Credentials Badges -->
             <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap">
-                <span class="role-badge text-warning" onclick="fillLogin('admin@ms.com', 'admin123', 'Ban điều hành (Admin)')">
-                    <i class="bi bi-shield-check me-1"></i>Admin: admin@ms.com
+                <span class="role-badge" onclick="fillLogin('admin@ms.com', 'admin123', 'Ban điều hành (Admin)')">
+                    <i class="bi bi-shield-check me-1 text-amber-600"></i>Admin: admin@ms.com
                 </span>
-                <span class="role-badge text-info" onclick="fillLogin('nhanvien@ms.com', 'nhanvien123', 'Nhân viên Phục vụ')">
-                    <i class="bi bi-person-badge me-1"></i>Nhân viên: nhanvien@ms.com
+                <span class="role-badge" onclick="fillLogin('nhanvien@ms.com', 'nhanvien123', 'Nhân viên Phục vụ')">
+                    <i class="bi bi-person-badge me-1 text-sky-600"></i>Nhân viên: nhanvien@ms.com
                 </span>
-                <span class="role-badge text-emerald-400" onclick="fillLogin('bep@ms.com', 'bep123', 'Bếp trưởng KDS')">
-                    <i class="bi bi-fire me-1"></i>Bếp: bep@ms.com
+                <span class="role-badge" onclick="fillLogin('bep@ms.com', 'bep123', 'Bếp trưởng KDS')">
+                    <i class="bi bi-fire me-1 text-red-600"></i>Bếp: bep@ms.com
                 </span>
             </div>
 
             <!-- Flash Alert Messages -->
             @if (session('success'))
-                <div class="alert alert-success bg-success bg-opacity-20 text-success border-success border-opacity-30 rounded-3 d-flex align-items-center mb-4" role="alert">
-                    <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+                <div class="alert alert-success bg-emerald-50 text-emerald-800 border-emerald-200 rounded-3 d-flex align-items-center mb-4" role="alert">
+                    <i class="bi bi-check-circle-fill me-2 fs-5 text-emerald-600"></i>
                     <div class="small fw-semibold">{{ session('success') }}</div>
                 </div>
             @endif
 
             @if ($errors->any())
-                <div class="alert alert-danger bg-danger bg-opacity-20 text-danger border-danger border-opacity-30 rounded-3 mb-4" role="alert">
+                <div class="alert alert-danger bg-rose-50 text-rose-800 border-rose-200 rounded-3 mb-4" role="alert">
                     <ul class="mb-0 ps-3 small">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -346,25 +348,25 @@
                 
                 <!-- Email Input -->
                 <div class="mb-3">
-                    <label for="email" class="form-label text-white-50 small fw-semibold">Tài Khoản Email</label>
+                    <label for="email" class="form-label text-slate-700 small fw-semibold">Tài Khoản Email</label>
                     <div class="input-group">
-                        <span class="input-group-text input-group-text-dark border-end-0"><i class="bi bi-envelope"></i></span>
-                        <input type="email" name="email" id="email" class="form-control form-control-dark border-start-0" placeholder="admin@ms.com" value="{{ old('email') }}" required autofocus autocomplete="off">
+                        <span class="input-group-text input-group-text-light border-end-0"><i class="bi bi-envelope"></i></span>
+                        <input type="email" name="email" id="email" class="form-control form-control-light border-start-0" placeholder="admin@ms.com" value="{{ old('email') }}" required autofocus autocomplete="off">
                     </div>
                 </div>
 
                 <!-- Password Input with Eye Toggle & Mascot Hide-Eye Effect -->
                 <div class="mb-3">
                     <div class="d-flex justify-content-between align-items-center mb-1">
-                        <label for="password" class="form-label text-white-50 small fw-semibold mb-0">Mật Khẩu</label>
-                        <a href="#" class="text-warning text-decoration-none small font-semibold" data-bs-toggle="modal" data-bs-target="#modalForgotPassword">
+                        <label for="password" class="form-label text-slate-700 small fw-semibold mb-0">Mật Khẩu</label>
+                        <a href="#" class="text-decoration-none small font-semibold" style="color: #8e192a;" data-bs-toggle="modal" data-bs-target="#modalForgotPassword">
                             <i class="bi bi-key me-1"></i>Quên mật khẩu?
                         </a>
                     </div>
                     <div class="input-group">
-                        <span class="input-group-text input-group-text-dark border-end-0"><i class="bi bi-lock"></i></span>
-                        <input type="password" name="password" id="password" class="form-control form-control-dark border-start-0 border-end-0" placeholder="••••••••" required>
-                        <button class="btn input-group-text-dark border-start-0 px-3 text-secondary" type="button" id="togglePassword">
+                        <span class="input-group-text input-group-text-light border-end-0"><i class="bi bi-lock"></i></span>
+                        <input type="password" name="password" id="password" class="form-control form-control-light border-start-0 border-end-0" placeholder="••••••••" required>
+                        <button class="btn input-group-text-light border-start-0 px-3 text-secondary" type="button" id="togglePassword">
                             <i class="bi bi-eye" id="eyeIcon"></i>
                         </button>
                     </div>
@@ -373,24 +375,24 @@
                 <!-- Remember Me Checkbox -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div class="form-check">
-                        <input class="form-check-input bg-dark border-secondary" type="checkbox" name="remember" id="remember" checked>
-                        <label class="form-check-label text-white-50 small" for="remember">
+                        <input class="form-check-input border-slate-300" type="checkbox" name="remember" id="remember" checked>
+                        <label class="form-check-label text-slate-600 small" for="remember">
                             Ghi nhớ đăng nhập
                         </label>
                     </div>
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" id="btnSubmit" class="btn btn-gold-action w-100 d-flex align-items-center justify-content-center gap-2">
+                <button type="submit" id="btnSubmit" class="btn btn-crimson-action w-100 d-flex align-items-center justify-content-center gap-2">
                     <i class="bi bi-box-arrow-in-right fs-5"></i>
                     <span>ĐĂNG NHẬP HỆ THỐNG</span>
                 </button>
             </form>
 
             <div class="relative flex py-2 items-center">
-                <div class="grow border-t border-gray-700"></div>
-                <span class="shrink mx-4 text-gray-400 text-xs font-semibold">HOẶC ĐĂNG NHẬP TRỰC TIẾP</span>
-                <div class="grow border-t border-gray-700"></div>
+                <div class="grow border-t border-slate-200"></div>
+                <span class="shrink mx-4 text-slate-400 text-xs font-semibold">HOẶC ĐĂNG NHẬP TRỰC TIẾP</span>
+                <div class="grow border-t border-slate-200"></div>
             </div>
 
             <!-- GOOGLE QUICK LOGIN BUTTON -->
@@ -410,11 +412,11 @@
             </form>
 
             <!-- Footer links -->
-            <div class="text-center mt-4 pt-3 border-top border-secondary border-opacity-25">
-                <span class="text-white-50 small">Chưa có tài khoản? </span>
-                <a href="{{ route('register') }}" class="text-warning text-decoration-none fw-semibold small">Đăng ký mới</a>
-                <span class="text-white-50 mx-2">|</span>
-                <a href="{{ url('/') }}" class="text-white-50 text-decoration-none small">Về Trang Chủ</a>
+            <div class="text-center mt-4 pt-3 border-top border-slate-200">
+                <span class="text-slate-500 small">Chưa có tài khoản? </span>
+                <a href="{{ route('register') }}" class="text-decoration-none fw-semibold small" style="color: #8e192a;">Đăng ký mới</a>
+                <span class="text-slate-400 mx-2">|</span>
+                <a href="{{ url('/') }}" class="text-slate-500 text-decoration-none small">Về Trang Chủ</a>
             </div>
         </div>
     </div>
@@ -422,21 +424,21 @@
     <!-- MODAL GOOGLE ACCOUNT CHOOSE -->
     <div class="modal fade" id="modalGoogleAuth" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content bg-slate-900 border border-slate-700 text-white rounded-2xl shadow-2xl">
-                <div class="modal-header border-slate-800 p-4">
-                    <h6 class="modal-title font-bold text-amber-400 d-flex align-items-center gap-2">
+            <div class="modal-content bg-white border border-slate-200 text-slate-900 rounded-2xl shadow-2xl">
+                <div class="modal-header border-slate-100 p-4">
+                    <h6 class="modal-title font-bold text-amber-600 d-flex align-items-center gap-2">
                         <i class="bi bi-google"></i>Chọn Tài Khoản Google
                     </h6>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4 text-center">
-                    <div class="p-3 bg-slate-800 rounded-xl mb-3 cursor-pointer hover:bg-slate-700 transition" onclick="submitGoogleLogin('admin.google@gmail.com', 'M&S Manager')">
-                        <div class="fw-bold text-white">M&S Manager Google</div>
-                        <div class="text-xs text-amber-400">admin.google@gmail.com</div>
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl mb-3 cursor-pointer hover:bg-amber-50 hover:border-amber-300 transition" onclick="submitGoogleLogin('admin.google@gmail.com', 'M&S Manager')">
+                        <div class="fw-bold text-slate-900">M&S Manager Google</div>
+                        <div class="text-xs text-amber-600 font-semibold">admin.google@gmail.com</div>
                     </div>
-                    <div class="p-3 bg-slate-800 rounded-xl cursor-pointer hover:bg-slate-700 transition" onclick="submitGoogleLogin('staff.google@gmail.com', 'Staff Google User')">
-                        <div class="fw-bold text-white">Staff Service Google</div>
-                        <div class="text-xs text-blue-400">staff.google@gmail.com</div>
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-sky-50 hover:border-sky-300 transition" onclick="submitGoogleLogin('staff.google@gmail.com', 'Staff Google User')">
+                        <div class="fw-bold text-slate-900">Staff Service Google</div>
+                        <div class="text-xs text-sky-600 font-semibold">staff.google@gmail.com</div>
                     </div>
                 </div>
             </div>
@@ -446,43 +448,43 @@
     <!-- MODAL QUÊN MẬT KHẨU QUA GMAIL / OTP -->
     <div class="modal fade" id="modalForgotPassword" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content bg-slate-900 border border-slate-700 text-white rounded-2xl shadow-2xl">
-                <div class="modal-header border-slate-800 bg-slate-800/50 p-4">
-                    <h5 class="modal-title font-bold text-amber-400 d-flex align-items-center gap-2">
+            <div class="modal-content bg-white border border-slate-200 text-slate-900 rounded-2xl shadow-2xl">
+                <div class="modal-header border-slate-100 bg-slate-50 p-4">
+                    <h5 class="modal-title font-bold text-amber-700 d-flex align-items-center gap-2">
                         <i class="bi bi-shield-lock-fill"></i>Khôi Phục Mật Khẩu Qua Google / Gmail
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
                     <!-- Step 1: Input Email -->
                     <div id="otpStep1">
-                        <p class="text-slate-300 text-sm mb-3">Nhập tài khoản Email/Google của bạn để nhận mã xác thực OTP 6 chữ số:</p>
+                        <p class="text-slate-600 text-sm mb-3">Nhập tài khoản Email/Google của bạn để nhận mã xác thực OTP 6 chữ số:</p>
                         <div class="mb-3">
-                            <label class="form-label text-xs font-semibold text-slate-400">Tài khoản Email</label>
-                            <input type="email" id="forgotEmail" class="form-control form-control-dark" value="admin@ms.com" placeholder="VD: admin@ms.com">
+                            <label class="form-label text-xs font-semibold text-slate-600">Tài khoản Email</label>
+                            <input type="email" id="forgotEmail" class="form-control form-control-light" value="admin@ms.com" placeholder="VD: admin@ms.com">
                         </div>
-                        <button type="button" onclick="sendOtpRequest()" class="btn btn-gold-action w-100 font-bold">
+                        <button type="button" onclick="sendOtpRequest()" class="btn btn-crimson-action w-100 font-bold">
                             <i class="bi bi-send me-1"></i>GỬI MÃ OTP VỀ GMAIL
                         </button>
                     </div>
 
                     <!-- Step 2: Input OTP & New Password -->
                     <div id="otpStep2" style="display: none;">
-                        <div class="alert alert-success bg-emerald-950/80 border-emerald-500/50 text-emerald-300 rounded-xl text-xs mb-3" id="otpSuccessAlert">
+                        <div class="alert alert-success bg-emerald-50 border-emerald-200 text-emerald-800 rounded-xl text-xs mb-3" id="otpSuccessAlert">
                             Đã gửi mã OTP đến Gmail! Nhập mã OTP bên dưới.
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-xs font-semibold text-slate-400">Mã OTP Xác Thực (6 chữ số)</label>
+                            <label class="form-label text-xs font-semibold text-slate-600">Mã OTP Xác Thực (6 chữ số)</label>
                             <div class="d-flex gap-2 justify-content-between">
-                                <input type="text" id="inputOtp" class="form-control form-control-dark text-center font-mono text-xl tracking-widest font-bold" value="888999" placeholder="888999" maxlength="6">
+                                <input type="text" id="inputOtp" class="form-control form-control-light text-center font-mono text-xl tracking-widest font-bold" value="888999" placeholder="888999" maxlength="6">
                             </div>
-                            <small class="text-amber-400 text-xs mt-1 d-block">💡 Mã OTP test nhanh: <strong>888999</strong></small>
+                            <small class="text-amber-600 text-xs mt-1 d-block font-semibold">💡 Mã OTP test nhanh: <strong>888999</strong></small>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-xs font-semibold text-slate-400">Mật Khẩu Mới</label>
-                            <input type="password" id="forgotNewPassword" class="form-control form-control-dark" placeholder="Nhập mật khẩu mới từ 6 ký tự">
+                            <label class="form-label text-xs font-semibold text-slate-600">Mật Khẩu Mới</label>
+                            <input type="password" id="forgotNewPassword" class="form-control form-control-light" placeholder="Nhập mật khẩu mới từ 6 ký tự">
                         </div>
-                        <button type="button" onclick="verifyOtpAndResetPassword()" class="btn btn-emerald-600 hover:btn-emerald-500 text-white font-bold w-100 py-3 rounded-xl shadow-lg transition">
+                        <button type="button" onclick="verifyOtpAndResetPassword()" class="btn btn-emerald-600 hover:btn-emerald-700 text-white font-bold w-100 py-3 rounded-xl shadow-lg transition">
                             <i class="bi bi-check-circle me-1"></i>XÁC NHẬN ĐỔI MẬT KHẨU & ĐĂNG NHẬP
                         </button>
                     </div>
