@@ -374,5 +374,94 @@ class DatabaseSeeder extends Seeder
             'su_co' => 'Hủy 1 đơn nước cam ép do khách đổi ý.',
             'de_xuat' => 'Mở nhạc nhẹ hơn để giảm tiếng ồn.',
         ]);
+
+        // 11. Seed Báo Giá Chi Tiết Đa Nhà Cung Cấp (Vendor Price Matrix)
+        $boUc = $ingredients['Thịt Bò Úc nhập khẩu']->id;
+        $boLat = $ingredients['Bơ Lạt Pháp cao cấp']->id;
+
+        \App\Models\NhaCungCapNguyenLieu::create([
+            'nha_cung_cap_id' => $nccGlobal->id,
+            'nguyen_lieu_id' => $boUc,
+            'don_gia_chao' => 210000,
+            'don_vi_tinh' => 'kg',
+            'moq' => 10,
+            'lead_time_days' => 2,
+            'danh_gia_star' => 4.8,
+            'ghi_chu' => 'Thịt bò tươi cấp đông chuẩn Úc',
+        ]);
+
+        \App\Models\NhaCungCapNguyenLieu::create([
+            'nha_cung_cap_id' => $nccEuro->id,
+            'nguyen_lieu_id' => $boUc,
+            'don_gia_chao' => 195000, // Giá rẻ hơn!
+            'don_vi_tinh' => 'kg',
+            'moq' => 15,
+            'lead_time_days' => 3,
+            'danh_gia_star' => 4.5,
+            'ghi_chu' => 'Giá ưu đãi mua số lượng lớn',
+        ]);
+
+        \App\Models\NhaCungCapNguyenLieu::create([
+            'nha_cung_cap_id' => $nccAsia->id,
+            'nguyen_lieu_id' => $boUc,
+            'don_gia_chao' => 220000,
+            'don_vi_tinh' => 'kg',
+            'moq' => 5,
+            'lead_time_days' => 1, // Giao siêu nhanh 1 ngày!
+            'danh_gia_star' => 5.0,
+            'ghi_chu' => 'Giao hỏa tốc 24h',
+        ]);
+
+        \App\Models\NhaCungCapNguyenLieu::create([
+            'nha_cung_cap_id' => $nccEuro->id,
+            'nguyen_lieu_id' => $boLat,
+            'don_gia_chao' => 145000,
+            'don_vi_tinh' => 'kg',
+            'moq' => 5,
+            'lead_time_days' => 2,
+            'danh_gia_star' => 4.7,
+        ]);
+
+        // 12. Seed Đặt Bàn Trước (Table Reservation)
+        \App\Models\DatBanTruoc::create([
+            'ma_reservation' => 'RES-9981-VIP',
+            'ten_khach' => 'Anh Nguyễn Văn Thành (Giám Đốc)',
+            'sdt' => '0988776655',
+            'ban_id' => 1,
+            'thoi_gian_hen' => now()->addHours(3),
+            'so_luong_khach' => 6,
+            'tien_coc' => 500000,
+            'trang_thai' => 'da_xac_nhan',
+            'ghi_chu' => 'Tiệc sinh nhật công ty, chuẩn bị nến và rượu vang',
+        ]);
+
+        \App\Models\DatBanTruoc::create([
+            'ma_reservation' => 'RES-1024-STD',
+            'ten_khach' => 'Chị Lê Mai Phương',
+            'sdt' => '0911223344',
+            'ban_id' => 2,
+            'thoi_gian_hen' => now()->addHours(5),
+            'so_luong_khach' => 2,
+            'tien_coc' => 200000,
+            'trang_thai' => 'cho_xac_nhan',
+            'ghi_chu' => 'Góc tĩnh lặng gần ban công',
+        ]);
+
+        // 13. Seed Đánh Giá Khách Hàng & Cảnh Báo Đỏ (Customer Rating Alerts)
+        \App\Models\DanhGiaMonAn::create([
+            'ban_id' => 3,
+            'so_sao' => 1, // 1 SAO -> KÍCH HOẠT CẢNH BÁO ĐỎ KHẨN CẤP
+            'noi_dung_danh_gia' => 'Món Phở Bò hôm nay bị nguội và mặn quá! Đề nghị quản lý xem lại bếp!',
+            'canh_bao_do' => true,
+            'trang_thai_xu_ly' => 'cho_xu_ly',
+        ]);
+
+        \App\Models\DanhGiaMonAn::create([
+            'ban_id' => 5,
+            'so_sao' => 5,
+            'noi_dung_danh_gia' => 'Nhân viên phục vụ nhiệt tình, trà đào ngon mát!',
+            'canh_bao_do' => false,
+            'trang_thai_xu_ly' => 'da_giai_quyet',
+        ]);
     }
 }

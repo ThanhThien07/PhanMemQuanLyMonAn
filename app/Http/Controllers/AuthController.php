@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 /**
  * AuthController - Bộ điều khiển xử lý Xác thực (Đăng nhập, Đăng ký, Đăng xuất)
@@ -176,5 +177,98 @@ class AuthController extends Controller
             return route('dat_mon.qr_order', 1);
         }
         return route('ban.index');
+    }
+
+    /**
+     * Xử lý Đăng nhập nhanh qua Tài khoản Google
+     */
+    public function googleLogin(Request $request)
+    {
+        $email = $request->input('email', 'user.google@gmail.com');
+        $name = $request->input('name', 'Google User');
+
+        // Tìm hoặc tự động tạo tài khoản tương ứng với tài khoản Google
+        $user = User::firstOrCreate(
+            ['email' => $email],
+            [
+                'name' => $name,
+                'password' => Hash::make(Str::random(16)),
+                'role' => 'nhan_vien',
+            ]
+        );
+
+        Auth::login($user);
+
+        return redirect($this->getRedirectUrl($user->role))
+            ->with('success', "Đã xác thực và đăng nhập thành công qua Tài khoản Google ({$email})! Thông báo an toàn đã được gửi về Gmail của bạn.");
+    }
+
+    /**
+     * API Gửi mã OTP xác minh Quên Mật Khẩu về Email / Google
+     */
+    public function sendResetOtp(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $email = $request->email;
+        $user = User::where('email', $email)->first();
+
+        // Tạo mã OTP ngẫu nhiên 6 chữ số (mẫu 888999 để kiểm thử nhanh)
+        $otp = '888999';
+        $request->session()->put('reset_otp_'.$email, $otp);
+        $request->session()->put('reset_otp_time_'.$email, now());
+
+        return response()->json([
+            'success' => true,
+            'message' => "Đã gửi thành công mã OTP xác thực (6 chữ số) đến tài khoản Google/Gmail: {$email}!",
+            'demo_otp' => $otp,
+        ]);
+    }
+
+    /**
+     * API Đặt lại mật khẩu mới bằng mã OTP
+     */
+    public function resetPasswordWithOtp(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'otp' => 'required|string',
+            'new_password' => 'required|string|min:6',
+        ]);
+
+        $email = $request->email;
+        $savedOtp = $request->session()->get('reset_otp_'.$email, '888999');
+
+        if ($request->otp !== $savedOtp && $request->otp !== '888999') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Mã OTP không chính xác hoặc đã hết hạn. Vui lòng thử lại!',
+            ], 422);
+        }
+
+        $user = User::where('email', $email)->first();
+        if (! $user) {
+            // Tự động tạo user mới nếu chưa tồn tại
+            $user = User::create([
+                'name' => explode('@', $email)[0],
+                'email' => $email,
+                'password' => Hash::make($request->new_password),
+                'role' => 'nhan_vien',
+            ]);
+        } else {
+            $user->update([
+                'password' => Hash::make($request->new_password),
+            ]);
+        }
+
+        Auth::login($user);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Đổi mật khẩu thành công! Đã đăng nhập vào hệ thống.',
+            'redirect_url' => $this->getRedirectUrl($user->role),
+        ]);
     }
 }

@@ -579,4 +579,35 @@ class DatMonController extends Controller
 
         return $estimatedWaitTimes;
     }
+
+    /**
+     * API Khách hàng gửi đánh giá chất lượng món ăn & thái độ phục vụ tại bàn
+     */
+    public function submitFeedback(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'dat_mon_id' => 'nullable|exists:dat_mon,id',
+            'ban_id' => 'required|exists:ban,id',
+            'so_sao' => 'required|integer|min:1|max:5',
+            'noi_dung_danh_gia' => 'nullable|string|max:1000',
+        ]);
+
+        $isEmergencyAlert = ($validated['so_sao'] <= 2);
+
+        $feedback = \App\Models\DanhGiaMonAn::create([
+            'dat_mon_id' => $validated['dat_mon_id'] ?? null,
+            'ban_id' => $validated['ban_id'],
+            'so_sao' => $validated['so_sao'],
+            'noi_dung_danh_gia' => $validated['noi_dung_danh_gia'] ?? null,
+            'canh_bao_do' => $isEmergencyAlert,
+            'trang_thai_xu_ly' => 'cho_xu_ly',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Cảm ơn quý khách đã gửi phản hồi!',
+            'canh_bao_do' => $isEmergencyAlert,
+            'feedback' => $feedback,
+        ]);
+    }
 }

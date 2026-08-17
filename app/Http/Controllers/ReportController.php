@@ -487,4 +487,18 @@ class ReportController extends Controller
             ->values()
             ->toArray();
     }
+
+    /**
+     * Màn hình Báo cáo Đánh giá Khách hàng & Cảnh báo Đỏ Khẩn cấp
+     */
+    public function danhGiaKhachHang()
+    {
+        $feedbacks = \App\Models\DanhGiaMonAn::with(['datMon', 'ban'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $emergencyAlerts = $feedbacks->where('canh_bao_do', true)->where('trang_thai_xu_ly', 'cho_xu_ly');
+
+        return view('ban.danh_gia_khach_hang', compact('feedbacks', 'emergencyAlerts'));
+    }
 }

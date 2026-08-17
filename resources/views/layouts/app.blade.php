@@ -394,6 +394,12 @@
                   <span>Kho Nguyên liệu</span>
                 </a>
               </li>
+              <li class="nav-menu-item">
+                <a href="{{ route('nguyen_lieu.so_sanh_gia') }}" class="nav-menu-link {{ Route::is('nguyen_lieu.so_sanh_gia') ? 'active' : '' }}">
+                  <i class="bi bi-diagram-3-fill text-amber-600"></i>
+                  <span class="font-bold">So Sánh Giá & PO</span>
+                </a>
+              </li>
             @endif
           </ul>
         @endif
@@ -405,6 +411,18 @@
           </div>
           <ul class="nav-menu mb-3">
             @if(Auth::user()->role === 'admin')
+              <li class="nav-menu-item">
+                <a href="{{ route('dat_ban_truoc.index') }}" class="nav-menu-link {{ Route::is('dat_ban_truoc.index') ? 'active' : '' }}">
+                  <i class="bi bi-calendar-check-fill text-ms-primary"></i>
+                  <span>Đặt Bàn Trước</span>
+                </a>
+              </li>
+              <li class="nav-menu-item">
+                <a href="{{ route('quan_ly.danh_gia_khach_hang') }}" class="nav-menu-link {{ Route::is('quan_ly.danh_gia_khach_hang') ? 'active' : '' }}">
+                  <i class="bi bi-star-half text-amber-500"></i>
+                  <span>Đánh Giá Khách Hàng</span>
+                </a>
+              </li>
               <li class="nav-menu-item">
                 <a href="{{ route('mon_an.index') }}" class="nav-menu-link {{ Route::is('mon_an.index') ? 'active' : '' }}">
                   <i class="bi bi-journal-album"></i>
@@ -511,9 +529,49 @@
       <div><strong>M&S Cuisine &copy; 2026</strong>. Tất cả quyền lợi được bảo lưu. Thiết kế hệ thống thông minh nâng cao hiệu suất.</div>
     </footer>
 
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
     <!-- Bootstrap 5 JavaScript & jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- FLOATING INTERACTIVE AI CHEF MASCOT ASSISTANT WIDGET -->
+    <div id="chefMascotWidget" class="position-fixed bottom-4 end-4 z-50 d-flex align-items-end gap-2" style="bottom: 24px; right: 24px;">
+      <!-- Speech Bubble -->
+      <div id="mascotSpeech" class="bg-white text-dark p-3 rounded-2xl shadow-xl border border-warning text-xs font-semibold max-w-xs mb-2 transition-all duration-300 transform scale-100" style="max-width: 240px; box-shadow: 0 10px 25px rgba(0,0,0,0.15);">
+        <div class="d-flex align-items-center justify-content-between mb-1">
+          <span class="text-ms-primary font-bold"><i class="bi bi-robot me-1"></i>Trợ Lý Bếp M&S</span>
+          <span class="badge bg-warning text-dark text-xxs">AI Helper</span>
+        </div>
+        <div id="speechText" class="text-secondary">
+          @if(Route::is('quan_ly.index'))
+            "Hôm nay doanh thu đang phát triển tốt! Đã sẵn sàng xuất báo cáo tài chính."
+          @elseif(Route::is('ban.index'))
+            "Nhấp vào bàn ăn để xem hóa đơn hoặc bấm Thanh Toán để bắn pháo hoa mừng doanh thu!"
+          @elseif(Route::is('nguyen_lieu.so_sanh_gia'))
+            "Tôi đã tính toán NCC có giá rẻ nhất cho Thịt bò Úc. Bấm tạo PO ngay!"
+          @elseif(Route::is('dat_mon.bep'))
+            "Bếp đang sẵn sàng! Đĩa món mới gọi qua QR sẽ báo âm thanh Đing-đoong."
+          @else
+            "M&S Cuisine chúc bạn một ngày làm việc hiệu quả và bội thu!"
+          @endif
+        </div>
+      </div>
+
+      <!-- Mascot Avatar Circle -->
+      <div id="mascotAvatar" onclick="triggerMascotCelebrate()" class="bg-ms-primary rounded-circle p-2 shadow-2xl border-4 border-amber-400 cursor-pointer hover:scale-110 transition-all duration-300" style="width: 70px; height: 70px; box-shadow: 0 8px 25px rgba(142,25,42,0.4);">
+        <svg viewBox="0 0 200 200" class="w-100 h-100">
+          <circle cx="100" cy="100" r="90" fill="#f59e0b"/>
+          <path d="M 60 45 C 50 25, 80 10, 100 20 C 120 10, 150 25, 140 45 Z" fill="#ffffff"/>
+          <ellipse cx="100" cy="115" rx="22" ry="16" fill="#fef3c7"/>
+          <ellipse cx="100" cy="108" rx="8" ry="6" fill="#1e293b"/>
+          <circle cx="78" cy="92" r="6" fill="#0f172a"/>
+          <circle cx="122" cy="92" r="6" fill="#0f172a"/>
+          <path d="M 92 118 Q 100 128 108 118" fill="none" stroke="#1e293b" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
 
     <!-- Laravel Echo & Pusher CDN -->
     <script src="https://js.pusher.com/8.0.1/pusher.min.js"></script>
@@ -530,6 +588,42 @@
         forceTLS: false,
         enabledTransports: ['ws', 'wss'],
       });
+
+      // Interactive Mascot Audio & Confetti Celebration
+      function triggerMascotCelebrate() {
+        if (typeof confetti === 'function') {
+          confetti({
+            particleCount: 80,
+            spread: 70,
+            origin: { y: 0.85, x: 0.9 }
+          });
+        }
+
+        // Web Audio Synthesizer Tone
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+          osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.2); // A5
+          gain.gain.setValueAtTime(0.2, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.3);
+        } catch(e){}
+
+        const speech = document.getElementById('speechText');
+        const tips = [
+          "Tuyệt vời! Doanh thu hôm nay thật bùng nổ! 🎉",
+          "Tôi đang kiểm soát kho nguyên liệu và FEFO cho bạn 24/7! 🤖",
+          "Bếp KDS đang nấu ăn rất chuẩn tiến độ! 🍳",
+          "Tất cả mã QR bàn ăn đều sẵn sàng cho khách gọi món! 📱"
+        ];
+        speech.innerText = tips[Math.floor(Math.random() * tips.length)];
+      }
     </script>
 
     <script>

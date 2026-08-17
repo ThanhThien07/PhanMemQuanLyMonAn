@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BanController;
+use App\Http\Controllers\DatBanTruocController;
 use App\Http\Controllers\DatMonController;
 use App\Http\Controllers\KhachHangController;
 use App\Http\Controllers\MonAnController;
 use App\Http\Controllers\NguyenLieuController;
 use App\Http\Controllers\NhaCungCapController;
 use App\Http\Controllers\NhanVienController;
+use App\Http\Controllers\ProcurementController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +28,9 @@ use Illuminate\Support\Facades\Route;
 // --- Hệ thống Đăng nhập / Đăng ký / Đăng xuất ---
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');      // Trang hiển thị form đăng nhập
 Route::post('/login', [AuthController::class, 'login']);                         // Xử lý khi nhấn nút Đăng nhập (gửi POST)
+Route::post('/login/google', [AuthController::class, 'googleLogin'])->name('login.google'); // Đăng nhập nhanh Google
+Route::post('/login/send-otp', [AuthController::class, 'sendResetOtp'])->name('login.send_otp'); // Gửi OTP Google/Email
+Route::post('/login/reset-password-otp', [AuthController::class, 'resetPasswordWithOtp'])->name('login.reset_password_otp'); // Đổi MK với OTP
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register'); // Trang hiển thị form đăng ký
 Route::post('/register', [AuthController::class, 'register']);                   // Xử lý tạo tài khoản mới (gửi POST)
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');       // Đăng xuất tài khoản khỏi hệ thống
@@ -36,9 +41,10 @@ Route::get('/qr-order/{ban_id}', [DatMonController::class, 'qrOrder'])->name('da
 Route::post('/qr-order/{ban_id}/order', [DatMonController::class, 'placeOrder'])->name('dat_mon.place_order');
 Route::post('/qr-order/{ban_id}/cap-nhat-so-khach', [DatMonController::class, 'updateGuestCount'])->name('dat_mon.update_guest_count');
 
-// --- Tiện ích gọi thanh toán từ bàn ăn ---
+// --- Tiện ích gọi thanh toán & đánh giá món ăn từ bàn ---
 Route::post('/ban/yeu-cau-thanh-toan/{id}', [BanController::class, 'requestCheckout'])->name('ban.request_checkout');
 Route::post('/ban/xac-nhan-chuyen-khoan/{id}', [BanController::class, 'confirmQrPaid'])->name('ban.confirm_qr_paid');
+Route::post('/api/danh-gia-mon', [DatMonController::class, 'submitFeedback'])->name('api.danh_gia_mon');
 
 // --- Các API công cộng hỗ trợ cập nhật dữ liệu tự động cho trình duyệt của khách hàng ---
 Route::get('/api/realtime-updates', [DatMonController::class, 'getRealtimeUpdates'])->name('api.realtime_updates');
@@ -71,6 +77,12 @@ Route::middleware(['auth'])->group(function () {
 
         // Dashboard tổng hợp doanh thu, biểu đồ TOP món ăn và cảnh báo kho nguyên vật liệu
         Route::get('/quan-ly', [ReportController::class, 'quanLy'])->name('quan_ly.index');
+        Route::get('/quan-ly/danh-gia-khach-hang', [ReportController::class, 'danhGiaKhachHang'])->name('quan_ly.danh_gia_khach_hang');
+
+        // Quản lý Đặt Bàn Trước (Table Reservation)
+        Route::get('/quan-ly/dat-ban-truoc', [DatBanTruocController::class, 'index'])->name('dat_ban_truoc.index');
+        Route::post('/quan-ly/dat-ban-truoc/them', [DatBanTruocController::class, 'store'])->name('dat_ban_truoc.store');
+        Route::post('/quan-ly/dat-ban-truoc/trang-thai/{id}', [DatBanTruocController::class, 'updateStatus'])->name('dat_ban_truoc.update_status');
 
         // Xuất file Excel báo cáo doanh số tương thích UTF-8
         Route::get('/quan-ly/bao-cao/export', [ReportController::class, 'exportReport'])->name('quan_ly.export_report');
@@ -158,7 +170,13 @@ Route::middleware(['auth'])->group(function () {
         // Giao diện quản lý kho hàng nhập khẩu
         Route::get('/nguyen-lieu', [NguyenLieuController::class, 'index'])->name('nguyen_lieu.index');
 
-        // So sánh giá giữa các nhà cung ứng, đặt hàng nguyên liệu và kiểm kê nhập kho
+        // Ma trận So sánh Giá đa Nhà Cung Cấp & Tự động Đấu thầu PO
+        Route::get('/nguyen-lieu/so-sanh-gia', [ProcurementController::class, 'soSanhGia'])->name('nguyen_lieu.so_sanh_gia');
+        Route::post('/nguyen-lieu/save-quote', [ProcurementController::class, 'saveQuote'])->name('nguyen_lieu.save_quote');
+        Route::post('/nguyen-lieu/tao-po', [ProcurementController::class, 'taoDonMuaHang'])->name('nguyen_lieu.tao_po');
+        Route::get('/nguyen-lieu/danh-sach-po', [ProcurementController::class, 'danhSachPo'])->name('nguyen_lieu.danh_sach_po');
+
+        // So sánh giá cũ, đặt hàng nguyên liệu và kiểm kê nhập kho
         Route::get('/nguyen-lieu/so-sanh', [NguyenLieuController::class, 'comparePrice'])->name('nguyen_lieu.compare_price');
         Route::post('/nguyen-lieu/order', [NguyenLieuController::class, 'orderIngredient'])->name('nguyen_lieu.order');
         Route::post('/nguyen-lieu/verify/{id}', [NguyenLieuController::class, 'verifyImport'])->name('nguyen_lieu.verify');
@@ -172,3 +190,4 @@ Route::middleware(['auth'])->group(function () {
         ->name('dat_mon.update_status');
 
 });
+

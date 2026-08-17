@@ -335,7 +335,7 @@
           
           <div class="modal-footer border-0 p-3 bg-light" style="border-bottom-left-radius:16px; border-bottom-right-radius:16px;">
             <button type="button" class="btn btn-secondary py-2" data-bs-dismiss="modal">Đóng</button>
-            <button type="submit" class="btn btn-premium py-2 px-4"><i class="bi bi-wallet2 me-2"></i>Xác nhận Thanh toán & Giải phóng bàn</button>
+            <button type="submit" class="btn btn-premium py-2 px-4" onclick="triggerConfettiCheckout()"><i class="bi bi-wallet2 me-2"></i>Xác nhận Thanh toán & Giải phóng bàn</button>
           </div>
         </form>
       </div>
@@ -443,6 +443,16 @@
 
 @section('scripts')
 <script>
+  function triggerConfettiCheckout() {
+    if (typeof confetti === 'function') {
+      confetti({
+        particleCount: 150,
+        spread: 90,
+        origin: { y: 0.6 }
+      });
+    }
+  }
+
   // Dynamic table data passed from Laravel
   const tablesData = @json($tables);
   let currentTable = null;

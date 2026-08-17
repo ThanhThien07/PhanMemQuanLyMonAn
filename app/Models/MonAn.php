@@ -53,4 +53,12 @@ class MonAn extends Model
             ->withPivot('so_luong_dinh_luong') // Lấy kèm định lượng nguyên liệu cho món này
             ->withTimestamps(); // Tự động điền ngày tạo / cập nhật cho bản ghi trung gian
     }
+
+    /**
+     * Tùy chọn Topping / Món kèm (Modifiers) của món ăn
+     */
+    public function modifiers()
+    {
+        return $this->hasMany(MonAnModifier::class, 'mon_an_id');
+    }
 }

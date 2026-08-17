@@ -3,19 +3,34 @@
 @section('content')
 <div class="container-fluid p-0">
   <!-- Page Header -->
-  <div class="d-flex align-items-center justify-content-between mb-4">
-    <div>
-      <h1 class="h3 mb-1 fw-bold text-dark"><i class="bi bi-fire me-2 text-danger"></i>Màn Hình Nhà Bếp M&S (KDS Pro)</h1>
-      <p class="text-secondary small mb-0">Hệ thống lập lịch chế biến (Job Scheduling) tối ưu hóa thời gian chờ theo số lượng đầu bếp trực ca.</p>
+  <div class="d-flex align-items-center justify-content-between mb-4 bg-gradient-to-r from-red-950 via-ms-primary to-amber-900 text-white p-4 rounded-2xl shadow-lg border-b-4 border-warning">
+    <div class="d-flex align-items-center gap-3">
+      <div style="width: 65px; height: 65px;" class="bg-white rounded-circle p-1 shadow-md border-2 border-warning hover:scale-110 transition-transform">
+        <svg viewBox="0 0 200 200" class="w-100 h-100">
+          <circle cx="100" cy="100" r="90" fill="#f59e0b"/>
+          <path d="M 60 45 C 50 25, 80 10, 100 20 C 120 10, 150 25, 140 45 Z" fill="#ffffff"/>
+          <ellipse cx="100" cy="115" rx="22" ry="16" fill="#fef3c7"/>
+          <ellipse cx="100" cy="108" rx="8" ry="6" fill="#1e293b"/>
+          <circle cx="78" cy="92" r="6" fill="#0f172a"/>
+          <circle cx="122" cy="92" r="6" fill="#0f172a"/>
+          <path d="M 92 115 Q 100 130 108 115" fill="none" stroke="#1e293b" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="h3 mb-1 fw-bold text-white d-flex align-items-center gap-2">
+          <i class="bi bi-fire text-warning animate-bounce"></i>Màn Hình Nhà Bếp M&S (KDS Pro)
+        </h1>
+        <p class="text-white-50 small mb-0">Hệ thống điều phối chế biến thông minh tự động trừ kho FEFO & ước tính thời gian chờ thực tế.</p>
+      </div>
     </div>
     <div class="d-flex align-items-center gap-2">
-      <!-- Nút kích hoạt âm thanh KDS (Web Audio API bắt buộc người dùng tương tác trước khi phát tiếng) -->
-      <button id="kitchenAudioBtn" class="btn btn-danger fw-bold" onclick="initKitchenAudio()">
+      <!-- Nút kích hoạt âm thanh KDS -->
+      <button id="kitchenAudioBtn" class="btn btn-warning text-dark font-bold rounded-pill px-4 shadow" onclick="initKitchenAudio()">
         <i class="bi bi-volume-up-fill me-1"></i> Bật Âm Báo Đơn Mới
       </button>
-      <span class="badge bg-success bg-opacity-10 text-success p-2 small"><i class="bi bi-arrow-repeat me-1 animate-spin"></i>Real-time: 4s</span>
-      <button class="btn btn-outline-secondary py-2" onclick="location.reload()">
-        <i class="bi bi-arrow-clockwise"></i>
+      <span class="badge bg-emerald-500 text-white p-2.5 rounded-pill text-xs font-bold"><i class="bi bi-arrow-repeat me-1 animate-spin"></i>Real-time: 4s</span>
+      <button class="btn btn-outline-light rounded-circle p-2" onclick="location.reload()">
+        <i class="bi bi-arrow-clockwise fs-5"></i>
       </button>
     </div>
   </div>

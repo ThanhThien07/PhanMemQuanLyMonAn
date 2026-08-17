@@ -892,6 +892,120 @@
         });
       }
 
+    <!-- MODAL ĐÁNH GIÁ CHẤT LƯỢNG 5★ & LINH VẬT TƯƠNG TÁC -->
+    <div class="modal fade" id="modalRatingFeedback" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-2xl" style="border-radius:24px;">
+          <div class="modal-header bg-dark text-white border-0 py-3" style="border-top-left-radius:24px; border-top-right-radius:24px;">
+            <h5 class="modal-title fw-bold text-warning d-flex align-items-center gap-2">
+              <i class="bi bi-star-fill text-warning"></i>ĐÁNH GIÁ TRẢI NGHIỆM TẠI BÀN
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body p-4 text-center">
+            <!-- Animated Mascot Reaction Head -->
+            <div id="ratingMascot" class="mb-3 transition-transform duration-300" style="width: 100px; height: 100px; margin: 0 auto;">
+              <svg viewBox="0 0 200 200" class="w-100 h-100">
+                <circle cx="100" cy="100" r="90" fill="#f59e0b"/>
+                <path d="M 60 45 C 50 25, 80 10, 100 20 C 120 10, 150 25, 140 45 Z" fill="#ffffff"/>
+                <ellipse cx="100" cy="115" rx="22" ry="16" fill="#fef3c7"/>
+                <ellipse cx="100" cy="108" rx="8" ry="6" fill="#1e293b"/>
+                <circle cx="78" cy="92" r="6" fill="#0f172a"/>
+                <circle cx="122" cy="92" r="6" fill="#0f172a"/>
+                <path id="mascotRatingMouth" d="M 92 118 Q 100 130 108 118" fill="none" stroke="#1e293b" stroke-width="4" stroke-linecap="round"/>
+              </svg>
+            </div>
+
+            <h6 class="fw-bold text-dark mb-1" id="mascotRatingTitle">Vui lòng chấm điểm chất lượng món ăn!</h6>
+            <p class="text-secondary small mb-3" id="mascotRatingSub">Ý kiến của bạn giúp M&S Cuisine phục vụ tốt hơn.</p>
+
+            <!-- Star selector -->
+            <div class="d-flex justify-content-center gap-2 mb-3 fs-2 text-warning cursor-pointer">
+              <i class="bi bi-star-fill star-icon" onclick="setRating(1)"></i>
+              <i class="bi bi-star-fill star-icon" onclick="setRating(2)"></i>
+              <i class="bi bi-star-fill star-icon" onclick="setRating(3)"></i>
+              <i class="bi bi-star-fill star-icon" onclick="setRating(4)"></i>
+              <i class="bi bi-star-fill star-icon" onclick="setRating(5)"></i>
+            </div>
+            <input type="hidden" id="selectedStarRating" value="5">
+
+            <div class="mb-3 text-start">
+              <label class="form-label text-xs fw-bold text-muted">Nhận xét chi tiết (không bắt buộc):</label>
+              <textarea id="ratingFeedbackText" class="form-control" rows="2" placeholder="Ví dụ: Món ăn đậm đà, phục vụ rất nhanh..."></textarea>
+            </div>
+
+            <button type="button" class="btn btn-premium w-100 py-3 font-bold" onclick="submitCustomerFeedback()">
+              <i class="bi bi-send-fill me-2"></i>Gửi Đánh Giá Ngay
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5 JavaScript & jQuery -->
+    <script>
+      let currentStarVal = 5;
+
+      function setRating(stars) {
+        currentStarVal = stars;
+        document.getElementById('selectedStarRating').value = stars;
+
+        const starIcons = document.querySelectorAll('.star-icon');
+        starIcons.forEach((icon, idx) => {
+          if (idx < stars) {
+            icon.classList.remove('text-secondary', 'opacity-25');
+            icon.classList.add('text-warning');
+          } else {
+            icon.classList.add('text-secondary', 'opacity-25');
+            icon.classList.remove('text-warning');
+          }
+        });
+
+        const mouth = document.getElementById('mascotRatingMouth');
+        const title = document.getElementById('mascotRatingTitle');
+        const sub = document.getElementById('mascotRatingSub');
+
+        if (stars <= 2) {
+          mouth.setAttribute('d', 'M 92 128 Q 100 115 108 128'); // Sad mouth
+          title.innerText = 'Rất tiếc vì trải nghiệm chưa hoàn hảo!';
+          title.className = 'fw-bold text-danger mb-1';
+          sub.innerText = '⚠️ Hệ thống sẽ báo Quản lý trực tiếp đến hỗ trợ bàn bạn ngay!';
+        } else if (stars === 3 || stars === 4) {
+          mouth.setAttribute('d', 'M 92 120 L 108 120'); // Neutral mouth
+          title.innerText = 'Cảm ơn ý kiến đóng góp của bạn!';
+          title.className = 'fw-bold text-dark mb-1';
+          sub.innerText = 'Chúng tôi sẽ luôn nâng cao chất lượng dịch vụ.';
+        } else {
+          mouth.setAttribute('d', 'M 92 115 Q 100 132 108 115'); // Happy mouth
+          title.innerText = 'Tuyệt vời! Cảm ơn bạn rất nhiều! 🎉';
+          title.className = 'fw-bold text-success mb-1';
+          sub.innerText = 'Chúc bạn một bữa ăn thật ngon miệng cùng người thân!';
+        }
+      }
+
+      function submitCustomerFeedback() {
+        const text = document.getElementById('ratingFeedbackText').value;
+
+        $.ajax({
+          url: '{{ route("api.danh_gia_mon") }}',
+          type: 'POST',
+          data: {
+            _token: '{{ csrf_token() }}',
+            ban_id: {{ $ban->id }},
+            so_sao: currentStarVal,
+            noi_dung_danh_gia: text
+          },
+          success: function(res) {
+            if (res.canh_bao_do) {
+              alert('🚨 Hệ thống đã phát CẢNH BÁO ĐỎ khẩn cấp đến Quản lý! Quản lý ca trực sẽ tới bàn số {{ $ban->id }} của bạn ngay lập tức.');
+            } else {
+              alert('🎉 Cảm ơn quý khách đã đánh giá ' + currentStarVal + ' sao cho M&S Cuisine!');
+            }
+            bootstrap.Modal.getInstance(document.getElementById('modalRatingFeedback')).hide();
+          }
+        });
+      }
+
       // Hàm Sao Chép Mã Voucher
       function copyVoucherCode(code) {
         navigator.clipboard.writeText(code).then(() => {
