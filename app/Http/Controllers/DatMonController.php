@@ -8,6 +8,7 @@ use App\Events\TableStateUpdated;
 use App\Models\Ban;
 use App\Models\ChiTietTieuHaoDatMon;
 use App\Models\DatMon;
+use App\Models\KhachHang;
 use App\Models\LoaiMon;
 use App\Models\LoHangNhap;
 use App\Models\MonAn;
@@ -83,7 +84,26 @@ class DatMonController extends Controller
         // Dùng ->total accessor thay vì closure lặp lại
         $totalBill = $ban->activeDatMons->sum(fn ($item) => $item->total);
 
-        return view('ban.qr_order', compact('ban', 'menuItems', 'categories', 'totalBill'));
+        // Lấy hoặc khởi tạo thông tin khách hàng để tính điểm tích lũy & Hạng thành viên
+        $customer = null;
+        if (auth()->check()) {
+            $user = auth()->user();
+            $customer = KhachHang::firstOrCreate(
+                ['sdt' => '098' . sprintf('%07d', $user->id)],
+                [
+                    'ten' => $user->name,
+                    'diem_tich_luy' => 120, // Điểm mẫu tích lũy sẵn cho tài khoản đăng nhập
+                ]
+            );
+        } else {
+            $customer = new KhachHang([
+                'ten' => 'Khách Hàng Bàn ' . $ban->id,
+                'sdt' => '090' . rand(1000000, 9999999),
+                'diem_tich_luy' => 50,
+            ]);
+        }
+
+        return view('ban.qr_order', compact('ban', 'menuItems', 'categories', 'totalBill', 'customer'));
     }
 
     /**
@@ -127,6 +147,16 @@ class DatMonController extends Controller
 
         // Cập nhật trạng thái bàn ăn thành "Đã gọi" (nhân viên biết để kiểm tra)
         $ban->update(['trang_thai' => 'Da_goi']);
+
+        // Tích điểm thưởng tự động cho khách hàng khi gọi món (25k = 1 điểm)
+        $pointsEarned = max(1, (int)floor(($request->don_gia * $request->so_luong) / 25000));
+        if (auth()->check()) {
+            $khach = KhachHang::where('ten', auth()->user()->name)->first();
+            if ($khach) {
+                $khach->increment('diem_tich_luy', $pointsEarned);
+                $datMon->update(['khach_hang_id' => $khach->id]);
+            }
+        }
 
         // PHÁT SỰ KIỆN BROADCASTING: Sử dụng Laravel Reverb (WebSockets) để gửi dữ liệu đơn mới
         // xuống màn hình bếp KDS và sơ đồ bàn của nhân viên tức thì, giúp bếp tự động phát nhạc báo.

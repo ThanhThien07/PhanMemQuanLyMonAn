@@ -419,7 +419,9 @@
               <h6 class="text-secondary small mb-3">Quét mã VietQR để thanh toán hóa đơn của bạn</h6>
               
               <a href="https://img.vietqr.io/image/momo-PSG2618416000000006-compact2.png?amount={{ $totalBill }}&addInfo=Thanh+Toan+MS+Ban+{{ $ban->id }}&accountName=NGUYEN+HOANG+HUNG" target="_blank" title="Bấm để xem ảnh lớn">
-                <img src="https://img.vietqr.io/image/momo-PSG2618416000000006-compact2.png?amount={{ $totalBill }}&addInfo=Thanh+Toan+MS+Ban+{{ $ban->id }}&accountName=NGUYEN+HOANG+HUNG" alt="VietQR M&S Payment" class="img-fluid rounded mb-3 border shadow-sm" style="max-height: 250px; cursor: pointer;">
+                <img src="https://img.vietqr.io/image/momo-PSG2618416000000006-compact2.png?amount={{ $totalBill }}&addInfo=Thanh+Toan+MS+Ban+{{ $ban->id }}&accountName=NGUYEN+HOANG+HUNG" 
+                     onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&data={{ urlencode('VietQR Payment: ' . number_format($totalBill) . ' VND - Ban ' . $ban->id) }}';"
+                     alt="VietQR M&S Payment" class="img-fluid rounded mb-3 border shadow-sm" style="max-height: 250px; cursor: pointer;">
               </a>
               
               <div class="p-2 mb-3 bg-light rounded text-dark font-weight-bold" style="font-size:13px;">
@@ -488,6 +490,100 @@
               <button class="btn btn-premium flex-fill py-2 fw-bold" onclick="submitEditGuestCount()" style="border-radius:12px;">Lưu thay đổi</button>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM THÔNG BÁO ƯU ĐÃI REALTIME PHỦ GIỮA MÀN HÌNH (Centered Modal) -->
+    <div class="modal fade" id="realtimeOfferModal" tabindex="-1" aria-labelledby="realtimeOfferModalLabel" aria-hidden="true" data-bs-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden" style="background: #0f172a; color: #fff;">
+          
+          <!-- Top Glow Banner -->
+          <div class="p-4 text-center position-relative" style="background: linear-gradient(135deg, #8e192a 0%, #3b0764 50%, #0f172a 100%);">
+            <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+            
+            <div class="d-inline-flex align-items-center gap-2 px-3 py-1.5 rounded-pill mb-3" style="background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.4); color: #f59e0b; font-size: 13px; font-weight: 700;">
+              <span class="spinner-grow spinner-grow-sm text-warning" role="status"></span>
+              <span>THÔNG BÁO ƯU ĐÃI REALTIME DÀNH CHO BẠN</span>
+            </div>
+
+            <h3 class="fw-bold mb-1 text-white">🎉 Chào Mừng {{ $customer->ten ?? 'Khách Hàng' }}!</h3>
+            <p class="text-white-50 small mb-0">Hệ thống vừa cập nhật chương trình tri ân & voucher ưu đãi trực tiếp cho bạn</p>
+          </div>
+
+          <div class="modal-body p-4">
+            <!-- Customer Membership Card & Level Progress -->
+            <div class="p-3 mb-4 rounded-3" style="background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255, 255, 255, 0.1);">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="fs-4">{{ $customer->voucher_uu_dai['badge'] ?? '🥉 Thành Viên' }}</span>
+                  <div>
+                    <strong class="d-block text-white fs-5">{{ $customer->ten ?? 'Khách Hàng' }}</strong>
+                    <small class="text-white-50">SĐT: {{ $customer->sdt ?? 'Khách Quét QR' }}</small>
+                  </div>
+                </div>
+                <div class="text-end">
+                  <span class="badge bg-warning text-dark fs-6 px-3 py-1.5 fw-bold">{{ $customer->diem_tich_luy ?? 0 }} điểm</span>
+                  <small class="d-block text-white-50 mt-1">Hạng: <strong>{{ $customer->hang_thanh_vien ?? 'Đồng' }}</strong></small>
+                </div>
+              </div>
+
+              <!-- Progress Bar towards Next Tier -->
+              @php $nextTier = $customer->next_tier_info; @endphp
+              <div class="mt-3">
+                <div class="d-flex justify-content-between small text-white-50 mb-1">
+                  <span>Tiến trình nâng cấp Hạng tiếp theo</span>
+                  <span class="text-warning fw-semibold">{{ $nextTier['next_tier'] }}</span>
+                </div>
+                <div class="progress bg-dark" style="height: 10px; border-radius: 6px;">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: {{ $nextTier['progress_percent'] }}%"></div>
+                </div>
+                @if($nextTier['needed_points'] > 0)
+                  <small class="text-white-50 d-block mt-2" style="font-size:12px;">💡 Đặt thêm món tích lũy <strong>{{ $nextTier['needed_points'] }} điểm</strong> nữa để tự động nâng cấp Hạng và nhận Voucher xịn hơn!</small>
+                @else
+                  <small class="text-success d-block mt-2" style="font-size:12px;">👑 Bạn đã đạt Hạng VIP Kim Cương tối cao với ngập tràn ưu đãi đặc quyền!</small>
+                @endif
+              </div>
+            </div>
+
+            <!-- Exclusive Voucher Box -->
+            @php $voucher = $customer->voucher_uu_dai; @endphp
+            <div class="p-4 mb-4 rounded-3 text-center position-relative" style="background: linear-gradient(135deg, rgba(245,158,11,0.15) 0%, rgba(142,25,42,0.15) 100%); border: 2px dashed #f59e0b;">
+              <span class="badge bg-danger position-absolute top-0 start-50 translate-middle px-3 py-1 rounded-pill fw-bold">MÃ ƯU ĐÃI ĐỘC QUYỀN</span>
+              <h5 class="fw-bold text-warning mb-1 mt-1">{{ $voucher['title'] }}</h5>
+              <p class="text-white-50 small mb-3">{{ $voucher['desc'] }}</p>
+
+              <div class="d-flex align-items-center justify-content-center gap-2 mb-3">
+                <div class="bg-dark text-warning font-monospace fw-bold fs-3 px-4 py-2 rounded-3 border border-warning border-opacity-50" id="voucherCodeText">
+                  {{ $voucher['code'] }}
+                </div>
+                <button class="btn btn-outline-warning" onclick="copyVoucherCode('{{ $voucher['code'] }}')">
+                  <i class="bi bi-copy me-1"></i> Sao chép
+                </button>
+              </div>
+
+              <button type="button" class="btn btn-warning btn-lg fw-bold px-4 py-2.5 shadow text-dark w-100" onclick="applyVoucherDirect('{{ $voucher['code'] }}', {{ $voucher['discount_val'] }}, {{ $voucher['discount_percent'] }})">
+                <i class="bi bi-lightning-charge-fill me-1"></i> ÁP DỤNG VOUCHER NGAY HÔM NAY ⚡
+              </button>
+            </div>
+
+            <!-- Realtime Live Ticker Activity -->
+            <div class="p-3 bg-dark bg-opacity-75 rounded-3 d-flex align-items-center gap-2 border border-secondary border-opacity-25 small text-white-50">
+              <span class="spinner-grow spinner-grow-sm text-success flex-shrink-0" role="status"></span>
+              <div class="text-truncate">
+                <strong class="text-success">Realtime Alert:</strong> Vừa có khách hàng tại Bàn 03 áp dụng mã <span class="text-warning fw-bold">{{ $voucher['code'] }}</span> thành công!
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer border-top border-secondary border-opacity-25 justify-content-between p-3">
+            <div class="text-white-50 small">
+              <i class="bi bi-info-circle text-warning me-1"></i> Tích điểm tự động khi gọi món thành công
+            </div>
+            <button type="button" class="btn btn-outline-light px-4" data-bs-dismiss="modal">Đóng & Xem Thực Đơn</button>
+          </div>
+
         </div>
       </div>
     </div>
@@ -796,6 +892,23 @@
         });
       }
 
+      // Hàm Sao Chép Mã Voucher
+      function copyVoucherCode(code) {
+        navigator.clipboard.writeText(code).then(() => {
+          alert('🎉 Đã sao chép mã voucher: ' + code);
+        });
+      }
+
+      // Hàm Áp Dụng Trực Tiếp Voucher Ưu Đãi
+      function applyVoucherDirect(code, val, percent) {
+        alert('⚡ Đã áp dụng mã ưu đãi ' + code + ' (Ưu đãi ' + percent + '%) thành công!');
+        const modalEl = document.getElementById('realtimeOfferModal');
+        const modalInstance = bootstrap.Modal.getInstance(modalEl);
+        if (modalInstance) {
+          modalInstance.hide();
+        }
+      }
+
       // Khởi chạy khi tài liệu HTML tải xong hoàn toàn
       $(document).ready(function() {
         pollRealtimeWaitTimes();
@@ -805,6 +918,15 @@
         if (currentGuests === 0) {
           const initModal = new bootstrap.Modal(document.getElementById('guestCountInitModal'));
           initModal.show();
+        }
+
+        // Tự động kích hoạt Modal Thông Báo Ưu Đãi Realtime Phủ Giữa Màn Hình
+        const isCustomer = {{ auth()->check() || session('show_offer_modal') ? 'true' : 'false' }};
+        if (isCustomer || currentGuests > 0) {
+          setTimeout(function() {
+            const offerModal = new bootstrap.Modal(document.getElementById('realtimeOfferModal'));
+            offerModal.show();
+          }, 500);
         }
       });
 

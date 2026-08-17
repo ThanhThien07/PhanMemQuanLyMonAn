@@ -44,13 +44,18 @@ Route::post('/ban/xac-nhan-chuyen-khoan/{id}', [BanController::class, 'confirmQr
 Route::get('/api/realtime-updates', [DatMonController::class, 'getRealtimeUpdates'])->name('api.realtime_updates');
 Route::get('/api/qr-ordered-grid-html/{ban_id}', [DatMonController::class, 'qrOrderedGridHtml'])->name('api.qr_ordered_grid_html');
 
+// --- Trang Landing Page Công Cộng ---
+Route::get('/', function () {
+    return auth()->check() ? redirect()->route('ban.index') : view('welcome');
+})->name('welcome');
+
 // =========================================================================
 // 2. CÁC ROUTE YÊU CẦU ĐĂNG NHẬP (Sử dụng Middleware 'auth')
 // =========================================================================
 Route::middleware(['auth'])->group(function () {
 
-    // Route mặc định chuyển hướng người dùng khi vào trang chủ ứng dụng (/)
-    Route::get('/', [BanController::class, 'index'])->name('home');
+    // Trang chủ sau khi đăng nhập: Quản lý Bàn Ăn
+    Route::get('/ban', [BanController::class, 'index'])->name('home');
 
     // Các API trả về mã HTML động để làm mới danh sách (Grid) trên màn hình Nhân viên và Bếp mà không cần tải lại toàn bộ trang
     Route::get('/api/bep-grid-html', [DatMonController::class, 'bepGridHtml'])->name('api.bep_grid_html');

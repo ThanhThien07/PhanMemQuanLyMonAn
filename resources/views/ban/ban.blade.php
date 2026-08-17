@@ -742,7 +742,7 @@
             <div class="logo">M&S CUISINE</div>
             <h2>QUÉT QR ĐẶT MÓN</h2>
             <h3>${tableName}</h3>
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrUrl)}" alt="QR Code" style="margin: 20px 0; border: 1px solid #eee; padding: 10px; border-radius: 10px;">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrUrl)}" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'250\' height=\'250\' fill=\'%23000\' viewBox=\'0 0 16 16\'><path d=\'M2 2h4v4H2V2zm6 0h4v4H8V2zM2 8h4v4H2V8zm10 2h2v2h-2v-2z\'/></svg>';" alt="QR Code" style="margin: 20px 0; border: 1px solid #eee; padding: 10px; border-radius: 10px;">
             <div class="instructions">
               Dùng điện thoại quét mã QR để xem thực đơn trực tuyến, gọi món trực tiếp và theo dõi trạng thái bếp!
             </div>
@@ -821,7 +821,7 @@
           <div class="logo">M&S CUISINE</div>
           <h2>QUÉT QR ĐẶT MÓN</h2>
           <h3>${ban.ten}</h3>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrUrl)}" alt="QR Code" style="margin: 10px 0; border: 1px solid #eee; padding: 5px; border-radius: 10px;">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrUrl)}" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\' fill=\'%23000\' viewBox=\'0 0 16 16\'><path d=\'M2 2h4v4H2V2zm6 0h4v4H8V2zM2 8h4v4H2V8zm10 2h2v2h-2v-2z\'/></svg>';" alt="QR Code" style="margin: 10px 0; border: 1px solid #eee; padding: 5px; border-radius: 10px;">
           <div class="instructions">
             Quét mã để xem thực đơn trực tuyến và tự phục vụ gọi món nhanh chóng.
           </div>

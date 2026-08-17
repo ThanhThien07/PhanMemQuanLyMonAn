@@ -42,6 +42,13 @@ class DatabaseSeeder extends Seeder
             'role' => 'bep',
         ]);
 
+        User::factory()->create([
+            'name' => 'Khách Hàng M&S',
+            'email' => 'khachhang@ms.com',
+            'password' => bcrypt('khachhang123'),
+            'role' => 'khach_hang',
+        ]);
+
         // 2. Seed danh mục loại món ăn
         $categories = [
             ['ma_loai' => 'LM01', 'ten_loai' => 'Món khai vị'],

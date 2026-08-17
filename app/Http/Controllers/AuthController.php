@@ -26,7 +26,7 @@ class AuthController extends Controller
         // Kiểm tra xem người dùng đã đăng nhập trước đó chưa bằng helper Auth::check()
         // Nếu đã đăng nhập, tự động chuyển hướng họ về trang mặc định theo vai trò (role)
         if (Auth::check()) {
-            return redirect()->route($this->getRedirectRoute(Auth::user()->role));
+            return redirect($this->getRedirectUrl(Auth::user()->role));
         }
 
         // Nếu chưa đăng nhập, trả về view giao diện đăng nhập nằm ở: resources/views/auth/login.blade.php
@@ -41,9 +41,6 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         // 1. Xác thực dữ liệu đầu vào (Validation)
-        // Laravel hỗ trợ hàm $request->validate() để kiểm tra nhanh dữ liệu gửi lên.
-        // Mảng thứ nhất định nghĩa các luật kiểm tra (required, email, min,...).
-        // Mảng thứ hai tùy biến các câu thông báo lỗi bằng tiếng Việt hiển thị ra ngoài giao diện.
         $credentials = $request->validate([
             'email' => 'required|email|max:100',
             'password' => 'required|string|min:6',
@@ -55,25 +52,25 @@ class AuthController extends Controller
         ]);
 
         // 2. Tiến hành kiểm tra thông tin đăng nhập trong Cơ sở dữ liệu
-        // Auth::attempt() nhận vào mảng chứa Email & Password, tự động mã hóa Password gửi lên
-        // và so sánh với mật khẩu đã mã hóa trong bảng 'users'.
-        // Tham số thứ hai ($request->has('remember')) dùng cho chức năng "Ghi nhớ đăng nhập" (Remember me).
         if (Auth::attempt($credentials, $request->has('remember'))) {
 
-            // Nếu đăng nhập thành công, tạo lại mã định danh Session để bảo mật và chống tấn công giả mạo phiên (Session Fixation).
+            // Nếu đăng nhập thành công, tạo lại mã định danh Session
             $request->session()->regenerate();
 
             $user = Auth::user(); // Lấy thông tin của người dùng hiện tại vừa đăng nhập
             $roleName = $this->getRoleNameVi($user->role); // Lấy tên tiếng Việt của vai trò để chào mừng
 
-            // Chuyển hướng người dùng tới trang họ đang cố truy cập trước đó (intended)
-            // hoặc chuyển về trang chủ mặc định theo phân quyền kèm thông báo thành công.
-            return redirect()->intended(route($this->getRedirectRoute($user->role)))
+            if ($user->role === 'khach_hang') {
+                return redirect($this->getRedirectUrl($user->role))
+                    ->with('success', 'Chào mừng quay trở lại, '.$user->name.'!')
+                    ->with('show_offer_modal', true);
+            }
+
+            return redirect()->intended($this->getRedirectUrl($user->role))
                 ->with('success', 'Chào mừng quay trở lại, '.$user->name.' ('.$roleName.')!');
         }
 
-        // 3. Nếu đăng nhập thất bại (sai email hoặc mật khẩu)
-        // Trả về trang trước đó kèm theo lỗi trong túi lỗi $errors của email và giữ lại email đã nhập.
+        // 3. Nếu đăng nhập thất bại
         return back()->withErrors([
             'email' => 'Thông tin đăng nhập không chính xác hoặc tài khoản không tồn tại.',
         ])->onlyInput('email');
@@ -86,7 +83,6 @@ class AuthController extends Controller
      */
     public function showRegister()
     {
-        // Trả về view đăng ký tại: resources/views/auth/register.blade.php
         return view('auth.register');
     }
 
@@ -97,16 +93,11 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        // 1. Xác thực dữ liệu đăng ký
-        // Các luật kiểm tra bao gồm:
-        // - 'unique:users': kiểm tra email này đã tồn tại trong bảng users chưa để tránh trùng lặp.
-        // - 'confirmed': kiểm tra trường password nhập vào phải trùng khớp với trường password_confirmation.
-        // - 'in:admin,nhan_vien,bep': giới hạn giá trị vai trò hợp lệ.
         $request->validate([
             'name' => 'required|string|max:100',
             'email' => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'role' => 'required|string|in:admin,nhan_vien,bep',
+            'role' => 'required|string|in:admin,nhan_vien,bep,khach_hang',
         ], [
             'name.required' => 'Họ tên không được để trống.',
             'email.required' => 'Email không được để trống.',
@@ -134,7 +125,7 @@ class AuthController extends Controller
         $roleName = $this->getRoleNameVi($user->role);
 
         // Chuyển hướng người dùng về trang giao diện tương ứng với vai trò của họ
-        return redirect()->route($this->getRedirectRoute($user->role))
+        return redirect($this->getRedirectUrl($user->role))
             ->with('success', 'Đăng ký tài khoản thành công! Bạn đã đăng nhập với vai trò '.$roleName.'.');
     }
 
@@ -164,21 +155,26 @@ class AuthController extends Controller
     private function getRoleNameVi($role)
     {
         $names = [
-            'admin' => 'Ban điều hành',
+            'admin' => 'Ban điều hành (Admin)',
             'nhan_vien' => 'Nhân viên phục vụ',
-            'bep' => 'Nhà bếp',
+            'bep' => 'Nhà bếp (KDS)',
+            'khach_hang' => 'Khách hàng',
         ];
 
         return $names[$role] ?? $role;
     }
 
     /**
-     * Xác định route chuyển hướng mặc định theo từng vai trò sau khi đăng nhập/đăng ký
+     * Xác định URL chuyển hướng mặc định theo từng vai trò sau khi đăng nhập/đăng ký
      */
-    private function getRedirectRoute($role)
+    private function getRedirectUrl($role)
     {
-        // Nếu là nhà bếp, chuyển thẳng tới màn hình bếp KDS để nhận món
-        // Nếu là admin hoặc nhân viên phục vụ, chuyển về màn hình quản lý sơ đồ bàn
-        return $role === 'bep' ? 'dat_mon.bep' : 'ban.index';
+        if ($role === 'bep') {
+            return route('dat_mon.bep');
+        }
+        if ($role === 'khach_hang') {
+            return route('dat_mon.qr_order', 1);
+        }
+        return route('ban.index');
     }
 }

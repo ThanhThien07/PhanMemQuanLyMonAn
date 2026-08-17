@@ -14,6 +14,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
+    <!-- Vite Asset Manager -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <!-- Cấu hình và tích hợp Tailwind CSS Play CDN để biên dịch trực tiếp các Class tiện ích -->
     <!-- Tailwind CSS Play CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
