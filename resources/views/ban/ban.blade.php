@@ -454,7 +454,7 @@
   }
 
   // Dynamic table data passed from Laravel
-  const tablesData = @json($tables);
+  const tablesData = JSON.parse('{!! addslashes(json_encode($tables)) !!}');
   let currentTable = null;
   
   // States of splitting cart

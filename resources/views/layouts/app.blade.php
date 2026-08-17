@@ -537,7 +537,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- FLOATING INTERACTIVE AI CHEF MASCOT ASSISTANT WIDGET -->
-    <div id="chefMascotWidget" class="position-fixed bottom-4 end-4 z-50 d-flex align-items-end gap-2" style="bottom: 24px; right: 24px;">
+    <div id="chefMascotWidget" class="position-fixed bottom-4 inset-e-4 z-50 d-flex align-items-end gap-2" style="bottom: 24px; right: 24px;">
       <!-- Speech Bubble -->
       <div id="mascotSpeech" class="bg-white text-dark p-3 rounded-2xl shadow-xl border border-warning text-xs font-semibold max-w-xs mb-2 transition-all duration-300 transform scale-100" style="max-width: 240px; box-shadow: 0 10px 25px rgba(0,0,0,0.15);">
         <div class="d-flex align-items-center justify-content-between mb-1">
@@ -583,8 +583,8 @@
         broadcaster: 'reverb',
         key: '{{ config("broadcasting.connections.reverb.key") }}',
         wsHost: '{{ config("broadcasting.connections.reverb.options.host", "localhost") }}',
-        wsPort: {{ config("broadcasting.connections.reverb.options.port", 8080) }},
-        wssPort: {{ config("broadcasting.connections.reverb.options.port", 8080) }},
+        wsPort: Number('{{ config("broadcasting.connections.reverb.options.port", 8080) }}'),
+        wssPort: Number('{{ config("broadcasting.connections.reverb.options.port", 8080) }}'),
         forceTLS: false,
         enabledTransports: ['ws', 'wss'],
       });

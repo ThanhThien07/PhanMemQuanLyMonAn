@@ -388,9 +388,9 @@
             </form>
 
             <div class="relative flex py-2 items-center">
-                <div class="flex-grow border-t border-gray-700"></div>
-                <span class="flex-shrink mx-4 text-gray-400 text-xs font-semibold">HOẶC ĐĂNG NHẬP TRỰC TIẾP</span>
-                <div class="flex-grow border-t border-gray-700"></div>
+                <div class="grow border-t border-gray-700"></div>
+                <span class="shrink mx-4 text-gray-400 text-xs font-semibold">HOẶC ĐĂNG NHẬP TRỰC TIẾP</span>
+                <div class="grow border-t border-gray-700"></div>
             </div>
 
             <!-- GOOGLE QUICK LOGIN BUTTON -->

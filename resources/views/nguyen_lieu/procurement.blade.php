@@ -130,10 +130,16 @@
                                         @endif
                                     </td>
                                     <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-danger rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#modalAddQuote" 
-                                                onclick="setSupplierQuote({{ $q->nha_cung_cap_id }}, {{ $q->nguyen_lieu_id }}, {{ $q->don_gia_chao }}, '{{ $q->don_vi_tinh }}', {{ $q->moq }}, {{ $q->lead_time_days }})">
-                                            <i class="bi bi-pencil me-1"></i>Sửa giá
-                                        </button>
+                                         <button class="btn btn-sm btn-outline-danger rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#modalAddQuote" 
+                                                 data-ncc="{{ $q->nha_cung_cap_id }}"
+                                                 data-nl="{{ $q->nguyen_lieu_id }}"
+                                                 data-gia="{{ $q->don_gia_chao }}"
+                                                 data-dvt="{{ $q->don_vi_tinh }}"
+                                                 data-moq="{{ $q->moq }}"
+                                                 data-lead="{{ $q->lead_time_days }}"
+                                                 onclick="editSupplierQuote(this)">
+                                             <i class="bi bi-pencil me-1"></i>Sửa giá
+                                         </button>
                                     </td>
                                 </tr>
                             @empty
@@ -153,7 +159,7 @@
 
     <!-- Section 2: Thuật toán Gợi ý Giỏ Hàng Mua Hàng Tối Ưu (Smart Procurement Optimizer) -->
     <div class="card card-premium">
-        <div class="card-premium-header bg-gradient-to-r from-amber-500 to-ms-primary text-white">
+        <div class="card-premium-header bg-linear-to-r from-amber-500 to-ms-primary text-white">
             <h2 class="card-premium-title text-white">
                 <i class="bi bi-cpu-fill text-warning me-2"></i>Thuật toán Gợi ý Giỏ hàng Tự động mua Nguyên liệu
             </h2>
@@ -302,13 +308,13 @@
 </div>
 
 <script>
-function setSupplierQuote(nccId, nlId, gia, donVi, moq, leadTime) {
-    document.getElementById('quote_ncc_id').value = nccId;
-    document.getElementById('quote_nl_id').value = nlId;
-    document.getElementById('quote_gia').value = gia;
-    document.getElementById('quote_don_vi').value = donVi;
-    document.getElementById('quote_moq').value = moq;
-    document.getElementById('quote_lead_time').value = leadTime;
+function editSupplierQuote(btn) {
+    document.getElementById('quote_ncc_id').value = btn.getAttribute('data-ncc');
+    document.getElementById('quote_nl_id').value = btn.getAttribute('data-nl');
+    document.getElementById('quote_gia').value = btn.getAttribute('data-gia');
+    document.getElementById('quote_don_vi').value = btn.getAttribute('data-dvt');
+    document.getElementById('quote_moq').value = btn.getAttribute('data-moq');
+    document.getElementById('quote_lead_time').value = btn.getAttribute('data-lead');
 }
 </script>
 @endsection

@@ -7,6 +7,7 @@ use App\Models\DonDatHangNcc;
 use App\Models\NguyenLieu;
 use App\Models\NhaCungCap;
 use App\Models\NhaCungCapNguyenLieu;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -148,7 +149,7 @@ class ProcurementController extends Controller
             'tong_tien' => $tongTien,
             'trang_thai' => 'cho_duyet',
             'che_do_toi_uu' => $validated['che_do_toi_uu'] ?? 'lowest_cost',
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'ghi_chu' => 'Tạo tự động từ Hệ thống So sánh Giá & Tối ưu Mua hàng',
         ]);
 

@@ -21,8 +21,8 @@
         broadcaster: 'reverb',
         key: '{{ config("broadcasting.connections.reverb.key") }}',
         wsHost: '{{ config("broadcasting.connections.reverb.options.host", "127.0.0.1") }}',
-        wsPort: {{ config("broadcasting.connections.reverb.options.port", 8080) }},
-        wssPort: {{ config("broadcasting.connections.reverb.options.port", 8080) }},
+        wsPort: Number('{{ config("broadcasting.connections.reverb.options.port", 8080) }}'),
+        wssPort: Number('{{ config("broadcasting.connections.reverb.options.port", 8080) }}'),
         forceTLS: false,
         enabledTransports: ['ws', 'wss'],
       });
@@ -257,7 +257,7 @@
         <li class="nav-item">
           <button class="nav-link menu-category-btn position-relative px-4" id="ordered-tab-btn" onclick="switchTab('ordered')">
             <i class="bi bi-clock-history me-1"></i>Trạng Thái Bếp
-            <span id="orderedCountBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger {{ $ban->activeDatMons->count() === 0 ? 'd-none' : '' }}" style="font-size: 10px;">
+            <span id="orderedCountBadge" class="position-absolute top-0 inset-s-100 translate-middle badge rounded-pill bg-danger {{ $ban->activeDatMons->count() === 0 ? 'd-none' : '' }}" style="font-size: 10px;">
               {{ $ban->activeDatMons->count() }}
             </span>
           </button>
@@ -278,15 +278,15 @@
         <div class="row g-3">
           @foreach ($menuItems as $item)
             <div class="col-12 col-md-6 menu-item-card animate-fade-in" data-cat-id="{{ $item->loai_mon_id }}">
-              <div class="dish-card d-flex p-3" onclick="openOrderModal('{{ $item->ten }}', {{ $item->gia }}, {{ $item->time }})">
-                <div class="flex-grow-1">
+              <div class="dish-card d-flex p-3" data-ten="{{ $item->ten }}" data-gia="{{ $item->gia }}" data-time="{{ $item->time }}" onclick="openOrderModal(this.getAttribute('data-ten'), Number(this.getAttribute('data-gia')), Number(this.getAttribute('data-time')))">
+                <div class="grow">
                   <div class="d-flex align-items-center gap-2 mb-1">
                     <h6 class="fw-bold text-dark mb-0">{{ $item->ten }}</h6>
                     @if ($item->loaiMon)
                       <span class="badge bg-secondary text-white" style="font-size: 9px; padding: 2px 6px;">{{ $item->loaiMon->ten_loai }}</span>
                     @endif
                   </div>
-                  <p class="text-secondary small mb-2" style="font-size: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                  <p class="text-secondary small mb-2" style="font-size: 12px; display: -webkit-box; line-clamp: 2; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                     {{ $item->mota ?: 'Hương vị tuyệt hảo được chế biến bởi đầu bếp giàu kinh nghiệm.' }}
                   </p>
                   <div class="d-flex align-items-center gap-2">
@@ -388,7 +388,7 @@
               <div class="row g-3">
                 <!-- Option Cash -->
                 <div class="col-12">
-                  <div class="card border border-2 p-3 text-center cursor-pointer hover-card" onclick="selectCashPayment()" style="border-radius:16px; transition: all 0.2s;">
+                  <div class="card border-2 p-3 text-center cursor-pointer hover-card" onclick="selectCashPayment()" style="border-radius:16px; transition: all 0.2s;">
                     <i class="bi bi-cash-coin text-success fs-2 mb-2"></i>
                     <h6 class="fw-bold text-dark mb-1">Thanh toán Tiền mặt</h6>
                     <span class="small text-secondary">Nhân viên phục vụ sẽ mang hóa đơn và đến bàn thu tiền trực tiếp.</span>
@@ -397,7 +397,7 @@
                 
                 <!-- Option QR -->
                 <div class="col-12">
-                  <div class="card border border-2 p-3 text-center cursor-pointer hover-card" onclick="selectQrPayment()" style="border-radius:16px; transition: all 0.2s;">
+                  <div class="card border-2 p-3 text-center cursor-pointer hover-card" onclick="selectQrPayment()" style="border-radius:16px; transition: all 0.2s;">
                     <i class="bi bi-qr-code-scan text-primary fs-2 mb-2"></i>
                     <h6 class="fw-bold text-dark mb-1">Chuyển khoản VietQR</h6>
                     <span class="small text-secondary">Tự thanh toán quét mã QR qua ngân hàng nhanh chóng và tiện lợi.</span>
@@ -420,7 +420,8 @@
               
               <a href="https://img.vietqr.io/image/momo-PSG2618416000000006-compact2.png?amount={{ $totalBill }}&addInfo=Thanh+Toan+MS+Ban+{{ $ban->id }}&accountName=NGUYEN+HOANG+HUNG" target="_blank" title="Bấm để xem ảnh lớn">
                 <img src="https://img.vietqr.io/image/momo-PSG2618416000000006-compact2.png?amount={{ $totalBill }}&addInfo=Thanh+Toan+MS+Ban+{{ $ban->id }}&accountName=NGUYEN+HOANG+HUNG" 
-                     onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&data={{ urlencode('VietQR Payment: ' . number_format($totalBill) . ' VND - Ban ' . $ban->id) }}';"
+                     data-fallback="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data={{ urlencode('VietQR Payment: ' . number_format($totalBill) . ' VND - Ban ' . $ban->id) }}"
+                     onerror="this.onerror=null; this.src=this.getAttribute('data-fallback');"
                      alt="VietQR M&S Payment" class="img-fluid rounded mb-3 border shadow-sm" style="max-height: 250px; cursor: pointer;">
               </a>
               
@@ -501,7 +502,7 @@
           
           <!-- Top Glow Banner -->
           <div class="p-4 text-center position-relative" style="background: linear-gradient(135deg, #8e192a 0%, #3b0764 50%, #0f172a 100%);">
-            <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close btn-close-white position-absolute top-0 inset-e-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
             
             <div class="d-inline-flex align-items-center gap-2 px-3 py-1.5 rounded-pill mb-3" style="background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.4); color: #f59e0b; font-size: 13px; font-weight: 700;">
               <span class="spinner-grow spinner-grow-sm text-warning" role="status"></span>
@@ -537,7 +538,7 @@
                   <span class="text-warning fw-semibold">{{ $nextTier['next_tier'] }}</span>
                 </div>
                 <div class="progress bg-dark" style="height: 10px; border-radius: 6px;">
-                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: {{ $nextTier['progress_percent'] }}%"></div>
+                  <div id="userTierProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" data-percent="{{ (int)$nextTier['progress_percent'] }}" style="width: 0%;"></div>
                 </div>
                 @if($nextTier['needed_points'] > 0)
                   <small class="text-white-50 d-block mt-2" style="font-size:12px;">💡 Đặt thêm món tích lũy <strong>{{ $nextTier['needed_points'] }} điểm</strong> nữa để tự động nâng cấp Hạng và nhận Voucher xịn hơn!</small>
@@ -550,7 +551,7 @@
             <!-- Exclusive Voucher Box -->
             @php $voucher = $customer->voucher_uu_dai; @endphp
             <div class="p-4 mb-4 rounded-3 text-center position-relative" style="background: linear-gradient(135deg, rgba(245,158,11,0.15) 0%, rgba(142,25,42,0.15) 100%); border: 2px dashed #f59e0b;">
-              <span class="badge bg-danger position-absolute top-0 start-50 translate-middle px-3 py-1 rounded-pill fw-bold">MÃ ƯU ĐÃI ĐỘC QUYỀN</span>
+              <span class="badge bg-danger position-absolute top-0 inset-s-50 translate-middle px-3 py-1 rounded-pill fw-bold">MÃ ƯU ĐÃI ĐỘC QUYỀN</span>
               <h5 class="fw-bold text-warning mb-1 mt-1">{{ $voucher['title'] }}</h5>
               <p class="text-white-50 small mb-3">{{ $voucher['desc'] }}</p>
 
@@ -558,19 +559,19 @@
                 <div class="bg-dark text-warning font-monospace fw-bold fs-3 px-4 py-2 rounded-3 border border-warning border-opacity-50" id="voucherCodeText">
                   {{ $voucher['code'] }}
                 </div>
-                <button class="btn btn-outline-warning" onclick="copyVoucherCode('{{ $voucher['code'] }}')">
+                <button class="btn btn-outline-warning" data-code="{{ $voucher['code'] }}" onclick="copyVoucherCode(this.getAttribute('data-code'))">
                   <i class="bi bi-copy me-1"></i> Sao chép
                 </button>
               </div>
 
-              <button type="button" class="btn btn-warning btn-lg fw-bold px-4 py-2.5 shadow text-dark w-100" onclick="applyVoucherDirect('{{ $voucher['code'] }}', {{ $voucher['discount_val'] }}, {{ $voucher['discount_percent'] }})">
+              <button type="button" class="btn btn-warning btn-lg fw-bold px-4 py-2.5 shadow text-dark w-100" data-code="{{ $voucher['code'] }}" data-val="{{ $voucher['discount_val'] }}" data-percent="{{ $voucher['discount_percent'] }}" onclick="applyVoucherDirect(this.getAttribute('data-code'), Number(this.getAttribute('data-val')), Number(this.getAttribute('data-percent')))">
                 <i class="bi bi-lightning-charge-fill me-1"></i> ÁP DỤNG VOUCHER NGAY HÔM NAY ⚡
               </button>
             </div>
 
             <!-- Realtime Live Ticker Activity -->
             <div class="p-3 bg-dark bg-opacity-75 rounded-3 d-flex align-items-center gap-2 border border-secondary border-opacity-25 small text-white-50">
-              <span class="spinner-grow spinner-grow-sm text-success flex-shrink-0" role="status"></span>
+              <span class="spinner-grow spinner-grow-sm text-success shrink-0" role="status"></span>
               <div class="text-truncate">
                 <strong class="text-success">Realtime Alert:</strong> Vừa có khách hàng tại Bàn 03 áp dụng mã <span class="text-warning fw-bold">{{ $voucher['code'] }}</span> thành công!
               </div>
@@ -588,6 +589,56 @@
       </div>
     </div>
 
+    <!-- MODAL ĐÁNH GIÁ CHẤT LƯỢNG 5★ & LINH VẬT TƯƠNG TÁC -->
+    <div class="modal fade" id="modalRatingFeedback" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-2xl" style="border-radius:24px;">
+          <div class="modal-header bg-dark text-white border-0 py-3" style="border-top-left-radius:24px; border-top-right-radius:24px;">
+            <h5 class="modal-title fw-bold text-warning d-flex align-items-center gap-2">
+              <i class="bi bi-star-fill text-warning"></i>ĐÁNH GIÁ TRẢI NGHIỆM TẠI BÀN
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body p-4 text-center">
+            <!-- Animated Mascot Reaction Head -->
+            <div id="ratingMascot" class="mb-3 transition-transform duration-300" style="width: 100px; height: 100px; margin: 0 auto;">
+              <svg viewBox="0 0 200 200" class="w-100 h-100">
+                <circle cx="100" cy="100" r="90" fill="#f59e0b"/>
+                <path d="M 60 45 C 50 25, 80 10, 100 20 C 120 10, 150 25, 140 45 Z" fill="#ffffff"/>
+                <ellipse cx="100" cy="115" rx="22" ry="16" fill="#fef3c7"/>
+                <ellipse cx="100" cy="108" rx="8" ry="6" fill="#1e293b"/>
+                <circle cx="78" cy="92" r="6" fill="#0f172a"/>
+                <circle cx="122" cy="92" r="6" fill="#0f172a"/>
+                <path id="mascotRatingMouth" d="M 92 118 Q 100 130 108 118" fill="none" stroke="#1e293b" stroke-width="4" stroke-linecap="round"/>
+              </svg>
+            </div>
+
+            <h6 class="fw-bold text-dark mb-1" id="mascotRatingTitle">Vui lòng chấm điểm chất lượng món ăn!</h6>
+            <p class="text-secondary small mb-3" id="mascotRatingSub">Ý kiến của bạn giúp M&S Cuisine phục vụ tốt hơn.</p>
+
+            <!-- Star selector -->
+            <div class="d-flex justify-content-center gap-2 mb-3 fs-2 text-warning cursor-pointer">
+              <i class="bi bi-star-fill star-icon" onclick="setRating(1)"></i>
+              <i class="bi bi-star-fill star-icon" onclick="setRating(2)"></i>
+              <i class="bi bi-star-fill star-icon" onclick="setRating(3)"></i>
+              <i class="bi bi-star-fill star-icon" onclick="setRating(4)"></i>
+              <i class="bi bi-star-fill star-icon" onclick="setRating(5)"></i>
+            </div>
+            <input type="hidden" id="selectedStarRating" value="5">
+
+            <div class="mb-3 text-start">
+              <label class="form-label text-xs fw-bold text-muted">Nhận xét chi tiết (không bắt buộc):</label>
+              <textarea id="ratingFeedbackText" class="form-control" rows="2" placeholder="Ví dụ: Món ăn đậm đà, phục vụ rất nhanh..."></textarea>
+            </div>
+
+            <button type="button" class="btn btn-premium w-100 py-3 font-bold" onclick="submitCustomerFeedback()">
+              <i class="bi bi-send-fill me-2"></i>Gửi Đánh Giá Ngay
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Bootstrap 5 JavaScript & jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -596,7 +647,7 @@
       // CẤU HÌNH & XỬ LÝ KHÁCH HÀNG QUÉT QR TỰ ĐẶT MÓN TẠI BÀN
       // =========================================================================
       // Biến lưu thông tin ID bàn hiện tại và món ăn đang được thao tác trong Modal
-      const banId = {{ $ban->id }};
+      const banId = Number('{{ $ban->id }}');
       let activeItem = { ten: '', gia: 0, time: 0 };
 
       // Hàm chuyển đổi tab giữa "Thực Đơn Gọi Món" và "Trạng Thái Bếp"
@@ -892,58 +943,6 @@
         });
       }
 
-    <!-- MODAL ĐÁNH GIÁ CHẤT LƯỢNG 5★ & LINH VẬT TƯƠNG TÁC -->
-    <div class="modal fade" id="modalRatingFeedback" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-2xl" style="border-radius:24px;">
-          <div class="modal-header bg-dark text-white border-0 py-3" style="border-top-left-radius:24px; border-top-right-radius:24px;">
-            <h5 class="modal-title fw-bold text-warning d-flex align-items-center gap-2">
-              <i class="bi bi-star-fill text-warning"></i>ĐÁNH GIÁ TRẢI NGHIỆM TẠI BÀN
-            </h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body p-4 text-center">
-            <!-- Animated Mascot Reaction Head -->
-            <div id="ratingMascot" class="mb-3 transition-transform duration-300" style="width: 100px; height: 100px; margin: 0 auto;">
-              <svg viewBox="0 0 200 200" class="w-100 h-100">
-                <circle cx="100" cy="100" r="90" fill="#f59e0b"/>
-                <path d="M 60 45 C 50 25, 80 10, 100 20 C 120 10, 150 25, 140 45 Z" fill="#ffffff"/>
-                <ellipse cx="100" cy="115" rx="22" ry="16" fill="#fef3c7"/>
-                <ellipse cx="100" cy="108" rx="8" ry="6" fill="#1e293b"/>
-                <circle cx="78" cy="92" r="6" fill="#0f172a"/>
-                <circle cx="122" cy="92" r="6" fill="#0f172a"/>
-                <path id="mascotRatingMouth" d="M 92 118 Q 100 130 108 118" fill="none" stroke="#1e293b" stroke-width="4" stroke-linecap="round"/>
-              </svg>
-            </div>
-
-            <h6 class="fw-bold text-dark mb-1" id="mascotRatingTitle">Vui lòng chấm điểm chất lượng món ăn!</h6>
-            <p class="text-secondary small mb-3" id="mascotRatingSub">Ý kiến của bạn giúp M&S Cuisine phục vụ tốt hơn.</p>
-
-            <!-- Star selector -->
-            <div class="d-flex justify-content-center gap-2 mb-3 fs-2 text-warning cursor-pointer">
-              <i class="bi bi-star-fill star-icon" onclick="setRating(1)"></i>
-              <i class="bi bi-star-fill star-icon" onclick="setRating(2)"></i>
-              <i class="bi bi-star-fill star-icon" onclick="setRating(3)"></i>
-              <i class="bi bi-star-fill star-icon" onclick="setRating(4)"></i>
-              <i class="bi bi-star-fill star-icon" onclick="setRating(5)"></i>
-            </div>
-            <input type="hidden" id="selectedStarRating" value="5">
-
-            <div class="mb-3 text-start">
-              <label class="form-label text-xs fw-bold text-muted">Nhận xét chi tiết (không bắt buộc):</label>
-              <textarea id="ratingFeedbackText" class="form-control" rows="2" placeholder="Ví dụ: Món ăn đậm đà, phục vụ rất nhanh..."></textarea>
-            </div>
-
-            <button type="button" class="btn btn-premium w-100 py-3 font-bold" onclick="submitCustomerFeedback()">
-              <i class="bi bi-send-fill me-2"></i>Gửi Đánh Giá Ngay
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bootstrap 5 JavaScript & jQuery -->
-    <script>
       let currentStarVal = 5;
 
       function setRating(stars) {
@@ -991,7 +990,7 @@
           type: 'POST',
           data: {
             _token: '{{ csrf_token() }}',
-            ban_id: {{ $ban->id }},
+            ban_id: Number('{{ $ban->id }}'),
             so_sao: currentStarVal,
             noi_dung_danh_gia: text
           },
@@ -1027,15 +1026,18 @@
       $(document).ready(function() {
         pollRealtimeWaitTimes();
         
+        // Cập nhật phần trăm tiến trình cho Progress Bar nâng hạng
+        $('#userTierProgressBar').css('width', ($('#userTierProgressBar').data('percent') || 0) + '%');
+
         // Tự động bật Modal bắt buộc nhập số khách nếu bàn ăn này ghi nhận số khách bằng 0 (bàn trống mới)
-        const currentGuests = {{ $ban->so_luong_khach ?: 0 }};
+        const currentGuests = Number('{{ $ban->so_luong_khach ?: 0 }}');
         if (currentGuests === 0) {
           const initModal = new bootstrap.Modal(document.getElementById('guestCountInitModal'));
           initModal.show();
         }
 
         // Tự động kích hoạt Modal Thông Báo Ưu Đãi Realtime Phủ Giữa Màn Hình
-        const isCustomer = {{ auth()->check() || session('show_offer_modal') ? 'true' : 'false' }};
+        const isCustomer = Boolean(Number('{{ (auth()->check() || session("show_offer_modal")) ? 1 : 0 }}'));
         if (isCustomer || currentGuests > 0) {
           setTimeout(function() {
             const offerModal = new bootstrap.Modal(document.getElementById('realtimeOfferModal'));

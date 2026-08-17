@@ -11,6 +11,7 @@ use App\Http\Controllers\NhaCungCapController;
 use App\Http\Controllers\NhanVienController;
 use App\Http\Controllers\ProcurementController;
 use App\Http\Controllers\ReportController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -52,7 +53,7 @@ Route::get('/api/qr-ordered-grid-html/{ban_id}', [DatMonController::class, 'qrOr
 
 // --- Trang Landing Page Công Cộng ---
 Route::get('/', function () {
-    return auth()->check() ? redirect()->route('ban.index') : view('welcome');
+    return Auth::check() ? redirect()->route('ban.index') : view('welcome');
 })->name('welcome');
 
 // =========================================================================

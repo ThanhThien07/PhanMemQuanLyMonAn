@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid p-0">
   <!-- Page Header -->
-  <div class="d-flex align-items-center justify-content-between mb-4 bg-gradient-to-r from-red-950 via-ms-primary to-amber-900 text-white p-4 rounded-2xl shadow-lg border-b-4 border-warning">
+  <div class="d-flex align-items-center justify-content-between mb-4 bg-linear-to-r from-red-950 via-ms-primary to-amber-900 text-white p-4 rounded-2xl shadow-lg border-b-4 border-warning">
     <div class="d-flex align-items-center gap-3">
       <div style="width: 65px; height: 65px;" class="bg-white rounded-circle p-1 shadow-md border-2 border-warning hover:scale-110 transition-transform">
         <svg viewBox="0 0 200 200" class="w-100 h-100">

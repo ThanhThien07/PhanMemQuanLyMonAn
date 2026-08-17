@@ -15,6 +15,7 @@ use App\Models\MonAn;
 use App\Models\NguyenLieu;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -86,8 +87,9 @@ class DatMonController extends Controller
 
         // Lấy hoặc khởi tạo thông tin khách hàng để tính điểm tích lũy & Hạng thành viên
         $customer = null;
-        if (auth()->check()) {
-            $user = auth()->user();
+        if (Auth::check()) {
+            /** @var \App\Models\NguoiDung $user */
+            $user = Auth::user();
             $customer = KhachHang::firstOrCreate(
                 ['sdt' => '098' . sprintf('%07d', $user->id)],
                 [
@@ -150,8 +152,8 @@ class DatMonController extends Controller
 
         // Tích điểm thưởng tự động cho khách hàng khi gọi món (25k = 1 điểm)
         $pointsEarned = max(1, (int)floor(($request->don_gia * $request->so_luong) / 25000));
-        if (auth()->check()) {
-            $khach = KhachHang::where('ten', auth()->user()->name)->first();
+        if (Auth::check()) {
+            $khach = KhachHang::where('ten', Auth::user()->name)->first();
             if ($khach) {
                 $khach->increment('diem_tich_luy', $pointsEarned);
                 $datMon->update(['khach_hang_id' => $khach->id]);
