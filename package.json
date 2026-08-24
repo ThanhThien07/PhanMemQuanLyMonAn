@@ -4,7 +4,8 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "db": "node scripts/db.js"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
@@ -14,5 +15,9 @@
         "pusher-js": "^8.5.0",
         "tailwindcss": "^4.0.0",
         "vite": "^8.0.0"
+    },
+    "dependencies": {
+        "dotenv": "^17.4.2",
+        "mongoose": "^9.9.2"
     }
 }

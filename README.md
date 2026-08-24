@@ -7,6 +7,15 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Project Documentation (Tài Liệu Dự Án)
+
+Các tài liệu thông tin, kiến trúc và bản đồ tính năng dự án nằm trong thư mục `docs/`:
+
+- [Bản Đồ Tính Năng Và Giao Diện](docs/BANDO_TINH_NANG_VA_GIAO_DIEN.md)
+- [Báo Cáo Tính Năng Và Phân Quyền](docs/BAO_CAO_TINH_NANG_VA_PHAN_QUYEN.md)
+- [Đặc Tả Hệ Thống Quản Lý Nhà Hàng](docs/DAC_TA_HE_THONG_QUAN_LY_NHA_HANG.md)
+- [Hướng Dẫn Kiến Trúc (Architecture Guide)](docs/architecture_guide.md)
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

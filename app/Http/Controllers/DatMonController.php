@@ -362,8 +362,8 @@ class DatMonController extends Controller
             'created_at' => $o->created_at->toIso8601String(),
         ]);
 
-        // Bàn đang chờ thanh toán
-        $paymentRequests = $tables->pendingCheckout()->map(fn ($t) => [
+        // Bàn đang chờ thanh toán (lọc từ Collection $tables đã nạp)
+        $paymentRequests = $tables->filter(fn ($t) => !is_null($t->yeu_cau_thanh_toan))->map(fn ($t) => [
             'id' => $t->id,
             'ten' => $t->ten,
             'yeu_cau_thanh_toan' => $t->yeu_cau_thanh_toan,
