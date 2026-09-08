@@ -1,3 +1,5 @@
+ 
+
 # BÁO CÁO CHI TIẾT TÍNH NĂNG VÀ PHÂN QUYỀN HỆ THỐNG
 
 ## Phần mềm Quản lý Món ăn & Vận hành Nhà hàng (PhanMemQuanLyMonAn)
@@ -105,8 +107,9 @@ Hệ thống phân chia quyền hạn truy cập rõ ràng thành **4 nhóm đ�
 
 Dưới đây là bảng tổng hợp trực quan so sánh quyền hạn truy cập của các vai trò trong hệ thống:
 
-| Phân hệ / Chức năng                                  | Khách Hàng | Nhân Viên Phục Vụ | Nhà Bếp / Thủ Kho | Ban Điều Hành (Admin) |
-| :------------------------------------------------------- | :----------: | :-------------------: | :------------------: | :----------------------: |
+
+| Phân hệ / Chức năng                            | Khách Hàng | Nhân Viên Phục Vụ | Nhà Bếp / Thủ Kho | Ban Điều Hành (Admin) |
+| :--------------------------------------------------- | :------------: | :---------------------: | :--------------------: | :------------------------: |
 | **Xem menu & tự đặt món qua QR**               |    🟢 Có    |        🟢 Có        |      🔴 Không      |          🟢 Có          |
 | **Chọn độ ưu tiên món ăn & xem time chờ**  |    🟢 Có    |        🟢 Có        |      🔴 Không      |          🟢 Có          |
 | **Gửi yêu cầu thanh toán (Tiền mặt/QR)**     |    🟢 Có    |        🟢 Có        |      🔴 Không      |          🟢 Có          |

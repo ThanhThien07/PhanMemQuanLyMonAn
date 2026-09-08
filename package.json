@@ -1,23 +1,19 @@
 {
-    "$schema": "https://www.schemastore.org/package.json",
-    "private": true,
-    "type": "module",
-    "scripts": {
-        "build": "vite build",
-        "dev": "vite",
-        "db": "node scripts/db.js"
-    },
-    "devDependencies": {
-        "@tailwindcss/vite": "^4.0.0",
-        "concurrently": "^9.0.1",
-        "laravel-echo": "^2.3.7",
-        "laravel-vite-plugin": "^3.0.0",
-        "pusher-js": "^8.5.0",
-        "tailwindcss": "^4.0.0",
-        "vite": "^8.0.0"
-    },
-    "dependencies": {
-        "dotenv": "^17.4.2",
-        "mongoose": "^9.9.2"
-    }
+  "name": "royal-bistro-restaurant-management",
+  "version": "2.0.0",
+  "description": "Hệ thống Quản lý Nhà hàng & Gọi món (Fullstack JavaScript: Node.js Express + React Vite)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"cyan,amber\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "start": "cd backend && npm start",
+    "build:frontend": "cd frontend && npm run build",
+    "build": "npm run build:frontend",
+    "install:all": "cd backend && npm install && cd ../frontend && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
 }
