@@ -1,17 +1,17 @@
 {
   "name": "royal-bistro-restaurant-management",
   "version": "2.0.0",
-  "description": "Hệ thống Quản lý Nhà hàng & Gọi món (Fullstack JavaScript: Node.js Express + React Vite)",
+  "description": "Hệ thống Quản lý Nhà hàng & Gọi món (Fullstack: Node.js Express + MongoDB & React Vite)",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev:backend": "cd backend && npm run dev",
-    "dev:frontend": "cd frontend && npm run dev",
-    "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"cyan,amber\" \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "start": "cd backend && npm start",
-    "build:frontend": "cd frontend && npm run build",
-    "build": "npm run build:frontend",
-    "install:all": "cd backend && npm install && cd ../frontend && npm install"
+    "dev:be": "cd BE && npm run dev",
+    "dev:fe": "cd FE && npm run dev",
+    "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"cyan,amber\" \"npm run dev:be\" \"npm run dev:fe\"",
+    "start": "cd BE && npm start",
+    "build:fe": "cd FE && npm run build",
+    "build": "npm run build:fe",
+    "install:all": "cd BE && npm install && cd ../FE && npm install"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
