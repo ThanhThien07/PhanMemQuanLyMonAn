@@ -62,3 +62,68 @@
 .glow-blue-light {
   box-shadow: 0 4px 20px rgba(0, 119, 182, 0.20);
 }
+
+/* ==========================================================================
+   Tương Thích và Đồng Bộ Bootstrap 5 + Tailwind CSS
+   ========================================================================== */
+
+/* Tránh gạch chân mặc định từ Bootstrap reboot */
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+
+/* Nâng cấp các Component Bootstrap theo thiết kế Royal Bistro */
+.btn {
+  font-family: inherit;
+  font-weight: 700;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #023E8A 0%, #0077B6 100%);
+  border: none;
+  color: #ffffff;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  background: linear-gradient(135deg, #03045E 0%, #023E8A 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 20px -4px rgba(0, 119, 182, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  border: none;
+}
+.btn-success:hover {
+  background: linear-gradient(135deg, #047857 0%, #059669 100%);
+  transform: translateY(-1px);
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+  border: none;
+  color: #ffffff;
+}
+.btn-warning:hover {
+  background: linear-gradient(135deg, #b45309 0%, #d97706 100%);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.card {
+  border-color: #e2e8f0;
+  transition: all 0.2s ease-in-out;
+}
+
+.badge {
+  font-weight: 700;
+  letter-spacing: 0.025em;
+}
+
+.table > :not(caption) > * > * {
+  border-bottom-color: #f1f5f9;
+}

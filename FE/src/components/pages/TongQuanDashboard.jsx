@@ -12,11 +12,7 @@ import {
   DollarSign, 
   ShoppingBag, 
   AlertTriangle, 
-  TrendingUp, 
-  Clock, 
-  Grid3X3,
-  ChefHat,
-  ArrowUpRight
+  Clock 
 } from 'lucide-react';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu';
 
@@ -98,160 +94,192 @@ export default function TongQuanDashboard({ setActiveTab }) {
   ];
 
   return (
-    <div className="p-6 space-y-6 max-w-7xl mx-auto">
+    <div className="container-fluid px-2 px-md-4 py-3 max-w-7xl mx-auto space-y-4">
       {/* Biểu ngữ Chào Mừng */}
-      <div className="bg-gradient-to-r from-amber-500/15 via-amber-100/50 to-orange-50/60 border border-amber-200 rounded-3xl p-6 relative overflow-hidden shadow-xs">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="card border border-amber-200 rounded-4 shadow-sm p-4 p-md-4 bg-gradient-to-r from-amber-500/15 via-amber-100/50 to-orange-50/60 overflow-hidden">
+        <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
           <div>
-            <h2 className="text-2xl font-black text-slate-900">
+            <div className="d-flex align-items-center gap-2 mb-1">
+              <span className="badge bg-warning text-dark px-2.5 py-1 rounded-pill fw-bold text-xs">
+                <i className="bi bi-stars me-1"></i>Hôm Nay
+              </span>
+              <span className="text-xs text-slate-500 font-semibold">Cập nhật thời gian thực</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-1">
               Chào Mừng Đến Với Bảng Điều Khiển Royal Bistro
             </h2>
-            <p className="text-slate-600 text-sm font-medium mt-1">
-              Theo dõi doanh số, quản lý bàn ăn, điều phối nhà bếp và kho nguyên liệu thời gian thực.
+            <p className="text-slate-600 text-xs sm:text-sm font-medium mb-0">
+              Theo dõi doanh số, quản lý bàn ăn, điều phối nhà bếp và kho nguyên liệu tức thời.
             </p>
           </div>
-          <div className="flex items-center gap-2.5 shrink-0">
+          <div className="d-flex align-items-center gap-2 shrink-0">
             <button
               onClick={() => setActiveTab('pos')}
-              className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-sm flex items-center gap-2 shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
+              className="btn btn-warning text-white fw-bold px-3 py-2 rounded-3 d-flex align-items-center gap-2 shadow-sm"
             >
-              <Grid3X3 className="w-4 h-4" />
-              Mở POS Gọi Món
+              <i className="bi bi-grid-3x3-gap-fill"></i>
+              <span>Mở POS Gọi Món</span>
             </button>
             <button
               onClick={() => setActiveTab('kitchen')}
-              className="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 font-bold text-sm flex items-center gap-2 shadow-2xs transition-all cursor-pointer"
+              className="btn btn-outline-secondary bg-white text-slate-800 fw-bold px-3 py-2 rounded-3 d-flex align-items-center gap-2 shadow-xs"
             >
-              <ChefHat className="w-4 h-4 text-amber-600" />
-              Màn Hình Bếp
+              <i className="bi bi-fire text-danger"></i>
+              <span>Màn Hình Bếp</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Lưới Thẻ Chỉ Số KPI */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Lưới Thẻ Chỉ Số KPI sử dụng Bootstrap Row / Col kết hợp Tailwind */}
+      <div className="row g-3 g-md-4">
         {theThongKe.map((the, chiSo) => {
           const BieuTuongIcon = the.bieuTuong;
           return (
-            <div
-              key={chiSo}
-              className={`p-5 rounded-3xl bg-gradient-to-br ${the.mauSac} border bg-white shadow-xs relative overflow-hidden`}
-            >
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                  {the.tieuDe}
-                </span>
-                <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                  <BieuTuongIcon className="w-5 h-5" />
+            <div key={chiSo} className="col-12 col-sm-6 col-xl-3">
+              <div
+                className={`card h-100 p-3.5 rounded-4 bg-gradient-to-br ${the.mauSac} border bg-white shadow-sm transition-all hover:-translate-y-0.5`}
+              >
+                <div className="d-flex align-items-center justify-content-between mb-3">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                    {the.tieuDe}
+                  </span>
+                  <div className="p-2 rounded-3 bg-white border border-slate-200 shadow-xs">
+                    <BieuTuongIcon className="w-4 h-4" />
+                  </div>
                 </div>
-              </div>
-              <div className="text-2xl font-black text-slate-900 tracking-tight">
-                {the.giaTri}
-              </div>
-              <div className="text-xs text-slate-500 mt-2 flex items-center gap-1 font-semibold">
-                <TrendingUp className="w-3.5 h-3.5 text-amber-600" />
-                <span>{the.bienDong}</span>
+                <div className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mb-2">
+                  {the.giaTri}
+                </div>
+                <div className="text-xs text-slate-500 d-flex align-items-center gap-1 font-semibold">
+                  <TrendingUp className="w-3.5 h-3.5 text-amber-600" />
+                  <span>{the.bienDong}</span>
+                </div>
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* Khu vực chi tiết (2 Cột) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Cột Trái 2 phần: Danh sách Món Ăn Bán Chạy Nhất */}
-        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-3xl p-6 shadow-xs">
-          <div className="flex items-center justify-between mb-5">
-            <div>
-              <h3 className="text-lg font-extrabold text-slate-900">Top Món Ăn Bán Chạy Nhất</h3>
-              <p className="text-xs text-slate-500 font-medium">Xếp hạng theo số lượng đã phục vụ</p>
+      {/* Khu vực chi tiết (2 Cột Bootstrap Row) */}
+      <div className="row g-4">
+        {/* Cột Trái 8 phần: Danh sách Món Ăn Bán Chạy Nhất */}
+        <div className="col-12 col-lg-8">
+          <div className="card h-100 bg-white border border-slate-200 rounded-4 p-4 shadow-sm">
+            <div className="d-flex align-items-center justify-content-between mb-4">
+              <div>
+                <h3 className="text-base sm:text-lg font-extrabold text-slate-900 mb-0">
+                  <i className="bi bi-trophy-fill text-warning me-2"></i>Top Món Ăn Bán Chạy Nhất
+                </h3>
+                <p className="text-xs text-slate-500 font-medium mb-0">Xếp hạng theo số lượng đã phục vụ</p>
+              </div>
+              <button
+                onClick={() => setActiveTab('dishes')}
+                className="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold d-flex align-items-center gap-1"
+              >
+                <span>Xem thực đơn</span>
+                <i className="bi bi-arrow-up-right"></i>
+              </button>
             </div>
-            <button
-              onClick={() => setActiveTab('dishes')}
-              className="text-xs text-amber-700 hover:text-amber-600 font-bold flex items-center gap-1 cursor-pointer"
-            >
-              Xem thực đơn <ArrowUpRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
 
-          <div className="space-y-3">
-            {duLieuTongHop?.topDishes?.length > 0 ? (
-              duLieuTongHop.topDishes.map((mon, i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-amber-300 transition-colors"
-                >
-                  <div className="flex items-center gap-3.5">
-                    <span className="w-6 text-center text-sm font-black text-amber-600">#{i + 1}</span>
-                    <img
-                      src={mon.hinh_anh || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=120'}
-                      alt={mon.ten_mon}
-                      className="w-12 h-12 rounded-xl object-cover border border-slate-200"
-                    />
-                    <div>
-                      <div className="text-sm font-bold text-slate-900">{mon.ten_mon}</div>
-                      <div className="text-xs text-slate-500 font-medium">
-                        {dinhDangTienTe(mon.gia)} / phần
+            <div className="space-y-2.5">
+              {duLieuTongHop?.topDishes?.length > 0 ? (
+                duLieuTongHop.topDishes.map((mon, i) => (
+                  <div
+                    key={i}
+                    className="d-flex align-items-center justify-content-between p-3 rounded-3 bg-slate-50 border border-slate-200/80 hover:border-amber-300 transition-colors"
+                  >
+                    <div className="d-flex align-items-center gap-3">
+                      <span className="badge bg-amber-100 text-amber-900 rounded-pill px-2.5 py-1 text-xs fw-bold">
+                        #{i + 1}
+                      </span>
+                      <img
+                        src={mon.hinh_anh || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=120'}
+                        alt={mon.ten_mon}
+                        className="w-11 h-11 rounded-3 object-cover border border-slate-200"
+                      />
+                      <div>
+                        <div className="text-sm font-bold text-slate-900">{mon.ten_mon}</div>
+                        <div className="text-xs text-slate-500 font-medium">
+                          {dinhDangTienTe(mon.gia)} / phần
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-end">
+                      <div className="badge bg-warning-subtle text-amber-800 px-2.5 py-1 rounded-pill fw-bold text-xs">
+                        {mon.total_sold} đĩa
+                      </div>
+                      <div className="text-xs text-slate-500 font-semibold mt-1">
+                        {dinhDangTienTe(mon.total_revenue || 0)}
                       </div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-sm font-black text-amber-600">
-                      {mon.total_sold} đĩa
-                    </div>
-                    <div className="text-xs text-slate-500 font-semibold">
-                      {dinhDangTienTe(mon.total_revenue || 0)}
-                    </div>
-                  </div>
+                ))
+              ) : (
+                <div className="text-center py-5 text-slate-400 text-sm font-medium">
+                  <i className="bi bi-inbox fs-3 d-block mb-2 text-slate-300"></i>
+                  Chưa có dữ liệu gọi món
                 </div>
-              ))
-            ) : (
-              <div className="text-center py-8 text-slate-400 text-sm font-medium">Chưa có dữ liệu gọi món</div>
-            )}
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Cột Phải 1 phần: Phân bố Trạng Thái Bàn Ăn */}
-        <div className="bg-white border border-slate-200 rounded-3xl p-6 flex flex-col justify-between shadow-xs">
-          <div>
-            <h3 className="text-lg font-extrabold text-slate-900 mb-1">Trạng Thái Sơ Đồ Bàn</h3>
-            <p className="text-xs text-slate-500 font-medium mb-5">Tỷ lệ sử dụng bàn thực tế</p>
-
-            <div className="space-y-4">
-              <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></div>
-                  <span className="text-sm font-bold text-emerald-900">Bàn Trống (Sẵn Sàng)</span>
-                </div>
-                <span className="text-lg font-black text-slate-900">8 bàn</span>
+        {/* Cột Phải 4 phần: Phân bố Trạng Thái Bàn Ăn */}
+        <div className="col-12 col-lg-4">
+          <div className="card h-100 bg-white border border-slate-200 rounded-4 p-4 d-flex flex-column justify-content-between shadow-sm">
+            <div>
+              <div className="d-flex align-items-center justify-content-between mb-2">
+                <h3 className="text-base sm:text-lg font-extrabold text-slate-900 mb-0">
+                  <i className="bi bi-grid-fill text-primary me-2"></i>Trạng Thái Bàn
+                </h3>
+                <span className="badge bg-secondary-subtle text-secondary rounded-pill px-2 py-1 text-xs">
+                  Tổng 12 bàn
+                </span>
               </div>
+              <p className="text-xs text-slate-500 font-medium mb-4">Tỷ lệ sử dụng bàn thực tế</p>
 
-              <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 rounded-full bg-amber-500"></div>
-                  <span className="text-sm font-bold text-amber-900">Đang Phục Vụ</span>
+              <div className="space-y-3">
+                <div className="p-3 rounded-3 bg-emerald-50 border border-emerald-200 d-flex align-items-center justify-content-between">
+                  <div className="d-flex align-items-center gap-2.5">
+                    <span className="badge bg-success rounded-circle p-1.5"></span>
+                    <span className="text-xs sm:text-sm font-bold text-emerald-900">Bàn Trống (Sẵn Sàng)</span>
+                  </div>
+                  <span className="badge bg-white text-emerald-800 border border-emerald-300 fs-6 fw-bold px-2.5 py-1">
+                    8 bàn
+                  </span>
                 </div>
-                <span className="text-lg font-black text-slate-900">3 bàn</span>
-              </div>
 
-              <div className="p-4 rounded-2xl bg-sky-50 border border-sky-200 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 rounded-full bg-sky-500"></div>
-                  <span className="text-sm font-bold text-sky-900">Đã Đặt Trước</span>
+                <div className="p-3 rounded-3 bg-amber-50 border border-amber-200 d-flex align-items-center justify-content-between">
+                  <div className="d-flex align-items-center gap-2.5">
+                    <span className="badge bg-warning rounded-circle p-1.5"></span>
+                    <span className="text-xs sm:text-sm font-bold text-amber-900">Đang Phục Vụ</span>
+                  </div>
+                  <span className="badge bg-white text-amber-800 border border-amber-300 fs-6 fw-bold px-2.5 py-1">
+                    3 bàn
+                  </span>
                 </div>
-                <span className="text-lg font-black text-slate-900">1 bàn</span>
+
+                <div className="p-3 rounded-3 bg-sky-50 border border-sky-200 d-flex align-items-center justify-content-between">
+                  <div className="d-flex align-items-center gap-2.5">
+                    <span className="badge bg-info rounded-circle p-1.5"></span>
+                    <span className="text-xs sm:text-sm font-bold text-sky-900">Đã Đặt Trước</span>
+                  </div>
+                  <span className="badge bg-white text-sky-800 border border-sky-300 fs-6 fw-bold px-2.5 py-1">
+                    1 bàn
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <button
-            onClick={() => setActiveTab('tables')}
-            className="w-full mt-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-extrabold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
-          >
-            <Grid3X3 className="w-4 h-4 text-amber-600" />
-            Xem Chi Tiết Sơ Đồ Bàn
-          </button>
+            <button
+              onClick={() => setActiveTab('tables')}
+              className="btn btn-outline-secondary w-100 mt-4 py-2.5 rounded-3 fw-bold text-xs d-flex align-items-center justify-content-center gap-2"
+            >
+              <i className="bi bi-layout-wtf text-primary"></i>
+              <span>Xem Chi Tiết Sơ Đồ Bàn</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

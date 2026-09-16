@@ -85,18 +85,18 @@ export default function ThanhDieuHuongTren({ activeTab }) {
         )}
 
         {/* Thông tin nhân viên và nút Đăng xuất */}
-        <div className="flex items-center gap-3 pl-2 border-l border-slate-200">
-          <div className="text-right hidden sm:block">
-            <div className="text-sm font-bold text-slate-800">{user?.name || 'Người dùng'}</div>
-            <div className={`text-[11px] font-bold px-2 py-0.5 rounded-md border inline-flex items-center gap-1 ${thongTinVaiTro.color}`}>
+        <div className="d-flex align-items-center gap-2.5 ps-2 border-start border-slate-200">
+          <div className="text-end d-none d-sm-block">
+            <div className="text-xs sm:text-sm font-bold text-slate-800">{user?.name || 'Người dùng'}</div>
+            <div className={`badge rounded-pill text-[11px] font-bold px-2 py-0.5 border d-inline-flex align-items-center gap-1 ${thongTinVaiTro.color}`}>
               <BieuTuongVaiTro className="w-3 h-3" />
-              {thongTinVaiTro.label}
+              <span>{thongTinVaiTro.label}</span>
             </div>
           </div>
 
           <button
             onClick={logout}
-            className="p-2 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-600 border border-slate-200 transition-all cursor-pointer"
+            className="btn btn-sm btn-outline-danger rounded-3 p-2 d-flex align-items-center justify-content-center"
             title="Đăng xuất khỏi hệ thống"
           >
             <LogOut className="w-4 h-4" />

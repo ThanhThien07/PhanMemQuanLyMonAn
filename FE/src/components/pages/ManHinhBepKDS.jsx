@@ -10,12 +10,6 @@
 import React, { useEffect, useState } from 'react';
 import axiosApi from '../services/cauHinhAxiosApi';
 import { useSocketRealtime } from '../context/SocketRealtimeContext';
-import { 
-  ChefHat, 
-  Flame, 
-  CheckCircle2, 
-  RefreshCw 
-} from 'lucide-react';
 
 /**
  * Component Màn hình Bếp KDS
@@ -123,132 +117,143 @@ export default function ManHinhBepKDS() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
-      {/* Tiêu đề thanh công cụ */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white border border-slate-200 rounded-3xl p-6 shadow-xs">
-        <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-700 border border-amber-200 flex items-center justify-center shadow-2xs">
+    <div className="container-fluid px-2 px-md-4 py-3 max-w-7xl mx-auto space-y-4">
+      {/* Tiêu đề & Trạng thái hoạt động */}
+      <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+        <div className="d-flex align-items-center gap-3">
+          <div className="w-12 h-12 rounded-3 bg-amber-50 text-amber-700 border border-amber-200 d-flex align-items-center justify-content-center shadow-xs">
             <ChefHat className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
+            <div className="d-flex align-items-center gap-2 mb-1">
+              <span className="badge bg-danger text-white rounded-pill px-2.5 py-1 text-xs fw-bold">
+                <i className="bi bi-broadcast me-1"></i>Realtime KDS
+              </span>
+              <span className="text-xs text-slate-500 font-semibold">Tự động trừ kho theo BOM</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-0">
               Màn Hình Bếp Trưởng (Kitchen Display System)
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
             </h2>
-            <p className="text-slate-500 text-xs font-medium mt-0.5">
-              Tự động nhận order realtime qua Socket.io & Tự động trừ kho theo định lượng (BOM)
-            </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="d-flex align-items-center gap-2.5">
           <button
             onClick={taiDanhSachMonBep}
-            className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
+            className="btn btn-sm btn-outline-secondary bg-white text-slate-800 fw-bold px-3 py-2 rounded-3 d-flex align-items-center gap-2 shadow-xs"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${dangTai ? 'animate-spin' : ''}`} />
-            Làm Mới
+            <span>Làm Mới</span>
           </button>
 
-          <div className="px-3.5 py-2 rounded-xl bg-amber-50 text-amber-900 border border-amber-300 text-xs font-black shadow-2xs">
-            Đang Chờ: {danhSachMonBep.length} món
-          </div>
+          <span className="badge bg-warning-subtle text-amber-900 border border-warning-subtle px-3 py-2 rounded-pill fw-bold text-xs">
+            <i className="bi bi-hourglass-split me-1"></i>Đang Chờ: {danhSachMonBep.length} món
+          </span>
         </div>
       </div>
 
       {/* Lưới danh sách các món cần chế biến */}
       {danhSachMonBep.length === 0 ? (
-        <div className="p-16 rounded-3xl bg-white border border-dashed border-slate-300 text-center space-y-3 shadow-xs">
-          <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-200 shadow-2xs">
+        <div className="p-5 rounded-4 bg-white border border-dashed border-slate-300 text-center space-y-3 shadow-sm my-4">
+          <div className="w-16 h-16 rounded-3 bg-emerald-50 text-emerald-600 d-flex align-items-center justify-content-center mx-auto border border-emerald-200 shadow-xs">
             <CheckCircle2 className="w-8 h-8" />
           </div>
-          <h3 className="text-lg font-black text-slate-900">Tất Cả Món Đã Được Phục Vụ!</h3>
-          <p className="text-sm text-slate-500 font-medium">
+          <h3 className="text-lg font-black text-slate-900 mb-1">Tất Cả Món Đã Được Phục Vụ!</h3>
+          <p className="text-xs sm:text-sm text-slate-500 font-medium max-w-md mx-auto mb-0">
             Hiện tại không có đơn món nào đang chờ chế biến. Bếp có thể nghỉ ngơi hoặc chuẩn bị sơ chế nguyên liệu.
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="row g-3 g-md-4">
           {danhSachMonBep.map((mon) => {
             const dangNau = mon.trang_thai === 'dang_che_bien';
 
             return (
-              <div
-                key={mon.id}
-                className={`p-5 rounded-3xl border transition-all duration-300 flex flex-col justify-between ${
-                  dangNau
-                    ? 'bg-sky-50/70 border-sky-300 shadow-lg shadow-sky-500/10'
-                    : 'bg-white border-amber-300 shadow-lg shadow-amber-500/10'
-                }`}
-              >
-                <div>
-                  {/* Thông tin số bàn & Trạng thái */}
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-200/80">
-                    <div className="flex items-center gap-2">
-                      <span className="w-9 h-9 rounded-xl bg-amber-500 text-slate-950 font-black text-sm flex items-center justify-center shadow-xs">
-                        B{mon.so_ban}
-                      </span>
-                      <div>
-                        <div className="text-xs font-extrabold text-slate-900">Bàn {mon.so_ban}</div>
-                        <div className="text-[10px] text-slate-500 font-medium">{mon.khu_vuc}</div>
+              <div key={mon.id} className="col-12 col-md-6 col-xl-4">
+                <div
+                  className={`card h-100 rounded-4 p-4 border transition-all duration-300 d-flex flex-column justify-content-between shadow-sm ${
+                    dangNau
+                      ? 'bg-sky-50/70 border-sky-300 shadow-sky-500/10'
+                      : 'bg-white border-amber-300 shadow-amber-500/10'
+                  }`}
+                >
+                  <div>
+                    {/* Thông tin số bàn & Trạng thái */}
+                    <div className="d-flex align-items-center justify-content-between pb-3 border-bottom border-slate-200/80">
+                      <div className="d-flex align-items-center gap-2">
+                        <span className="badge bg-warning text-dark font-black fs-6 px-2.5 py-1.5 rounded-3 shadow-xs">
+                          B{mon.so_ban}
+                        </span>
+                        <div>
+                          <div className="text-xs font-extrabold text-slate-900">Bàn {mon.so_ban}</div>
+                          <div className="text-2xs text-slate-500 font-medium">{mon.khu_vuc}</div>
+                        </div>
                       </div>
+
+                      <span
+                        className={`badge rounded-pill px-2.5 py-1 text-xs fw-bold ${
+                          dangNau
+                            ? 'bg-info-subtle text-sky-900 border border-info-subtle'
+                            : 'bg-warning-subtle text-amber-900 border border-warning-subtle animate-pulse'
+                        }`}
+                      >
+                        {dangNau ? '🔥 Đang Nấu' : '⏳ Chờ Nấu'}
+                      </span>
                     </div>
 
-                    <span
-                      className={`text-[11px] font-black px-2.5 py-1 rounded-full border ${
-                        dangNau
-                          ? 'bg-sky-100 text-sky-900 border-sky-300'
-                          : 'bg-amber-100 text-amber-900 border-amber-300 animate-pulse'
-                      }`}
-                    >
-                      {dangNau ? '🔥 Đang Nấu' : '⏳ Chờ Bếp Nhận'}
-                    </span>
-                  </div>
-
-                  {/* Nội dung chi tiết món ăn */}
-                  <div className="py-4 flex gap-4">
-                    <img
-                      src={mon.hinh_anh || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=160'}
-                      alt={mon.ten_mon}
-                      className="w-16 h-16 rounded-2xl object-cover border border-slate-200 shrink-0 shadow-2xs"
-                    />
-                    <div className="flex-1">
-                      <h4 className="text-base font-black text-slate-900 leading-tight">
-                        {mon.ten_mon}
-                      </h4>
-                      <div className="mt-1 flex items-center gap-2">
-                        <span className="text-xs font-black text-amber-700 px-2 py-0.5 rounded-md bg-amber-50 border border-amber-200">
-                          Số lượng: x{mon.so_luong}
+                    {/* Chi tiết món ăn */}
+                    <div className="py-3">
+                      <div className="d-flex align-items-start justify-content-between gap-2">
+                        <h4 className="text-base font-black text-slate-900 mb-1 leading-snug">
+                          {mon.ten_mon}
+                        </h4>
+                        <span className="badge bg-slate-900 text-white font-black fs-6 px-2.5 py-1 rounded-3 shrink-0">
+                          x{mon.so_luong}
                         </span>
                       </div>
+
+                      {/* Ghi chú của khách hoặc thu ngân */}
                       {mon.ghi_chu && (
-                        <div className="mt-2 text-xs text-rose-800 font-bold bg-rose-50 border border-rose-200 p-2 rounded-xl">
-                          ⚠️ Ghi chú: {mon.ghi_chu}
+                        <div className="mt-2 p-2 rounded-3 bg-amber-100/60 border border-amber-200 text-amber-950 text-xs font-bold d-flex align-items-start gap-1.5">
+                          <span className="shrink-0 text-amber-700">📌 Ghi chú:</span>
+                          <span>{mon.ghi_chu}</span>
                         </div>
                       )}
+
+                      {/* Thời gian nhận đơn */}
+                      <div className="text-2xs text-slate-400 font-medium mt-2 d-flex align-items-center gap-1">
+                        <i className="bi bi-clock"></i>
+                        <span>
+                          Nhận lúc:{' '}
+                          {new Date(mon.thoi_gian_dat || Date.now()).toLocaleTimeString('vi-VN', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Các nút hành động */}
-                <div className="pt-3 border-t border-slate-200/80">
-                  {dangNau ? (
-                    <button
-                      onClick={() => capNhatTrangThai(mon.id, 'da_phuc_vu')}
-                      className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-black text-xs shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
-                    >
-                      <CheckCircle2 className="w-4 h-4" />
-                      Nấu Xong & Báo Phục Vụ
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => capNhatTrangThai(mon.id, 'dang_che_bien')}
-                      className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-xs shadow-md shadow-amber-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer"
-                    >
-                      <Flame className="w-4 h-4" />
-                      Bắt Đầu Chế Biến (Trừ Kho BOM)
-                    </button>
-                  )}
+                  {/* Nút bấm chuyển trạng thái */}
+                  <div className="pt-3 border-top border-slate-200/80">
+                    {dangNau ? (
+                      <button
+                        onClick={() => capNhatTrangThai(mon.id, 'da_phuc_vu')}
+                        className="btn btn-success w-100 py-2.5 rounded-3 text-white fw-bold text-xs d-flex align-items-center justify-content-center gap-2 shadow-sm"
+                      >
+                        <CheckCircle2 className="w-4 h-4" />
+                        <span>Nấu Xong & Báo Phục Vụ</span>
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => capNhatTrangThai(mon.id, 'dang_che_bien')}
+                        className="btn btn-primary w-100 py-2.5 rounded-3 text-white fw-bold text-xs d-flex align-items-center justify-content-center gap-2 shadow-sm"
+                      >
+                        <Flame className="w-4 h-4 text-warning" />
+                        <span>Bắt Đầu Nấu (Trừ Kho BOM)</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             );

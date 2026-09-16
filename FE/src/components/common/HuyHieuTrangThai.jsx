@@ -8,16 +8,16 @@
 import React from 'react';
 
 /**
- * Hiển thị huy hiệu trạng thái bo góc với màu sắc tương ứng
+ * Hiển thị huy hiệu trạng thái bo góc với màu sắc tương ứng (kết hợp Bootstrap badge & Tailwind)
  */
 export function HuyHieuTrangThai({ children, variant = 'default', size = 'sm', className = '' }) {
   const kieuMauSac = {
-    default: 'bg-slate-800 text-slate-300 border-slate-700',
-    success: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-    warning: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
-    danger: 'bg-rose-500/15 text-rose-400 border-rose-500/30',
-    info: 'bg-sky-500/15 text-sky-400 border-sky-500/30',
-    primary: 'bg-amber-500 text-slate-950 font-bold'
+    default: 'badge bg-secondary-subtle text-secondary border border-secondary-subtle',
+    success: 'badge bg-success-subtle text-success border border-success-subtle',
+    warning: 'badge bg-warning-subtle text-amber-800 border border-warning-subtle',
+    danger: 'badge bg-danger-subtle text-danger border border-danger-subtle',
+    info: 'badge bg-info-subtle text-info-emphasis border border-info-subtle',
+    primary: 'badge bg-primary text-white'
   };
 
   const kieuKichThuoc = {
@@ -28,7 +28,7 @@ export function HuyHieuTrangThai({ children, variant = 'default', size = 'sm', c
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 font-bold rounded-full border transition-all ${
+      className={`rounded-pill d-inline-flex align-items-center gap-1.5 fw-bold transition-all ${
         kieuMauSac[variant] || kieuMauSac.default
       } ${kieuKichThuoc[size] || kieuKichThuoc.sm} ${className}`}
     >
@@ -38,21 +38,22 @@ export function HuyHieuTrangThai({ children, variant = 'default', size = 'sm', c
 }
 
 /**
- * Biểu tượng vòng xoay báo hiệu trạng thái đang tải dữ liệu (Spinner)
+ * Biểu tượng vòng xoay báo hiệu trạng thái đang tải dữ liệu (sử dụng Bootstrap spinner-border)
  */
 export function VongXoayTai({ size = 'md', className = '' }) {
   const kichThuocMap = {
-    sm: 'w-4 h-4 border-2',
-    md: 'w-8 h-8 border-3',
-    lg: 'w-12 h-12 border-4'
+    sm: 'spinner-border-sm',
+    md: '',
+    lg: 'w-10 h-10'
   };
 
   return (
     <div
-      className={`rounded-full border-amber-500 border-t-transparent animate-spin ${
-        kichThuocMap[size] || kichThuocMap.md
-      } ${className}`}
-    />
+      className={`spinner-border text-warning ${kichThuocMap[size] || ''} ${className}`}
+      role="status"
+    >
+      <span className="visually-hidden">Đang tải...</span>
+    </div>
   );
 }
 

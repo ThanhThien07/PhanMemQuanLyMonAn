@@ -8,7 +8,6 @@
 
 import React, { useEffect, useState } from 'react';
 import axiosApi from '../services/cauHinhAxiosApi';
-import { Crown, Plus, Search } from 'lucide-react';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu';
 
 /**
@@ -89,134 +88,164 @@ export default function QuanLyKhachHang() {
   );
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
+    <div className="container-fluid px-2 px-md-4 py-3 max-w-7xl mx-auto space-y-4">
       {/* Tiêu đề & Thanh công cụ */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
         <div>
-          <h2 className="text-2xl font-black text-slate-900">Khách Hàng Thân Thiết (CRM)</h2>
-          <p className="text-slate-500 text-sm font-medium">Quản lý điểm tích lũy, hạng VIP và lịch sử chi tiêu</p>
+          <div className="d-flex align-items-center gap-2 mb-1">
+            <span className="badge bg-primary text-white rounded-pill px-2.5 py-1 text-xs">
+              <i className="bi bi-person-badge me-1"></i>Khách Hàng
+            </span>
+            <span className="text-xs text-slate-500 font-semibold">{khachHang.length} hồ sơ thành viên</span>
+          </div>
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-1">
+            Khách Hàng Thân Thiết (CRM)
+          </h2>
+          <p className="text-slate-500 text-xs sm:text-sm font-medium mb-0">
+            Quản lý điểm tích lũy, hạng VIP và lịch sử chi tiêu
+          </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+        <div className="d-flex align-items-center gap-2.5">
+          <div className="input-group input-group-sm" style={{ minWidth: '220px' }}>
+            <span className="input-group-text bg-white border-slate-200 text-slate-400">
+              <i className="bi bi-search"></i>
+            </span>
             <input
               type="text"
               value={tuKhoa}
               onChange={(e) => setTuKhoa(e.target.value)}
               placeholder="Tìm theo tên, SĐT..."
-              className="bg-white border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 shadow-2xs"
+              className="form-control bg-white border-slate-200 text-xs"
             />
           </div>
           <button
             onClick={() => setHienModal(true)}
-            className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-sm flex items-center gap-2 shadow-lg shadow-amber-500/20 transition-all cursor-pointer shrink-0"
+            className="btn btn-warning text-white fw-bold px-3 py-2 rounded-3 d-flex align-items-center gap-2 shadow-sm shrink-0"
           >
             <Plus className="w-4 h-4" />
-            Thêm Khách Hàng
+            <span>Thêm Khách Hàng</span>
           </button>
         </div>
       </div>
 
-      {/* Bảng danh sách khách hàng */}
-      <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-xs">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-slate-50 text-xs font-extrabold uppercase text-slate-500 border-b border-slate-200">
-            <tr>
-              <th className="p-4">Họ Tên</th>
-              <th className="p-4">Số Điện Thoại</th>
-              <th className="p-4">Email</th>
-              <th className="p-4">Điểm Tích Lũy</th>
-              <th className="p-4">Hạng Thành Viên</th>
-              <th className="p-4">Tổng Chi Tiêu</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100 text-slate-700 font-medium">
-            {khachHangLoc.map((c) => {
-              const thongTinHang = layHuyHieuHang(c.hang_thanh_vien);
-              return (
-                <tr key={c.id} className="hover:bg-slate-50/80 transition-colors">
-                  <td className="p-4 font-bold text-slate-900 flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center font-black text-amber-800 text-xs shadow-2xs">
-                      {c.ho_ten.charAt(0)}
-                    </div>
-                    {c.ho_ten}
-                  </td>
-                  <td className="p-4 font-mono font-semibold">{c.so_dien_thoai}</td>
-                  <td className="p-4 text-slate-500">{c.email || '—'}</td>
-                  <td className="p-4 font-mono font-black text-amber-700">
-                    {c.diem_tich_luy} pts
-                  </td>
-                  <td className="p-4">
-                    <span className={`text-xs px-2.5 py-1 rounded-full font-bold border inline-flex items-center gap-1 ${thongTinHang.color}`}>
-                      <Crown className="w-3 h-3" />
-                      {thongTinHang.label}
-                    </span>
-                  </td>
-                  <td className="p-4 font-mono font-black text-emerald-700">
-                    {dinhDangTienTe(c.tong_chi_tieu || 0)}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      {/* Bảng danh sách khách hàng dạng Bootstrap Table */}
+      <div className="card bg-white border border-slate-200 rounded-4 overflow-hidden shadow-sm">
+        <div className="table-responsive">
+          <table className="table table-hover align-middle mb-0">
+            <thead className="table-light text-xs font-bold text-slate-500 uppercase">
+              <tr>
+                <th className="py-3 px-4">Họ Tên</th>
+                <th className="py-3 px-4">Số Điện Thoại</th>
+                <th className="py-3 px-4">Email</th>
+                <th className="py-3 px-4">Điểm Tích Lũy</th>
+                <th className="py-3 px-4">Hạng Thành Viên</th>
+                <th className="py-3 px-4 text-end">Tổng Chi Tiêu</th>
+              </tr>
+            </thead>
+            <tbody className="text-sm">
+              {khachHangLoc.map((c) => {
+                const thongTinHang = layHuyHieuHang(c.hang_thanh_vien);
+                return (
+                  <tr key={c.id}>
+                    <td className="py-3 px-4 fw-bold text-slate-900">
+                      <div className="d-flex align-items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-circle bg-amber-100 d-flex align-items-center justify-content-center font-black text-amber-800 text-xs shadow-xs">
+                          {c.ho_ten.charAt(0)}
+                        </div>
+                        <span>{c.ho_ten}</span>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 font-monospace fw-semibold">{c.so_dien_thoai}</td>
+                    <td className="py-3 px-4 text-slate-500">{c.email || '—'}</td>
+                    <td className="py-3 px-4 font-monospace fw-bold text-amber-700">
+                      {c.diem_tich_luy} pts
+                    </td>
+                    <td className="py-3 px-4">
+                      <span className={`badge rounded-pill px-2.5 py-1 text-xs fw-bold border d-inline-flex align-items-center gap-1 ${thongTinHang.color}`}>
+                        <Crown className="w-3 h-3" />
+                        <span>{thongTinHang.label}</span>
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 font-monospace fw-bold text-success text-end">
+                      {dinhDangTienTe(c.tong_chi_tieu || 0)}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      {/* Modal Thêm Khách Hàng Thân Thiết */}
+      {/* Modal Thêm Khách Hàng Thân Thiết dạng Bootstrap Modal */}
       {hienModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/50 backdrop-blur-sm">
-          <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-sm p-6 shadow-2xl space-y-4">
-            <h3 className="text-lg font-black text-slate-900">Thêm Khách Hàng Thân Thiết</h3>
-            <form onSubmit={xuLyThemKhachHang} className="space-y-3 text-xs font-semibold">
-              <div>
-                <label className="block text-slate-700 mb-1">Họ và Tên</label>
-                <input
-                  type="text"
-                  required
-                  value={duLieuForm.ho_ten}
-                  onChange={(e) => setDuLieuForm({ ...duLieuForm, ho_ten: e.target.value })}
-                  placeholder="Nguyễn Văn A"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-900 focus:outline-none focus:border-amber-500"
-                />
-              </div>
-              <div>
-                <label className="block text-slate-700 mb-1">Số Điện Thoại</label>
-                <input
-                  type="text"
-                  required
-                  value={duLieuForm.so_dien_thoai}
-                  onChange={(e) => setDuLieuForm({ ...duLieuForm, so_dien_thoai: e.target.value })}
-                  placeholder="0912345678"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-900 focus:outline-none focus:border-amber-500"
-                />
-              </div>
-              <div>
-                <label className="block text-slate-700 mb-1">Email (Không bắt buộc)</label>
-                <input
-                  type="email"
-                  value={duLieuForm.email}
-                  onChange={(e) => setDuLieuForm({ ...duLieuForm, email: e.target.value })}
-                  placeholder="khachhang@gmail.com"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-900 focus:outline-none focus:border-amber-500"
-                />
-              </div>
-              <div className="pt-2 flex gap-3">
+        <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(4px)' }}>
+          <div className="modal-dialog modal-dialog-centered modal-sm">
+            <div className="modal-content border-0 rounded-4 shadow-2xl overflow-hidden">
+              <div className="modal-header bg-slate-50 border-bottom border-slate-200 px-4 py-3">
+                <h5 className="modal-title text-sm font-black text-slate-900 d-flex align-items-center gap-1.5">
+                  <i className="bi bi-person-plus-fill text-warning"></i>
+                  <span>Thêm Khách Hàng</span>
+                </h5>
                 <button
                   type="button"
+                  className="btn-close"
                   onClick={() => setHienModal(false)}
-                  className="flex-1 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 transition-colors cursor-pointer"
-                >
-                  Hủy
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-md cursor-pointer"
-                >
-                  Lưu Khách Hàng
-                </button>
+                ></button>
               </div>
-            </form>
+              <div className="modal-body p-4">
+                <form onSubmit={xuLyThemKhachHang} className="space-y-3">
+                  <div>
+                    <label className="form-label text-xs font-bold text-slate-700 uppercase mb-1">Họ và Tên</label>
+                    <input
+                      type="text"
+                      required
+                      value={duLieuForm.ho_ten}
+                      onChange={(e) => setDuLieuForm({ ...duLieuForm, ho_ten: e.target.value })}
+                      placeholder="Nguyễn Văn A"
+                      className="form-control form-control-sm bg-slate-50 border-slate-200 text-xs py-2"
+                    />
+                  </div>
+                  <div>
+                    <label className="form-label text-xs font-bold text-slate-700 uppercase mb-1">Số Điện Thoại</label>
+                    <input
+                      type="text"
+                      required
+                      value={duLieuForm.so_dien_thoai}
+                      onChange={(e) => setDuLieuForm({ ...duLieuForm, so_dien_thoai: e.target.value })}
+                      placeholder="0912345678"
+                      className="form-control form-control-sm bg-slate-50 border-slate-200 text-xs py-2"
+                    />
+                  </div>
+                  <div>
+                    <label className="form-label text-xs font-bold text-slate-700 uppercase mb-1">Email (Tùy chọn)</label>
+                    <input
+                      type="email"
+                      value={duLieuForm.email}
+                      onChange={(e) => setDuLieuForm({ ...duLieuForm, email: e.target.value })}
+                      placeholder="khachhang@gmail.com"
+                      className="form-control form-control-sm bg-slate-50 border-slate-200 text-xs py-2"
+                    />
+                  </div>
+                  <div className="pt-2 d-flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setHienModal(false)}
+                      className="btn btn-light border w-50 py-2 rounded-3 fw-bold text-xs"
+                    >
+                      Hủy
+                    </button>
+                    <button
+                      type="submit"
+                      className="btn btn-warning text-white w-50 py-2 rounded-3 fw-bold text-xs shadow-sm"
+                    >
+                      Lưu Hồ Sơ
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       )}

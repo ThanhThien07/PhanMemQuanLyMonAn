@@ -9,7 +9,7 @@
 
 import React, { useEffect, useState } from 'react';
 import axiosApi from '../services/cauHinhAxiosApi';
-import { TrendingUp, Download, PieChart } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu';
 
 /**
@@ -50,100 +50,162 @@ export default function BaoCaoThongKeDoanhThu() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
+    <div className="container-fluid px-2 px-md-4 py-3 max-w-7xl mx-auto space-y-4">
       {/* Tiêu đề trang & Nút xuất báo cáo */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
         <div>
-          <h2 className="text-2xl font-black text-slate-900">Báo Cáo Doanh Thu & Hiệu Quả Kinh Doanh</h2>
-          <p className="text-slate-500 text-sm font-medium">Phân tích dòng tiền, cơ cấu thanh toán và hiệu suất thực đơn</p>
+          <div className="d-flex align-items-center gap-2 mb-1">
+            <span className="badge bg-primary text-white rounded-pill px-2.5 py-1 text-xs">
+              <i className="bi bi-graph-up me-1"></i>Thống Kê
+            </span>
+            <span className="text-xs text-slate-500 font-semibold">Báo cáo tài chính & doanh số</span>
+          </div>
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-1">
+            Báo Cáo Doanh Thu & Hiệu Quả Kinh Doanh
+          </h2>
+          <p className="text-slate-500 text-xs sm:text-sm font-medium mb-0">
+            Phân tích dòng tiền, cơ cấu thanh toán và hiệu suất thực đơn
+          </p>
         </div>
         <button
           onClick={xuLyXuatBaoCao}
-          className="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 font-bold text-sm flex items-center gap-2 shadow-2xs transition-all cursor-pointer"
+          className="btn btn-outline-secondary bg-white text-slate-800 fw-bold px-3 py-2 rounded-3 d-flex align-items-center gap-2 shadow-xs"
         >
           <Download className="w-4 h-4 text-amber-600" />
-          Xuất Báo Cáo (Excel / PDF)
+          <span>Xuất Báo Cáo (Excel / PDF)</span>
         </button>
       </div>
 
-      {/* Thẻ chỉ số cấp cao về doanh thu */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-        <div className="p-6 rounded-3xl bg-white border border-slate-200 space-y-2 shadow-xs">
-          <div className="text-xs font-bold uppercase text-slate-500">Tổng Doanh Số Đã Thu</div>
-          <div className="text-3xl font-black text-amber-600">
-            {dinhDangTienTe(duLieuBaoCao?.totalRevenue || 0)}
+      {/* Thẻ chỉ số cấp cao về doanh thu sử dụng Bootstrap Row / Col */}
+      <div className="row g-3 g-md-4">
+        <div className="col-12 col-md-4">
+          <div className="card h-100 p-4 rounded-4 bg-white border border-slate-200 shadow-sm space-y-2">
+            <div className="d-flex align-items-center justify-content-between">
+              <span className="text-xs font-bold uppercase text-slate-500">Tổng Doanh Số Đã Thu</span>
+              <span className="badge bg-warning-subtle text-amber-800 rounded-pill px-2.5 py-1 text-xs">
+                <i className="bi bi-cash-stack me-1"></i>Hoàn Tất
+              </span>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-amber-600">
+              {dinhDangTienTe(duLieuBaoCao?.totalRevenue || 0)}
+            </div>
+            <p className="text-xs text-slate-400 font-medium mb-0">Dựa trên các hóa đơn đã thanh toán hoàn tất</p>
           </div>
-          <p className="text-xs text-slate-400 font-medium">Dựa trên các hóa đơn đã thanh toán hoàn tất</p>
         </div>
 
-        <div className="p-6 rounded-3xl bg-white border border-slate-200 space-y-2 shadow-xs">
-          <div className="text-xs font-bold uppercase text-slate-500">Tổng Số Lượt Order</div>
-          <div className="text-3xl font-black text-emerald-600">
-            {duLieuBaoCao?.totalOrders || 0} lượt
+        <div className="col-12 col-md-4">
+          <div className="card h-100 p-4 rounded-4 bg-white border border-slate-200 shadow-sm space-y-2">
+            <div className="d-flex align-items-center justify-content-between">
+              <span className="text-xs font-bold uppercase text-slate-500">Tổng Số Lượt Order</span>
+              <span className="badge bg-success-subtle text-emerald-800 rounded-pill px-2.5 py-1 text-xs">
+                <i className="bi bi-bag-check me-1"></i>Phục Vụ
+              </span>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-emerald-600">
+              {duLieuBaoCao?.totalOrders || 0} lượt
+            </div>
+            <p className="text-xs text-slate-400 font-medium mb-0">Bao gồm các bàn phục vụ trong ngày</p>
           </div>
-          <p className="text-xs text-slate-400 font-medium">Bao gồm các bàn phục vụ trong ngày</p>
         </div>
 
-        <div className="p-6 rounded-3xl bg-white border border-slate-200 space-y-2 shadow-xs">
-          <div className="text-xs font-bold uppercase text-slate-500">Giá Trị TB / Lượt Gọi</div>
-          <div className="text-3xl font-black text-sky-600">
-            {duLieuBaoCao?.totalOrders > 0
-              ? dinhDangTienTe(Math.round(duLieuBaoCao.totalRevenue / duLieuBaoCao.totalOrders))
-              : '0 đ'}
+        <div className="col-12 col-md-4">
+          <div className="card h-100 p-4 rounded-4 bg-white border border-slate-200 shadow-sm space-y-2">
+            <div className="d-flex align-items-center justify-content-between">
+              <span className="text-xs font-bold uppercase text-slate-500">Giá Trị TB / Lượt Gọi</span>
+              <span className="badge bg-info-subtle text-sky-800 rounded-pill px-2.5 py-1 text-xs">
+                <i className="bi bi-calculator me-1"></i>Trung Bình
+              </span>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-sky-600">
+              {duLieuBaoCao?.totalOrders > 0
+                ? dinhDangTienTe(Math.round(duLieuBaoCao.totalRevenue / duLieuBaoCao.totalOrders))
+                : '0 đ'}
+            </div>
+            <p className="text-xs text-slate-400 font-medium mb-0">Mức chi tiêu trung bình của mỗi lượt</p>
           </div>
-          <p className="text-xs text-slate-400 font-medium">Mức chi tiêu trung bình của mỗi lượt</p>
         </div>
       </div>
 
       {/* Cơ cấu thanh toán & Món ăn bán chạy */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="p-6 rounded-3xl bg-white border border-slate-200 space-y-4 shadow-xs">
-          <div className="flex items-center gap-2">
-            <PieChart className="w-5 h-5 text-amber-600" />
-            <h3 className="text-lg font-black text-slate-900">Cơ Cấu Phương Thức Thanh Toán</h3>
-          </div>
-
-          <div className="space-y-3 pt-2">
-            {duLieuBaoCao?.paymentBreakdown?.map((p, idx) => (
-              <div key={idx} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between shadow-2xs">
-                <div>
-                  <div className="text-sm font-bold text-slate-900 capitalize">
-                    {p.phuong_thuc_thanh_toan === 'tien_mat' ? '💵 Tiền Mặt' :
-                     p.phuong_thuc_thanh_toan === 'chuyen_khoan' ? '📱 QR Chuyển Khoản' :
-                     p.phuong_thuc_thanh_toan}
-                  </div>
-                  <div className="text-xs text-slate-500 font-medium">Giao dịch đã xác nhận</div>
-                </div>
-                <div className="text-base font-black text-amber-600">
-                  {dinhDangTienTe(p.total)}
-                </div>
+      <div className="row g-4">
+        {/* Cột Trái: Cơ Cấu Phương Thức Thanh Toán */}
+        <div className="col-12 col-lg-6">
+          <div className="card h-100 p-4 rounded-4 bg-white border border-slate-200 shadow-sm space-y-4">
+            <div className="d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-center gap-2">
+                <PieChart className="w-5 h-5 text-amber-600" />
+                <h3 className="text-base sm:text-lg font-black text-slate-900 mb-0">
+                  Cơ Cấu Phương Thức Thanh Toán
+                </h3>
               </div>
-            ))}
+              <span className="badge bg-secondary-subtle text-secondary rounded-pill px-2 py-1 text-xs">
+                Theo loại tiền
+              </span>
+            </div>
+
+            <div className="space-y-2.5 pt-1">
+              {duLieuBaoCao?.paymentBreakdown?.map((p, idx) => (
+                <div key={idx} className="p-3.5 rounded-3 bg-slate-50 border border-slate-200 d-flex align-items-center justify-content-between shadow-xs">
+                  <div>
+                    <div className="text-sm font-bold text-slate-900 capitalize d-flex align-items-center gap-1.5">
+                      {p.phuong_thuc_thanh_toan === 'tien_mat' ? (
+                        <>
+                          <i className="bi bi-cash text-success fs-5"></i>
+                          <span>Tiền Mặt</span>
+                        </>
+                      ) : p.phuong_thuc_thanh_toan === 'chuyen_khoan' ? (
+                        <>
+                          <i className="bi bi-qr-code text-primary fs-5"></i>
+                          <span>QR Chuyển Khoản</span>
+                        </>
+                      ) : (
+                        <span>{p.phuong_thuc_thanh_toan}</span>
+                      )}
+                    </div>
+                    <div className="text-xs text-slate-500 font-medium">Giao dịch đã xác nhận thành công</div>
+                  </div>
+                  <div className="badge bg-amber-100 text-amber-900 px-3 py-1.5 rounded-pill text-sm fw-bold">
+                    {dinhDangTienTe(p.total)}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Top món đóng góp doanh thu cao nhất */}
-        <div className="p-6 rounded-3xl bg-white border border-slate-200 space-y-4 shadow-xs">
-          <div className="flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-emerald-600" />
-            <h3 className="text-lg font-black text-slate-900">Món Đóng Góp Doanh Thu Cao Nhất</h3>
-          </div>
+        {/* Cột Phải: Top món đóng góp doanh thu cao nhất */}
+        <div className="col-12 col-lg-6">
+          <div className="card h-100 p-4 rounded-4 bg-white border border-slate-200 shadow-sm space-y-4">
+            <div className="d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-emerald-600" />
+                <h3 className="text-base sm:text-lg font-black text-slate-900 mb-0">
+                  Món Đóng Góp Doanh Thu Cao Nhất
+                </h3>
+              </div>
+              <span className="badge bg-success-subtle text-success rounded-pill px-2 py-1 text-xs">
+                Hiệu suất cao
+              </span>
+            </div>
 
-          <div className="space-y-3 pt-2">
-            {duLieuBaoCao?.topDishes?.map((mon, idx) => (
-              <div key={idx} className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between shadow-2xs">
-                <div className="flex items-center gap-3">
-                  <span className="w-6 font-black text-amber-600 text-sm">#{idx + 1}</span>
-                  <div>
-                    <div className="text-sm font-bold text-slate-900">{mon.ten_mon}</div>
-                    <div className="text-xs text-slate-500 font-medium">Đã bán: {mon.total_sold} phần</div>
+            <div className="space-y-2.5 pt-1">
+              {duLieuBaoCao?.topDishes?.map((mon, idx) => (
+                <div key={idx} className="p-3 rounded-3 bg-slate-50 border border-slate-200 d-flex align-items-center justify-content-between shadow-xs">
+                  <div className="d-flex align-items-center gap-3">
+                    <span className="badge bg-white text-dark border px-2 py-1 rounded-pill text-xs fw-bold">
+                      #{idx + 1}
+                    </span>
+                    <div>
+                      <div className="text-sm font-bold text-slate-900">{mon.ten_mon}</div>
+                      <div className="text-xs text-slate-500 font-medium">Đã bán: {mon.total_sold} phần</div>
+                    </div>
+                  </div>
+                  <div className="text-sm font-black text-emerald-600">
+                    {dinhDangTienTe(mon.total_revenue || 0)}
                   </div>
                 </div>
-                <div className="text-sm font-black text-emerald-600">
-                  {dinhDangTienTe(mon.total_revenue || 0)}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>

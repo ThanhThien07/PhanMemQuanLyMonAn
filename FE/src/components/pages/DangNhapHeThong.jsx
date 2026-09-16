@@ -11,7 +11,7 @@
 
 import React, { useState } from 'react';
 import { useAuth } from '../context/NguoiDungContext.jsx';
-import { Flame, ShieldCheck, ChefHat, UtensilsCrossed, ArrowRight, Lock, Mail, QrCode } from 'lucide-react';
+import { Flame } from 'lucide-react';
 
 export default function DangNhapHeThong() {
   const { login, quickLoginAs } = useAuth();
@@ -52,129 +52,158 @@ export default function DangNhapHeThong() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4 relative">
-      <div className="w-full max-w-md relative z-10">
-        {/* Khối Thương Hiệu */}
-        <div className="text-center mb-8">
-          <div className="inline-flex w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#023E8A] to-[#00B4D8] items-center justify-center shadow-xl shadow-blue-500/20 mb-4 transform hover:scale-105 transition-transform">
-            <Flame className="w-9 h-9 text-white fill-white" />
-          </div>
-          <h2 className="text-3xl font-black text-slate-900 tracking-wider uppercase bg-gradient-to-r from-[#03045E] via-[#0077B6] to-[#00B4D8] bg-clip-text text-transparent">
-            ROYAL BISTRO POS
-          </h2>
-          <p className="text-sm font-semibold text-slate-500 mt-1.5">
-            Hệ Thống Quản Lý Nhà Hàng & Đặt Món Thông Minh
-          </p>
-        </div>
-
-        {/* Khung Form Đăng Nhập */}
-        <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-xl shadow-slate-200/50">
-          <h3 className="text-lg font-extrabold text-slate-900 mb-6">Đăng Nhập Hệ Thống</h3>
-
-          {thongBaoLoi && (
-            <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold">
-              {thongBaoLoi}
+    <div className="min-h-screen bg-slate-50 d-flex align-items-center justify-content-center p-3 relative">
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
+            {/* Khối Thương Hiệu */}
+            <div className="text-center mb-4">
+              <div className="inline-flex w-16 h-16 rounded-3 bg-gradient-to-tr from-[#023E8A] to-[#00B4D8] items-center justify-center shadow-lg shadow-blue-500/20 mb-3 transform hover:scale-105 transition-all">
+                <Flame className="w-8 h-8 text-white fill-white" />
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-wider uppercase bg-gradient-to-r from-[#03045E] via-[#0077B6] to-[#00B4D8] bg-clip-text text-transparent">
+                ROYAL BISTRO POS
+              </h2>
+              <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-1">
+                Hệ Thống Quản Lý Nhà Hàng & Đặt Món Thông Minh
+              </p>
             </div>
-          )}
 
-          <form onSubmit={xuLyDangNhap} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase mb-1.5">
-                Email Đăng Nhập
-              </label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@nhahang.com"
-                  required
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0077B6] focus:bg-white transition-all"
-                />
+            {/* Khung Form Đăng Nhập dạng Card Bootstrap kết hợp Tailwind */}
+            <div className="card shadow-lg border-0 rounded-4 overflow-hidden bg-white">
+              <div className="card-body p-4 p-sm-5">
+                <div className="d-flex align-items-center justify-content-between mb-4">
+                  <h3 className="card-title text-base sm:text-lg font-extrabold text-slate-900 mb-0">
+                    Đăng Nhập Hệ Thống
+                  </h3>
+                  <span className="badge bg-primary-subtle text-primary rounded-pill px-2.5 py-1 text-xs">
+                    <i className="bi bi-shield-check me-1"></i>Bảo Mật
+                  </span>
+                </div>
+
+                {thongBaoLoi && (
+                  <div className="alert alert-danger alert-dismissible d-flex align-items-center gap-2 py-2.5 px-3 rounded-3 text-xs font-bold mb-4" role="alert">
+                    <i className="bi bi-exclamation-triangle-fill flex-shrink-0 fs-6"></i>
+                    <div>{thongBaoLoi}</div>
+                  </div>
+                )}
+
+                <form onSubmit={xuLyDangNhap} className="space-y-3">
+                  <div className="mb-3">
+                    <label className="form-label text-xs font-bold text-slate-700 uppercase mb-1">
+                      Email Đăng Nhập
+                    </label>
+                    <div className="input-group">
+                      <span className="input-group-text bg-slate-50 border-slate-200 text-slate-400">
+                        <i className="bi bi-envelope"></i>
+                      </span>
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="admin@nhahang.com"
+                        required
+                        className="form-control bg-slate-50 border-slate-200 text-slate-900 text-sm py-2.5"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label text-xs font-bold text-slate-700 uppercase mb-1">
+                      Mật Khẩu
+                    </label>
+                    <div className="input-group">
+                      <span className="input-group-text bg-slate-50 border-slate-200 text-slate-400">
+                        <i className="bi bi-lock"></i>
+                      </span>
+                      <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••"
+                        required
+                        className="form-control bg-slate-50 border-slate-200 text-slate-900 text-sm py-2.5"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={dangXuLy}
+                    className="btn btn-primary w-100 py-3 rounded-3 text-white font-black text-sm d-flex align-items-center justify-content-center gap-2 shadow-md cursor-pointer transition-all"
+                  >
+                    {dangXuLy ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span>Đang xử lý...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Đăng Nhập</span>
+                        <i className="bi bi-arrow-right"></i>
+                      </>
+                    )}
+                  </button>
+                </form>
+
+                {/* Khối Đăng nhập nhanh 1-Click phục vụ kiểm thử */}
+                <div className="mt-4 pt-4 border-top border-slate-100">
+                  <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 text-center">
+                    ⚡ Đăng Nhập Nhanh 1-Click (Demo)
+                  </div>
+                  <div className="row g-2">
+                    <div className="col-4">
+                      <button
+                        type="button"
+                        onClick={() => xuLyDangNhapNhanh('admin@nhahang.com')}
+                        className="btn btn-outline-danger w-100 py-2 rounded-3 d-flex flex-column align-items-center gap-1 text-xs"
+                      >
+                        <i className="bi bi-shield-lock-fill fs-5"></i>
+                        <span className="fw-bold">Admin</span>
+                      </button>
+                    </div>
+
+                    <div className="col-4">
+                      <button
+                        type="button"
+                        onClick={() => xuLyDangNhapNhanh('thungan@nhahang.com')}
+                        className="btn btn-outline-success w-100 py-2 rounded-3 d-flex flex-column align-items-center gap-1 text-xs"
+                      >
+                        <i className="bi bi-cash-coin fs-5"></i>
+                        <span className="fw-bold">Thu Ngân</span>
+                      </button>
+                    </div>
+
+                    <div className="col-4">
+                      <button
+                        type="button"
+                        onClick={() => xuLyDangNhapNhanh('bep@nhahang.com')}
+                        className="btn btn-outline-warning w-100 py-2 rounded-3 d-flex flex-column align-items-center gap-1 text-xs"
+                      >
+                        <i className="bi bi-fire fs-5"></i>
+                        <span className="fw-bold">Bếp Trưởng</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Nút dành cho khách quét mã đặt món */}
+                  <div className="mt-3 pt-3 border-top border-slate-100">
+                    <a
+                      href="/?table=1"
+                      className="btn btn-warning w-100 py-2.5 rounded-3 d-flex align-items-center justify-content-center gap-2 text-white font-bold text-xs shadow-sm"
+                    >
+                      <i className="bi bi-qr-code-scan"></i>
+                      <span>📱 Khách Ăn Tại Bàn? Quét Mã / Đặt Món Ngay</span>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase mb-1.5">
-                Mật Khẩu
-              </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0077B6] focus:bg-white transition-all"
-                />
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={dangXuLy}
-              className="w-full mt-2 py-3.5 rounded-xl bg-gradient-to-r from-[#023E8A] to-[#0077B6] hover:from-[#03045E] hover:to-[#023E8A] text-white font-black text-sm shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer"
-            >
-              {dangXuLy ? 'Đang xử lý...' : (
-                <>
-                  <span>Đăng Nhập</span>
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Khối Đăng nhập nhanh 1-Click phục vụ kiểm thử */}
-          <div className="mt-8 pt-6 border-t border-slate-100">
-            <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3 text-center">
-              ⚡ Đăng Nhập Nhanh 1-Click (Demo)
-            </div>
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                type="button"
-                onClick={() => xuLyDangNhapNhanh('admin@nhahang.com')}
-                className="p-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-800 flex flex-col items-center gap-1 transition-all cursor-pointer"
-              >
-                <ShieldCheck className="w-4 h-4 text-rose-600" />
-                <span className="text-[11px] font-bold">Admin</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => xuLyDangNhapNhanh('thungan@nhahang.com')}
-                className="p-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 flex flex-col items-center gap-1 transition-all cursor-pointer"
-              >
-                <UtensilsCrossed className="w-4 h-4 text-emerald-600" />
-                <span className="text-[11px] font-bold">Thu Ngân</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => xuLyDangNhapNhanh('bep@nhahang.com')}
-                className="p-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 flex flex-col items-center gap-1 transition-all cursor-pointer"
-              >
-                <ChefHat className="w-4 h-4 text-amber-600" />
-                <span className="text-[11px] font-bold">Bếp Trưởng</span>
-              </button>
-            </div>
-
-            {/* Nút dành cho khách quét mã đặt món */}
-            <div className="mt-5 pt-4 border-t border-slate-100">
-              <a
-                href="/?table=1"
-                className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-50 to-amber-100 border border-amber-300 text-amber-900 font-black text-xs hover:bg-amber-200 transition-all shadow-xs"
-              >
-                <QrCode className="w-4 h-4 text-amber-600" />
-                <span>📱 Khách Ăn Tại Bàn? Quét Mã / Đặt Món Ngay</span>
-              </a>
+            <div className="text-center mt-4 text-xs font-semibold text-slate-400">
+              Royal Bistro POS • Professional Restaurant Management System
             </div>
           </div>
-        </div>
-
-        <div className="text-center mt-6 text-xs font-semibold text-slate-400">
-          Royal Bistro POS • Professional Restaurant Management System
         </div>
       </div>
     </div>

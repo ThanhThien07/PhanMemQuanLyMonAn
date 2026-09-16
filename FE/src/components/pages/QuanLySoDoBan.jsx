@@ -14,17 +14,6 @@
 
 import React, { useEffect, useState } from 'react';
 import clientAxios from '../services/cauHinhAxiosApi.js';
-import { 
-  Grid3X3, 
-  Users, 
-  CreditCard, 
-  Utensils, 
-  CheckCircle,
-  QrCode,
-  ExternalLink,
-  Copy,
-  X
-} from 'lucide-react';
 import ModalInHoaDon from '../ModalInHoaDon.jsx';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu.js';
 
@@ -93,41 +82,51 @@ export default function QuanLySoDoBan({ setActiveTab }) {
   );
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
+    <div className="container-fluid px-2 px-md-4 py-3 max-w-7xl mx-auto space-y-4">
       {/* Tiêu đề & Chú giải màu sắc */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
         <div>
-          <h2 className="text-2xl font-black text-slate-900">Sơ Đồ Bàn Ăn & Phòng Tiệc</h2>
-          <p className="text-slate-500 text-sm font-medium">Theo dõi trực quan tình trạng bàn, khách đang dùng và hóa đơn</p>
+          <div className="d-flex align-items-center gap-2 mb-1">
+            <span className="badge bg-primary text-white rounded-pill px-2.5 py-1 text-xs">
+              <i className="bi bi-grid-3x3-gap-fill me-1"></i>Sơ Đồ
+            </span>
+            <span className="text-xs text-slate-500 font-semibold">{banDaLoc.length} bàn trong khu vực</span>
+          </div>
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-1">
+            Sơ Đồ Bàn Ăn & Phòng Tiệc
+          </h2>
+          <p className="text-slate-500 text-xs sm:text-sm font-medium mb-0">
+            Theo dõi trực quan tình trạng bàn, khách đang dùng và hóa đơn
+          </p>
         </div>
 
         {/* Chú giải trạng thái */}
-        <div className="flex items-center gap-3 text-xs font-semibold">
-          <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-emerald-500"></span>
-            <span className="text-slate-600">Trống (Sẵn sàng)</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-amber-500 animate-pulse"></span>
-            <span className="text-slate-600">Có khách</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-sky-500"></span>
-            <span className="text-slate-600">Đã đặt trước</span>
-          </div>
+        <div className="d-flex align-items-center gap-2 text-xs font-semibold flex-wrap">
+          <span className="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5 rounded-pill d-flex align-items-center gap-1.5">
+            <span className="badge bg-success rounded-circle p-1"></span>
+            Trống (Sẵn sàng)
+          </span>
+          <span className="badge bg-warning-subtle text-amber-800 border border-warning-subtle px-2.5 py-1.5 rounded-pill d-flex align-items-center gap-1.5">
+            <span className="badge bg-warning rounded-circle p-1 animate-ping"></span>
+            Có khách
+          </span>
+          <span className="badge bg-info-subtle text-sky-800 border border-info-subtle px-2.5 py-1.5 rounded-pill d-flex align-items-center gap-1.5">
+            <span className="badge bg-info rounded-circle p-1"></span>
+            Đã đặt trước
+          </span>
         </div>
       </div>
 
-      {/* Tabs Lọc Khu Vực */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2">
+      {/* Tabs Lọc Khu Vực sử dụng Bootstrap Button Pills */}
+      <div className="d-flex align-items-center gap-2 overflow-x-auto pb-1">
         {danhSachKhuVuc.map((khuVuc) => (
           <button
             key={khuVuc}
             onClick={() => setKhuVucHienTai(khuVuc)}
-            className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
+            className={`btn btn-sm rounded-pill fw-bold text-xs whitespace-nowrap transition-all ${
               khuVucHienTai === khuVuc
-                ? 'bg-slate-900 text-white shadow-sm'
-                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
+                ? 'btn-dark shadow-sm'
+                : 'btn-outline-secondary bg-white text-slate-700'
             }`}
           >
             {khuVuc === 'all' ? 'Tất Cả Khu Vực' : khuVuc}
@@ -135,114 +134,124 @@ export default function QuanLySoDoBan({ setActiveTab }) {
         ))}
       </div>
 
-      {/* Lưới hiển thị các bàn ăn */}
+      {/* Lưới hiển thị các bàn ăn sử dụng Bootstrap Row / Col */}
       {dangTai ? (
-        <div className="p-12 text-center text-slate-400 font-medium">Đang tải dữ liệu sơ đồ bàn...</div>
+        <div className="p-12 text-center text-slate-400 font-medium">
+          <div className="spinner-border text-warning mb-2" role="status"></div>
+          <div>Đang tải dữ liệu sơ đồ bàn...</div>
+        </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="row g-3 g-md-4">
           {banDaLoc.map((ban) => {
             const coKhach = ban.trang_thai === 'co_khach';
             const daDat = ban.trang_thai === 'da_dat';
 
-            let vienMau = 'border-slate-200 hover:border-emerald-300';
-            let nenHuyHieu = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+            let cardBorder = 'border-slate-200 hover:border-emerald-300';
+            let badgeClass = 'badge bg-success-subtle text-success border border-success-subtle';
             let nhanTrangThai = 'Trống';
 
             if (coKhach) {
-              vienMau = 'border-amber-300 bg-amber-50/20';
-              nenHuyHieu = 'bg-amber-100 text-amber-900 border-amber-300 animate-pulse';
+              cardBorder = 'border-amber-300 bg-amber-50/20';
+              badgeClass = 'badge bg-warning-subtle text-amber-900 border border-warning-subtle';
               nhanTrangThai = 'Đang Phục Vụ';
             } else if (daDat) {
-              vienMau = 'border-sky-300 bg-sky-50/20';
-              nenHuyHieu = 'bg-sky-100 text-sky-900 border-sky-300';
+              cardBorder = 'border-sky-300 bg-sky-50/20';
+              badgeClass = 'badge bg-info-subtle text-sky-900 border border-info-subtle';
               nhanTrangThai = 'Đã Đặt';
             }
 
             return (
-              <div
-                key={ban.id}
-                className={`bg-white border rounded-2xl p-4 shadow-xs transition-all hover:shadow-md flex flex-col justify-between ${vienMau}`}
-              >
-                {/* Phần đầu thẻ bàn */}
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-black text-sm">
-                        {ban.so_ban}
+              <div key={ban.id} className="col-12 col-sm-6 col-md-4 col-xl-3">
+                <div
+                  className={`card h-100 rounded-4 p-3.5 shadow-sm transition-all hover:shadow-md d-flex flex-column justify-content-between ${cardBorder}`}
+                >
+                  {/* Phần đầu thẻ bàn */}
+                  <div>
+                    <div className="d-flex align-items-center justify-content-between mb-2">
+                      <div className="d-flex align-items-center gap-2">
+                        <div className="w-8 h-8 rounded-3 bg-slate-900 text-white d-flex align-items-center justify-content-center font-black text-sm">
+                          {ban.so_ban}
+                        </div>
+                        <span className={`px-2 py-0.5 rounded-pill text-xs fw-bold ${badgeClass}`}>
+                          {nhanTrangThai}
+                        </span>
                       </div>
-                      <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full border ${nenHuyHieu}`}>
-                        {nhanTrangThai}
-                      </span>
-                    </div>
 
-                    <div className="flex items-center gap-1 text-slate-400 text-xs font-semibold">
-                      <Users className="w-3.5 h-3.5" />
-                      <span>{ban.so_luong_khach || 0}/{ban.suc_chua}</span>
-                    </div>
-                  </div>
-
-                  <div className="text-xs text-slate-500 font-medium truncate mb-3">
-                    {ban.khu_vuc}
-                  </div>
-
-                  {/* Thông tin tạm tính của bàn */}
-                  {coKhach && (
-                    <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100 mb-3 space-y-1">
-                      <div className="flex justify-between text-xs font-semibold text-slate-600">
-                        <span>Số món đang dùng:</span>
-                        <span className="text-slate-900 font-bold">{ban.so_mon || 0} món</span>
-                      </div>
-                      <div className="flex justify-between text-xs font-semibold text-slate-600">
-                        <span>Tạm tính:</span>
-                        <span className="text-amber-800 font-extrabold">{dinhDangTienTe(ban.tam_tinh || 0)}</span>
+                      <div className="d-flex align-items-center gap-1 text-slate-400 text-xs font-semibold">
+                        <Users className="w-3.5 h-3.5" />
+                        <span>{ban.so_luong_khach || 0}/{ban.suc_chua}</span>
                       </div>
                     </div>
-                  )}
-                </div>
 
-                {/* Các nút hành động thao tác bàn */}
-                <div className="space-y-2 pt-2 border-t border-slate-100">
-                  <div className="grid grid-cols-2 gap-1.5">
-                    {coKhach ? (
-                      <>
-                        <button
-                          onClick={() => moHoaDonBan(ban)}
-                          className="py-2 px-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-1 shadow-xs transition-colors cursor-pointer"
-                        >
-                          <CreditCard className="w-3.5 h-3.5" />
-                          <span>Tính Tiền</span>
-                        </button>
+                    <div className="text-xs text-slate-500 font-medium truncate mb-3">
+                      <i className="bi bi-geo-alt me-1 text-slate-400"></i>{ban.khu_vuc}
+                    </div>
 
-                        <button
-                          onClick={() => {
-                            if (setActiveTab) setActiveTab('pos');
-                          }}
-                          className="py-2 px-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-colors cursor-pointer"
-                        >
-                          <Utensils className="w-3.5 h-3.5" />
-                          <span>Gọi Thêm</span>
-                        </button>
-                      </>
-                    ) : (
-                      <button
-                        onClick={() => doiTrangThaiBan(ban, 'co_khach')}
-                        className="col-span-2 py-2 px-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-1 shadow-xs transition-colors cursor-pointer"
-                      >
-                        <CheckCircle className="w-3.5 h-3.5" />
-                        <span>Mở Bàn Đón Khách</span>
-                      </button>
+                    {/* Thông tin tạm tính của bàn */}
+                    {coKhach && (
+                      <div className="bg-slate-50 p-2.5 rounded-3 border border-slate-100 mb-3 space-y-1">
+                        <div className="d-flex justify-content-between text-xs font-semibold text-slate-600">
+                          <span>Số món đang dùng:</span>
+                          <span className="text-slate-900 font-bold">{ban.so_mon || 0} món</span>
+                        </div>
+                        <div className="d-flex justify-content-between text-xs font-semibold text-slate-600">
+                          <span>Tạm tính:</span>
+                          <span className="text-amber-800 font-extrabold">{dinhDangTienTe(ban.tam_tinh || 0)}</span>
+                        </div>
+                      </div>
                     )}
                   </div>
 
-                  {/* Nút xem mã QR của bàn */}
-                  <button
-                    onClick={() => setBanXemQR(ban)}
-                    className="w-full py-1.5 px-2 rounded-lg text-2xs font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                    title="Xem và quét mã QR bàn này"
-                  >
-                    <QrCode className="w-3.5 h-3.5 text-amber-600" />
-                    <span>Mã QR Đặt Món Tại Bàn</span>
-                  </button>
+                  {/* Các nút hành động thao tác bàn */}
+                  <div className="space-y-2 pt-2 border-top border-slate-100">
+                    <div className="row g-1.5">
+                      {coKhach ? (
+                        <>
+                          <div className="col-6">
+                            <button
+                              onClick={() => moHoaDonBan(ban)}
+                              className="btn btn-warning w-100 py-2 rounded-3 text-white fw-bold text-xs d-flex align-items-center justify-content-center gap-1 shadow-xs"
+                            >
+                              <CreditCard className="w-3.5 h-3.5" />
+                              <span>Tính Tiền</span>
+                            </button>
+                          </div>
+
+                          <div className="col-6">
+                            <button
+                              onClick={() => {
+                                if (setActiveTab) setActiveTab('pos');
+                              }}
+                              className="btn btn-light border w-100 py-2 rounded-3 text-slate-700 fw-bold text-xs d-flex align-items-center justify-content-center gap-1"
+                            >
+                              <Utensils className="w-3.5 h-3.5" />
+                              <span>Gọi Thêm</span>
+                            </button>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="col-12">
+                          <button
+                            onClick={() => doiTrangThaiBan(ban, 'co_khach')}
+                            className="btn btn-dark w-100 py-2 rounded-3 text-white fw-bold text-xs d-flex align-items-center justify-content-center gap-1 shadow-xs"
+                          >
+                            <CheckCircle className="w-3.5 h-3.5" />
+                            <span>Mở Bàn Đón Khách</span>
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Nút xem mã QR của bàn */}
+                    <button
+                      onClick={() => setBanXemQR(ban)}
+                      className="btn btn-link text-slate-500 hover:text-slate-800 w-100 py-1 px-2 text-decoration-none text-xs fw-bold d-flex align-items-center justify-content-center gap-1.5"
+                      title="Xem và quét mã QR bàn này"
+                    >
+                      <QrCode className="w-3.5 h-3.5 text-amber-600" />
+                      <span>Mã QR Đặt Món Tại Bàn</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             );
