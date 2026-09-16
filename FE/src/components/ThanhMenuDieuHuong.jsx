@@ -31,7 +31,7 @@ import {
   Flame,
   QrCode
 } from 'lucide-react';
-import { useAuth } from '../context/NguoiDungContext.jsx';
+import { useAuth } from './context/NguoiDungContext.jsx';
 
 export default function ThanhMenuDieuHuong({ activeTab, setActiveTab }) {
   const { user } = useAuth();

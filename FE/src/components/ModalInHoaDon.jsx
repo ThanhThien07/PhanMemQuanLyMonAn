@@ -13,8 +13,8 @@
 
 import React, { useState } from 'react';
 import { X, Printer, Banknote, CheckCircle, QrCode } from 'lucide-react';
-import clientAxios from '../services/cauHinhAxiosApi.js';
-import { dinhDangTienTe } from '../utils/dinhDangDuLieu.js';
+import clientAxios from './services/cauHinhAxiosApi.js';
+import { dinhDangTienTe } from './utils/dinhDangDuLieu.js';
 
 export default function ModalInHoaDon({ table, orders, onClose, onSuccess }) {
   const [phuongThucThanhToan, setPhuongThucThanhToan] = useState('tien_mat');

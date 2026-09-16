@@ -25,7 +25,7 @@ import {
   Copy,
   X
 } from 'lucide-react';
-import ModalInHoaDon from '../components/ModalInHoaDon.jsx';
+import ModalInHoaDon from '../ModalInHoaDon.jsx';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu.js';
 
 export default function QuanLySoDoBan({ setActiveTab }) {

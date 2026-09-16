@@ -18,7 +18,7 @@ import {
   Utensils, 
   Users 
 } from 'lucide-react';
-import ModalInHoaDon from '../components/ModalInHoaDon';
+import ModalInHoaDon from '../ModalInHoaDon';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu';
 
 /**

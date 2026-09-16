@@ -11,9 +11,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';
-import { NguoiDungProvider } from './context/NguoiDungContext.jsx';
-import { SocketRealtimeProvider } from './context/SocketRealtimeContext.jsx';
-import { ThongBaoToastProvider } from './context/ThongBaoToastContext.jsx';
+import { NguoiDungProvider } from './components/context/NguoiDungContext.jsx';
+import { SocketRealtimeProvider } from './components/context/SocketRealtimeContext.jsx';
+import { ThongBaoToastProvider } from './components/context/ThongBaoToastContext.jsx';
 import BatLoiGiaoDien from './components/common/BatLoiGiaoDien.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(

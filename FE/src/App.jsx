@@ -8,19 +8,19 @@
  */
 
 import React, { useState } from 'react';
-import { useNguoiDung } from './context/NguoiDungContext';
+import { useNguoiDung } from './components/context/NguoiDungContext';
 import BoCucGiaoDienChinh from './components/layout/BoCucGiaoDienChinh';
-import DangNhapHeThong from './pages/DangNhapHeThong';
-import TongQuanDashboard from './pages/TongQuanDashboard';
-import GoiMonTaiBanPOS from './pages/GoiMonTaiBanPOS';
-import QuanLySoDoBan from './pages/QuanLySoDoBan';
-import ManHinhBepKDS from './pages/ManHinhBepKDS';
-import QuanLyDatBanTruoc from './pages/QuanLyDatBanTruoc';
-import QuanLyThucDonMonAn from './pages/QuanLyThucDonMonAn';
-import QuanLyKhoNguyenLieu from './pages/QuanLyKhoNguyenLieu';
-import QuanLyKhachHang from './pages/QuanLyKhachHang';
-import BaoCaoThongKeDoanhThu from './pages/BaoCaoThongKeDoanhThu';
-import KhachHangGoiMonQR from './pages/KhachHangGoiMonQR';
+import DangNhapHeThong from './components/pages/DangNhapHeThong';
+import TongQuanDashboard from './components/pages/TongQuanDashboard';
+import GoiMonTaiBanPOS from './components/pages/GoiMonTaiBanPOS';
+import QuanLySoDoBan from './components/pages/QuanLySoDoBan';
+import ManHinhBepKDS from './components/pages/ManHinhBepKDS';
+import QuanLyDatBanTruoc from './components/pages/QuanLyDatBanTruoc';
+import QuanLyThucDonMonAn from './components/pages/QuanLyThucDonMonAn';
+import QuanLyKhoNguyenLieu from './components/pages/QuanLyKhoNguyenLieu';
+import QuanLyKhachHang from './components/pages/QuanLyKhachHang';
+import BaoCaoThongKeDoanhThu from './components/pages/BaoCaoThongKeDoanhThu';
+import KhachHangGoiMonQR from './components/pages/KhachHangGoiMonQR';
 import { VongXoayTai } from './components/common/HuyHieuTrangThai';
 
 /**
