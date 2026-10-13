@@ -9,7 +9,7 @@
 
 import React, { useEffect, useState } from 'react';
 import axiosApi from '../services/cauHinhAxiosApi';
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, Download, PieChart } from 'lucide-react';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu';
 
 /**

@@ -10,6 +10,7 @@
 import React, { useEffect, useState } from 'react';
 import axiosApi from '../services/cauHinhAxiosApi';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu';
+import { AlertTriangle, Plus } from 'lucide-react';
 
 /**
  * Component Quản lý Kho nguyên liệu & Nhà cung cấp

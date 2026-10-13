@@ -10,12 +10,29 @@
 
 import axios from 'axios';
 
+// Xác định baseURL linh hoạt:
+// 1. Biến môi trường VITE_API_URL (nếu có)
+// 2. Nếu đang chạy qua Vite Dev Server (port 3000) -> Dùng proxy '/api' (hỗ trợ cả LAN IP và điện thoại)
+// 3. Nếu truy cập qua Laragon / Apache hoặc khác -> Dùng http://<hostname>:5000/api
+const layBaseUrl = () => {
+  if (import.meta.env?.VITE_API_URL) return import.meta.env.VITE_API_URL;
+  if (typeof window !== 'undefined') {
+    if (window.location.port === '3000') {
+      return '/api';
+    }
+    const hostname = window.location.hostname || 'localhost';
+    return `http://${hostname}:5000/api`;
+  }
+  return 'http://localhost:5000/api';
+};
+
 // Khởi tạo thực thể Axios Client với cấu hình gốc
 const clientAxios = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: layBaseUrl(),
   headers: {
     'Content-Type': 'application/json'
-  }
+  },
+  timeout: 10000
 });
 
 // Bộ chặn Request: Tự động gắn Bearer Token vào tiêu đề HTTP
@@ -33,7 +50,14 @@ clientAxios.interceptors.request.use((config) => {
 clientAxios.interceptors.response.use(
   (response) => response.data,
   (error) => {
-    const thongBaoLoi = error.response?.data?.message || error.message || 'Đã có lỗi xảy ra trong quá trình gửi yêu cầu.';
+    let thongBaoLoi = error.response?.data?.message;
+    if (!thongBaoLoi) {
+      if (error.code === 'ERR_NETWORK' || error.message === 'Network Error' || !error.response) {
+        thongBaoLoi = 'Không thể kết nối đến máy chủ Backend (Port 5000). Vui lòng đảm bảo Backend đang chạy bằng lệnh "npm run dev".';
+      } else {
+        thongBaoLoi = error.message || 'Đã có lỗi xảy ra trong quá trình gửi yêu cầu.';
+      }
+    }
     return Promise.reject(new Error(thongBaoLoi));
   }
 );

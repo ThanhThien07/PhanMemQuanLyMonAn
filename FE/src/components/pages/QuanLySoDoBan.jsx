@@ -16,6 +16,7 @@ import React, { useEffect, useState } from 'react';
 import clientAxios from '../services/cauHinhAxiosApi.js';
 import ModalInHoaDon from '../ModalInHoaDon.jsx';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu.js';
+import { ExternalLink, Copy } from 'lucide-react';
 
 export default function QuanLySoDoBan({ setActiveTab }) {
   const [danhSachBan, setDanhSachBan] = useState([]);

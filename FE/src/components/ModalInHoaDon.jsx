@@ -12,15 +12,36 @@
  */
 
 import React, { useState } from 'react';
-import { X, Printer, Banknote, CheckCircle, QrCode } from 'lucide-react';
+import { X, Printer, Banknote, CheckCircle, QrCode, Copy, Check } from 'lucide-react';
 import clientAxios from './services/cauHinhAxiosApi.js';
 import { dinhDangTienTe } from './utils/dinhDangDuLieu.js';
+import anhMaQr from '../assets/ma_qr.jpg';
+
+// Cấu hình thông tin tài khoản ngân hàng liên kết chính thức của nhà hàng (MB Bank)
+const THONG_TIN_NGAN_HANG = {
+  tenNganHang: 'MB Bank (Ngân hàng TMCP Quân Đội)',
+  maBin: '970422',
+  soTaiKhoan: '0374685094',
+  chuTaiKhoan: 'ROYAL BISTRO (NGUYEN NGOC HA THAO)'
+};
 
 export default function ModalInHoaDon({ table, orders, onClose, onSuccess }) {
   const [phuongThucThanhToan, setPhuongThucThanhToan] = useState('tien_mat');
   const [phanTramGiamGia, setPhanTramGiamGia] = useState(0);
   const [dangXuLy, setDangXuLy] = useState(false);
   const [thanhToanThanhCong, setThanhToanThanhCong] = useState(false);
+  const [qrViewMode, setQrViewMode] = useState('dynamic');
+  const [copiedField, setCopiedField] = useState(null);
+
+  const copyToClipboard = async (text, fieldName) => {
+    try {
+      await navigator.clipboard.writeText(String(text));
+      setCopiedField(fieldName);
+      setTimeout(() => setCopiedField(null), 2000);
+    } catch {
+      // Fallback
+    }
+  };
 
   const tongTamTinh = orders.reduce((tong, item) => tong + (item.tong_tien || 0), 0);
   const soTienGiamGia = Math.round((tongTamTinh * phanTramGiamGia) / 100);
@@ -165,22 +186,109 @@ export default function ModalInHoaDon({ table, orders, onClose, onSuccess }) {
             </div>
           </div>
 
-          {/* Hiển thị Mã QR Thanh Toán (Sử dụng ảnh QR chuẩn nhà hàng) */}
+          {/* Hiển thị Mã QR Thanh Toán (Sử dụng ảnh QR chuẩn nhà hàng & VietQR động) */}
           {phuongThucThanhToan === 'chuyen_khoan' && (
-            <div className="p-3.5 bg-white rounded-2xl border border-slate-200 text-center font-sans shadow-sm">
-              <div className="text-xs text-slate-800 font-black mb-2 flex items-center justify-center gap-1.5">
-                <QrCode className="w-4 h-4 text-amber-600" />
-                Quét mã VietQR chuyển khoản trực tiếp
+            <div className="p-3.5 bg-white rounded-2xl border border-blue-200 text-center font-sans shadow-sm space-y-2.5">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                  <QrCode className="w-4 h-4 text-blue-600" />
+                  Mã QR Chuyển Khoản
+                </span>
+                <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg text-[10px] font-bold">
+                  <button
+                    type="button"
+                    onClick={() => setQrViewMode('dynamic')}
+                    className={`px-2 py-0.5 rounded-md transition-all cursor-pointer ${
+                      qrViewMode === 'dynamic' ? 'bg-white text-blue-700 shadow-2xs font-extrabold' : 'text-slate-500'
+                    }`}
+                  >
+                    ⚡ VietQR Tự Động
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setQrViewMode('static')}
+                    className={`px-2 py-0.5 rounded-md transition-all cursor-pointer ${
+                      qrViewMode === 'static' ? 'bg-white text-blue-700 shadow-2xs font-extrabold' : 'text-slate-500'
+                    }`}
+                  >
+                    Mã Gốc MB Bank
+                  </button>
+                </div>
               </div>
-              <img
-                src="/ma_qr.jpg"
-                alt="Mã QR Chuyển Khoản"
-                className="w-40 h-40 mx-auto rounded-xl border border-slate-200 p-1 bg-white shadow-md object-contain"
-              />
-              <div className="text-[12px] text-amber-800 font-extrabold mt-2">
-                Nội dung CK: BAN{table?.so_ban} - {dinhDangTienTe(tongTienPhaiTra)}
+
+              {/* Hình ảnh Mã QR */}
+              <div className="relative inline-block">
+                <img
+                  src={
+                    qrViewMode === 'dynamic' && tongTienPhaiTra > 0
+                      ? `https://img.vietqr.io/image/${THONG_TIN_NGAN_HANG.maBin}-${THONG_TIN_NGAN_HANG.soTaiKhoan}-compact2.png?amount=${tongTienPhaiTra}&addInfo=${encodeURIComponent(`BAN${table?.so_ban} THANH TOAN`)}&accountName=${encodeURIComponent(THONG_TIN_NGAN_HANG.chuTaiKhoan)}`
+                      : anhMaQr
+                  }
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = anhMaQr;
+                  }}
+                  alt="Mã QR Chuyển Khoản"
+                  className="w-40 h-40 mx-auto rounded-xl border border-blue-200 p-1 bg-white shadow-md object-contain"
+                />
+                <div className="text-[10px] text-blue-700 font-bold mt-1">
+                  {qrViewMode === 'dynamic' ? '⚡ App ngân hàng tự điền đúng số tiền & nội dung' : '📌 Quét mã QR MB Bank chính thức của nhà hàng'}
+                </div>
               </div>
-              <p className="text-[10px] text-slate-400 mt-0.5">Hỗ trợ tất cả ứng dụng Ngân hàng & Ví điện tử Napas247</p>
+
+              {/* Bảng thông tin tài khoản chi tiết */}
+              <div className="bg-slate-50 rounded-xl p-2.5 border border-slate-200 text-left space-y-1.5 text-xs">
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500 text-[11px]">Ngân hàng:</span>
+                  <span className="font-bold text-slate-800 text-[11px]">{THONG_TIN_NGAN_HANG.tenNganHang}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500 text-[11px]">Số tài khoản:</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-black font-mono text-blue-700 text-sm tracking-wider">{THONG_TIN_NGAN_HANG.soTaiKhoan}</span>
+                    <button
+                      type="button"
+                      onClick={() => copyToClipboard(THONG_TIN_NGAN_HANG.soTaiKhoan, 'Số tài khoản')}
+                      className="px-1.5 py-0.5 rounded bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-[10px] flex items-center gap-0.5 cursor-pointer"
+                    >
+                      {copiedField === 'Số tài khoản' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                      <span>{copiedField === 'Số tài khoản' ? 'Đã chép' : 'Chép'}</span>
+                    </button>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500 text-[11px]">Chủ tài khoản:</span>
+                  <span className="font-bold text-slate-900 text-[11px]">{THONG_TIN_NGAN_HANG.chuTaiKhoan}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500 text-[11px]">Số tiền:</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-black text-rose-600 text-xs">{dinhDangTienTe(tongTienPhaiTra)}</span>
+                    <button
+                      type="button"
+                      onClick={() => copyToClipboard(tongTienPhaiTra, 'Số tiền')}
+                      className="px-1.5 py-0.5 rounded bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-[10px] flex items-center gap-0.5 cursor-pointer"
+                    >
+                      {copiedField === 'Số tiền' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                      <span>{copiedField === 'Số tiền' ? 'Đã chép' : 'Chép'}</span>
+                    </button>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between pt-1 border-t border-dashed border-slate-200">
+                  <span className="text-slate-500 text-[11px]">Nội dung CK:</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-bold font-mono text-amber-800 text-[11px]">BAN{table?.so_ban} THANH TOAN</span>
+                    <button
+                      type="button"
+                      onClick={() => copyToClipboard(`BAN${table?.so_ban} THANH TOAN`, 'Nội dung CK')}
+                      className="px-1.5 py-0.5 rounded bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-[10px] flex items-center gap-0.5 cursor-pointer"
+                    >
+                      {copiedField === 'Nội dung CK' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                      <span>{copiedField === 'Nội dung CK' ? 'Đã chép' : 'Chép'}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>

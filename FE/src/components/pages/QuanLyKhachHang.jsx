@@ -9,6 +9,7 @@
 import React, { useEffect, useState } from 'react';
 import axiosApi from '../services/cauHinhAxiosApi';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu';
+import { Plus, Crown } from 'lucide-react';
 
 /**
  * Component Quản lý Khách hàng thân thiết

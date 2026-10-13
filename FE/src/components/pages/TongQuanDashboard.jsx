@@ -12,7 +12,8 @@ import {
   DollarSign, 
   ShoppingBag, 
   AlertTriangle, 
-  Clock 
+  Clock,
+  TrendingUp 
 } from 'lucide-react';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu';
 

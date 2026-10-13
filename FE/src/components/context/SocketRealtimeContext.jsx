@@ -20,7 +20,12 @@ export function BoCungCapSocket({ children }) {
   const [thongBaoMoiNhat, setThongBaoMoiNhat] = useState(null);
 
   useEffect(() => {
-    const thucTheSocket = io('http://localhost:5000', {
+    const socketHost = typeof window !== 'undefined' && window.location.port === '3000'
+      ? window.location.origin
+      : `http://${(typeof window !== 'undefined' && window.location.hostname) || 'localhost'}:5000`;
+
+    const thucTheSocket = io(socketHost, {
+      path: '/socket.io',
       transports: ['websocket', 'polling']
     });
 

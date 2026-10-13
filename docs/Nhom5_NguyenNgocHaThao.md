@@ -1,9 +1,12 @@
+ 
+
 # BÁO CÁO THIẾT KẾ VÀ CÀI ĐẶT CƠ SỞ DỮ LIỆU
-**MÔN HỌC:** HỆ QUẢN TRỊ CƠ SỞ DỮ LIỆU  
-**ĐỀ TÀI:** THIẾT KẾ VÀ CÀI ĐẶT CƠ SỞ DỮ LIỆU HỆ THỐNG QUẢN LÝ NHÀ HÀNG & GỌI MÓN (RESTAURANT MANAGEMENT SYSTEM)  
-**NHÓM THỰC HIỆN:** NHÓM 5  
-**TRƯỞNG NHÓM:** NGUYỄN NGỌC HÀ THẢO  
-**HỆ THỐNG ÁP DỤNG:** Website Quản lý Nhà hàng & Gọi món (`PhanMemQuanLyMonAn`)  
+
+**MÔN HỌC:** HỆ QUẢN TRỊ CƠ SỞ DỮ LIỆU
+**ĐỀ TÀI:** THIẾT KẾ VÀ CÀI ĐẶT CƠ SỞ DỮ LIỆU HỆ THỐNG QUẢN LÝ NHÀ HÀNG & GỌI MÓN (RESTAURANT MANAGEMENT SYSTEM)
+**NHÓM THỰC HIỆN:** NHÓM 5
+**TRƯỞNG NHÓM:** NGUYỄN NGỌC HÀ THẢO
+**HỆ THỐNG ÁP DỤNG:** Website Quản lý Nhà hàng & Gọi món (`PhanMemQuanLyMonAn`)
 
 ---
 
@@ -14,22 +17,24 @@
 Hệ thống Quản lý Nhà hàng và Gọi món được thiết kế bao gồm 12 bảng dữ liệu chặt chẽ, đáp ứng đầy đủ các phân hệ nghiệp vụ từ quản trị danh mục thực đơn, sơ đồ bàn, đặt bàn trước, quản lý kho & định lượng (BOM), đến nghiệp vụ order món tại bàn, đánh giá chất lượng và báo cáo doanh thu.
 
 #### 2.1.1 Biểu diễn các bảng dữ liệu dưới dạng dòng (Relational Schema in textual format)
-> **Quy ước ký hiệu:**
-> - Khóa chính (Primary Key) được **in đậm và gạch chân**: <ins>**MãKhóaChính**</ins>
-> - Khóa ngoại (Foreign Key) có tiền tố dấu thăng: **#MãKhóaNgoại**
 
-1. **LOAI_MON** (<ins>**id**</ins>, ma_loai, ten_loai, created_at, updated_at)
-2. **MON_AN** (<ins>**id**</ins>, **#loai_mon_id**, ten_mon, gia, mo_ta, hinh_anh, trang_thai, created_at, updated_at)
-3. **BAN** (<ins>**id**</ins>, so_ban, suc_chua, trang_thai, khu_vuc, yeu_cau_thanh_toan, so_luong_khach, created_at, updated_at)
-4. **DAT_BAN_TRUOC** (<ins>**id**</ins>, **#ban_id**, ma_reservation, ten_khach, sdt, thoi_gian_hen, so_luong_khach, tien_coc, trang_thai, ghi_chu, created_at, updated_at)
-5. **KHACH_HANG** (<ins>**id**</ins>, ho_ten, so_dien_thoai, email, diem_tich_luy, hang_thanh_vien, tong_chi_tieu, created_at, updated_at)
-6. **USERS** (<ins>**id**</ins>, name, email, password, role, so_dien_thoai, trang_thai, created_at, updated_at)
-7. **NGUYEN_LIEU** (<ins>**id**</ins>, ten_nguyen_lieu, don_vi_tinh, so_luong_ton, gia_nhap_trung_binh, dinh_muc_toi_thieu, han_su_dung, created_at, updated_at)
-8. **MON_AN_NGUYEN_LIEU** (<ins>**id**</ins>, **#mon_an_id**, **#nguyen_lieu_id**, so_luong_can, don_vi_tinh, created_at, updated_at)
-9. **NHA_CUNG_CAP** (<ins>**id**</ins>, ma_ncc, ten_ncc, so_dien_thoai, email, dia_chi, danh_gia_sao, created_at, updated_at)
-10. **DAT_MON** (<ins>**id**</ins>, **#ban_id**, **#mon_an_id**, **#khach_hang_id**, so_luong, don_gia, tong_tien, options_json, ghi_chu, trang_thai, phuong_thuc_thanh_toan, session_token, thu_tu_uu_tien, so_luong_khach, created_at, updated_at) *(Bảng nghiệp vụ trọng tâm > 1.200 records)*
-11. **DANH_GIA_MON_AN** (<ins>**id**</ins>, **#dat_mon_id**, **#ban_id**, so_sao, noi_dung_danh_gia, canh_bao_do, created_at, updated_at)
-12. **BAO_CAO_QUAN_LY** (<ins>**id**</ins>, ma_bao_cao, ngay_lap, nguoi_lap, ca_lam_viec, tong_so_hoa_don, tong_luong_khach, tong_doanh_thu, doanh_thu_tien_mat, doanh_thu_chuyen_khoan, created_at, updated_at)
+> **Quy ước ký hiệu:**
+>
+> - Khóa chính (Primary Key) được **in đậm và gạch chân**: <ins></ins>
+> - Khóa ngoại (Foreign Key) có tiền tố dấu thăng: **#M#MãKhóaNgoại**
+
+1. **LOAI_MON** (<ins></ins>, ma_loai, ten_loai, created_at, updated_at)
+2. **MON_AN** (<ins></ins>, **#loai_mon_id#loai_mon_id**, ten_mon, gia, mo_ta, hinh_anh, trang_thai, created_at, updated_at)
+3. **BAN** (<ins></ins>, so_ban, suc_chua, trang_thai, khu_vuc, yeu_cau_thanh_toan, so_luong_khach, created_at, updated_at)
+4. **DAT_BAN_TRUOC** (<ins></ins>, **#ban_id#ban_id**, ma_reservation, ten_khach, sdt, thoi_gian_hen, so_luong_khach, tien_coc, trang_thai, ghi_chu, created_at, updated_at)
+5. **KHACH_HANG** (<ins></ins>, ho_ten, so_dien_thoai, email, diem_tich_luy, hang_thanh_vien, tong_chi_tieu, created_at, updated_at)
+6. **USERS** (<ins></ins>, name, email, password, role, so_dien_thoai, trang_thai, created_at, updated_at)
+7. **NGUYEN_LIEU** (<ins></ins>, ten_nguyen_lieu, don_vi_tinh, so_luong_ton, gia_nhap_trung_binh, dinh_muc_toi_thieu, han_su_dung, created_at, updated_at)
+8. **MON_AN_NGUYEN_LIEU** (<ins></ins>, **#mon_an_id#mon_an_id**, **#nguyen_lieu_id#nguyen_lieu_id**, so_luong_can, don_vi_tinh, created_at, updated_at)
+9. **NHA_CUNG_CAP** (<ins></ins>, ma_ncc, ten_ncc, so_dien_thoai, email, dia_chi, danh_gia_sao, created_at, updated_at)
+10. **DAT_MON** (<ins></ins>, **#ban_id#ban_id**, **#mon_an_id#mon_an_id**, **#khach_hang_id#khach_hang_id**, so_luong, don_gia, tong_tien, options_json, ghi_chu, trang_thai, phuong_thuc_thanh_toan, session_token, thu_tu_uu_tien, so_luong_khach, created_at, updated_at) *(Bảng nghiệp vụ trọng tâm > 1.200 records)*
+11. **DANH_GIA_MON_AN** (<ins></ins>, **#dat_mon_id#dat_mon_id**, **#ban_id#ban_id**, so_sao, noi_dung_danh_gia, canh_bao_do, created_at, updated_at)
+12. **BAO_CAO_QUAN_LY** (<ins></ins>, ma_bao_cao, ngay_lap, nguoi_lap, ca_lam_viec, tong_so_hoa_don, tong_luong_khach, tong_doanh_thu, doanh_thu_tien_mat, doanh_thu_chuyen_khoan, created_at, updated_at)
 
 ---
 
@@ -47,22 +52,24 @@ erDiagram
     DAT_MON ||--o{ DANH_GIA_MON_AN : "được đánh giá (1-N)"
 ```
 
-| Bảng Nguồn (1) | Bảng Đích (N) | Khóa Ngoại (#FK) | Bản Số | Ý Nghĩa Nghiệp Vụ Thực Tế |
-| :--- | :--- | :--- | :---: | :--- |
-| **LOAI_MON** | **MON_AN** | `#loai_mon_id` | 1 - N | Một danh mục (Khai vị, Món chính, Hải sản,...) chứa nhiều món ăn. Khi xóa danh mục, khóa ngoại được gán `NULL` để không làm mất thực đơn. |
-| **BAN** | **DAT_BAN_TRUOC** | `#ban_id` | 1 - N | Một bàn ăn có thể được đặt trước vào nhiều khung giờ khác nhau. Bàn được liên kết để giữ chỗ trước khi khách đến. |
-| **BAN** | **DAT_MON** | `#ban_id` | 1 - N | Một bàn ăn phát sinh nhiều lượt gọi món trong các phiên phục vụ (Session). Khi xóa bàn, các lượt gọi món liên quan bị xóa thác (CASCADE). |
-| **MON_AN** | **DAT_MON** | `#mon_an_id` | 1 - N | Mỗi món ăn trong thực đơn xuất hiện trong nhiều lượt gọi món và hóa đơn của khách. |
-| **KHACH_HANG** | **DAT_MON** | `#khach_hang_id` | 1 - N | Khách hàng thân thiết tích lũy điểm thưởng và nâng hạng VIP (Đồng, Bạc, Vàng, Kim Cương) qua mỗi lần gọi món. |
-| **MON_AN** | **MON_AN_NGUYEN_LIEU** | `#mon_an_id` | 1 - N | Mối quan hệ N - N giữa Món ăn và Nguyên liệu được giải quyết thông qua bảng Định lượng (BOM - Bill of Materials). |
-| **NGUYEN_LIEU** | **MON_AN_NGUYEN_LIEU** | `#nguyen_lieu_id` | 1 - N | Một nguyên liệu trong kho (Thịt bò Wagyu, Tôm sú, Phô mai,...) là thành phần chế biến của nhiều món ăn khác nhau. |
-| **DAT_MON** | **DANH_GIA_MON_AN** | `#dat_mon_id` | 1 - 1 / 1 - N | Mỗi món ăn sau khi phục vụ có thể được khách hàng đánh giá mức độ hài lòng (từ 1 đến 5 sao) và để lại nhận xét. |
+
+| Bảng Nguồn (1) | Bảng Đích (N)       | Khóa Ngoại (#FK) |   Bản Số   | Ý Nghĩa Nghiệp Vụ Thực Tế                                                                                                                                     |
+| :----------------- | :----------------------- | :------------------- | :-------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **LOAI_MON**     | **MON_AN**             | `#loai_mon_id`     |     1 - N     | Một danh mục (Khai vị, Món chính, Hải sản,...) chứa nhiều món ăn. Khi xóa danh mục, khóa ngoại được gán`NULL` để không làm mất thực đơn. |
+| **BAN**          | **DAT_BAN_TRUOC**      | `#ban_id`          |     1 - N     | Một bàn ăn có thể được đặt trước vào nhiều khung giờ khác nhau. Bàn được liên kết để giữ chỗ trước khi khách đến.                    |
+| **BAN**          | **DAT_MON**            | `#ban_id`          |     1 - N     | Một bàn ăn phát sinh nhiều lượt gọi món trong các phiên phục vụ (Session). Khi xóa bàn, các lượt gọi món liên quan bị xóa thác (CASCADE).   |
+| **MON_AN**       | **DAT_MON**            | `#mon_an_id`       |     1 - N     | Mỗi món ăn trong thực đơn xuất hiện trong nhiều lượt gọi món và hóa đơn của khách.                                                               |
+| **KHACH_HANG**   | **DAT_MON**            | `#khach_hang_id`   |     1 - N     | Khách hàng thân thiết tích lũy điểm thưởng và nâng hạng VIP (Đồng, Bạc, Vàng, Kim Cương) qua mỗi lần gọi món.                                |
+| **MON_AN**       | **MON_AN_NGUYEN_LIEU** | `#mon_an_id`       |     1 - N     | Mối quan hệ N - N giữa Món ăn và Nguyên liệu được giải quyết thông qua bảng Định lượng (BOM - Bill of Materials).                                |
+| **NGUYEN_LIEU**  | **MON_AN_NGUYEN_LIEU** | `#nguyen_lieu_id`  |     1 - N     | Một nguyên liệu trong kho (Thịt bò Wagyu, Tôm sú, Phô mai,...) là thành phần chế biến của nhiều món ăn khác nhau.                                 |
+| **DAT_MON**      | **DANH_GIA_MON_AN**    | `#dat_mon_id`      | 1 - 1 / 1 - N | Mỗi món ăn sau khi phục vụ có thể được khách hàng đánh giá mức độ hài lòng (từ 1 đến 5 sao) và để lại nhận xét.                        |
 
 ---
 
 ### 2.2 Thiết kế Cơ sở Dữ liệu (Database Design & Implementation)
 
 #### 2.2.1 Tổ chức và lưu trữ dữ liệu của hệ thống
+
 - **Hệ Quản trị CSDL:** MySQL 8.0+ / MariaDB 10.4+.
 - **Storage Engine:** `InnoDB`.
   - Hỗ trợ đầy đủ các tính chất **ACID (Atomicity, Consistency, Isolation, Durability)** của giao dịch.
@@ -76,150 +83,174 @@ erDiagram
 #### 2.2.2 Từ điển dữ liệu chi tiết (Data Dictionary)
 
 ##### 1. Bảng `loai_mon` (Danh mục loại món ăn)
-| Tên Cột | Kiểu Dữ Liệu | Ràng Buộc | Diễn Giải Nghiệp Vụ |
-| :--- | :--- | :--- | :--- |
-| `id` | BIGINT UNSIGNED | PK, AUTO_INCREMENT | Mã định danh duy nhất của loại món |
-| `ma_loai` | VARCHAR(20) | NOT NULL, UNIQUE | Mã loại viết tắt (ví dụ: `KHAI_VI`, `MON_CHINH`, `HAI_SAN`) |
-| `ten_loai` | VARCHAR(100) | NOT NULL | Tên hiển thị danh mục món ăn |
-| `created_at` | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Thời điểm tạo bản ghi |
-| `updated_at` | TIMESTAMP | ON UPDATE CURRENT_TIMESTAMP | Thời điểm cập nhật gần nhất |
+
+
+| Tên Cột    | Kiểu Dữ Liệu | Ràng Buộc                 | Diễn Giải Nghiệp Vụ                                          |
+| :------------- | :---------------- | :---------------------------- | :----------------------------------------------------------------- |
+| `id`         | BIGINT UNSIGNED | PK, AUTO_INCREMENT          | Mã định danh duy nhất của loại món                        |
+| `ma_loai`    | VARCHAR(20)     | NOT NULL, UNIQUE            | Mã loại viết tắt (ví dụ:`KHAI_VI`, `MON_CHINH`, `HAI_SAN`) |
+| `ten_loai`   | VARCHAR(100)    | NOT NULL                    | Tên hiển thị danh mục món ăn                               |
+| `created_at` | TIMESTAMP       | DEFAULT CURRENT_TIMESTAMP   | Thời điểm tạo bản ghi                                       |
+| `updated_at` | TIMESTAMP       | ON UPDATE CURRENT_TIMESTAMP | Thời điểm cập nhật gần nhất                               |
 
 ##### 2. Bảng `mon_an` (Thực đơn món ăn)
-| Tên Cột | Kiểu Dữ Liệu | Ràng Buộc | Diễn Giải Nghiệp Vụ |
-| :--- | :--- | :--- | :--- |
-| `id` | BIGINT UNSIGNED | PK, AUTO_INCREMENT | Mã định danh món ăn |
-| `ten_mon` | VARCHAR(150) | NOT NULL | Tên món ăn trong thực đơn |
-| `loai_mon_id` | BIGINT UNSIGNED | FK -> `loai_mon(id)`, NULL | Phân loại món ăn |
-| `gia` | DOUBLE | NOT NULL, DEFAULT 0, CHECK (`gia` >= 0) | Đơn giá niêm yết (VNĐ) |
-| `mo_ta` | TEXT | NULL | Mô tả hương vị, nguyên liệu món |
-| `hinh_anh` | VARCHAR(255) | NULL | Đường dẫn file ảnh món ăn |
-| `trang_thai` | ENUM('con_hang','tam_het','ngung_ban') | DEFAULT 'con_hang' | Trạng thái phục vụ món |
-| `created_at` | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Thời điểm thêm món |
-| `updated_at` | TIMESTAMP | ON UPDATE CURRENT_TIMESTAMP | Thời điểm sửa thông tin |
+
+
+| Tên Cột     | Kiểu Dữ Liệu                        | Ràng Buộc                             | Diễn Giải Nghiệp Vụ                 |
+| :-------------- | :--------------------------------------- | :---------------------------------------- | :---------------------------------------- |
+| `id`          | BIGINT UNSIGNED                        | PK, AUTO_INCREMENT                      | Mã định danh món ăn                |
+| `ten_mon`     | VARCHAR(150)                           | NOT NULL                                | Tên món ăn trong thực đơn         |
+| `loai_mon_id` | BIGINT UNSIGNED                        | FK ->`loai_mon(id)`, NULL               | Phân loại món ăn                    |
+| `gia`         | DOUBLE                                 | NOT NULL, DEFAULT 0, CHECK (`gia` >= 0) | Đơn giá niêm yết (VNĐ)            |
+| `mo_ta`       | TEXT                                   | NULL                                    | Mô tả hương vị, nguyên liệu món |
+| `hinh_anh`    | VARCHAR(255)                           | NULL                                    | Đường dẫn file ảnh món ăn        |
+| `trang_thai`  | ENUM('con_hang','tam_het','ngung_ban') | DEFAULT 'con_hang'                      | Trạng thái phục vụ món             |
+| `created_at`  | TIMESTAMP                              | DEFAULT CURRENT_TIMESTAMP               | Thời điểm thêm món                 |
+| `updated_at`  | TIMESTAMP                              | ON UPDATE CURRENT_TIMESTAMP             | Thời điểm sửa thông tin            |
 
 ##### 3. Bảng `ban` (Quản lý bàn ăn)
-| Tên Cột | Kiểu Dữ Liệu | Ràng Buộc | Diễn Giải Nghiệp Vụ |
-| :--- | :--- | :--- | :--- |
-| `id` | BIGINT UNSIGNED | PK, AUTO_INCREMENT | Mã định danh bàn ăn |
-| `so_ban` | INT | NOT NULL, UNIQUE, CHECK (`so_ban` > 0) | Số hiệu bàn (Bàn 1, Bàn 2,...) |
-| `suc_chua` | INT | NOT NULL, DEFAULT 4, CHECK (`suc_chua` > 0) | Sức chứa tối đa số khách |
-| `trang_thai` | ENUM('trong','co_khach','da_dat') | DEFAULT 'trong' | Trạng thái phục vụ của bàn |
-| `khu_vuc` | VARCHAR(50) | DEFAULT 'Tầng 1' | Khu vực bố trí (Sảnh chính, VIP, Sân thượng) |
-| `yeu_cau_thanh_toan` | TINYINT(1) | DEFAULT 0 | Cờ báo khách yêu cầu tính tiền |
-| `so_luong_khach` | INT | DEFAULT 0 | Số lượng khách đang ngồi tại bàn |
-| `created_at` | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Thời điểm tạo bàn |
-| `updated_at` | TIMESTAMP | ON UPDATE CURRENT_TIMESTAMP | Thời điểm cập nhật |
+
+
+| Tên Cột            | Kiểu Dữ Liệu                   | Ràng Buộc                                 | Diễn Giải Nghiệp Vụ                              |
+| :--------------------- | :---------------------------------- | :-------------------------------------------- | :----------------------------------------------------- |
+| `id`                 | BIGINT UNSIGNED                   | PK, AUTO_INCREMENT                          | Mã định danh bàn ăn                             |
+| `so_ban`             | INT                               | NOT NULL, UNIQUE, CHECK (`so_ban` > 0)      | Số hiệu bàn (Bàn 1, Bàn 2,...)                  |
+| `suc_chua`           | INT                               | NOT NULL, DEFAULT 4, CHECK (`suc_chua` > 0) | Sức chứa tối đa số khách                       |
+| `trang_thai`         | ENUM('trong','co_khach','da_dat') | DEFAULT 'trong'                             | Trạng thái phục vụ của bàn                     |
+| `khu_vuc`            | VARCHAR(50)                       | DEFAULT 'Tầng 1'                           | Khu vực bố trí (Sảnh chính, VIP, Sân thượng) |
+| `yeu_cau_thanh_toan` | TINYINT(1)                        | DEFAULT 0                                   | Cờ báo khách yêu cầu tính tiền                |
+| `so_luong_khach`     | INT                               | DEFAULT 0                                   | Số lượng khách đang ngồi tại bàn             |
+| `created_at`         | TIMESTAMP                         | DEFAULT CURRENT_TIMESTAMP                   | Thời điểm tạo bàn                               |
+| `updated_at`         | TIMESTAMP                         | ON UPDATE CURRENT_TIMESTAMP                 | Thời điểm cập nhật                              |
 
 ##### 4. Bảng `dat_ban_truoc` (Lịch đặt bàn trước)
-| Tên Cột | Kiểu Dữ Liệu | Ràng Buộc | Diễn Giải Nghiệp Vụ |
-| :--- | :--- | :--- | :--- |
-| `id` | BIGINT UNSIGNED | PK, AUTO_INCREMENT | Mã lịch đặt bàn |
-| `ma_reservation` | VARCHAR(50) | NOT NULL, UNIQUE | Mã phiếu giữ chỗ (ví dụ: `RES-2026-001`) |
-| `ten_khach` | VARCHAR(100) | NOT NULL | Tên người liên hệ đặt bàn |
-| `sdt` | VARCHAR(20) | NOT NULL | Số điện thoại khách hẹn |
-| `ban_id` | BIGINT UNSIGNED | FK -> `ban(id)`, NULL | Bàn được bố trí giữ chỗ |
-| `thoi_gian_hen` | DATETIME | NOT NULL | Giờ hẹn thực khách tới dùng bữa |
-| `so_luong_khach` | INT | NOT NULL, DEFAULT 2, CHECK > 0 | Số khách trong đoàn |
-| `tien_coc` | DOUBLE | NOT NULL, DEFAULT 0, CHECK >= 0 | Số tiền cọc giữ bàn (VNĐ) |
-| `trang_thai` | ENUM('cho_xac_nhan','da_xac_nhan','da_den','da_huy') | DEFAULT 'da_xac_nhan' | Tiến độ xử lý phiếu đặt chỗ |
-| `ghi_chu` | VARCHAR(255) | NULL | Yêu cầu đặc biệt từ khách hàng |
+
+
+| Tên Cột        | Kiểu Dữ Liệu                                      | Ràng Buộc                     | Diễn Giải Nghiệp Vụ                       |
+| :----------------- | :----------------------------------------------------- | :-------------------------------- | :---------------------------------------------- |
+| `id`             | BIGINT UNSIGNED                                      | PK, AUTO_INCREMENT              | Mã lịch đặt bàn                          |
+| `ma_reservation` | VARCHAR(50)                                          | NOT NULL, UNIQUE                | Mã phiếu giữ chỗ (ví dụ:`RES-2026-001`) |
+| `ten_khach`      | VARCHAR(100)                                         | NOT NULL                        | Tên người liên hệ đặt bàn             |
+| `sdt`            | VARCHAR(20)                                          | NOT NULL                        | Số điện thoại khách hẹn                 |
+| `ban_id`         | BIGINT UNSIGNED                                      | FK ->`ban(id)`, NULL            | Bàn được bố trí giữ chỗ               |
+| `thoi_gian_hen`  | DATETIME                                             | NOT NULL                        | Giờ hẹn thực khách tới dùng bữa        |
+| `so_luong_khach` | INT                                                  | NOT NULL, DEFAULT 2, CHECK > 0  | Số khách trong đoàn                       |
+| `tien_coc`       | DOUBLE                                               | NOT NULL, DEFAULT 0, CHECK >= 0 | Số tiền cọc giữ bàn (VNĐ)               |
+| `trang_thai`     | ENUM('cho_xac_nhan','da_xac_nhan','da_den','da_huy') | DEFAULT 'da_xac_nhan'           | Tiến độ xử lý phiếu đặt chỗ          |
+| `ghi_chu`        | VARCHAR(255)                                         | NULL                            | Yêu cầu đặc biệt từ khách hàng        |
 
 ##### 5. Bảng `khach_hang` (Khách hàng thân thiết & CRM)
-| Tên Cột | Kiểu Dữ Liệu | Ràng Buộc | Diễn Giải Nghiệp Vụ |
-| :--- | :--- | :--- | :--- |
-| `id` | BIGINT UNSIGNED | PK, AUTO_INCREMENT | Mã khách hàng |
-| `ho_ten` | VARCHAR(100) | NOT NULL | Họ và tên khách hàng |
-| `so_dien_thoai` | VARCHAR(20) | NOT NULL, UNIQUE | Số điện thoại định danh thành viên |
-| `email` | VARCHAR(100) | NULL | Hòm thư điện tử liên hệ |
-| `diem_tich_luy` | INT | DEFAULT 0, CHECK >= 0 | Điểm thưởng tích lũy (1 điểm = 1.000 VNĐ) |
-| `hang_thanh_vien` | ENUM('Dong','Bac','Vang','KimCuong') | DEFAULT 'Dong' | Hạng thẻ thành viên theo tổng chi tiêu |
-| `tong_chi_tieu` | DOUBLE | DEFAULT 0, CHECK >= 0 | Lũy kế doanh số thanh toán (VNĐ) |
+
+
+| Tên Cột         | Kiểu Dữ Liệu                      | Ràng Buộc           | Diễn Giải Nghiệp Vụ                            |
+| :------------------ | :------------------------------------- | :---------------------- | :--------------------------------------------------- |
+| `id`              | BIGINT UNSIGNED                      | PK, AUTO_INCREMENT    | Mã khách hàng                                   |
+| `ho_ten`          | VARCHAR(100)                         | NOT NULL              | Họ và tên khách hàng                          |
+| `so_dien_thoai`   | VARCHAR(20)                          | NOT NULL, UNIQUE      | Số điện thoại định danh thành viên         |
+| `email`           | VARCHAR(100)                         | NULL                  | Hòm thư điện tử liên hệ                     |
+| `diem_tich_luy`   | INT                                  | DEFAULT 0, CHECK >= 0 | Điểm thưởng tích lũy (1 điểm = 1.000 VNĐ) |
+| `hang_thanh_vien` | ENUM('Dong','Bac','Vang','KimCuong') | DEFAULT 'Dong'        | Hạng thẻ thành viên theo tổng chi tiêu       |
+| `tong_chi_tieu`   | DOUBLE                               | DEFAULT 0, CHECK >= 0 | Lũy kế doanh số thanh toán (VNĐ)              |
 
 ##### 6. Bảng `users` (Người dùng & Phân quyền)
-| Tên Cột | Kiểu Dữ Liệu | Ràng Buộc | Diễn Giải Nghiệp Vụ |
-| :--- | :--- | :--- | :--- |
-| `id` | BIGINT UNSIGNED | PK, AUTO_INCREMENT | Mã tài khoản người dùng |
-| `name` | VARCHAR(100) | NOT NULL | Tên nhân viên / Quản trị viên |
-| `email` | VARCHAR(100) | NOT NULL, UNIQUE | Email đăng nhập hệ thống |
-| `password` | VARCHAR(255) | NOT NULL | Mật khẩu băm Bcrypt Hash bảo mật |
-| `role` | ENUM('admin','nhan_vien','bep') | DEFAULT 'nhan_vien' | Vai trò: Quản trị, Thu ngân/Phục vụ, Bếp |
-| `so_dien_thoai` | VARCHAR(20) | NULL | Điện thoại liên lạc nội bộ |
-| `trang_thai` | ENUM('hoat_dong','tam_khoa') | DEFAULT 'hoat_dong' | Trạng thái hoạt động của tài khoản |
+
+
+| Tên Cột       | Kiểu Dữ Liệu                 | Ràng Buộc         | Diễn Giải Nghiệp Vụ                         |
+| :---------------- | :-------------------------------- | :-------------------- | :------------------------------------------------ |
+| `id`            | BIGINT UNSIGNED                 | PK, AUTO_INCREMENT  | Mã tài khoản người dùng                   |
+| `name`          | VARCHAR(100)                    | NOT NULL            | Tên nhân viên / Quản trị viên             |
+| `email`         | VARCHAR(100)                    | NOT NULL, UNIQUE    | Email đăng nhập hệ thống                   |
+| `password`      | VARCHAR(255)                    | NOT NULL            | Mật khẩu băm Bcrypt Hash bảo mật           |
+| `role`          | ENUM('admin','nhan_vien','bep') | DEFAULT 'nhan_vien' | Vai trò: Quản trị, Thu ngân/Phục vụ, Bếp |
+| `so_dien_thoai` | VARCHAR(20)                     | NULL                | Điện thoại liên lạc nội bộ               |
+| `trang_thai`    | ENUM('hoat_dong','tam_khoa')    | DEFAULT 'hoat_dong' | Trạng thái hoạt động của tài khoản      |
 
 ##### 7. Bảng `nguyen_lieu` (Kho nguyên vật liệu)
-| Tên Cột | Kiểu Dữ Liệu | Ràng Buộc | Diễn Giải Nghiệp Vụ |
-| :--- | :--- | :--- | :--- |
-| `id` | BIGINT UNSIGNED | PK, AUTO_INCREMENT | Mã nguyên liệu trong kho |
-| `ten_nguyen_lieu` | VARCHAR(150) | NOT NULL | Tên thực phẩm, nguyên vật liệu |
-| `don_vi_tinh` | VARCHAR(20) | NOT NULL, DEFAULT 'kg' | Đơn vị đo lường (kg, gram, lít, quả) |
-| `so_luong_ton` | DOUBLE | NOT NULL, DEFAULT 0, CHECK >= 0 | Khối lượng/số lượng tồn kho thực tế |
-| `gia_nhap_trung_binh` | DOUBLE | NOT NULL, DEFAULT 0, CHECK >= 0 | Đơn giá vốn bình quân (VNĐ) |
-| `dinh_muc_toi_thieu` | DOUBLE | NOT NULL, DEFAULT 5 | Ngưỡng báo động nhập thêm hàng |
-| `han_su_dung` | DATE | NULL | Hạn sử dụng của lô nguyên liệu |
+
+
+| Tên Cột             | Kiểu Dữ Liệu | Ràng Buộc                     | Diễn Giải Nghiệp Vụ                      |
+| :---------------------- | :---------------- | :-------------------------------- | :--------------------------------------------- |
+| `id`                  | BIGINT UNSIGNED | PK, AUTO_INCREMENT              | Mã nguyên liệu trong kho                  |
+| `ten_nguyen_lieu`     | VARCHAR(150)    | NOT NULL                        | Tên thực phẩm, nguyên vật liệu         |
+| `don_vi_tinh`         | VARCHAR(20)     | NOT NULL, DEFAULT 'kg'          | Đơn vị đo lường (kg, gram, lít, quả) |
+| `so_luong_ton`        | DOUBLE          | NOT NULL, DEFAULT 0, CHECK >= 0 | Khối lượng/số lượng tồn kho thực tế |
+| `gia_nhap_trung_binh` | DOUBLE          | NOT NULL, DEFAULT 0, CHECK >= 0 | Đơn giá vốn bình quân (VNĐ)           |
+| `dinh_muc_toi_thieu`  | DOUBLE          | NOT NULL, DEFAULT 5             | Ngưỡng báo động nhập thêm hàng       |
+| `han_su_dung`         | DATE            | NULL                            | Hạn sử dụng của lô nguyên liệu        |
 
 ##### 8. Bảng `mon_an_nguyen_lieu` (Định lượng nguyên liệu cho món ăn - BOM)
-| Tên Cột | Kiểu Dữ Liệu | Ràng Buộc | Diễn Giải Nghiệp Vụ |
-| :--- | :--- | :--- | :--- |
-| `id` | BIGINT UNSIGNED | PK, AUTO_INCREMENT | Mã bản ghi định lượng |
-| `mon_an_id` | BIGINT UNSIGNED | FK -> `mon_an(id)`, CASCADE | Món ăn trong thực đơn |
-| `nguyen_lieu_id` | BIGINT UNSIGNED | FK -> `nguyen_lieu(id)`, CASCADE | Nguyên liệu tiêu hao tương ứng |
-| `so_luong_can` | DOUBLE | NOT NULL, DEFAULT 1, CHECK > 0 | Khối lượng nguyên liệu tiêu hao cho 1 phần |
-| `don_vi_tinh` | VARCHAR(20) | NOT NULL, DEFAULT 'kg' | Đơn vị tính định lượng |
+
+
+| Tên Cột        | Kiểu Dữ Liệu | Ràng Buộc                     | Diễn Giải Nghiệp Vụ                           |
+| :----------------- | :---------------- | :-------------------------------- | :-------------------------------------------------- |
+| `id`             | BIGINT UNSIGNED | PK, AUTO_INCREMENT              | Mã bản ghi định lượng                       |
+| `mon_an_id`      | BIGINT UNSIGNED | FK ->`mon_an(id)`, CASCADE      | Món ăn trong thực đơn                        |
+| `nguyen_lieu_id` | BIGINT UNSIGNED | FK ->`nguyen_lieu(id)`, CASCADE | Nguyên liệu tiêu hao tương ứng              |
+| `so_luong_can`   | DOUBLE          | NOT NULL, DEFAULT 1, CHECK > 0  | Khối lượng nguyên liệu tiêu hao cho 1 phần |
+| `don_vi_tinh`    | VARCHAR(20)     | NOT NULL, DEFAULT 'kg'          | Đơn vị tính định lượng                    |
 
 ##### 9. Bảng `nha_cung_cap` (Nhà cung cấp thực phẩm)
-| Tên Cột | Kiểu Dữ Liệu | Ràng Buộc | Diễn Giải Nghiệp Vụ |
-| :--- | :--- | :--- | :--- |
-| `id` | BIGINT UNSIGNED | PK, AUTO_INCREMENT | Mã nhà cung cấp |
-| `ma_ncc` | VARCHAR(50) | NOT NULL, UNIQUE | Mã ký hiệu đối tác cung ứng |
-| `ten_ncc` | VARCHAR(150) | NOT NULL | Tên công ty / nhà phân phối thực phẩm |
-| `so_dien_thoai` | VARCHAR(20) | NULL | Đường dây nóng liên hệ đặt hàng |
-| `email` | VARCHAR(100) | NULL | Hòm thư điện tử đối tác |
-| `dia_chi` | VARCHAR(255) | NULL | Địa chỉ kho hàng / trụ sở đối tác |
-| `danh_gia_sao` | DOUBLE | DEFAULT 5.0, CHECK BETWEEN 1 AND 5 | Điểm đánh giá độ uy tín (1.0 đến 5.0 sao) |
+
+
+| Tên Cột       | Kiểu Dữ Liệu | Ràng Buộc                        | Diễn Giải Nghiệp Vụ                             |
+| :---------------- | :---------------- | :----------------------------------- | :---------------------------------------------------- |
+| `id`            | BIGINT UNSIGNED | PK, AUTO_INCREMENT                 | Mã nhà cung cấp                                  |
+| `ma_ncc`        | VARCHAR(50)     | NOT NULL, UNIQUE                   | Mã ký hiệu đối tác cung ứng                  |
+| `ten_ncc`       | VARCHAR(150)    | NOT NULL                           | Tên công ty / nhà phân phối thực phẩm        |
+| `so_dien_thoai` | VARCHAR(20)     | NULL                               | Đường dây nóng liên hệ đặt hàng           |
+| `email`         | VARCHAR(100)    | NULL                               | Hòm thư điện tử đối tác                     |
+| `dia_chi`       | VARCHAR(255)    | NULL                               | Địa chỉ kho hàng / trụ sở đối tác          |
+| `danh_gia_sao`  | DOUBLE          | DEFAULT 5.0, CHECK BETWEEN 1 AND 5 | Điểm đánh giá độ uy tín (1.0 đến 5.0 sao) |
 
 ##### 10. Bảng `dat_mon` (Nghiệp vụ Gọi món & Chi tiết Hóa đơn - Bảng nghiệp vụ > 1.200 records)
-| Tên Cột | Kiểu Dữ Liệu | Ràng Buộc | Diễn Giải Nghiệp Vụ |
-| :--- | :--- | :--- | :--- |
-| `id` | BIGINT UNSIGNED | PK, AUTO_INCREMENT | Mã giao dịch gọi món |
-| `ban_id` | BIGINT UNSIGNED | FK -> `ban(id)`, CASCADE | Bàn ăn phát sinh lượt order |
-| `mon_an_id` | BIGINT UNSIGNED | FK -> `mon_an(id)`, CASCADE | Món ăn khách chọn |
-| `khach_hang_id` | BIGINT UNSIGNED | FK -> `khach_hang(id)`, SET NULL | Khách hàng thành viên tích điểm (nếu có) |
-| `so_luong` | INT | NOT NULL, DEFAULT 1, CHECK > 0 | Số lượng đĩa / phần món đặt |
-| `don_gia` | DOUBLE | NOT NULL, DEFAULT 0, CHECK >= 0 | Đơn giá tại thời điểm gọi món (VNĐ) |
-| `tong_tien` | DOUBLE | NOT NULL, DEFAULT 0, CHECK >= 0 | Thành tiền (= `don_gia` * `so_luong`) |
-| `options_json` | TEXT | NULL | Tùy chọn Modifier / Topping dạng JSON |
-| `ghi_chu` | VARCHAR(255) | NULL | Ghi chú đặc biệt gửi tới bếp (ít cay, không tiêu,...) |
-| `trang_thai` | ENUM('cho_xac_nhan','dang_che_bien','da_phuc_vu','hoan_thanh','da_huy') | DEFAULT 'cho_xac_nhan' | Tiến độ chế biến & phục vụ món |
-| `phuong_thuc_thanh_toan` | ENUM('tien_mat','chuyen_khoan','the','chua_thanh_toan') | DEFAULT 'chua_thanh_toan' | Hình thức thanh toán hóa đơn |
-| `session_token` | VARCHAR(100) | NULL | Mã phiên khách ngồi tại bàn |
-| `thu_tu_uu_tien` | INT | DEFAULT 1 | Độ ưu tiên thực hiện món trong bếp |
-| `so_luong_khach` | INT | DEFAULT 0 | Số lượng khách tại bàn khi gọi |
-| `created_at` | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Thời điểm khách gọi món |
-| `updated_at` | TIMESTAMP | ON UPDATE CURRENT_TIMESTAMP | Thời điểm cập nhật trạng thái |
+
+
+| Tên Cột                | Kiểu Dữ Liệu                                                         | Ràng Buộc                     | Diễn Giải Nghiệp Vụ                                         |
+| :------------------------- | :------------------------------------------------------------------------ | :-------------------------------- | :---------------------------------------------------------------- |
+| `id`                     | BIGINT UNSIGNED                                                         | PK, AUTO_INCREMENT              | Mã giao dịch gọi món                                        |
+| `ban_id`                 | BIGINT UNSIGNED                                                         | FK ->`ban(id)`, CASCADE         | Bàn ăn phát sinh lượt order                                |
+| `mon_an_id`              | BIGINT UNSIGNED                                                         | FK ->`mon_an(id)`, CASCADE      | Món ăn khách chọn                                           |
+| `khach_hang_id`          | BIGINT UNSIGNED                                                         | FK ->`khach_hang(id)`, SET NULL | Khách hàng thành viên tích điểm (nếu có)               |
+| `so_luong`               | INT                                                                     | NOT NULL, DEFAULT 1, CHECK > 0  | Số lượng đĩa / phần món đặt                            |
+| `don_gia`                | DOUBLE                                                                  | NOT NULL, DEFAULT 0, CHECK >= 0 | Đơn giá tại thời điểm gọi món (VNĐ)                   |
+| `tong_tien`              | DOUBLE                                                                  | NOT NULL, DEFAULT 0, CHECK >= 0 | Thành tiền (=`don_gia` * `so_luong`)                          |
+| `options_json`           | TEXT                                                                    | NULL                            | Tùy chọn Modifier / Topping dạng JSON                        |
+| `ghi_chu`                | VARCHAR(255)                                                            | NULL                            | Ghi chú đặc biệt gửi tới bếp (ít cay, không tiêu,...) |
+| `trang_thai`             | ENUM('cho_xac_nhan','dang_che_bien','da_phuc_vu','hoan_thanh','da_huy') | DEFAULT 'cho_xac_nhan'          | Tiến độ chế biến & phục vụ món                          |
+| `phuong_thuc_thanh_toan` | ENUM('tien_mat','chuyen_khoan','the','chua_thanh_toan')                 | DEFAULT 'chua_thanh_toan'       | Hình thức thanh toán hóa đơn                              |
+| `session_token`          | VARCHAR(100)                                                            | NULL                            | Mã phiên khách ngồi tại bàn                               |
+| `thu_tu_uu_tien`         | INT                                                                     | DEFAULT 1                       | Độ ưu tiên thực hiện món trong bếp                      |
+| `so_luong_khach`         | INT                                                                     | DEFAULT 0                       | Số lượng khách tại bàn khi gọi                           |
+| `created_at`             | TIMESTAMP                                                               | DEFAULT CURRENT_TIMESTAMP       | Thời điểm khách gọi món                                   |
+| `updated_at`             | TIMESTAMP                                                               | ON UPDATE CURRENT_TIMESTAMP     | Thời điểm cập nhật trạng thái                            |
 
 ##### 11. Bảng `danh_gia_mon_an` (Đánh giá món ăn từ khách hàng)
-| Tên Cột | Kiểu Dữ Liệu | Ràng Buộc | Diễn Giải Nghiệp Vụ |
-| :--- | :--- | :--- | :--- |
-| `id` | BIGINT UNSIGNED | PK, AUTO_INCREMENT | Mã đánh giá món ăn |
-| `dat_mon_id` | BIGINT UNSIGNED | FK -> `dat_mon(id)`, CASCADE | Lượt gọi món được đánh giá |
-| `ban_id` | BIGINT UNSIGNED | FK -> `ban(id)`, SET NULL | Bàn ăn gửi phản hồi |
-| `so_sao` | INT | NOT NULL, DEFAULT 5, CHECK BETWEEN 1 AND 5 | Số sao hài lòng (1 đến 5 sao) |
-| `noi_dung_danh_gia` | TEXT | NULL | Nhận xét chi tiết về món ăn |
-| `canh_bao_do` | TINYINT(1) | DEFAULT 0 | Cờ cảnh báo đỏ nếu đánh giá <= 2 sao |
+
+
+| Tên Cột           | Kiểu Dữ Liệu | Ràng Buộc                                | Diễn Giải Nghiệp Vụ                       |
+| :-------------------- | :---------------- | :------------------------------------------- | :---------------------------------------------- |
+| `id`                | BIGINT UNSIGNED | PK, AUTO_INCREMENT                         | Mã đánh giá món ăn                      |
+| `dat_mon_id`        | BIGINT UNSIGNED | FK ->`dat_mon(id)`, CASCADE                | Lượt gọi món được đánh giá          |
+| `ban_id`            | BIGINT UNSIGNED | FK ->`ban(id)`, SET NULL                   | Bàn ăn gửi phản hồi                      |
+| `so_sao`            | INT             | NOT NULL, DEFAULT 5, CHECK BETWEEN 1 AND 5 | Số sao hài lòng (1 đến 5 sao)            |
+| `noi_dung_danh_gia` | TEXT            | NULL                                       | Nhận xét chi tiết về món ăn             |
+| `canh_bao_do`       | TINYINT(1)      | DEFAULT 0                                  | Cờ cảnh báo đỏ nếu đánh giá <= 2 sao |
 
 ##### 12. Bảng `bao_cao_quan_ly` (Báo cáo ca trực & doanh thu)
-| Tên Cột | Kiểu Dữ Liệu | Ràng Buộc | Diễn Giải Nghiệp Vụ |
-| :--- | :--- | :--- | :--- |
-| `id` | BIGINT UNSIGNED | PK, AUTO_INCREMENT | Mã báo cáo ca trực |
-| `ma_bao_cao` | VARCHAR(50) | NOT NULL, UNIQUE | Mã văn bản báo cáo (ví dụ: `BC-2026-0801`) |
-| `ngay_lap` | DATE | NOT NULL | Ngày chốt sổ ca làm việc |
-| `nguoi_lap` | VARCHAR(100) | NOT NULL | Họ tên thu ngân / quản lý lập báo cáo |
-| `ca_lam_viec` | ENUM('Sang','Chieu','Toi','CaNgay') | DEFAULT 'CaNgay' | Ca làm việc chốt sổ |
-| `tong_so_hoa_don` | INT | DEFAULT 0 | Tổng số lượng hóa đơn hoàn tất |
-| `tong_luong_khach` | INT | DEFAULT 0 | Tổng lượt thực khách phục vụ |
-| `tong_doanh_thu` | DOUBLE | DEFAULT 0 | Tổng doanh thu ghi nhận (VNĐ) |
-| `doanh_thu_tien_mat` | DOUBLE | DEFAULT 0 | Doanh số thu bằng tiền mặt (VNĐ) |
-| `doanh_thu_chuyen_khoan` | DOUBLE | DEFAULT 0 | Doanh số thu qua chuyển khoản / QR Code |
+
+
+| Tên Cột                | Kiểu Dữ Liệu                     | Ràng Buộc        | Diễn Giải Nghiệp Vụ                          |
+| :------------------------- | :------------------------------------ | :------------------- | :------------------------------------------------- |
+| `id`                     | BIGINT UNSIGNED                     | PK, AUTO_INCREMENT | Mã báo cáo ca trực                           |
+| `ma_bao_cao`             | VARCHAR(50)                         | NOT NULL, UNIQUE   | Mã văn bản báo cáo (ví dụ:`BC-2026-0801`) |
+| `ngay_lap`               | DATE                                | NOT NULL           | Ngày chốt sổ ca làm việc                    |
+| `nguoi_lap`              | VARCHAR(100)                        | NOT NULL           | Họ tên thu ngân / quản lý lập báo cáo    |
+| `ca_lam_viec`            | ENUM('Sang','Chieu','Toi','CaNgay') | DEFAULT 'CaNgay'   | Ca làm việc chốt sổ                          |
+| `tong_so_hoa_don`        | INT                                 | DEFAULT 0          | Tổng số lượng hóa đơn hoàn tất          |
+| `tong_luong_khach`       | INT                                 | DEFAULT 0          | Tổng lượt thực khách phục vụ              |
+| `tong_doanh_thu`         | DOUBLE                              | DEFAULT 0          | Tổng doanh thu ghi nhận (VNĐ)                 |
+| `doanh_thu_tien_mat`     | DOUBLE                              | DEFAULT 0          | Doanh số thu bằng tiền mặt (VNĐ)            |
+| `doanh_thu_chuyen_khoan` | DOUBLE                              | DEFAULT 0          | Doanh số thu qua chuyển khoản / QR Code       |
 
 ---
 
@@ -434,6 +465,7 @@ CREATE INDEX `idx_dat_ban_hen` ON `dat_ban_truoc` (`thoi_gian_hen`, `trang_thai`
 ```
 
 ##### Phân tích vai trò tối ưu hiệu năng:
+
 1. `idx_dat_mon_ban_trangthai`: Màn hình giao diện tại bàn liên tục gửi request polling/websocket: `WHERE ban_id = ? AND trang_thai != 'hoan_thanh'`. Composite Index này cho phép thực hiện **Index Range Scan** với chi phí gần như $O(\log N)$ thay vì $O(N)$ quét toàn bộ bảng.
 2. `idx_dat_mon_created_at`: Đảm bảo tốc độ hiển thị biểu đồ thống kê doanh thu theo ngày/tháng với hàng trăm ngàn lượt gọi món đạt thời gian phản hồi dưới 10ms.
 3. `idx_dat_mon_mon_an`: Tối ưu phép nối `JOIN` giữa `mon_an` và `dat_mon` khi tính toán thống kê Top món ăn được yêu thích nhất.
@@ -532,7 +564,7 @@ BEGIN
         SET v_mon_id = FLOOR(1 + (RAND() * 11));
         SET v_khach_id = IF(RAND() > 0.3, FLOOR(1 + (RAND() * 5)), NULL);
         SET v_sl = FLOOR(1 + (RAND() * 3));
-        
+      
         -- Lấy giá món
         SELECT `gia` INTO v_gia FROM `mon_an` WHERE `id` = v_mon_id;
         SET v_tt = v_gia * v_sl;
@@ -573,17 +605,18 @@ DROP PROCEDURE `sp_SinhDuLieuMauDatMon`;
 
 #### 2.2.6 Thống kê tổng hợp số lượng dữ liệu các bảng
 
-| STT | Tên Bảng Dữ Liệu | Phân Loại Bảng | Số Lượng Bản Ghi | Đánh Giá / Ghi Chú |
-| :---: | :--- | :--- | :---: | :--- |
-| 1 | `loai_mon` | Danh mục (Lookup) | **6 records** | Món khai vị, món chính, hải sản, lẩu nướng, tráng miệng, đồ uống |
-| 2 | `mon_an` | Danh mục (Master) | **11 records** | Thực đơn đầy đủ các món đặc sắc của nhà hàng |
-| 3 | `ban` | Danh mục (Master) | **8 records** | Bàn ăn sảnh chính, phòng VIP và sân thượng |
-| 4 | `dat_ban_truoc` | Nghiệp vụ (Transaction) | **2 records** | Lịch hẹn đặt trước có cọc tiền |
-| 5 | `khach_hang` | Danh mục / CRM | **5 records** | Khách hàng các hạng Đồng, Bạc, Vàng, Kim Cương |
-| 6 | `users` | Quản trị hệ thống | **3 records** | Tài khoản Admin, Thu ngân, Bếp trưởng |
-| 7 | `nguyen_lieu` | Danh mục kho | **6 records** | Các loại nguyên liệu thực phẩm chính |
-| 8 | `nha_cung_cap` | Danh mục đối tác | **3 records** | Các nhà cung cấp thủy hải sản, bò nhập khẩu, nông sản GAP |
-| 9 | `mon_an_nguyen_lieu` | Định lượng (BOM) | **12 records** | Công thức định lượng nguyên liệu cho món ăn |
-| 10 | `dat_mon` | **Nghiệp vụ giao dịch chính** | **1.200 records** | **Vượt yêu cầu tối thiểu 1.000 records (mô phỏng 60 ngày kinh doanh)** |
-| 11 | `danh_gia_mon_an` | Phản hồi khách hàng | **10 records** | Đánh giá chất lượng phục vụ và món ăn |
-| 12 | `bao_cao_quan_ly` | Báo cáo tổng hợp | **5 records** | Báo cáo chốt doanh thu theo ca làm việc |
+
+| STT | Tên Bảng Dữ Liệu | Phân Loại Bảng                 | Số Lượng Bản Ghi | Đánh Giá / Ghi Chú                                                          |
+| :---: | :--------------------- | :---------------------------------- | :--------------------: | :-------------------------------------------------------------------------------- |
+|  1  | `loai_mon`           | Danh mục (Lookup)                |    **6 records**    | Món khai vị, món chính, hải sản, lẩu nướng, tráng miệng, đồ uống  |
+|  2  | `mon_an`             | Danh mục (Master)                |    **11 records**    | Thực đơn đầy đủ các món đặc sắc của nhà hàng                     |
+|  3  | `ban`                | Danh mục (Master)                |    **8 records**    | Bàn ăn sảnh chính, phòng VIP và sân thượng                             |
+|  4  | `dat_ban_truoc`      | Nghiệp vụ (Transaction)         |    **2 records**    | Lịch hẹn đặt trước có cọc tiền                                         |
+|  5  | `khach_hang`         | Danh mục / CRM                   |    **5 records**    | Khách hàng các hạng Đồng, Bạc, Vàng, Kim Cương                        |
+|  6  | `users`              | Quản trị hệ thống             |    **3 records**    | Tài khoản Admin, Thu ngân, Bếp trưởng                                     |
+|  7  | `nguyen_lieu`        | Danh mục kho                     |    **6 records**    | Các loại nguyên liệu thực phẩm chính                                     |
+|  8  | `nha_cung_cap`       | Danh mục đối tác              |    **3 records**    | Các nhà cung cấp thủy hải sản, bò nhập khẩu, nông sản GAP            |
+|  9  | `mon_an_nguyen_lieu` | Định lượng (BOM)              |    **12 records**    | Công thức định lượng nguyên liệu cho món ăn                           |
+| 10 | `dat_mon`            | **Nghiệp vụ giao dịch chính** |  **1.200 records**  | **Vượt yêu cầu tối thiểu 1.000 records (mô phỏng 60 ngày kinh doanh)** |
+| 11 | `danh_gia_mon_an`    | Phản hồi khách hàng           |    **10 records**    | Đánh giá chất lượng phục vụ và món ăn                                |
+| 12 | `bao_cao_quan_ly`    | Báo cáo tổng hợp              |    **5 records**    | Báo cáo chốt doanh thu theo ca làm việc                                    |

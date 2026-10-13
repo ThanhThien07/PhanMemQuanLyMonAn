@@ -152,36 +152,51 @@ export default function DangNhapHeThong() {
                     ⚡ Đăng Nhập Nhanh 1-Click (Demo)
                   </div>
                   <div className="row g-2">
-                    <div className="col-4">
+                    <div className="col-3">
                       <button
                         type="button"
                         onClick={() => xuLyDangNhapNhanh('admin@nhahang.com')}
                         className="btn btn-outline-danger w-100 py-2 rounded-3 d-flex flex-column align-items-center gap-1 text-xs"
+                        title="Đăng nhập Quản lý (Admin)"
                       >
                         <i className="bi bi-shield-lock-fill fs-5"></i>
-                        <span className="fw-bold">Admin</span>
+                        <span className="fw-bold truncate w-100 text-center">Admin</span>
                       </button>
                     </div>
 
-                    <div className="col-4">
+                    <div className="col-3">
                       <button
                         type="button"
                         onClick={() => xuLyDangNhapNhanh('thungan@nhahang.com')}
                         className="btn btn-outline-success w-100 py-2 rounded-3 d-flex flex-column align-items-center gap-1 text-xs"
+                        title="Đăng nhập Thu Ngân"
                       >
                         <i className="bi bi-cash-coin fs-5"></i>
-                        <span className="fw-bold">Thu Ngân</span>
+                        <span className="fw-bold truncate w-100 text-center">Thu Ngân</span>
                       </button>
                     </div>
 
-                    <div className="col-4">
+                    <div className="col-3">
                       <button
                         type="button"
                         onClick={() => xuLyDangNhapNhanh('bep@nhahang.com')}
                         className="btn btn-outline-warning w-100 py-2 rounded-3 d-flex flex-column align-items-center gap-1 text-xs"
+                        title="Đăng nhập Bếp Trưởng"
                       >
                         <i className="bi bi-fire fs-5"></i>
-                        <span className="fw-bold">Bếp Trưởng</span>
+                        <span className="fw-bold truncate w-100 text-center">Bếp</span>
+                      </button>
+                    </div>
+
+                    <div className="col-3">
+                      <button
+                        type="button"
+                        onClick={() => xuLyDangNhapNhanh('phucvu@nhahang.com')}
+                        className="btn btn-outline-primary w-100 py-2 rounded-3 d-flex flex-column align-items-center gap-1 text-xs"
+                        title="Đăng nhập Phục Vụ"
+                      >
+                        <i className="bi bi-person-badge fs-5"></i>
+                        <span className="fw-bold truncate w-100 text-center">Phục Vụ</span>
                       </button>
                     </div>
                   </div>
@@ -189,7 +204,7 @@ export default function DangNhapHeThong() {
                   {/* Nút dành cho khách quét mã đặt món */}
                   <div className="mt-3 pt-3 border-top border-slate-100">
                     <a
-                      href="/?table=1"
+                      href="?table=1"
                       className="btn btn-warning w-100 py-2.5 rounded-3 d-flex align-items-center justify-content-center gap-2 text-white font-bold text-xs shadow-sm"
                     >
                       <i className="bi bi-qr-code-scan"></i>
