@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import ModalInHoaDon from '../ModalInHoaDon';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu';
+import ThanhCuonNgang from '../common/ThanhCuonNgang';
 
 /**
  * Component màn hình gọi món POS tại quầy / bàn
@@ -228,10 +229,13 @@ export default function GoiMonTaiBanPOS() {
             </select>
           </div>
 
-          {/* Nút lọc Danh mục món ăn */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1">
+          {/* Nút lọc Danh mục món ăn hỗ trợ kéo lướt chuột */}
+          <ThanhCuonNgang fadeColor="from-slate-50" scrollStep={240}>
             <button
-              onClick={() => setDanhMucChon('all')}
+              onClick={(e) => {
+                setDanhMucChon('all');
+                e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+              }}
               className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                 danhMucChon === 'all'
                   ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/25'
@@ -243,7 +247,10 @@ export default function GoiMonTaiBanPOS() {
             {danhMuc.map((cat) => (
               <button
                 key={cat.id}
-                onClick={() => setDanhMucChon(cat.id.toString())}
+                onClick={(e) => {
+                  setDanhMucChon(cat.id.toString());
+                  e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                }}
                 className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                   danhMucChon === cat.id.toString()
                     ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/25'
@@ -253,7 +260,7 @@ export default function GoiMonTaiBanPOS() {
                 {cat.ten_loai}
               </button>
             ))}
-          </div>
+          </ThanhCuonNgang>
         </div>
 
         {/* Lưới danh sách món ăn */}

@@ -158,14 +158,14 @@ export default function QuanLyThucDonMonAn() {
                   alt={mon.ten_mon}
                   className="w-100 h-100 object-cover"
                 />
-                <span className="badge bg-white text-amber-900 border border-amber-200 position-absolute top-2 start-2 px-2.5 py-1 rounded-pill shadow-xs fw-bold text-xs">
+                <span className="position-absolute top-2 start-2 px-2.5 py-1 rounded-pill bg-white border border-amber-200 shadow-xs fw-bold text-xs" style={{ color: '#78350f' }}>
                   <i className="bi bi-tag-fill me-1 text-amber-600"></i>{mon.ten_loai}
                 </span>
               </div>
 
               <div className="card-body p-3 d-flex flex-column justify-content-between">
                 <div>
-                  <h4 className="card-title text-sm sm:text-base font-extrabold text-slate-900 mb-1 line-clamp-1">
+                  <h4 className="card-title text-sm sm:text-base font-extrabold text-slate-900 mb-1 line-clamp-2 min-h-[42px]">
                     {mon.ten_mon}
                   </h4>
                   <p className="card-text text-xs text-slate-500 line-clamp-2 mb-3">

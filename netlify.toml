@@ -1,0 +1,26 @@
+# Cấu hình triển khai Netlify cho Hệ thống Quản Lý Món Ăn (Royal Bistro)
+
+[build]
+  base = "FE"
+  publish = "dist"
+  command = "npm run build"
+
+# Định tuyến lại SPA (Single Page Application) - Tránh lỗi 404 khi F5 hoặc vào URL trực tiếp
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Thiết lập các tiêu đề HTTP bảo mật và bộ nhớ đệm (Cache Optimization)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

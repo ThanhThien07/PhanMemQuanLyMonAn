@@ -1,4 +1,4 @@
-import{r as O}from"./vendor-icons.8mUtAXyN.js";var y={exports:{}},n={};/**
+import{r as O}from"./vendor-icons.B1erb9MC.js";var y={exports:{}},n={};/**
  * @license React
  * react-dom.production.js
  *

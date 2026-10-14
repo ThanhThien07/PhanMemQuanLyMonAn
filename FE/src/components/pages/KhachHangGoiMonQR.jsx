@@ -19,12 +19,15 @@ import React, { useState, useEffect } from 'react';
 import { 
   UtensilsCrossed, Clock, Bell, Receipt, CheckCircle, ChevronRight, 
   ShoppingBag, Plus, Minus, X, Star, AlertTriangle, QrCode, Sparkles, Flame, User, Search,
-  LayoutGrid, Users, Check, Copy, ChevronDown, CreditCard, ArrowRightLeft, Building2
+  LayoutGrid, Users, Check, Copy, ChevronDown, CreditCard, ArrowRightLeft, Building2,
+  LogIn, LogOut, LayoutDashboard, Lock, ShieldCheck
 } from 'lucide-react';
 import clientAxios from '../services/cauHinhAxiosApi.js';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu.js';
 import { useSocket } from '../context/SocketRealtimeContext.jsx';
+import { useAuth } from '../context/NguoiDungContext.jsx';
 import anhMaQr from '../../assets/ma_qr.jpg';
+import ThanhCuonNgang from '../common/ThanhCuonNgang.jsx';
 
 // Cấu hình thông tin tài khoản ngân hàng liên kết chính thức của nhà hàng (MB Bank)
 const THONG_TIN_NGAN_HANG = {
@@ -86,6 +89,74 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
   // Trạng thái thông báo hành động
   const [alertBanner, setAlertBanner] = useState(null);
   const [loadingOrder, setLoadingOrder] = useState(false);
+
+  // Quản lý phiên đăng nhập Quản Trị / Nhân Viên
+  const authContext = useAuth();
+  const currentUser = authContext?.user;
+  const login = authContext?.login;
+  const quickLoginAs = authContext?.quickLoginAs;
+  const logout = authContext?.logout;
+
+  // Modal Đăng Nhập Quản Trị
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [loginError, setLoginError] = useState('');
+
+  const handleGoToDashboard = () => {
+    if (onExitToStaff) {
+      onExitToStaff();
+    } else {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('table');
+      url.pathname = '/';
+      window.location.href = url.toString();
+    }
+  };
+
+  const handleQuickLogin = async (demoEmail) => {
+    try {
+      setLoginError('');
+      setIsLoggingIn(true);
+      if (quickLoginAs) {
+        await quickLoginAs(demoEmail);
+      } else if (login) {
+        await login(demoEmail, '123456');
+      }
+      showNotification('🎉 Đăng nhập thành công! Đang chuyển hướng vào hệ thống...', 'success');
+      setIsLoginModalOpen(false);
+      setTimeout(() => {
+        handleGoToDashboard();
+      }, 500);
+    } catch (err) {
+      setLoginError(err.message || 'Đăng nhập không thành công.');
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
+
+  const handleCustomLogin = async (e) => {
+    e.preventDefault();
+    if (!loginEmail.trim() || !loginPassword.trim()) {
+      setLoginError('Vui lòng nhập đầy đủ Email và Mật khẩu.');
+      return;
+    }
+    try {
+      setLoginError('');
+      setIsLoggingIn(true);
+      await login(loginEmail, loginPassword);
+      showNotification('🎉 Đăng nhập thành công! Đang chuyển hướng vào hệ thống...', 'success');
+      setIsLoginModalOpen(false);
+      setTimeout(() => {
+        handleGoToDashboard();
+      }, 500);
+    } catch (err) {
+      setLoginError(err.message || 'Đăng nhập không thành công.');
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
 
   const socketContext = useSocket();
   const socket = socketContext?.socket;
@@ -369,8 +440,8 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900 pb-28 font-sans select-none antialiased">
       {/* 1. Header Cố Định Sang Trọng */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs px-4 py-3">
-        <div className="max-w-3xl mx-auto flex items-center justify-between gap-3">
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs px-4 sm:px-6 lg:px-8 py-3">
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#023E8A] to-[#00B4D8] flex items-center justify-center shadow-md shadow-blue-500/20 text-white shrink-0">
               <Flame className="w-5 h-5 fill-white" />
@@ -402,20 +473,66 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
             </div>
           </div>
 
-          {/* Nút hành động nhanh: Gọi nhân viên & Quay lại nếu là nhân viên test */}
+          {/* Nút hành động nhanh: Gọi nhân viên, Đăng Nhập / Vào Quản Trị */}
           <div className="flex items-center gap-2">
             <button 
               onClick={handleCallWaiter}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-black shadow-2xs transition-all active:scale-95"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-black shadow-2xs transition-all active:scale-95 cursor-pointer"
             >
               <Bell className="w-3.5 h-3.5 animate-bounce text-rose-600" />
-              <span>Gọi Phục Vụ</span>
+              <span className="hidden xs:inline sm:inline">Gọi Phục Vụ</span>
             </button>
 
-            {onExitToStaff && (
+            {/* Chỗ Đăng Nhập / Vào Quản Trị theo yêu cầu */}
+            {currentUser ? (
+              <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 rounded-xl p-1">
+                <div className="hidden md:flex flex-col text-right px-1.5">
+                  <span className="text-[11px] font-black text-slate-900 leading-tight truncate max-w-[120px]">
+                    {currentUser.ho_ten}
+                  </span>
+                  <span className="text-[10px] text-amber-700 font-bold capitalize">
+                    {currentUser.vai_tro === 'admin' ? 'Quản lý' : currentUser.vai_tro === 'bep' ? 'Đầu bếp' : 'Thu ngân'}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleGoToDashboard}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs shadow-xs transition-all active:scale-95 cursor-pointer"
+                  title="Vào hệ thống quản trị"
+                >
+                  <LayoutDashboard className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Vào Quản Trị</span>
+                  <span className="sm:hidden">Quản Trị</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="p-1.5 rounded-lg hover:bg-rose-50 hover:text-rose-600 text-slate-400 text-xs transition-all cursor-pointer"
+                  title="Đăng xuất"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            ) : (
               <button
+                type="button"
+                onClick={() => {
+                  setLoginError('');
+                  setIsLoginModalOpen(true);
+                }}
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-amber-500 hover:text-slate-950 text-white font-black text-xs shadow-xs transition-all active:scale-95 cursor-pointer"
+                title="Đăng nhập tài khoản Quản lý, Thu ngân, Bếp"
+              >
+                <LogIn className="w-3.5 h-3.5" />
+                <span>Đăng Nhập</span>
+              </button>
+            )}
+
+            {onExitToStaff && !currentUser && (
+              <button
+                type="button"
                 onClick={onExitToStaff}
-                className="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition-all"
+                className="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition-all cursor-pointer"
                 title="Quay về giao diện nhân viên"
               >
                 Thoát
@@ -426,7 +543,7 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
 
         {/* Banner thông báo nổi */}
         {alertBanner && (
-          <div className={`mt-2.5 max-w-3xl mx-auto p-2.5 rounded-xl text-xs font-bold text-center border animate-fade-in shadow-md ${
+          <div className={`mt-2.5 max-w-6xl mx-auto p-2.5 rounded-xl text-xs font-bold text-center border animate-fade-in shadow-md ${
             alertBanner.type === 'success' ? 'bg-emerald-50 text-emerald-800 border-emerald-300' :
             alertBanner.type === 'warning' ? 'bg-amber-50 text-amber-900 border-amber-300' :
             alertBanner.type === 'error' ? 'bg-rose-50 text-rose-800 border-rose-300' :
@@ -438,14 +555,14 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
       </header>
 
       {/* 2. Navigation Switcher: Thực đơn vs Món đã gọi */}
-      <div className="bg-white border-b border-slate-200 px-4 py-2 sticky top-[65px] z-30 shadow-2xs">
-        <div className="max-w-3xl mx-auto flex items-center gap-2">
+      <div className="bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 sm:px-6 lg:px-8 py-2 sticky top-[65px] z-30 shadow-2xs">
+        <div className="max-w-md mx-auto flex items-center bg-slate-100 p-1 rounded-2xl gap-1">
           <button
             onClick={() => setActiveTab('menu')}
-            className={`flex-1 py-2 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all ${
+            className={`flex-1 py-2 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all cursor-pointer ${
               activeTab === 'menu'
                 ? 'bg-slate-900 text-white shadow-sm'
-                : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
             }`}
           >
             <UtensilsCrossed className="w-4 h-4" />
@@ -454,34 +571,34 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
 
           <button
             onClick={() => setActiveTab('tracking')}
-            className={`flex-1 py-2 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all relative ${
+            className={`flex-1 py-2 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all relative cursor-pointer ${
               activeTab === 'tracking'
                 ? 'bg-slate-900 text-white shadow-sm'
-                : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
             }`}
           >
             <Clock className="w-4 h-4" />
             <span>Món Đã Gọi ({tableOrders.filter(o => o.trang_thai !== 'da_huy').length})</span>
             {tableOrders.some(o => o.trang_thai === 'dang_che_bien') && (
-              <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping absolute right-3 top-2.5"></span>
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping absolute right-2.5 top-2.5"></span>
             )}
           </button>
         </div>
       </div>
 
-      <main className="max-w-3xl mx-auto p-4 space-y-5">
+      <main className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
         {/* ======================= TAB 1: THỰC ĐƠN GỌI MÓN ======================= */}
         {activeTab === 'menu' && (
           <>
             {/* Thanh tìm kiếm */}
-            <div className="relative">
+            <div className="max-w-2xl mx-auto relative">
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Tìm món ăn, đồ uống, hải sản..."
-                className="w-full bg-white border border-slate-200 rounded-2xl pl-10 pr-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 shadow-2xs"
+                className="w-full bg-white border border-slate-200 rounded-2xl pl-10 pr-4 py-3 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 shadow-2xs"
               />
               {searchQuery && (
                 <button onClick={() => setSearchQuery('')} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
@@ -490,11 +607,15 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
               )}
             </div>
 
-            {/* Dải Category Tags cuộn ngang */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+            {/* Dải Category Tags cuộn ngang với hỗ trợ Kéo chuột, Lăn chuột & Nút điều hướng */}
+            <ThanhCuonNgang fadeColor="from-slate-100" scrollStep={280}>
               <button
-                onClick={() => setSelectedCategory('all')}
-                className={`px-3.5 py-2 rounded-xl text-xs font-black whitespace-nowrap transition-all ${
+                type="button"
+                onClick={(e) => {
+                  setSelectedCategory('all');
+                  e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                }}
+                className={`px-4 py-2 rounded-xl text-xs font-black whitespace-nowrap transition-all cursor-pointer ${
                   selectedCategory === 'all'
                     ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-xs'
                     : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
@@ -507,8 +628,12 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
                 return (
                   <button
                     key={c.id}
-                    onClick={() => setSelectedCategory(String(c.id))}
-                    className={`px-3.5 py-2 rounded-xl text-xs font-black whitespace-nowrap transition-all ${
+                    type="button"
+                    onClick={(e) => {
+                      setSelectedCategory(String(c.id));
+                      e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                    }}
+                    className={`px-4 py-2 rounded-xl text-xs font-black whitespace-nowrap transition-all cursor-pointer ${
                       isSelected
                         ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-xs'
                         : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
@@ -518,10 +643,10 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
                   </button>
                 );
               })}
-            </div>
+            </ThanhCuonNgang>
 
-            {/* Lưới danh sách món ăn */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            {/* Lưới danh sách món ăn mở rộng 4 cột trên Desktop */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
               {filteredDishes.map((dish, index) => {
                 const inCartItem = cart.find(c => c.mon_an_id === dish.id);
                 const isOutOfStock = dish.trang_thai === 'het_hang' || dish.trang_thai === 'tam_ngung';
@@ -561,7 +686,7 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
                       </div>
 
                       {/* Tên & Giá */}
-                      <h4 className="font-extrabold text-sm text-slate-900 leading-snug line-clamp-1">
+                      <h4 className="font-extrabold text-sm text-slate-900 leading-snug line-clamp-2 min-h-[40px]">
                         {dish.ten_mon}
                       </h4>
                       <p className="text-[11px] text-slate-500 line-clamp-2 mt-1 min-h-[32px]">
@@ -611,40 +736,44 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
 
         {/* ======================= TAB 2: THEO DÕI MÓN ĐÃ GỌI ======================= */}
         {activeTab === 'tracking' && (
-          <div className="space-y-4">
-            {/* Tóm tắt chi phí bàn */}
-            <div className="p-4 bg-white border border-slate-200 rounded-3xl shadow-xs flex items-center justify-between">
-              <div>
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Tổng Tạm Tính Bàn {table?.so_ban || tableId}</p>
-                <div className="text-2xl font-black text-slate-900 mt-0.5">
-                  {dinhDangTienTe(totalTableSpent)}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* Cột trái: Tóm tắt chi phí bàn & Hành động nhanh */}
+            <div className="lg:col-span-5 space-y-4 lg:sticky lg:top-[125px]">
+              <div className="p-5 bg-white border border-slate-200 rounded-3xl shadow-xs space-y-4">
+                <div>
+                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    Tổng Tạm Tính Bàn {table?.so_ban || tableId}
+                  </p>
+                  <div className="text-3xl font-black text-slate-900 mt-1">
+                    {dinhDangTienTe(totalTableSpent)}
+                  </div>
+                  <p className="text-xs text-slate-500 mt-1">
+                    Đã phục vụ {tableOrders.filter(o => o.trang_thai === 'hoan_thanh' || o.trang_thai === 'da_phuc_vu').length} / {tableOrders.length} món
+                  </p>
                 </div>
-                <p className="text-[11px] text-slate-500 mt-0.5">
-                  Đã phục vụ {tableOrders.filter(o => o.trang_thai === 'hoan_thanh' || o.trang_thai === 'da_phuc_vu').length} / {tableOrders.length} món
-                </p>
-              </div>
 
-              <div className="flex flex-col gap-2">
-                <button
-                  onClick={() => setIsBillModalOpen(true)}
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs shadow-md shadow-amber-500/20 flex items-center gap-1.5 active:scale-95"
-                >
-                  <Receipt className="w-4 h-4" />
-                  <span>Xem Hóa Đơn & QR</span>
-                </button>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2.5 pt-2 border-t border-slate-100">
+                  <button
+                    onClick={() => setIsBillModalOpen(true)}
+                    className="w-full py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs shadow-md shadow-amber-500/20 flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+                  >
+                    <Receipt className="w-4 h-4" />
+                    <span>Xem Hóa Đơn & QR Thanh Toán</span>
+                  </button>
 
-                <button
-                  onClick={() => setIsReviewModalOpen(true)}
-                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5"
-                >
-                  <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                  <span>Đánh Giá Bữa Ăn</span>
-                </button>
+                  <button
+                    onClick={() => setIsReviewModalOpen(true)}
+                    className="w-full py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+                  >
+                    <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                    <span>Đánh Giá Bữa Ăn</span>
+                  </button>
+                </div>
               </div>
             </div>
 
-            {/* Danh sách các món đang nấu / đã phục vụ */}
-            <div className="space-y-3">
+            {/* Cột phải: Danh sách các món đang nấu / đã phục vụ */}
+            <div className="lg:col-span-7 space-y-3">
               <h4 className="text-xs font-black text-slate-500 uppercase tracking-wider px-1">
                 Tiến Độ Chế Biến Tại Bếp ({tableOrders.length} món)
               </h4>
@@ -735,7 +864,7 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
 
       {/* 4. Thanh Giỏ Hàng Nổi Phía Dưới (Bottom Floating Cart Bar) */}
       {cart.length > 0 && activeTab === 'menu' && (
-        <div className="fixed bottom-4 left-4 right-4 z-40 max-w-xl mx-auto animate-slide-up">
+        <div className="fixed bottom-4 left-4 right-4 z-40 max-w-2xl mx-auto animate-slide-up">
           <div className="bg-slate-950 text-white rounded-3xl p-3.5 shadow-2xl flex items-center justify-between border border-slate-800">
             <div className="flex items-center gap-3 pl-2">
               <div className="relative">
@@ -1197,7 +1326,7 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
       {/* 9. MODAL SƠ ĐỒ CHỌN BÀN ĂN (TABLE MAP PICKER) */}
       {isTableMapOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-xs animate-fade-in">
-          <div className="bg-white w-full max-w-2xl rounded-3xl p-5 sm:p-6 space-y-4 shadow-2xl max-h-[90vh] flex flex-col">
+          <div className="bg-white w-full max-w-4xl rounded-3xl p-5 sm:p-6 space-y-4 shadow-2xl max-h-[90vh] flex flex-col">
             {/* Header Modal */}
             <div className="flex justify-between items-start border-b border-slate-100 pb-3">
               <div>
@@ -1220,13 +1349,16 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
             </div>
 
             {/* Dải lọc theo Khu Vực */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+            <ThanhCuonNgang fadeColor="from-white" scrollStep={200}>
               {['all', ...new Set(allTables.map(t => t.khu_vuc).filter(Boolean))].map((khuVuc) => (
                 <button
                   key={khuVuc}
                   type="button"
-                  onClick={() => setSelectedTableArea(khuVuc)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                  onClick={(e) => {
+                    setSelectedTableArea(khuVuc);
+                    e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                  }}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                     selectedTableArea === khuVuc
                       ? 'bg-slate-900 text-white shadow-xs'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -1235,7 +1367,7 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
                   {khuVuc === 'all' ? `Tất Cả (${allTables.length} bàn)` : khuVuc}
                 </button>
               ))}
-            </div>
+            </ThanhCuonNgang>
 
             {/* Chú thích màu sắc */}
             <div className="flex items-center justify-between text-[11px] font-semibold text-slate-500 px-2 py-1.5 bg-slate-50 rounded-xl border border-slate-100 flex-wrap gap-2">
@@ -1252,7 +1384,7 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
 
             {/* Lưới các bàn */}
             <div className="overflow-y-auto flex-1 pr-1">
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                 {allTables
                   .filter(t => selectedTableArea === 'all' || t.khu_vuc === selectedTableArea)
                   .map(ban => {
@@ -1319,6 +1451,159 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
                 className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold transition-all cursor-pointer"
               >
                 Xác Nhận & Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 10. MODAL ĐĂNG NHẬP DÀNH CHO QUẢN TRỊ / NHÂN VIÊN */}
+      {isLoginModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-xs animate-fade-in">
+          <div className="bg-white w-full max-w-md rounded-3xl p-5 sm:p-6 space-y-5 shadow-2xl relative overflow-hidden">
+            {/* Header modal */}
+            <div className="flex justify-between items-start border-b border-slate-100 pb-3.5">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#023E8A] to-[#00B4D8] flex items-center justify-center shadow-md shadow-blue-500/20 text-white shrink-0">
+                  <Flame className="w-5 h-5 fill-white" />
+                </div>
+                <div>
+                  <h3 className="font-black text-base text-slate-900">Đăng Nhập Quản Trị</h3>
+                  <p className="text-xs text-slate-500 font-medium">Royal Bistro Management Portal</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsLoginModalOpen(false)}
+                className="p-1.5 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Thông báo lỗi nếu có */}
+            {loginError && (
+              <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 shrink-0 text-rose-600" />
+                <span>{loginError}</span>
+              </div>
+            )}
+
+            {/* Khối Đăng Nhập Nhanh 1-Click Demo */}
+            <div className="space-y-2">
+              <label className="text-[11px] font-black text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                <span>Đăng Nhập Nhanh 1-Click (Demo)</span>
+              </label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <button
+                  type="button"
+                  disabled={isLoggingIn}
+                  onClick={() => handleQuickLogin('admin@nhahang.com')}
+                  className="p-2.5 rounded-2xl bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-950 flex flex-col items-center gap-1 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+                  title="Đăng nhập tài khoản Quản lý"
+                >
+                  <span className="text-base">👑</span>
+                  <span className="text-[11px] font-black">Quản Lý</span>
+                  <span className="text-[9px] text-amber-700 font-mono">Admin</span>
+                </button>
+
+                <button
+                  type="button"
+                  disabled={isLoggingIn}
+                  onClick={() => handleQuickLogin('thungan@nhahang.com')}
+                  className="p-2.5 rounded-2xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-950 flex flex-col items-center gap-1 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+                  title="Đăng nhập tài khoản Thu ngân"
+                >
+                  <span className="text-base">💵</span>
+                  <span className="text-[11px] font-black">Thu Ngân</span>
+                  <span className="text-[9px] text-blue-700 font-mono">Cashier</span>
+                </button>
+
+                <button
+                  type="button"
+                  disabled={isLoggingIn}
+                  onClick={() => handleQuickLogin('bep@nhahang.com')}
+                  className="p-2.5 rounded-2xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-950 flex flex-col items-center gap-1 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+                  title="Đăng nhập tài khoản Bếp"
+                >
+                  <span className="text-base">👨‍🍳</span>
+                  <span className="text-[11px] font-black">Bếp Trưởng</span>
+                  <span className="text-[9px] text-emerald-700 font-mono">Kitchen</span>
+                </button>
+
+                <button
+                  type="button"
+                  disabled={isLoggingIn}
+                  onClick={() => handleQuickLogin('phucvu@nhahang.com')}
+                  className="p-2.5 rounded-2xl bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-950 flex flex-col items-center gap-1 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+                  title="Đăng nhập tài khoản Phục Vụ"
+                >
+                  <span className="text-base">🛎️</span>
+                  <span className="text-[11px] font-black">Phục Vụ</span>
+                  <span className="text-[9px] text-purple-700 font-mono">Staff</span>
+                </button>
+              </div>
+            </div>
+
+            <div className="relative flex py-1 items-center">
+              <div className="flex-grow border-t border-slate-200"></div>
+              <span className="flex-shrink mx-3 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                Hoặc tài khoản riêng
+              </span>
+              <div className="flex-grow border-t border-slate-200"></div>
+            </div>
+
+            {/* Form đăng nhập thông thường */}
+            <form onSubmit={handleCustomLogin} className="space-y-3">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Email đăng nhập:</label>
+                <input
+                  type="email"
+                  value={loginEmail}
+                  onChange={(e) => setLoginEmail(e.target.value)}
+                  placeholder="admin@nhahang.com"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 bg-slate-50 focus:outline-none focus:border-amber-500 focus:bg-white transition-colors"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Mật khẩu:</label>
+                <input
+                  type="password"
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 bg-slate-50 focus:outline-none focus:border-amber-500 focus:bg-white transition-colors"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isLoggingIn}
+                className="w-full py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs shadow-md shadow-amber-500/25 flex items-center justify-center gap-2 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
+              >
+                {isLoggingIn ? (
+                  <span>Đang xác thực đăng nhập...</span>
+                ) : (
+                  <>
+                    <LogIn className="w-4 h-4" />
+                    <span>Đăng Nhập Vào Hệ Thống</span>
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* Link chuyển sang trang đăng nhập đầy đủ */}
+            <div className="pt-2 border-t border-slate-100 text-center">
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.href = '/';
+                }}
+                className="text-xs font-bold text-blue-600 hover:underline cursor-pointer"
+              >
+                Mở trang đăng nhập toàn màn hình →
               </button>
             </div>
           </div>

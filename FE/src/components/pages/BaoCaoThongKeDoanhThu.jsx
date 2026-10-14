@@ -192,7 +192,7 @@ export default function BaoCaoThongKeDoanhThu() {
               {duLieuBaoCao?.topDishes?.map((mon, idx) => (
                 <div key={idx} className="p-3 rounded-3 bg-slate-50 border border-slate-200 d-flex align-items-center justify-content-between shadow-xs">
                   <div className="d-flex align-items-center gap-3">
-                    <span className="badge bg-white text-dark border px-2 py-1 rounded-pill text-xs fw-bold">
+                    <span className="px-2 py-1 rounded-pill bg-white border border-slate-200 text-xs font-black text-slate-800 shadow-2xs">
                       #{idx + 1}
                     </span>
                     <div>

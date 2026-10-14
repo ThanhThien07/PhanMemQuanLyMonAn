@@ -246,7 +246,7 @@ export default function TongQuanDashboard({ setActiveTab }) {
                     <span className="badge bg-success rounded-circle p-1.5"></span>
                     <span className="text-xs sm:text-sm font-bold text-emerald-900">Bàn Trống (Sẵn Sàng)</span>
                   </div>
-                  <span className="badge bg-white text-emerald-800 border border-emerald-300 fs-6 fw-bold px-2.5 py-1">
+                  <span className="px-2.5 py-1 rounded-pill bg-white border border-emerald-300 fs-6 fw-bold text-emerald-800 shadow-2xs" style={{ color: '#065f46' }}>
                     8 bàn
                   </span>
                 </div>
@@ -256,7 +256,7 @@ export default function TongQuanDashboard({ setActiveTab }) {
                     <span className="badge bg-warning rounded-circle p-1.5"></span>
                     <span className="text-xs sm:text-sm font-bold text-amber-900">Đang Phục Vụ</span>
                   </div>
-                  <span className="badge bg-white text-amber-800 border border-amber-300 fs-6 fw-bold px-2.5 py-1">
+                  <span className="px-2.5 py-1 rounded-pill bg-white border border-amber-300 fs-6 fw-bold text-amber-800 shadow-2xs" style={{ color: '#92400e' }}>
                     3 bàn
                   </span>
                 </div>
@@ -266,7 +266,7 @@ export default function TongQuanDashboard({ setActiveTab }) {
                     <span className="badge bg-info rounded-circle p-1.5"></span>
                     <span className="text-xs sm:text-sm font-bold text-sky-900">Đã Đặt Trước</span>
                   </div>
-                  <span className="badge bg-white text-sky-800 border border-sky-300 fs-6 fw-bold px-2.5 py-1">
+                  <span className="px-2.5 py-1 rounded-pill bg-white border border-sky-300 fs-6 fw-bold text-sky-800 shadow-2xs" style={{ color: '#0369a1' }}>
                     1 bàn
                   </span>
                 </div>

@@ -17,6 +17,7 @@ import clientAxios from '../services/cauHinhAxiosApi.js';
 import ModalInHoaDon from '../ModalInHoaDon.jsx';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu.js';
 import { ExternalLink, Copy, Users, CreditCard, Utensils, CheckCircle, QrCode, X } from 'lucide-react';
+import ThanhCuonNgang from '../common/ThanhCuonNgang.jsx';
 
 export default function QuanLySoDoBan({ setActiveTab }) {
   const [danhSachBan, setDanhSachBan] = useState([]);
@@ -118,12 +119,15 @@ export default function QuanLySoDoBan({ setActiveTab }) {
         </div>
       </div>
 
-      {/* Tabs Lọc Khu Vực sử dụng Bootstrap Button Pills */}
-      <div className="d-flex align-items-center gap-2 overflow-x-auto pb-1">
+      {/* Tabs Lọc Khu Vực sử dụng ThanhCuonNgang hỗ trợ kéo lướt chuột */}
+      <ThanhCuonNgang fadeColor="from-white" scrollStep={200}>
         {danhSachKhuVuc.map((khuVuc) => (
           <button
             key={khuVuc}
-            onClick={() => setKhuVucHienTai(khuVuc)}
+            onClick={(e) => {
+              setKhuVucHienTai(khuVuc);
+              e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }}
             className={`btn btn-sm rounded-pill fw-bold text-xs whitespace-nowrap transition-all ${
               khuVucHienTai === khuVuc
                 ? 'btn-dark shadow-sm'
@@ -133,7 +137,7 @@ export default function QuanLySoDoBan({ setActiveTab }) {
             {khuVuc === 'all' ? 'Tất Cả Khu Vực' : khuVuc}
           </button>
         ))}
-      </div>
+      </ThanhCuonNgang>
 
       {/* Lưới hiển thị các bàn ăn sử dụng Bootstrap Row / Col */}
       {dangTai ? (

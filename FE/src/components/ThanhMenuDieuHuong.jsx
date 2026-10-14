@@ -61,7 +61,7 @@ export default function ThanhMenuDieuHuong({ activeTab, setActiveTab }) {
             <Flame className="w-5 h-5 text-white fill-white" />
           </div>
           <div className="min-w-0">
-            <div className="text-base sm:text-lg font-black tracking-wider uppercase bg-gradient-to-r from-[#03045E] via-[#0077B6] to-[#00B4D8] bg-clip-text text-transparent truncate leading-tight">
+            <div className="text-base font-black tracking-tight uppercase bg-gradient-to-r from-[#03045E] via-[#0077B6] to-[#00B4D8] bg-clip-text text-transparent leading-tight whitespace-nowrap">
               ROYAL BISTRO
             </div>
             <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
