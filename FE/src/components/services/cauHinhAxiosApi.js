@@ -17,7 +17,7 @@ import axios from 'axios';
 const layBaseUrl = () => {
   if (import.meta.env?.VITE_API_URL) return import.meta.env.VITE_API_URL;
   if (typeof window !== 'undefined') {
-    if (window.location.port === '3000') {
+    if (window.location.port === '3000' || window.location.port === '5000') {
       return '/api';
     }
     const hostname = window.location.hostname || 'localhost';

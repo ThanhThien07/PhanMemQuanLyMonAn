@@ -1,0 +1,1 @@
+function n(t){return t==null||isNaN(t)?"0 đ":`${Number(t).toLocaleString("vi-VN")} đ`}function i(t){if(!t)return"—";try{return new Date(t).toLocaleString("vi-VN",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"})}catch{return String(t)}}export{i as a,n as d};

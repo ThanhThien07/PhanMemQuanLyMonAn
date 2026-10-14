@@ -522,7 +522,7 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
 
             {/* Lưới danh sách món ăn */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-              {filteredDishes.map(dish => {
+              {filteredDishes.map((dish, index) => {
                 const inCartItem = cart.find(c => c.mon_an_id === dish.id);
                 const isOutOfStock = dish.trang_thai === 'het_hang' || dish.trang_thai === 'tam_ngung';
 
@@ -532,11 +532,20 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
                     className="bg-white border border-slate-200 rounded-3xl p-3 shadow-xs hover:shadow-md transition-all flex flex-col justify-between overflow-hidden relative group"
                   >
                     <div>
-                      {/* Ảnh món ăn */}
+                      {/* Ảnh món ăn tối ưu Core Web Vitals (Slide 8 & Slide 9) */}
                       <div className="w-full h-36 rounded-2xl overflow-hidden bg-slate-100 relative mb-3">
                         <img 
                           src={dish.hinh_anh || 'https://images.unsplash.com/photo-1544025162-d76694265947?w=500'} 
                           alt={dish.ten_mon} 
+                          width="320"
+                          height="144"
+                          loading={index < 4 ? "eager" : "lazy"}
+                          decoding="async"
+                          fetchpriority={index === 0 ? "high" : "auto"}
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = 'https://images.unsplash.com/photo-1544025162-d76694265947?w=500';
+                          }}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         {dish.ten_loai && (
@@ -680,6 +689,14 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
                           <img 
                             src={order.hinh_anh || 'https://images.unsplash.com/photo-1544025162-d76694265947?w=500'} 
                             alt={order.ten_mon} 
+                            width="48"
+                            height="48"
+                            loading="lazy"
+                            decoding="async"
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.src = 'https://images.unsplash.com/photo-1544025162-d76694265947?w=500';
+                            }}
                             className="w-full h-full object-cover"
                           />
                         </div>
@@ -773,7 +790,15 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
               {cart.map(item => (
                 <div key={item.cartItemId} className="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2.5">
-                    <img src={item.hinh_anh} alt={item.ten_mon} className="w-12 h-12 rounded-xl object-cover bg-slate-200" />
+                    <img 
+                      src={item.hinh_anh || 'https://images.unsplash.com/photo-1544025162-d76694265947?w=500'} 
+                      alt={item.ten_mon} 
+                      width="48" 
+                      height="48" 
+                      loading="lazy" 
+                      decoding="async" 
+                      className="w-12 h-12 rounded-xl object-cover bg-slate-200" 
+                    />
                     <div>
                       <h5 className="font-extrabold text-xs text-slate-900">{item.ten_mon}</h5>
                       <p className="text-xs text-amber-800 font-bold">{dinhDangTienTe(item.gia)}</p>
@@ -824,7 +849,15 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
           <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl p-5 space-y-4">
             <div className="flex justify-between items-start">
               <div className="flex items-center gap-3">
-                <img src={customizingDish.hinh_anh} alt={customizingDish.ten_mon} className="w-14 h-14 rounded-2xl object-cover bg-slate-100" />
+                <img 
+                  src={customizingDish.hinh_anh || 'https://images.unsplash.com/photo-1544025162-d76694265947?w=500'} 
+                  alt={customizingDish.ten_mon} 
+                  width="56" 
+                  height="56" 
+                  loading="lazy" 
+                  decoding="async" 
+                  className="w-14 h-14 rounded-2xl object-cover bg-slate-100" 
+                />
                 <div>
                   <h3 className="font-extrabold text-sm text-slate-900">{customizingDish.ten_mon}</h3>
                   <div className="text-sm font-black text-amber-800">{dinhDangTienTe(customizingDish.gia)}</div>
@@ -1064,6 +1097,10 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
                     e.currentTarget.src = anhMaQr;
                   }}
                   alt="Mã QR Chuyển Khoản Ngân Hàng"
+                  width="176"
+                  height="176"
+                  loading="eager"
+                  decoding="async"
                   className="w-44 h-44 mx-auto rounded-2xl border-2 border-blue-300 shadow-md object-contain bg-white p-1.5 transition-all"
                 />
                 <div className="text-[10px] text-blue-700 font-bold mt-1">

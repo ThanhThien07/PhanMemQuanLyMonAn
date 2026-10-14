@@ -1,0 +1,12 @@
+# robots.txt cho Royal Bistro Restaurant
+User-agent: *
+Allow: /
+Allow: /?table=*
+Disallow: /api/
+Disallow: /admin/
+Disallow: /pos/
+Disallow: /kitchen/
+Disallow: /kds/
+Disallow: /reports/
+
+Sitemap: https://royalbistro.vn/sitemap.xml
