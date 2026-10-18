@@ -11,7 +11,8 @@
     "start": "cd BE && npm start",
     "build:fe": "cd FE && npm run build",
     "build": "npm run build:fe",
-    "install:all": "cd BE && npm install && cd ../FE && npm install"
+    "install:all": "cd BE && npm install && cd ../FE && npm install",
+    "clean": "node -e \"const fs=require('fs'); ['node_modules','BE/node_modules','FE/node_modules','FE/dist'].forEach(p=>{if(fs.existsSync(p)){console.log('Deleting',p);fs.rmSync(p,{recursive:true,force:true})}}); console.log('All node_modules and dist cleaned successfully!')\""
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
