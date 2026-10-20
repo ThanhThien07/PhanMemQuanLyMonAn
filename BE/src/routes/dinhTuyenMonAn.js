@@ -27,8 +27,8 @@ const router = express.Router();
 router.get('/categories', layDanhSachLoaiMon);
 router.get('/', layDanhSachMonAn);
 router.get('/:id', layChiTietMonAn);
-router.post('/', xacThucNguoiDung, phanQuyen('admin', 'bep'), themMonAnMoi);
-router.put('/:id', xacThucNguoiDung, phanQuyen('admin', 'bep'), capNhatMonAn);
-router.delete('/:id', xacThucNguoiDung, phanQuyen('admin'), xoaMonAn);
+router.post('/', xacThucNguoiDung, phanQuyen('admin', 'bep', 'thu_ngan'), themMonAnMoi);
+router.put('/:id', xacThucNguoiDung, phanQuyen('admin', 'bep', 'thu_ngan'), capNhatMonAn);
+router.delete('/:id', xacThucNguoiDung, phanQuyen('admin', 'bep'), xoaMonAn);
 
 export default router;

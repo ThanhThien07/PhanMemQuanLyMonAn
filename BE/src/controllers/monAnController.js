@@ -14,6 +14,7 @@
 
 import { LoaiMon, MonAn, MonAnNguyenLieu, NguyenLieu, layMaSoTiepTheo } from '../models/moHinhDuLieu.js';
 import { chuyenDoiBoLocId } from '../utils/taoMaTuTang.js';
+import { layThucTheSocket } from '../utils/truyenThongSocket.js';
 
 /**
  * Lấy danh sách tất cả các loại / nhóm danh mục món ăn
@@ -198,6 +199,16 @@ export async function capNhatMonAn(req, res) {
     );
     if (!monDaCapNhat) {
       return res.status(404).json({ success: false, message: 'Không tìm thấy món ăn.' });
+    }
+
+    // Phát sóng sự kiện cập nhật món ăn thời gian thực
+    try {
+      const io = layThucTheSocket();
+      if (io) {
+        io.emit('dish:updated', monDaCapNhat.toJSON());
+      }
+    } catch (e) {
+      console.warn('Lỗi emit dish:updated:', e.message);
     }
 
     res.json({ success: true, message: 'Cập nhật món ăn thành công!', dish: monDaCapNhat.toJSON() });
