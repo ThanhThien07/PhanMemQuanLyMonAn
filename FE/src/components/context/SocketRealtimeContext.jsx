@@ -11,9 +11,10 @@
  * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
  */
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { useToast } from './ThongBaoToastContext.jsx';
+import { useAuth } from './NguoiDungContext.jsx';
 
 const SocketRealtimeContext = createContext(null);
 
@@ -22,6 +23,32 @@ export function BoCungCapSocket({ children }) {
   const [daKetNoi, setDaKetNoi] = useState(false);
   const [thongBaoMoiNhat, setThongBaoMoiNhat] = useState(null);
   const toast = useToast();
+  const { user } = useAuth();
+  const userRef = useRef(user);
+
+  useEffect(() => {
+    userRef.current = user;
+  }, [user]);
+
+  /**
+   * Kiểm tra xem phiên hiện tại có phải là bên Phục vụ / Nhân viên nhà hàng hay không.
+   * Khách hàng quét mã QR trên bàn hoặc tài khoản khách hàng tuyệt đối không nhận thông báo chuông của phục vụ.
+   */
+  const laBenPhucVu = () => {
+    if (typeof window === 'undefined') return false;
+    const urlParams = new URLSearchParams(window.location.search);
+    const laKhachQuetQR =
+      urlParams.has('table') ||
+      window.location.pathname.includes('/table') ||
+      window.location.pathname.includes('/qr');
+    if (laKhachQuetQR) return false;
+
+    const currentUser = userRef.current;
+    if (currentUser?.role === 'khach_hang') return false;
+
+    const cacQuyenNhanVien = ['admin', 'nhan_vien', 'phuc_vu', 'thu_ngan', 'bep'];
+    return Boolean(currentUser && cacQuyenNhanVien.includes(currentUser.role));
+  };
 
   useEffect(() => {
     const socketHost = typeof window !== 'undefined' && window.location.port === '3000'
@@ -43,8 +70,12 @@ export function BoCungCapSocket({ children }) {
       setDaKetNoi(false);
     });
 
-    // 1. Lắng nghe khách gọi nhân viên phục vụ tận bàn
+    // 1. Lắng nghe khách gọi nhân viên phục vụ tận bàn (CHỈ hiển thị bên phục vụ/nhân viên)
     thucTheSocket.on('staff:called', (data) => {
+      if (!laBenPhucVu()) {
+        return;
+      }
+
       const tieuDe = `🔔 BÀN ${data?.so_ban || '?'} GỌI PHỤC VỤ`;
       const noiDung = data?.message || `Bàn ${data?.so_ban || ''} (${data?.khu_vuc || 'Sảnh'}) đang bấm chuông gọi nhân viên phục vụ!`;
       
@@ -55,12 +86,16 @@ export function BoCungCapSocket({ children }) {
         time: data?.call_time || new Date().toLocaleTimeString('vi-VN')
       });
 
-      // Hiển thị toast popup tự mất sau 5s, tối đa 5 thông báo, đẩy thông báo cũ nhất đi
-      toast.goiPhucVu(noiDung, tieuDe, 5000);
+      // Hiển thị toast popup tự mất sau đúng 3s theo yêu cầu
+      toast.goiPhucVu(noiDung, tieuDe, 3000);
     });
 
-    // 2. Lắng nghe khách yêu cầu thanh toán
+    // 2. Lắng nghe khách yêu cầu thanh toán (CHỈ hiển thị bên phục vụ / thu ngân)
     thucTheSocket.on('payment:requested', (data) => {
+      if (!laBenPhucVu()) {
+        return;
+      }
+
       const kieuThanhToan = data?.phuong_thuc === 'chuyen_khoan' ? 'Chuyển khoản VietQR' : 'Tiền mặt';
       const tieuDe = `💳 BÀN ${data?.so_ban || '?'} YÊU CẦU THANH TOÁN`;
       const noiDung = data?.message || `Bàn ${data?.so_ban || ''} yêu cầu thanh toán bằng ${kieuThanhToan}!`;
@@ -72,11 +107,15 @@ export function BoCungCapSocket({ children }) {
         time: data?.call_time || new Date().toLocaleTimeString('vi-VN')
       });
 
-      toast.thanhToan(noiDung, tieuDe, 5000);
+      toast.thanhToan(noiDung, tieuDe, 3000);
     });
 
-    // 3. Lắng nghe sự kiện Đơn món mới
+    // 3. Lắng nghe sự kiện Đơn món mới (CHỈ hiển thị cho nhân viên Bếp / Phục vụ)
     thucTheSocket.on('order:new', (donMon) => {
+      if (!laBenPhucVu()) {
+        return;
+      }
+
       const tieuDe = `🍽️ ĐƠN MỚI - BÀN ${donMon?.so_ban || '?'}`;
       const noiDung = `${donMon?.ten_mon || 'Món ăn'} (x${donMon?.so_luong || 1})`;
 
@@ -87,7 +126,7 @@ export function BoCungCapSocket({ children }) {
         time: new Date().toLocaleTimeString('vi-VN')
       });
 
-      toast.thanhCong(noiDung, tieuDe, 5000);
+      toast.thanhCong(noiDung, tieuDe, 3000);
     });
 
     // 4. Lắng nghe sự kiện Cập nhật trạng thái món ăn
@@ -108,16 +147,15 @@ export function BoCungCapSocket({ children }) {
         time: new Date().toLocaleTimeString('vi-VN')
       });
 
-      toast.thongTin(noiDung, tieuDe, 5000);
+      // Chỉ hiển thị toast chung cho bên phục vụ; khách hàng đã có cập nhật riêng ở trang KhachHangGoiMonQR
+      if (laBenPhucVu()) {
+        toast.thongTin(noiDung, tieuDe, 3000);
+      }
     });
 
-    // 5. Lắng nghe cập nhật bàn ăn
-    thucTheSocket.on('table:updated', (duLieuBan) => {
-      if (duLieuBan?.goi_phuc_vu) {
-        const tieuDe = `🔔 BÀN ${duLieuBan.so_ban} CẦN HỖ TRỢ`;
-        const noiDung = `Bàn ${duLieuBan.so_ban} (${duLieuBan.khu_vuc || 'Sảnh'}) đang yêu cầu hỗ trợ!`;
-        toast.goiPhucVu(noiDung, tieuDe, 5000);
-      }
+    // 5. Lắng nghe cập nhật bàn ăn: Đồng bộ trạng thái sơ đồ bàn, không phát thêm toast chuông để tránh trùng lặp
+    thucTheSocket.on('table:updated', (_duLieuBan) => {
+      // Không gọi toast.goiPhucVu ở đây vì 'staff:called' đã đảm nhiệm thông báo cho nhân viên phục vụ
     });
 
     setSocket(thucTheSocket);

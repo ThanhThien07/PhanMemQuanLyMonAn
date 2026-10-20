@@ -20,7 +20,7 @@ import {
   UtensilsCrossed, Clock, Bell, Receipt, CheckCircle, ChevronRight, 
   ShoppingBag, Plus, Minus, X, Star, AlertTriangle, QrCode, Sparkles, Flame, User, Search,
   LayoutGrid, Users, Check, Copy, ChevronDown, CreditCard, ArrowRightLeft, Building2,
-  LogIn, LogOut, LayoutDashboard, Lock, ShieldCheck
+  LogIn, LogOut, LayoutDashboard, Lock, ShieldCheck, Grid3X3, Trash2
 } from 'lucide-react';
 import clientAxios from '../services/cauHinhAxiosApi.js';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu.js';
@@ -111,6 +111,7 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
     } else {
       const url = new URL(window.location.href);
       url.searchParams.delete('table');
+      url.searchParams.set('tab', 'tables');
       url.pathname = '/';
       window.location.href = url.toString();
     }
@@ -232,10 +233,14 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
     }
   };
 
-  // 2. Tải danh sách món bàn này đã gọi
+  // 2. Tải danh sách món bàn này đã gọi (chỉ lấy các món chưa thanh toán trong phiên hiện tại)
   const fetchTableOrders = async () => {
     try {
-      const res = await clientAxios.get(`/orders?ban_id=${tableId}`);
+      if (table?.trang_thai === 'trong') {
+        setTableOrders([]);
+        return;
+      }
+      const res = await clientAxios.get(`/orders?ban_id=${tableId}&unpaid_only=true`);
       if (res?.success) {
         setTableOrders(res.orders || []);
       }
@@ -257,14 +262,32 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
 
     const handleOrderUpdated = (order) => {
       if (order.ban_id === tableId || order.so_ban === table?.so_ban) {
-        fetchTableOrders();
-        showNotification(`Món "${order.ten_mon}" đã chuyển sang: ${order.trang_thai}`);
+        if (order.trang_thai === 'da_xoa') {
+          setTableOrders(prev => prev.filter(o => o.id !== order.id));
+          showNotification(`Món "${order.ten_mon}" đã được xóa khỏi đơn gọi món!`, 'info');
+        } else {
+          fetchTableOrders();
+          showNotification(`Món "${order.ten_mon}" đã chuyển sang: ${order.trang_thai}`);
+        }
       }
     };
 
     const handleTableUpdated = (updatedTable) => {
       if (updatedTable.id === tableId || updatedTable.so_ban === table?.so_ban) {
         setTable(updatedTable);
+        // Khi Admin / Nhân viên giải phóng bàn về trạng thái 'trong':
+        // Lập tức RESET toàn bộ dữ liệu bàn của khách (đơn món, giỏ hàng, hóa đơn tạm, modal)
+        if (updatedTable.trang_thai === 'trong') {
+          setTableOrders([]);
+          setCart([]);
+          setHasPaidOnline(false);
+          setIsBillModalOpen(false);
+          setIsReviewModalOpen(false);
+          setCustomizingDish(null);
+          showNotification('Bàn ăn đã được dọn sạch & giải phóng. Sẵn sàng cho lượt phục vụ mới!', 'info');
+        } else {
+          fetchTableOrders();
+        }
       }
     };
 
@@ -281,17 +304,17 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
 
   const showNotification = (msg, type = 'info') => {
     if (type === 'success') {
-      toast.thanhCong(msg, 'Thành Công', 5000);
+      toast.thanhCong(msg, 'Thành Công', 3000);
     } else if (type === 'error') {
-      toast.loi(msg, 'Thông Báo Lỗi', 5000);
+      toast.loi(msg, 'Thông Báo Lỗi', 3000);
     } else if (type === 'warning') {
-      toast.canhBao(msg, 'Cảnh Báo', 5000);
+      toast.canhBao(msg, 'Cảnh Báo', 3000);
     } else {
-      toast.thongTin(msg, 'Thông Báo', 5000);
+      toast.thongTin(msg, 'Thông Báo', 3000);
     }
 
     setAlertBanner({ message: msg, type });
-    setTimeout(() => setAlertBanner(null), 5000);
+    setTimeout(() => setAlertBanner(null), 3000);
   };
 
   // 4. Các thao tác Giỏ hàng
@@ -400,6 +423,24 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
     }
   };
 
+  // 6b. Khách xóa món khỏi đơn đã gọi
+  const handleXoaMon = async (order) => {
+    const tenMon = order.ten_mon || 'Món ăn';
+    const xacNhan = window.confirm(`Bạn có chắc chắn muốn xóa món "${tenMon}" khỏi danh sách đã gọi không?`);
+    if (!xacNhan) return;
+
+    try {
+      const res = await clientAxios.delete(`/orders/${order.id}`);
+      if (res.success) {
+        showNotification(res.message || `Đã xóa món "${tenMon}" thành công!`, 'success');
+        setTableOrders(prev => prev.filter(o => o.id !== order.id));
+        fetchTableOrders();
+      }
+    } catch (err) {
+      showNotification(err.message || 'Không thể xóa món này lúc này.', 'error');
+    }
+  };
+
   // 7. Khách bấm yêu cầu thanh toán
   const handleRequestPayment = async (method = 'chuyen_khoan') => {
     try {
@@ -500,22 +541,31 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
               <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 rounded-xl p-1">
                 <div className="hidden md:flex flex-col text-right px-1.5">
                   <span className="text-[11px] font-black text-slate-900 leading-tight truncate max-w-[120px]">
-                    {currentUser.ho_ten}
+                    {currentUser.name || currentUser.ho_ten || 'Khách Hàng'}
                   </span>
                   <span className="text-[10px] text-amber-700 font-bold capitalize">
-                    {currentUser.vai_tro === 'admin' ? 'Quản lý' : currentUser.vai_tro === 'bep' ? 'Đầu bếp' : 'Thu ngân'}
+                    {currentUser.role === 'admin' || currentUser.vai_tro === 'admin'
+                      ? 'Quản lý'
+                      : currentUser.role === 'bep' || currentUser.vai_tro === 'bep'
+                      ? 'Đầu bếp'
+                      : currentUser.role === 'khach_hang' || currentUser.vai_tro === 'khach_hang'
+                      ? 'Khách Hàng'
+                      : 'Thu ngân / Phục vụ'}
                   </span>
                 </div>
-                <button
-                  type="button"
-                  onClick={handleGoToDashboard}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs shadow-xs transition-all active:scale-95 cursor-pointer"
-                  title="Vào hệ thống quản trị"
-                >
-                  <LayoutDashboard className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Vào Quản Trị</span>
-                  <span className="sm:hidden">Quản Trị</span>
-                </button>
+                {/* Chỉ nhân viên/quản lý mới có nút Về Sơ Đồ Bàn, Khách hàng tuyệt đối không hiển thị */}
+                {currentUser.role !== 'khach_hang' && currentUser.vai_tro !== 'khach_hang' && (
+                  <button
+                    type="button"
+                    onClick={handleGoToDashboard}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs shadow-xs transition-all active:scale-95 cursor-pointer"
+                    title="Quay lại sơ đồ bàn nhân viên"
+                  >
+                    <Grid3X3 className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Về Sơ Đồ Bàn</span>
+                    <span className="sm:hidden">Sơ Đồ Bàn</span>
+                  </button>
+                )}
                 <button
                   type="button"
                   onClick={logout}
@@ -544,10 +594,11 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
               <button
                 type="button"
                 onClick={onExitToStaff}
-                className="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition-all cursor-pointer"
-                title="Quay về giao diện nhân viên"
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition-all cursor-pointer"
+                title="Quay về giao diện sơ đồ bàn"
               >
-                Thoát
+                <Grid3X3 className="w-3.5 h-3.5" />
+                <span>Sơ Đồ Bàn</span>
               </button>
             )}
           </div>
@@ -856,7 +907,7 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
                         </div>
                       </div>
 
-                      <div className="text-right">
+                      <div className="text-right flex flex-col items-end">
                         <span className={`inline-flex items-center gap-1 text-[10px] font-black px-2.5 py-1 rounded-full border ${statusBg}`}>
                           <StatusIcon className="w-3 h-3" />
                           <span>{statusLabel}</span>
@@ -864,6 +915,19 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
                         <div className="text-[10px] text-slate-400 font-mono mt-1">
                           {new Date(order.createdAt || Date.now()).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
                         </div>
+
+                        {/* Nút xóa món khỏi đơn đã gọi */}
+                        {order.phuong_thuc_thanh_toan === 'chua_thanh_toan' && order.trang_thai !== 'hoan_thanh' && (
+                          <button
+                            type="button"
+                            onClick={() => handleXoaMon(order)}
+                            className="mt-1.5 inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 hover:text-rose-700 border border-rose-200 text-[10px] font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
+                            title="Xóa món này khỏi đơn đã gọi"
+                          >
+                            <Trash2 className="w-3 h-3 text-rose-500" />
+                            <span>Xóa món</span>
+                          </button>
+                        )}
                       </div>
                     </div>
                   );
@@ -1611,11 +1675,11 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
               <button
                 type="button"
                 onClick={() => {
-                  window.location.href = '/';
+                  window.location.href = '/?tab=tables';
                 }}
                 className="text-xs font-bold text-blue-600 hover:underline cursor-pointer"
               >
-                Mở trang đăng nhập toàn màn hình →
+                Mở giao diện quản lý sơ đồ bàn →
               </button>
             </div>
           </div>

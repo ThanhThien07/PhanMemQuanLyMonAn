@@ -2,7 +2,7 @@
  * @file ThongBaoToastContext.jsx
  * @description React Context quản lý hiển thị các thông báo nhanh (Toast Notification Alerts):
  * Quy chuẩn:
- * 1. Tự động biến mất sau đúng 5 giây (5000ms).
+ * 1. Tự động biến mất sau đúng 3 giây (3000ms).
  * 2. Hiển thị tối đa 5 thông báo trên màn hình cùng một lúc (MAX_TOASTS = 5).
  * 3. Hàng đợi FIFO: Khi đã có 5 thông báo mà có thêm thông báo mới, thông báo cũ nhất sẽ tự động bị xóa để nhường chỗ cho cái mới nhất.
  * 4. Tích hợp âm thanh chuông reo báo phục vụ (Web Audio API Synthesizer) không cần tệp ngoài.
@@ -15,7 +15,7 @@ import { CheckCircle2, AlertCircle, Info, AlertTriangle, X, Bell, CreditCard, Ch
 
 const ThongBaoToastContext = createContext(null);
 const GIOI_HAN_TOAST_TOI_DA = 5;
-const THOI_LUONG_MAC_DINH_MS = 5000; // Đúng 5 giây theo yêu cầu
+const THOI_LUONG_MAC_DINH_MS = 3000; // Đúng 3 giây theo yêu cầu
 
 /**
  * Phát âm thanh chuông thông báo nhẹ nhàng bằng Web Audio API

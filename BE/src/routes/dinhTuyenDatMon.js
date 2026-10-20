@@ -16,7 +16,8 @@ import {
   layDonMonChoBep,
   taoDonGoiMon,
   capNhatTrangThaiDonMon,
-  thanhToanHoaDon
+  thanhToanHoaDon,
+  xoaDonMon
 } from '../controllers/datMonController.js';
 import { xacThucNguoiDung } from '../middlewares/kiemTraXacThuc.js';
 
@@ -26,6 +27,7 @@ router.get('/', layDanhSachDonMon);
 router.get('/kitchen', layDonMonChoBep);
 // Cho phép cả POS lẫn khách tự quét QR gửi order
 router.post('/', taoDonGoiMon);
+router.delete('/:id', xoaDonMon);
 router.patch('/:id/status', xacThucNguoiDung, capNhatTrangThaiDonMon);
 router.post('/pay/:ban_id', xacThucNguoiDung, thanhToanHoaDon);
 

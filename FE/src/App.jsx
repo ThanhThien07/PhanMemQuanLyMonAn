@@ -46,7 +46,6 @@ function TrangThaiDangTaiModule({ thongBao = 'Đang tải dữ liệu module...'
  */
 export default function App() {
   const { nguoiDung, dangTai } = useNguoiDung();
-  const [tabHienTai, setTabHienTai] = useState('dashboard');
 
   // Kiểm tra nếu khách hàng đang truy cập bằng đường dẫn quét mã QR bàn (?table=1 hoặc /table/1 hoặc /qr)
   const thamSoUrl = new URLSearchParams(window.location.search);
@@ -55,9 +54,26 @@ export default function App() {
     window.location.pathname.includes('/table') ||
     window.location.pathname.includes('/qr');
 
+  // Khởi tạo tab hiện tại: Đọc từ URL ?tab= hoặc sessionStorage, mặc định 'tables' (Sơ Đồ Bàn)
+  const [tabHienTai, setTabHienTai] = useState(() => {
+    const tabUrl = thamSoUrl.get('tab');
+    if (tabUrl) return tabUrl;
+    const tabDaLuu = sessionStorage.getItem('royal_active_tab');
+    if (tabDaLuu) return tabDaLuu;
+    return 'tables';
+  });
+
+  const thayDoiTab = (tabMoi) => {
+    setTabHienTai(tabMoi);
+    sessionStorage.setItem('royal_active_tab', tabMoi);
+    const url = new URL(window.location.href);
+    url.searchParams.set('tab', tabMoi);
+    window.history.replaceState({}, '', url.toString());
+  };
+
   // Dynamic Page Title cho SPA (Slide 27: Cập nhật title theo từng ngữ cảnh điều hướng)
   useEffect(() => {
-    if (laKhachQuetQR) {
+    if (laKhachQuetQR || nguoiDung?.role === 'khach_hang') {
       const banSo = thamSoUrl.get('table') || '1';
       document.title = `Thực Đơn Gọi Món Bàn ${banSo} | Royal Bistro`;
       return;
@@ -84,16 +100,7 @@ export default function App() {
     document.title = mapTieuDe[tabHienTai] || 'ROYAL BISTRO - Nhà Hàng Ẩm Thực & Quản Lý';
   }, [tabHienTai, laKhachQuetQR, nguoiDung]);
 
-  // Nếu là khách quét mã QR, hiển thị trực tiếp giao diện Web gọi món bàn dạng lazy
-  if (laKhachQuetQR) {
-    return (
-      <Suspense fallback={<TrangThaiDangTaiModule thongBao="Đang tải thực đơn gọi món tại bàn..." />}>
-        <KhachHangGoiMonQR />
-      </Suspense>
-    );
-  }
-
-  // Màn hình chờ khi đang nạp thông tin phiên đăng nhập
+  // 1. Màn hình chờ khi đang nạp thông tin phiên đăng nhập
   if (dangTai) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
@@ -105,7 +112,28 @@ export default function App() {
     );
   }
 
-  // Chưa đăng nhập -> Hiển thị trang đăng nhập dạng lazy
+  // 2. Nếu khách quét mã QR HOẶC là tài khoản Khách Hàng (role === 'khach_hang'):
+  // Luôn luôn hiển thị giao diện Khách Hàng Gọi Món QR trực tiếp trên bàn!
+  if (laKhachQuetQR || nguoiDung?.role === 'khach_hang') {
+    return (
+      <Suspense fallback={<TrangThaiDangTaiModule thongBao="Đang tải thực đơn gọi món tại bàn..." />}>
+        <KhachHangGoiMonQR
+          onExitToStaff={
+            nguoiDung && nguoiDung.role !== 'khach_hang'
+              ? () => {
+                  const url = new URL(window.location.href);
+                  url.searchParams.delete('table');
+                  url.searchParams.set('tab', 'tables');
+                  window.location.href = url.toString();
+                }
+              : undefined
+          }
+        />
+      </Suspense>
+    );
+  }
+
+  // 3. Chưa đăng nhập -> Hiển thị trang đăng nhập
   if (!nguoiDung) {
     return (
       <Suspense fallback={<TrangThaiDangTaiModule thongBao="Đang chuẩn bị màn hình đăng nhập..." />}>
@@ -127,11 +155,11 @@ export default function App() {
         {(() => {
           switch (tabHienTai) {
             case 'dashboard':
-              return <TongQuanDashboard setActiveTab={setTabHienTai} />;
+              return <TongQuanDashboard setActiveTab={thayDoiTab} />;
             case 'pos':
               return <GoiMonTaiBanPOS />;
             case 'tables':
-              return <QuanLySoDoBan setActiveTab={setTabHienTai} />;
+              return <QuanLySoDoBan setActiveTab={thayDoiTab} />;
             case 'kitchen':
               return <ManHinhBepKDS />;
             case 'reservations':
@@ -145,9 +173,9 @@ export default function App() {
             case 'reports':
               return <BaoCaoThongKeDoanhThu />;
             case 'qr_order':
-              return <KhachHangGoiMonQR onExitToStaff={() => setTabHienTai('tables')} />;
+              return <KhachHangGoiMonQR onExitToStaff={() => thayDoiTab('tables')} />;
             default:
-              return <TongQuanDashboard setActiveTab={setTabHienTai} />;
+              return <QuanLySoDoBan setActiveTab={thayDoiTab} />;
           }
         })()}
       </Suspense>
@@ -155,7 +183,7 @@ export default function App() {
   };
 
   return (
-    <BoCucGiaoDienChinh activeTab={tabHienTai} setActiveTab={setTabHienTai}>
+    <BoCucGiaoDienChinh activeTab={tabHienTai} setActiveTab={thayDoiTab}>
       {hienThiTrangHienTai()}
     </BoCucGiaoDienChinh>
   );

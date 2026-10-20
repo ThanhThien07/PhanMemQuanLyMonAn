@@ -108,8 +108,11 @@ export default function DangNhapHeThong() {
     setThongBaoLoi('');
     setDangXuLy(true);
     try {
-      await login(email, password);
+      const res = await login(email, password);
       toast.thanhCong('Đăng nhập thành công! Chào mừng trở lại.', 'Xác Thực');
+      if (res?.user?.role === 'khach_hang') {
+        window.location.href = '/?table=1';
+      }
     } catch (err) {
       const msg = err.message || 'Đăng nhập không thành công.';
       setThongBaoLoi(msg);
@@ -137,7 +140,10 @@ export default function DangNhapHeThong() {
     setDangXuLy(true);
     try {
       await register(regName.trim(), regEmail.trim(), regPassword, regPhone.trim(), 'khach_hang');
-      toast.thanhCong('🎉 Đăng ký tài khoản thành công! Đã tự động đăng nhập vào hệ thống.', 'Thành Công');
+      toast.thanhCong('🎉 Đăng ký thành công! Đang chuyển vào thực đơn gọi món tại bàn...', 'Thành Công');
+      setTimeout(() => {
+        window.location.href = '/?table=1';
+      }, 300);
     } catch (err) {
       const msg = err.message || 'Đăng ký không thành công.';
       setThongBaoLoi(msg);

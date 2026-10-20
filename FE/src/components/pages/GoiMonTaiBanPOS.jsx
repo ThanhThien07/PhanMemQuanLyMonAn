@@ -16,7 +16,8 @@ import {
   CreditCard, 
   CheckCircle2, 
   Utensils, 
-  Users 
+  Users,
+  Trash2
 } from 'lucide-react';
 import ModalInHoaDon from '../ModalInHoaDon';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu';
@@ -181,6 +182,25 @@ export default function GoiMonTaiBanPOS() {
       toast.loi(loi.message || 'Lỗi khi gửi món vào bếp', 'Gửi Đơn Thất Bại');
     } finally {
       setDangXuLy(false);
+    }
+  };
+
+  /**
+   * Xóa món ăn khỏi danh sách đang phục vụ của bàn
+   */
+  const xoaMonDangPhucVu = async (don) => {
+    const xacNhan = window.confirm(`Bạn có chắc muốn xóa món "${don.ten_mon}" khỏi Bàn ${banHienTai?.so_ban}?`);
+    if (!xacNhan) return;
+
+    try {
+      const res = await axiosApi.delete(`/orders/${don.id}`);
+      if (res.success) {
+        toast.thanhCong(res.message || `Đã xóa món "${don.ten_mon}" thành công!`, 'Xóa Món');
+        taiMonCuaBan(banHienTai?.id);
+        taiDuLieuBanDau();
+      }
+    } catch (loi) {
+      toast.loi(loi.message || 'Không thể xóa món lúc này', 'Lỗi Xóa Món');
     }
   };
 
@@ -441,18 +461,28 @@ export default function GoiMonTaiBanPOS() {
                       <span className="text-slate-500 ml-1.5 font-semibold">x{don.so_luong}</span>
                       {don.ghi_chu && <div className="text-[10px] text-amber-700 font-semibold">*{don.ghi_chu}</div>}
                     </div>
-                    <div className="text-right">
-                      <div className="text-slate-800 font-extrabold">
-                        {dinhDangTienTe(don.tong_tien)}
+                    <div className="flex items-center gap-2">
+                      <div className="text-right">
+                        <div className="text-slate-800 font-extrabold">
+                          {dinhDangTienTe(don.tong_tien)}
+                        </div>
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+                          don.trang_thai === 'cho_xac_nhan' ? 'bg-amber-100 text-amber-800' :
+                          don.trang_thai === 'dang_che_bien' ? 'bg-sky-100 text-sky-800' :
+                          'bg-emerald-100 text-emerald-800'
+                        }`}>
+                          {don.trang_thai === 'cho_xac_nhan' ? 'Chờ bếp' :
+                           don.trang_thai === 'dang_che_bien' ? 'Đang nấu' : 'Đã phục vụ'}
+                        </span>
                       </div>
-                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
-                        don.trang_thai === 'cho_xac_nhan' ? 'bg-amber-100 text-amber-800' :
-                        don.trang_thai === 'dang_che_bien' ? 'bg-sky-100 text-sky-800' :
-                        'bg-emerald-100 text-emerald-800'
-                      }`}>
-                        {don.trang_thai === 'cho_xac_nhan' ? 'Chờ bếp' :
-                         don.trang_thai === 'dang_che_bien' ? 'Đang nấu' : 'Đã phục vụ'}
-                      </span>
+                      <button
+                        type="button"
+                        onClick={() => xoaMonDangPhucVu(don)}
+                        className="p-1 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                        title="Xóa món này khỏi bàn"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   </div>
                 ))}

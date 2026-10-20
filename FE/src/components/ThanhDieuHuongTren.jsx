@@ -36,6 +36,8 @@ export default function ThanhDieuHuongTren({ activeTab }) {
         return { label: 'Quản Lý (Admin)', color: 'badge-role-admin', icon: ShieldCheck };
       case 'bep':
         return { label: 'Bếp Trưởng', color: 'badge-role-bep', icon: ChefHat };
+      case 'khach_hang':
+        return { label: 'Khách Hàng Thân Thiết', color: 'badge-tier-vang', icon: UtensilsCrossed };
       case 'nhan_vien':
       default:
         return { label: 'Thu Ngân / Phục Vụ', color: 'badge-role-thungan', icon: UtensilsCrossed };

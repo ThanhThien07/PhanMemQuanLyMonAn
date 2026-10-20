@@ -345,12 +345,73 @@ export async function thanhToanHoaDon(req, res) {
   }
 }
 
+/**
+ * Xóa hoặc hủy món ăn khỏi đơn gọi món (POS hoặc khách quét QR tại bàn)
+ * @function xoaDonMon
+ * @param {Object} req - Express Request
+ * @param {Object} res - Express Response
+ */
+export async function xoaDonMon(req, res) {
+  try {
+    const { id } = req.params;
+    const donMon = await DatMon.findOne(chuyenDoiBoLocId(id));
+    if (!donMon) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy món ăn trong đơn.' });
+    }
+
+    if (donMon.phuong_thuc_thanh_toan !== 'chua_thanh_toan') {
+      return res.status(400).json({ success: false, message: 'Món ăn này đã được thanh toán, không thể xóa.' });
+    }
+
+    // Nếu món đang ở trạng thái 'dang_che_bien', hoàn lại kho nguyên liệu nếu trước đó đã trừ BOM
+    if (donMon.trang_thai === 'dang_che_bien') {
+      const danhSachBOM = await MonAnNguyenLieu.find({ mon_an_id: donMon.mon_an_id });
+      for (const bom of danhSachBOM) {
+        const soLuongHoan = bom.so_luong_can * donMon.so_luong;
+        const nguyenLieu = await NguyenLieu.findOne({ id: bom.nguyen_lieu_id });
+        if (nguyenLieu) {
+          nguyenLieu.so_luong_ton += soLuongHoan;
+          await nguyenLieu.save();
+        }
+      }
+    }
+
+    const [monAn, banAn] = await Promise.all([
+      MonAn.findOne({ id: donMon.mon_an_id }),
+      BanAn.findOne({ id: donMon.ban_id })
+    ]);
+
+    await DatMon.deleteOne(chuyenDoiBoLocId(id));
+
+    phatSuKienTrangThaiMon({
+      id: donMon.id,
+      ban_id: donMon.ban_id,
+      so_ban: banAn?.so_ban || donMon.ban_id,
+      ten_mon: monAn?.ten_mon || 'Món ăn',
+      trang_thai: 'da_xoa'
+    });
+
+    if (banAn) {
+      phatSuKienTrangThaiBan(banAn.toJSON());
+    }
+
+    res.json({
+      success: true,
+      message: `Đã xóa món "${monAn?.ten_mon || 'Món ăn'}" khỏi danh sách đơn đã gọi!`
+    });
+  } catch (error) {
+    console.error('Lỗi xoaDonMon:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+}
+
 // Bí danh tương thích
 export const getOrders = layDanhSachDonMon;
 export const getKitchenOrders = layDonMonChoBep;
 export const createOrder = taoDonGoiMon;
 export const updateOrderStatus = capNhatTrangThaiDonMon;
 export const payBill = thanhToanHoaDon;
+export const deleteOrder = xoaDonMon;
 
 export default {
   layDanhSachDonMon,
@@ -358,9 +419,11 @@ export default {
   taoDonGoiMon,
   capNhatTrangThaiDonMon,
   thanhToanHoaDon,
+  xoaDonMon,
   getOrders,
   getKitchenOrders,
   createOrder,
   updateOrderStatus,
-  payBill
+  payBill,
+  deleteOrder
 };

@@ -111,6 +111,13 @@ export async function capNhatTrangThaiBan(req, res) {
     if (so_luong_khach !== undefined) duLieuCapNhat.so_luong_khach = so_luong_khach;
     if (yeu_cau_thanh_toan !== undefined) duLieuCapNhat.yeu_cau_thanh_toan = yeu_cau_thanh_toan;
 
+    // Khi bàn chuyển về trạng thái 'trong' (Admin giải phóng bàn/dọn bàn):
+    // Tự động giải phóng số lượng khách, tắt cờ gọi thanh toán và hoàn tất các đơn món cũ chưa thanh toán
+    if (trang_thai === 'trong') {
+      duLieuCapNhat.so_luong_khach = 0;
+      duLieuCapNhat.yeu_cau_thanh_toan = 0;
+    }
+
     const banDaCapNhat = await BanAn.findOneAndUpdate(
       chuyenDoiBoLocId(id),
       duLieuCapNhat,
@@ -118,6 +125,13 @@ export async function capNhatTrangThaiBan(req, res) {
     );
     if (!banDaCapNhat) {
       return res.status(404).json({ success: false, message: 'Không tìm thấy bàn ăn.' });
+    }
+
+    if (trang_thai === 'trong') {
+      await DatMon.updateMany(
+        { ban_id: banDaCapNhat.id, phuong_thuc_thanh_toan: 'chua_thanh_toan' },
+        { $set: { phuong_thuc_thanh_toan: 'da_giai_phong', trang_thai: 'hoan_thanh' } }
+      );
     }
 
     const duLieuBan = banDaCapNhat.toJSON();
