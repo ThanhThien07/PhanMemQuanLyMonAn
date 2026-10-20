@@ -43,10 +43,62 @@ export default function DangNhapHeThong() {
   const [regPhone, setRegPhone] = useState('');
   const [regPassword, setRegPassword] = useState('');
   const [regConfirmPassword, setRegConfirmPassword] = useState('');
-  const [regRole, setRegRole] = useState('khach_hang');
+  const [regErrors, setRegErrors] = useState({});
 
   const [dangXuLy, setDangXuLy] = useState(false);
   const [thongBaoLoi, setThongBaoLoi] = useState('');
+
+  /**
+   * Kiểm tra tính hợp lệ của dữ liệu đăng ký (chống điền linh tinh)
+   * @returns {Object} Đối tượng chứa danh sách lỗi
+   */
+  const kiemTraDuLieuDangKy = () => {
+    const loi = {};
+    const tenTrim = regName.trim();
+    const emailTrim = regEmail.trim();
+    const sdtTrim = regPhone.trim();
+
+    // Họ và tên: Chữ cái tiếng Việt và khoảng trắng, 2 - 50 ký tự (không số, không ký tự đặc biệt)
+    const regexTen = /^[a-zA-ZÀ-ỹ\s]{2,50}$/u;
+    if (!tenTrim) {
+      loi.name = 'Vui lòng nhập họ và tên của bạn.';
+    } else if (!regexTen.test(tenTrim)) {
+      loi.name = 'Họ tên chỉ được gồm chữ cái tiếng Việt, từ 2 đến 50 ký tự (không chứa số hoặc ký tự lạ).';
+    }
+
+    // Số điện thoại: Chuẩn di động Việt Nam (10 số, bắt đầu bằng 03, 05, 07, 08, 09)
+    const regexSdt = /^(0[35789])[0-9]{8}$/;
+    if (!sdtTrim) {
+      loi.phone = 'Vui lòng nhập số điện thoại để tích điểm thành viên CRM.';
+    } else if (!regexSdt.test(sdtTrim)) {
+      loi.phone = 'Số điện thoại phải gồm 10 chữ số hợp lệ (bắt đầu bằng 03, 05, 07, 08, 09).';
+    }
+
+    // Email đăng nhập
+    const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailTrim) {
+      loi.email = 'Vui lòng nhập địa chỉ email.';
+    } else if (!regexEmail.test(emailTrim)) {
+      loi.email = 'Định dạng email chưa đúng chuẩn (ví dụ: khachhang@email.com).';
+    }
+
+    // Mật khẩu
+    if (!regPassword) {
+      loi.password = 'Vui lòng nhập mật khẩu.';
+    } else if (regPassword.length < 6) {
+      loi.password = 'Mật khẩu phải có độ dài tối thiểu 6 ký tự.';
+    }
+
+    // Xác nhận mật khẩu
+    if (!regConfirmPassword) {
+      loi.confirmPassword = 'Vui lòng xác nhận lại mật khẩu.';
+    } else if (regPassword !== regConfirmPassword) {
+      loi.confirmPassword = 'Mật khẩu xác nhận không trùng khớp!';
+    }
+
+    setRegErrors(loi);
+    return loi;
+  };
 
   /**
    * Xử lý gửi form Đăng nhập
@@ -68,29 +120,23 @@ export default function DangNhapHeThong() {
   };
 
   /**
-   * Xử lý gửi form Đăng ký tài khoản
+   * Xử lý gửi form Đăng ký tài khoản Khách Hàng
    */
   const xuLyDangKy = async (e) => {
     e.preventDefault();
     setThongBaoLoi('');
 
-    if (regPassword !== regConfirmPassword) {
-      const msg = 'Mật khẩu xác nhận không khớp!';
-      setThongBaoLoi(msg);
-      toast.loi(msg, 'Đăng Ký');
-      return;
-    }
-
-    if (regPassword.length < 6) {
-      const msg = 'Mật khẩu phải có ít nhất 6 ký tự!';
-      setThongBaoLoi(msg);
-      toast.loi(msg, 'Đăng Ký');
+    const cacLoi = kiemTraDuLieuDangKy();
+    if (Object.keys(cacLoi).length > 0) {
+      const loiDauTien = Object.values(cacLoi)[0];
+      setThongBaoLoi(loiDauTien);
+      toast.canhBao(loiDauTien, 'Thông Tin Chưa Hợp Lệ');
       return;
     }
 
     setDangXuLy(true);
     try {
-      await register(regName, regEmail, regPassword, regPhone, regRole);
+      await register(regName.trim(), regEmail.trim(), regPassword, regPhone.trim(), 'khach_hang');
       toast.thanhCong('🎉 Đăng ký tài khoản thành công! Đã tự động đăng nhập vào hệ thống.', 'Thành Công');
     } catch (err) {
       const msg = err.message || 'Đăng ký không thành công.';
@@ -161,6 +207,7 @@ export default function DangNhapHeThong() {
                   onClick={() => {
                     setTabHienTai('register');
                     setThongBaoLoi('');
+                    setRegErrors({});
                   }}
                   className={`btn flex-1 py-2 rounded-3 text-xs font-black d-flex align-items-center justify-content-center gap-1.5 transition-all ${
                     tabHienTai === 'register'
@@ -302,104 +349,161 @@ export default function DangNhapHeThong() {
 
                 {/* FORM ĐĂNG KÝ TÀI KHOẢN MỚI */}
                 {tabHienTai === 'register' && (
-                  <form onSubmit={xuLyDangKy} className="space-y-3">
+                  <form onSubmit={xuLyDangKy} noValidate className="space-y-3">
+                    {/* Họ và Tên */}
                     <div>
-                      <label className="form-label text-xs font-bold text-slate-700 uppercase mb-1">
-                        Họ và Tên
-                      </label>
+                      <div className="d-flex justify-content-between align-items-center mb-1">
+                        <label className="form-label text-xs font-bold text-slate-700 uppercase mb-0">
+                          Họ và Tên <span className="text-danger">*</span>
+                        </label>
+                        <span className="text-[10px] text-slate-400 font-medium">Chỉ chữ cái</span>
+                      </div>
                       <div className="input-group">
-                        <span className="input-group-text bg-slate-50 border-slate-200 text-slate-400">
+                        <span className={`input-group-text ${regErrors.name ? 'bg-rose-50 border-rose-300 text-rose-500' : 'bg-slate-50 border-slate-200 text-slate-400'}`}>
                           <User className="w-4 h-4" />
                         </span>
                         <input
                           type="text"
                           value={regName}
-                          onChange={(e) => setRegName(e.target.value)}
+                          onChange={(e) => {
+                            setRegName(e.target.value);
+                            if (regErrors.name) setRegErrors((prev) => ({ ...prev, name: '' }));
+                          }}
                           placeholder="Ví dụ: Nguyễn Văn Khách"
-                          required
-                          className="form-control bg-slate-50 border-slate-200 text-slate-900 text-sm py-2"
+                          className={`form-control text-slate-900 text-sm py-2 ${
+                            regErrors.name ? 'border-rose-300 bg-rose-50/20 is-invalid' : 'border-slate-200 bg-slate-50'
+                          }`}
                         />
                       </div>
+                      {regErrors.name && (
+                        <div className="text-[11px] text-danger font-semibold mt-1 d-flex align-items-center gap-1">
+                          <i className="bi bi-exclamation-circle-fill flex-shrink-0"></i>
+                          <span>{regErrors.name}</span>
+                        </div>
+                      )}
                     </div>
 
+                    {/* Số Điện Thoại */}
                     <div>
-                      <label className="form-label text-xs font-bold text-slate-700 uppercase mb-1">
-                        Số Điện Thoại (Tích Điểm CRM)
-                      </label>
+                      <div className="d-flex justify-content-between align-items-center mb-1">
+                        <label className="form-label text-xs font-bold text-slate-700 uppercase mb-0">
+                          Số Điện Thoại (Tích Điểm CRM) <span className="text-danger">*</span>
+                        </label>
+                        <span className="text-[10px] text-slate-400 font-medium">10 số di động VN</span>
+                      </div>
                       <div className="input-group">
-                        <span className="input-group-text bg-slate-50 border-slate-200 text-slate-400">
+                        <span className={`input-group-text ${regErrors.phone ? 'bg-rose-50 border-rose-300 text-rose-500' : 'bg-slate-50 border-slate-200 text-slate-400'}`}>
                           <Phone className="w-4 h-4" />
                         </span>
                         <input
                           type="tel"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          maxLength={10}
                           value={regPhone}
-                          onChange={(e) => setRegPhone(e.target.value)}
+                          onChange={(e) => {
+                            // Chỉ cho phép gõ số, tự động loại bỏ chữ và ký tự đặc biệt, tối đa 10 số
+                            const chiSo = e.target.value.replace(/\D/g, '').slice(0, 10);
+                            setRegPhone(chiSo);
+                            if (regErrors.phone) setRegErrors((prev) => ({ ...prev, phone: '' }));
+                          }}
                           placeholder="0912345678"
-                          className="form-control bg-slate-50 border-slate-200 text-slate-900 text-sm py-2"
+                          className={`form-control text-slate-900 text-sm py-2 ${
+                            regErrors.phone ? 'border-rose-300 bg-rose-50/20 is-invalid' : 'border-slate-200 bg-slate-50'
+                          }`}
                         />
                       </div>
+                      {regErrors.phone && (
+                        <div className="text-[11px] text-danger font-semibold mt-1 d-flex align-items-center gap-1">
+                          <i className="bi bi-exclamation-circle-fill flex-shrink-0"></i>
+                          <span>{regErrors.phone}</span>
+                        </div>
+                      )}
                     </div>
 
+                    {/* Email Đăng Nhập */}
                     <div>
-                      <label className="form-label text-xs font-bold text-slate-700 uppercase mb-1">
-                        Email Đăng Nhập
-                      </label>
+                      <div className="d-flex justify-content-between align-items-center mb-1">
+                        <label className="form-label text-xs font-bold text-slate-700 uppercase mb-0">
+                          Email Đăng Nhập <span className="text-danger">*</span>
+                        </label>
+                        <span className="text-[10px] text-slate-400 font-medium">Chuẩn email</span>
+                      </div>
                       <div className="input-group">
-                        <span className="input-group-text bg-slate-50 border-slate-200 text-slate-400">
+                        <span className={`input-group-text ${regErrors.email ? 'bg-rose-50 border-rose-300 text-rose-500' : 'bg-slate-50 border-slate-200 text-slate-400'}`}>
                           <Mail className="w-4 h-4" />
                         </span>
                         <input
                           type="email"
                           value={regEmail}
-                          onChange={(e) => setRegEmail(e.target.value)}
+                          onChange={(e) => {
+                            setRegEmail(e.target.value);
+                            if (regErrors.email) setRegErrors((prev) => ({ ...prev, email: '' }));
+                          }}
                           placeholder="khachhang@email.com"
-                          required
-                          className="form-control bg-slate-50 border-slate-200 text-slate-900 text-sm py-2"
+                          className={`form-control text-slate-900 text-sm py-2 ${
+                            regErrors.email ? 'border-rose-300 bg-rose-50/20 is-invalid' : 'border-slate-200 bg-slate-50'
+                          }`}
                         />
                       </div>
+                      {regErrors.email && (
+                        <div className="text-[11px] text-danger font-semibold mt-1 d-flex align-items-center gap-1">
+                          <i className="bi bi-exclamation-circle-fill flex-shrink-0"></i>
+                          <span>{regErrors.email}</span>
+                        </div>
+                      )}
                     </div>
 
+                    {/* Mật Khẩu và Xác Nhận Mật Khẩu */}
                     <div className="row g-2">
                       <div className="col-6">
-                        <label className="form-label text-xs font-bold text-slate-700 uppercase mb-1">
-                          Mật Khẩu
-                        </label>
+                        <div className="d-flex justify-content-between align-items-center mb-1">
+                          <label className="form-label text-xs font-bold text-slate-700 uppercase mb-0">
+                            Mật Khẩu <span className="text-danger">*</span>
+                          </label>
+                        </div>
                         <input
                           type="password"
                           value={regPassword}
-                          onChange={(e) => setRegPassword(e.target.value)}
+                          onChange={(e) => {
+                            setRegPassword(e.target.value);
+                            if (regErrors.password) setRegErrors((prev) => ({ ...prev, password: '' }));
+                          }}
                           placeholder="••••••••"
-                          required
-                          className="form-control bg-slate-50 border-slate-200 text-slate-900 text-sm py-2"
+                          className={`form-control text-slate-900 text-sm py-2 ${
+                            regErrors.password ? 'border-rose-300 bg-rose-50/20 is-invalid' : 'border-slate-200 bg-slate-50'
+                          }`}
                         />
+                        {regErrors.password && (
+                          <div className="text-[10px] text-danger font-semibold mt-1 leading-tight">
+                            {regErrors.password}
+                          </div>
+                        )}
                       </div>
                       <div className="col-6">
-                        <label className="form-label text-xs font-bold text-slate-700 uppercase mb-1">
-                          Xác Nhận
-                        </label>
+                        <div className="d-flex justify-content-between align-items-center mb-1">
+                          <label className="form-label text-xs font-bold text-slate-700 uppercase mb-0">
+                            Xác Nhận <span className="text-danger">*</span>
+                          </label>
+                        </div>
                         <input
                           type="password"
                           value={regConfirmPassword}
-                          onChange={(e) => setRegConfirmPassword(e.target.value)}
+                          onChange={(e) => {
+                            setRegConfirmPassword(e.target.value);
+                            if (regErrors.confirmPassword) setRegErrors((prev) => ({ ...prev, confirmPassword: '' }));
+                          }}
                           placeholder="••••••••"
-                          required
-                          className="form-control bg-slate-50 border-slate-200 text-slate-900 text-sm py-2"
+                          className={`form-control text-slate-900 text-sm py-2 ${
+                            regErrors.confirmPassword ? 'border-rose-300 bg-rose-50/20 is-invalid' : 'border-slate-200 bg-slate-50'
+                          }`}
                         />
+                        {regErrors.confirmPassword && (
+                          <div className="text-[10px] text-danger font-semibold mt-1 leading-tight">
+                            {regErrors.confirmPassword}
+                          </div>
+                        )}
                       </div>
-                    </div>
-
-                    <div>
-                      <label className="form-label text-xs font-bold text-slate-700 uppercase mb-1">
-                        Loại Tài Khoản
-                      </label>
-                      <select
-                        value={regRole}
-                        onChange={(e) => setRegRole(e.target.value)}
-                        className="form-select bg-slate-50 border-slate-200 text-xs font-bold py-2"
-                      >
-                        <option value="khach_hang">Khách Hàng Thân Thiết (Tích Điểm & Ưu Đãi)</option>
-                        <option value="nhan_vien">Nhân Viên Phục Vụ / Thu Ngân</option>
-                      </select>
                     </div>
 
                     <button
@@ -415,7 +519,7 @@ export default function DangNhapHeThong() {
                       ) : (
                         <>
                           <UserPlus className="w-4 h-4" />
-                          <span>Tạo Tài Khoản Mới</span>
+                          <span>Tạo Tài Khoản Khách Hàng</span>
                         </>
                       )}
                     </button>

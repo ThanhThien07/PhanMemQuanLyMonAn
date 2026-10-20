@@ -83,17 +83,48 @@ export async function dangNhap(req, res) {
  */
 export async function dangKy(req, res) {
   try {
-    const { name, email, password, role = 'nhan_vien', so_dien_thoai } = req.body;
+    const { name, email, password, role = 'khach_hang', so_dien_thoai = '' } = req.body;
 
-    if (!name || !email || !password) {
+    const tenSach = (name || '').trim();
+    const emailSach = (email || '').toLowerCase().trim();
+    const sdtSach = (so_dien_thoai || '').trim();
+
+    // Kiểm tra Họ và Tên: Chỉ gồm chữ cái tiếng Việt và khoảng trắng, 2 - 50 ký tự
+    const regexTen = /^[a-zA-ZÀ-ỹ\s]{2,50}$/u;
+    if (!tenSach || !regexTen.test(tenSach)) {
       return res.status(400).json({
         success: false,
-        message: 'Vui lòng điền đầy đủ họ tên, email và mật khẩu.'
+        message: 'Họ và tên không hợp lệ. Vui lòng chỉ nhập chữ cái tiếng Việt và độ dài từ 2 đến 50 ký tự.'
+      });
+    }
+
+    // Kiểm tra cấu trúc Email hợp lệ
+    const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailSach || !regexEmail.test(emailSach)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Địa chỉ email không đúng định dạng chuẩn (ví dụ: khachhang@email.com).'
+      });
+    }
+
+    // Kiểm tra Số điện thoại: Chuẩn di động Việt Nam (10 số, bắt đầu bằng 03, 05, 07, 08, 09)
+    const regexSdt = /^(0[35789])[0-9]{8}$/;
+    if (!sdtSach || !regexSdt.test(sdtSach)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Số điện thoại phải là số di động Việt Nam hợp lệ gồm 10 chữ số (đầu số 03, 05, 07, 08, 09).'
+      });
+    }
+
+    if (!password || password.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: 'Mật khẩu phải có độ dài tối thiểu 6 ký tự.'
       });
     }
 
     // Kiểm tra email đã tồn tại hay chưa
-    const daTonTai = await NguoiDung.findOne({ email: email.toLowerCase().trim() });
+    const daTonTai = await NguoiDung.findOne({ email: emailSach });
     if (daTonTai) {
       return res.status(400).json({
         success: false,
@@ -106,13 +137,14 @@ export async function dangKy(req, res) {
     const matKhauDaBam = await bcrypt.hash(password, salt);
     const maSoMoi = await layMaSoTiepTheo('user_id');
 
+    // Luôn tạo tài khoản đăng ký công khai với vai trò Khách Hàng (tài khoản nhân viên/admin do Quản lý tạo)
     const nguoiDungMoi = await NguoiDung.create({
       id: maSoMoi,
-      name,
-      email: email.toLowerCase().trim(),
+      name: tenSach,
+      email: emailSach,
       password: matKhauDaBam,
-      role,
-      so_dien_thoai: so_dien_thoai || '',
+      role: 'khach_hang',
+      so_dien_thoai: sdtSach,
       trang_thai: 'hoat_dong'
     });
 
@@ -120,7 +152,7 @@ export async function dangKy(req, res) {
 
     res.status(201).json({
       success: true,
-      message: 'Đăng ký tài khoản nhân viên thành công!',
+      message: 'Đăng ký tài khoản thành công!',
       token,
       user: nguoiDungMoi.toJSON()
     });

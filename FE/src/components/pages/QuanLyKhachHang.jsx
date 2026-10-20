@@ -164,13 +164,13 @@ export default function QuanLyKhachHang() {
   const layHuyHieuHang = (hang) => {
     switch (hang) {
       case 'KimCuong':
-        return { label: 'Kim Cương', color: 'bg-cyan-50 text-cyan-800 border-cyan-300' };
+        return { label: 'Kim Cương', color: 'badge-tier-diamond' };
       case 'Vang':
-        return { label: 'Vàng', color: 'bg-amber-50 text-amber-900 border-amber-300' };
+        return { label: 'Vàng', color: 'badge-tier-gold' };
       case 'Bac':
-        return { label: 'Bạc', color: 'bg-slate-100 text-slate-800 border-slate-300' };
+        return { label: 'Bạc', color: 'badge-tier-silver' };
       default:
-        return { label: 'Đồng', color: 'bg-orange-50 text-orange-900 border-orange-300' };
+        return { label: 'Đồng', color: 'badge-tier-bronze' };
     }
   };
 
@@ -270,17 +270,17 @@ export default function QuanLyKhachHang() {
   const layHuyHieuVaiTro = (vaiTro) => {
     switch (vaiTro) {
       case 'admin':
-        return { label: 'Quản Lý (Admin)', color: 'bg-rose-50 text-rose-800 border-rose-300' };
+        return { label: 'Quản Lý (Admin)', color: 'badge-role-admin' };
       case 'bep':
-        return { label: 'Bếp Trưởng', color: 'bg-amber-50 text-amber-900 border-amber-300' };
+        return { label: 'Bếp Trưởng', color: 'badge-role-bep' };
       case 'thu_ngan':
-        return { label: 'Thu Ngân', color: 'bg-emerald-50 text-emerald-800 border-emerald-300' };
+        return { label: 'Thu Ngân', color: 'badge-role-thungan' };
       case 'khach_hang':
       case 'customer':
-        return { label: 'Khách Hàng', color: 'bg-cyan-50 text-cyan-800 border-cyan-300' };
+        return { label: 'Khách Hàng', color: 'badge-role-khachhang' };
       case 'nhan_vien':
       default:
-        return { label: 'Phục Vụ', color: 'bg-indigo-50 text-indigo-800 border-indigo-300' };
+        return { label: 'Phục Vụ', color: 'badge-role-phucvu' };
     }
   };
 
@@ -419,8 +419,8 @@ export default function QuanLyKhachHang() {
                             {c.diem_tich_luy} pts
                           </td>
                           <td className="py-3 px-4">
-                            <span className={`badge rounded-pill px-2.5 py-1 text-xs fw-bold border d-inline-flex align-items-center gap-1 ${thongTinHang.color}`}>
-                              <Crown className="w-3 h-3" />
+                            <span className={`badge rounded-pill px-3 py-1 text-xs font-black border d-inline-flex align-items-center gap-1.5 ${thongTinHang.color}`}>
+                              <Crown className="w-3.5 h-3.5 stroke-[2.5]" />
                               <span>{thongTinHang.label}</span>
                             </span>
                           </td>
@@ -540,7 +540,7 @@ export default function QuanLyKhachHang() {
                           <td className="py-3 px-4 text-slate-600 font-mono text-xs">{u.email}</td>
                           <td className="py-3 px-4 font-mono text-slate-600 text-xs">{u.so_dien_thoai || '—'}</td>
                           <td className="py-3 px-4">
-                            <span className={`badge rounded-pill px-2.5 py-1 text-xs fw-bold border ${vaiTroHuyHieu.color}`}>
+                            <span className={`badge rounded-pill px-2.5 py-1 text-xs font-black border ${vaiTroHuyHieu.color}`}>
                               {vaiTroHuyHieu.label}
                             </span>
                           </td>

@@ -33,12 +33,12 @@ export default function ThanhDieuHuongTren({ activeTab }) {
   const layHuyHieuVaiTro = (vaiTro) => {
     switch (vaiTro) {
       case 'admin':
-        return { label: 'Quản Lý (Admin)', color: 'bg-rose-50 text-rose-700 border-rose-200', icon: ShieldCheck };
+        return { label: 'Quản Lý (Admin)', color: 'badge-role-admin', icon: ShieldCheck };
       case 'bep':
-        return { label: 'Bếp Trưởng', color: 'bg-amber-50 text-amber-700 border-amber-200', icon: ChefHat };
+        return { label: 'Bếp Trưởng', color: 'badge-role-bep', icon: ChefHat };
       case 'nhan_vien':
       default:
-        return { label: 'Thu Ngân / Phục Vụ', color: 'bg-emerald-50 text-emerald-700 border-emerald-200', icon: UtensilsCrossed };
+        return { label: 'Thu Ngân / Phục Vụ', color: 'badge-role-thungan', icon: UtensilsCrossed };
     }
   };
 
