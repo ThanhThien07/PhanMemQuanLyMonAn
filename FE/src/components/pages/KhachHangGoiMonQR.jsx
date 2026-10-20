@@ -207,7 +207,6 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
     url.searchParams.set('table', newTable.so_ban);
     window.history.pushState({}, '', url.toString());
     setIsTableMapOpen(false);
-    showNotification(`Đã chuyển sang Bàn ${newTable.so_ban} (${newTable.khu_vuc})!`, 'success');
   };
 
   /**
@@ -226,10 +225,9 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
         document.body.removeChild(textarea);
       }
       setCopiedField(fieldName);
-      showNotification(`Đã sao chép ${fieldName}!`, 'success');
       setTimeout(() => setCopiedField(null), 2500);
     } catch {
-      showNotification(`Không thể sao chép tự động: ${text}`, 'warning');
+      // Fallback
     }
   };
 
@@ -264,10 +262,8 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
       if (order.ban_id === tableId || order.so_ban === table?.so_ban) {
         if (order.trang_thai === 'da_xoa') {
           setTableOrders(prev => prev.filter(o => o.id !== order.id));
-          showNotification(`Món "${order.ten_mon}" đã được xóa khỏi đơn gọi món!`, 'info');
         } else {
           fetchTableOrders();
-          showNotification(`Món "${order.ten_mon}" đã chuyển sang: ${order.trang_thai}`);
         }
       }
     };
@@ -284,7 +280,6 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
           setIsBillModalOpen(false);
           setIsReviewModalOpen(false);
           setCustomizingDish(null);
-          showNotification('Bàn ăn đã được dọn sạch & giải phóng. Sẵn sàng cho lượt phục vụ mới!', 'info');
         } else {
           fetchTableOrders();
         }
@@ -302,19 +297,20 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
     };
   }, [socket, tableId, table]);
 
-  const showNotification = (msg, type = 'info') => {
-    if (type === 'success') {
-      toast.thanhCong(msg, 'Thành Công', 3000);
-    } else if (type === 'error') {
-      toast.loi(msg, 'Thông Báo Lỗi', 3000);
-    } else if (type === 'warning') {
-      toast.canhBao(msg, 'Cảnh Báo', 3000);
-    } else {
-      toast.thongTin(msg, 'Thông Báo', 3000);
+  /**
+   * Hiển thị thông báo. Theo yêu cầu: Chỉ khi bấm gọi phục vụ thì mới hiện thông báo nổi (toast)
+   * Các thao tác thông thường của khách (thêm giỏ hàng, xóa món, xem bill) không hiện thông báo nổi.
+   */
+  const showNotification = (msg, type = 'info', laGoiPhucVu = false) => {
+    if (laGoiPhucVu) {
+      if (type === 'success') {
+        toast.thanhCong(msg, 'Thành Công', 3000);
+      } else if (type === 'error') {
+        toast.loi(msg, 'Thông Báo Lỗi', 3000);
+      } else {
+        toast.thongTin(msg, 'Thông Báo', 3000);
+      }
     }
-
-    setAlertBanner({ message: msg, type });
-    setTimeout(() => setAlertBanner(null), 3000);
   };
 
   // 4. Các thao tác Giỏ hàng
@@ -362,7 +358,6 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
       ]);
     }
 
-    showNotification(`Đã thêm "${customizingDish.ten_mon}" vào giỏ hàng`, 'success');
     setCustomizingDish(null);
   };
 
@@ -398,28 +393,27 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
 
       const res = await clientAxios.post('/orders', payload);
       if (res.success) {
-        showNotification('🎉 Gọi món thành công! Bếp đã nhận được đơn của bạn.', 'success');
         setCart([]);
         setIsCartOpen(false);
         fetchTableOrders();
         setActiveTab('tracking');
       }
     } catch (err) {
-      showNotification(err.message || 'Không thể gửi đơn món, vui lòng thử lại.', 'error');
+      alert(err.message || 'Không thể gửi đơn món, vui lòng thử lại.');
     } finally {
       setLoadingOrder(false);
     }
   };
 
-  // 6. Khách bấm nút gọi nhân viên
+  // 6. Khách bấm nút gọi nhân viên (DUY NHẤT hành động này phát chuông & hiển thị thông báo)
   const handleCallWaiter = async () => {
     try {
       const res = await clientAxios.post(`/tables/${tableId}/call-waiter`);
       if (res.success) {
-        showNotification(res.message || '🔔 Đã gọi nhân viên phục vụ, xin vui lòng đợi giây lát!', 'success');
+        showNotification(res.message || '🔔 Đã gọi nhân viên phục vụ, xin vui lòng đợi giây lát!', 'success', true);
       }
     } catch (err) {
-      showNotification('Không thể gọi nhân viên lúc này.', 'error');
+      showNotification('Không thể gọi nhân viên lúc này.', 'error', true);
     }
   };
 
@@ -432,12 +426,11 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
     try {
       const res = await clientAxios.delete(`/orders/${order.id}`);
       if (res.success) {
-        showNotification(res.message || `Đã xóa món "${tenMon}" thành công!`, 'success');
         setTableOrders(prev => prev.filter(o => o.id !== order.id));
         fetchTableOrders();
       }
     } catch (err) {
-      showNotification(err.message || 'Không thể xóa món này lúc này.', 'error');
+      alert(err.message || 'Không thể xóa món này lúc này.');
     }
   };
 
@@ -448,14 +441,11 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
       if (res.success) {
         if (method === 'chuyen_khoan') {
           setHasPaidOnline(true);
-          showNotification('🎉 Đã ghi nhận chuyển khoản! Quầy Thu Ngân đang kiểm tra tài khoản.', 'success');
-        } else {
-          showNotification(res.message || '💵 Đã gửi yêu cầu thanh toán tiền mặt tới Quầy Thu Ngân!', 'success');
         }
         setIsBillModalOpen(true);
       }
     } catch (err) {
-      showNotification('Lỗi khi gửi yêu cầu thanh toán.', 'error');
+      alert('Lỗi khi gửi yêu cầu thanh toán: ' + (err.message || ''));
     }
   };
 
