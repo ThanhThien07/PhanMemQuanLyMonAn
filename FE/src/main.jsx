@@ -20,11 +20,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BatLoiGiaoDien>
       <NguoiDungProvider>
-        <SocketRealtimeProvider>
-          <ThongBaoToastProvider>
+        <ThongBaoToastProvider>
+          <SocketRealtimeProvider>
             <App />
-          </ThongBaoToastProvider>
-        </SocketRealtimeProvider>
+          </SocketRealtimeProvider>
+        </ThongBaoToastProvider>
       </NguoiDungProvider>
     </BatLoiGiaoDien>
   </React.StrictMode>

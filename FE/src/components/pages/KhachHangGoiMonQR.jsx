@@ -26,6 +26,7 @@ import clientAxios from '../services/cauHinhAxiosApi.js';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu.js';
 import { useSocket } from '../context/SocketRealtimeContext.jsx';
 import { useAuth } from '../context/NguoiDungContext.jsx';
+import { useToast } from '../context/ThongBaoToastContext.jsx';
 import anhMaQr from '../../assets/ma_qr.jpg';
 import ThanhCuonNgang from '../common/ThanhCuonNgang.jsx';
 
@@ -160,6 +161,7 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
 
   const socketContext = useSocket();
   const socket = socketContext?.socket;
+  const toast = useToast();
 
   // 1. Tải thông tin bàn, danh mục, thực đơn và toàn bộ danh sách bàn phục vụ sơ đồ chọn bàn
   const fetchData = async () => {
@@ -278,8 +280,18 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
   }, [socket, tableId, table]);
 
   const showNotification = (msg, type = 'info') => {
+    if (type === 'success') {
+      toast.thanhCong(msg, 'Thành Công', 5000);
+    } else if (type === 'error') {
+      toast.loi(msg, 'Thông Báo Lỗi', 5000);
+    } else if (type === 'warning') {
+      toast.canhBao(msg, 'Cảnh Báo', 5000);
+    } else {
+      toast.thongTin(msg, 'Thông Báo', 5000);
+    }
+
     setAlertBanner({ message: msg, type });
-    setTimeout(() => setAlertBanner(null), 4000);
+    setTimeout(() => setAlertBanner(null), 5000);
   };
 
   // 4. Các thao tác Giỏ hàng

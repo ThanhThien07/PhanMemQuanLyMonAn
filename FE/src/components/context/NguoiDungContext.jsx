@@ -57,6 +57,25 @@ export function BoCungCapNguoiDung({ children }) {
   };
 
   /**
+   * Xử lý đăng ký tài khoản mới (Khách hàng hoặc Nhân viên)
+   */
+  const dangKy = async (hoTen, email, matKhau, soDienThoai = '', vaiTro = 'khach_hang') => {
+    const phanHoi = await clientAxios.post('/auth/register', {
+      name: hoTen,
+      email,
+      password: matKhau,
+      so_dien_thoai: soDienThoai,
+      role: vaiTro
+    });
+    if (phanHoi.success && phanHoi.token) {
+      localStorage.setItem('token', phanHoi.token);
+      localStorage.setItem('user', JSON.stringify(phanHoi.user));
+      setNguoiDung(phanHoi.user);
+    }
+    return phanHoi;
+  };
+
+  /**
    * Đăng nhập nhanh 1-Click phục vụ kiểm thử đồ án
    */
   const dangNhapNhanh = async (email) => {
@@ -78,12 +97,14 @@ export function BoCungCapNguoiDung({ children }) {
         nguoiDung,
         dangTai,
         dangNhap,
+        dangKy,
         dangNhapNhanh,
         dangXuat,
         // Bí danh tương thích
         user: nguoiDung,
         loading: dangTai,
         login: dangNhap,
+        register: dangKy,
         quickLoginAs: dangNhapNhanh,
         logout: dangXuat
       }}

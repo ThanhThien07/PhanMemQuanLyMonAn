@@ -22,6 +22,7 @@ import dinhTuyenDatBan from './dinhTuyenDatBan.js';
 import dinhTuyenKhoNguyenLieu from './dinhTuyenKhoNguyenLieu.js';
 import dinhTuyenKhachHang from './dinhTuyenKhachHang.js';
 import dinhTuyenBaoCao from './dinhTuyenBaoCao.js';
+import dinhTuyenNguoiDung from './dinhTuyenNguoiDung.js';
 
 const router = express.Router();
 
@@ -38,6 +39,7 @@ router.get('/', (req, res) => {
     mon_hoc: 'Chuyên Đề Back-End & Node.js RESTful API',
     cac_phan_he_api: {
       xac_thuc: '/api/auth',
+      quan_ly_tai_khoan: '/api/users',
       thuc_don: '/api/dishes',
       danh_muc: '/api/dishes/categories',
       so_do_ban: '/api/tables',
@@ -54,6 +56,7 @@ router.get('/', (req, res) => {
 
 // Đăng ký các phân hệ router con
 router.use('/auth', dinhTuyenXacThuc);
+router.use('/users', dinhTuyenNguoiDung);
 router.use('/dishes', dinhTuyenMonAn);
 router.use('/tables', dinhTuyenBanAn);
 router.use('/orders', dinhTuyenDatMon);

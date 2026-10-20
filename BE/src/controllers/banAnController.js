@@ -15,7 +15,7 @@
  */
 
 import { BanAn, DatMon, DanhGia, layMaSoTiepTheo } from '../models/moHinhDuLieu.js';
-import { phatSuKienTrangThaiBan } from '../utils/truyenThongSocket.js';
+import { phatSuKienTrangThaiBan, phatSuKienGoiNhanVien, phatSuKienYeuCauThanhToan } from '../utils/truyenThongSocket.js';
 import { chuyenDoiBoLocId } from '../utils/taoMaTuTang.js';
 
 /**
@@ -176,10 +176,22 @@ export async function goiNhanVienPhucVu(req, res) {
     }
 
     const duLieuBan = banAn.toJSON();
+    const thoiGianGoi = new Date().toLocaleTimeString('vi-VN');
+
+    // 1. Phát sự kiện cập nhật bàn
     phatSuKienTrangThaiBan({
       ...duLieuBan,
       goi_phuc_vu: true,
-      call_time: new Date().toLocaleTimeString('vi-VN')
+      call_time: thoiGianGoi
+    });
+
+    // 2. Phát sự kiện riêng biệt trực tiếp tới nhân viên phục vụ (staff:called)
+    phatSuKienGoiNhanVien({
+      ban_id: banAn.id,
+      so_ban: banAn.so_ban,
+      khu_vuc: banAn.khu_vuc || 'Sảnh chính',
+      call_time: thoiGianGoi,
+      message: `Bàn ${banAn.so_ban} (${banAn.khu_vuc || 'Sảnh chính'}) đang bấm chuông gọi nhân viên phục vụ!`
     });
 
     res.json({
@@ -212,7 +224,20 @@ export async function yeuCauThanhToan(req, res) {
     }
 
     const duLieuBan = banAn.toJSON();
+    const thoiGianYeuCau = new Date().toLocaleTimeString('vi-VN');
+
+    // 1. Phát sự kiện cập nhật trạng thái bàn
     phatSuKienTrangThaiBan(duLieuBan);
+
+    // 2. Phát sự kiện yêu cầu thanh toán tới Quầy Thu Ngân & Phục Vụ
+    phatSuKienYeuCauThanhToan({
+      ban_id: banAn.id,
+      so_ban: banAn.so_ban,
+      khu_vuc: banAn.khu_vuc || 'Sảnh chính',
+      phuong_thuc,
+      call_time: thoiGianYeuCau,
+      message: `Bàn ${banAn.so_ban} yêu cầu thanh toán (${phuong_thuc === 'chuyen_khoan' ? 'Chuyển khoản VietQR' : 'Tiền mặt'})!`
+    });
 
     res.json({
       success: true,

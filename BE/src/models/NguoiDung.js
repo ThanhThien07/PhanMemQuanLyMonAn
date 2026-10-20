@@ -19,7 +19,7 @@ const nguoiDungSchema = new mongoose.Schema(
     password: { type: String, required: true },                 // Mật khẩu đã mã hóa Bcrypt Hash
     role: { 
       type: String, 
-      enum: ['admin', 'nhan_vien', 'bep', 'thu_ngan'], 
+      enum: ['admin', 'nhan_vien', 'bep', 'thu_ngan', 'khach_hang', 'customer'], 
       default: 'nhan_vien'                                      // Vai trò phân quyền RBAC
     },
     so_dien_thoai: { type: String, default: '' },              // Số điện thoại nhân sự

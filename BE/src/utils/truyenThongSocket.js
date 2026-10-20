@@ -84,12 +84,38 @@ export function phatSuKienTrangThaiBan(duLieuBan) {
   }
 }
 
+/**
+ * Phát sự kiện khách tại bàn gọi nhân viên phục vụ
+ * @function phatSuKienGoiNhanVien
+ * @param {Object} duLieuGoi - Thông tin bàn gọi phục vụ
+ */
+export function phatSuKienGoiNhanVien(duLieuGoi) {
+  if (thucTheSocketIO) {
+    thucTheSocketIO.emit('staff:called', duLieuGoi);
+    console.log('📢 [SOCKET] Phát sự kiện gọi nhân viên (staff:called):', duLieuGoi?.so_ban || duLieuGoi);
+  }
+}
+
+/**
+ * Phát sự kiện khách tại bàn yêu cầu thanh toán hóa đơn
+ * @function phatSuKienYeuCauThanhToan
+ * @param {Object} duLieuTT - Thông tin bàn và phương thức thanh toán
+ */
+export function phatSuKienYeuCauThanhToan(duLieuTT) {
+  if (thucTheSocketIO) {
+    thucTheSocketIO.emit('payment:requested', duLieuTT);
+    console.log('📢 [SOCKET] Phát sự kiện yêu cầu thanh toán (payment:requested):', duLieuTT?.so_ban || duLieuTT);
+  }
+}
+
 // Giữ các bí danh tiếng Anh để duy trì tính tương thích ngược
 export const initSocket = khoiTaoSocket;
 export const getIO = layThucTheSocket;
 export const emitNewOrder = phatSuKienDonMonMoi;
 export const emitOrderStatusUpdate = phatSuKienTrangThaiMon;
 export const emitTableUpdate = phatSuKienTrangThaiBan;
+export const emitStaffCall = phatSuKienGoiNhanVien;
+export const emitPaymentRequest = phatSuKienYeuCauThanhToan;
 
 export default {
   khoiTaoSocket,
@@ -97,9 +123,13 @@ export default {
   phatSuKienDonMonMoi,
   phatSuKienTrangThaiMon,
   phatSuKienTrangThaiBan,
+  phatSuKienGoiNhanVien,
+  phatSuKienYeuCauThanhToan,
   initSocket,
   getIO,
   emitNewOrder,
   emitOrderStatusUpdate,
-  emitTableUpdate
+  emitTableUpdate,
+  emitStaffCall,
+  emitPaymentRequest
 };

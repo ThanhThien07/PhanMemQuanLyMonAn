@@ -90,41 +90,90 @@ export async function layThongKeTongQuan(req, res) {
       total: p.total
     }));
 
-    // 6. Top 5 món ăn bán chạy nhất nhà hàng
-    const thongKeTopMon = await DatMon.aggregate([
+    // 6. Xếp hạng toàn bộ các món ăn đã bán (Sold Dishes Breakdown)
+    const { range = 'all' } = req.query;
+    const boLocThoiGian = { trang_thai: { $ne: 'da_huy' } };
+
+    if (range === 'today') {
+      boLocThoiGian.createdAt = { $gte: thoiDiemDauNgay, $lte: thoiDiemCuoiNgay };
+    } else if (range === '7days') {
+      const bayNgayTruoc = new Date();
+      bayNgayTruoc.setDate(bayNgayTruoc.getDate() - 7);
+      bayNgayTruoc.setHours(0, 0, 0, 0);
+      boLocThoiGian.createdAt = { $gte: bayNgayTruoc };
+    } else if (range === 'month') {
+      const dauThang = new Date();
+      dauThang.setDate(1);
+      dauThang.setHours(0, 0, 0, 0);
+      boLocThoiGian.createdAt = { $gte: dauThang };
+    }
+
+    const thongKeToanBoMon = await DatMon.aggregate([
       {
-        $match: {
-          trang_thai: { $ne: 'da_huy' }
-        }
+        $match: boLocThoiGian
       },
       {
         $group: {
           _id: '$mon_an_id',
           total_sold: { $sum: '$so_luong' },
-          total_revenue: { $sum: '$tong_tien' }
+          total_revenue: { $sum: '$tong_tien' },
+          order_count: { $sum: 1 },
+          last_order_at: { $max: '$createdAt' }
         }
       },
       {
-        $sort: { total_sold: -1 }
-      },
-      {
-        $limit: 5
+        $sort: { total_revenue: -1 }
       }
     ]);
 
-    const dsIdTopMon = thongKeTopMon.map(t => t._id);
-    const dsMonChiTiet = await MonAn.find({ id: { $in: dsIdTopMon } });
+    const dsIdMon = thongKeToanBoMon.map(t => t._id);
+    const dsMonChiTiet = await MonAn.find({ id: { $in: dsIdMon } });
     const anhXaMon = {};
     dsMonChiTiet.forEach(d => { anhXaMon[d.id] = d; });
 
-    const top5MonBanChay = thongKeTopMon.map(t => {
+    const danhSachMonDaBan = thongKeToanBoMon.map(t => {
       const d = anhXaMon[t._id];
+      const phanTramDoanhThu = tongDoanhThu > 0 
+        ? ((t.total_revenue / tongDoanhThu) * 100).toFixed(1) 
+        : '0.0';
       return {
+        mon_an_id: t._id,
         ten_mon: d?.ten_mon || `Món #${t._id}`,
         gia: d?.gia || 0,
+        danh_muc: d?.danh_muc || 'Món chính',
         hinh_anh: d?.hinh_anh || '',
         total_sold: t.total_sold,
-        total_revenue: t.total_revenue
+        total_revenue: t.total_revenue,
+        order_count: t.order_count,
+        revenue_share_pct: Number(phanTramDoanhThu),
+        last_order_at: t.last_order_at
+      };
+    });
+
+    const top5MonBanChay = danhSachMonDaBan.slice(0, 5);
+
+    // 7. Lấy danh sách giao dịch & chi tiết các lượt bán hàng gần nhất (Detailed Sales Orders)
+    const cacDonBanChiTiet = await DatMon.find(boLocThoiGian)
+      .sort({ createdAt: -1 })
+      .limit(100);
+
+    const danhSachDonHangChiTiet = cacDonBanChiTiet.map(don => {
+      const donJSON = don.toJSON();
+      const mon = anhXaMon[donJSON.mon_an_id];
+      return {
+        id: donJSON.id,
+        ban_id: donJSON.ban_id,
+        so_ban: donJSON.so_ban,
+        mon_an_id: donJSON.mon_an_id,
+        ten_mon: donJSON.ten_mon || mon?.ten_mon || `Món #${donJSON.mon_an_id}`,
+        so_luong: donJSON.so_luong,
+        don_gia: donJSON.don_gia || mon?.gia || (donJSON.so_luong > 0 ? donJSON.tong_tien / donJSON.so_luong : 0),
+        tong_tien: donJSON.tong_tien,
+        ghi_chu: donJSON.ghi_chu || '',
+        trang_thai: donJSON.trang_thai,
+        phuong_thuc_thanh_toan: donJSON.phuong_thuc_thanh_toan,
+        createdAt: donJSON.createdAt,
+        updatedAt: donJSON.updatedAt
       };
     });
 
@@ -137,7 +186,9 @@ export async function layThongKeTongQuan(req, res) {
         reservationsToday: soLichDatBanHomNay,
         tableStats: coCauBan,
         paymentBreakdown: coCauThanhToan,
-        topDishes: top5MonBanChay
+        topDishes: top5MonBanChay,
+        soldDishes: danhSachMonDaBan,
+        detailedOrders: danhSachDonHangChiTiet
       }
     });
   } catch (error) {

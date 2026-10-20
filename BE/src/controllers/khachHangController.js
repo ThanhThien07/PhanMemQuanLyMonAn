@@ -70,13 +70,69 @@ export async function taoKhachHangMoi(req, res) {
   }
 }
 
+/**
+ * Cập nhật hồ sơ khách hàng (họ tên, email, điểm tích lũy, hạng thẻ)
+ */
+export async function capNhatKhachHang(req, res) {
+  try {
+    const { id } = req.params;
+    const { ho_ten, email, diem_tich_luy, hang_thanh_vien } = req.body;
+
+    const khachHang = await KhachHang.findOne({ id: Number(id) });
+    if (!khachHang) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy hồ sơ khách hàng.' });
+    }
+
+    if (ho_ten) khachHang.ho_ten = ho_ten.trim();
+    if (email !== undefined) khachHang.email = email.trim();
+    if (diem_tich_luy !== undefined) khachHang.diem_tich_luy = Number(diem_tich_luy);
+    if (hang_thanh_vien) khachHang.hang_thanh_vien = hang_thanh_vien;
+
+    await khachHang.save();
+
+    res.json({
+      success: true,
+      message: 'Cập nhật thông tin khách hàng thành công!',
+      customer: khachHang.toJSON()
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+}
+
+/**
+ * Xóa hồ sơ khách hàng
+ */
+export async function xoaKhachHang(req, res) {
+  try {
+    const { id } = req.params;
+    const ketQua = await KhachHang.deleteOne({ id: Number(id) });
+    if (ketQua.deletedCount === 0) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy hồ sơ khách hàng.' });
+    }
+
+    res.json({
+      success: true,
+      message: 'Đã xóa hồ sơ khách hàng thành công!'
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+}
+
 // Bí danh tương thích
 export const getCustomers = layDanhSachKhachHang;
 export const createCustomer = taoKhachHangMoi;
+export const updateCustomer = capNhatKhachHang;
+export const deleteCustomer = xoaKhachHang;
 
 export default {
   layDanhSachKhachHang,
   taoKhachHangMoi,
+  capNhatKhachHang,
+  xoaKhachHang,
   getCustomers,
-  createCustomer
+  createCustomer,
+  updateCustomer,
+  deleteCustomer
 };

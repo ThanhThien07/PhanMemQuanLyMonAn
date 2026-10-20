@@ -18,8 +18,12 @@ import ModalInHoaDon from '../ModalInHoaDon.jsx';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu.js';
 import { ExternalLink, Copy, Users, CreditCard, Utensils, CheckCircle, QrCode, X } from 'lucide-react';
 import ThanhCuonNgang from '../common/ThanhCuonNgang.jsx';
+import { useToast } from '../context/ThongBaoToastContext.jsx';
+import { useSocket } from '../context/SocketRealtimeContext.jsx';
 
 export default function QuanLySoDoBan({ setActiveTab }) {
+  const toast = useToast();
+  const { socket } = useSocket();
   const [danhSachBan, setDanhSachBan] = useState([]);
   const [khuVucHienTai, setKhuVucHienTai] = useState('all');
   const [dangTai, setDangTai] = useState(true);
@@ -46,7 +50,22 @@ export default function QuanLySoDoBan({ setActiveTab }) {
 
   useEffect(() => {
     taiDanhSachBan();
-  }, []);
+
+    if (socket) {
+      const xuLyBanCapNhat = () => {
+        taiDanhSachBan();
+      };
+      socket.on('table:updated', xuLyBanCapNhat);
+      socket.on('staff:called', xuLyBanCapNhat);
+      socket.on('payment:requested', xuLyBanCapNhat);
+
+      return () => {
+        socket.off('table:updated', xuLyBanCapNhat);
+        socket.off('staff:called', xuLyBanCapNhat);
+        socket.off('payment:requested', xuLyBanCapNhat);
+      };
+    }
+  }, [socket]);
 
   /**
    * Mở modal thanh toán hóa đơn cho bàn
@@ -59,7 +78,7 @@ export default function QuanLySoDoBan({ setActiveTab }) {
         setBanThanhToan(ban);
       }
     } catch (err) {
-      alert(err.message);
+      toast.loi(err.message, 'Lỗi Thanh Toán');
     }
   };
 
@@ -72,9 +91,10 @@ export default function QuanLySoDoBan({ setActiveTab }) {
         trang_thai: trangThaiMoi,
         so_luong_khach: trangThaiMoi === 'co_khach' ? 2 : 0
       });
+      toast.thanhCong(`Đã chuyển Bàn ${ban.so_ban} sang trạng thái: ${trangThaiMoi === 'co_khach' ? 'Đang phục vụ' : 'Trống'}`, 'Cập Nhật Bàn');
       taiDanhSachBan();
     } catch (err) {
-      alert(err.message);
+      toast.loi(err.message, 'Lỗi Đổi Trạng Thái Bàn');
     }
   };
 

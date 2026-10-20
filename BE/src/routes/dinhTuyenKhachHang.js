@@ -8,12 +8,19 @@
  */
 
 import express from 'express';
-import { layDanhSachKhachHang, taoKhachHangMoi } from '../controllers/khachHangController.js';
+import { 
+  layDanhSachKhachHang, 
+  taoKhachHangMoi,
+  capNhatKhachHang,
+  xoaKhachHang
+} from '../controllers/khachHangController.js';
 import { xacThucNguoiDung } from '../middlewares/kiemTraXacThuc.js';
 
 const router = express.Router();
 
 router.get('/', layDanhSachKhachHang);
 router.post('/', xacThucNguoiDung, taoKhachHangMoi);
+router.put('/:id', xacThucNguoiDung, capNhatKhachHang);
+router.delete('/:id', xacThucNguoiDung, xoaKhachHang);
 
 export default router;

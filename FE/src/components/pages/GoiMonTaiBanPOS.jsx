@@ -21,11 +21,13 @@ import {
 import ModalInHoaDon from '../ModalInHoaDon';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu';
 import ThanhCuonNgang from '../common/ThanhCuonNgang';
+import { useToast } from '../context/ThongBaoToastContext';
 
 /**
  * Component màn hình gọi món POS tại quầy / bàn
  */
 export default function GoiMonTaiBanPOS() {
+  const toast = useToast();
   // Danh sách phân loại món ăn
   const [danhMuc, setDanhMuc] = useState([]);
   // Danh sách tất cả món ăn trong thực đơn
@@ -172,10 +174,11 @@ export default function GoiMonTaiBanPOS() {
         setThanhCong(true);
         taiMonCuaBan(banHienTai.id);
         taiDuLieuBanDau();
+        toast.thanhCong(`Đã gửi thành công ${gioHang.length} món vào Bếp KDS cho Bàn ${banHienTai.so_ban}!`, 'Gửi Đơn Món');
         setTimeout(() => setThanhCong(false), 2500);
       }
     } catch (loi) {
-      alert(loi.message || 'Lỗi khi gửi món vào bếp');
+      toast.loi(loi.message || 'Lỗi khi gửi món vào bếp', 'Gửi Đơn Thất Bại');
     } finally {
       setDangXuLy(false);
     }

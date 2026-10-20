@@ -75,12 +75,13 @@ export default function ThanhDieuHuongTren({ activeTab }) {
         {latestNotification && (
           <div 
             onClick={clearNotification}
-            className="flex items-center gap-2 bg-amber-50 border border-amber-300 text-amber-900 px-3 py-1.5 rounded-xl text-xs cursor-pointer animate-bounce shadow-md shadow-amber-500/10"
+            className="flex items-center gap-2 bg-amber-50 border border-amber-300 text-amber-900 px-3 py-1.5 rounded-xl text-xs cursor-pointer shadow-md shadow-amber-500/10 hover:bg-amber-100 transition-all"
             title="Bấm để đóng thông báo"
           >
-            <Bell className="w-3.5 h-3.5 text-amber-600" />
+            <Bell className="w-3.5 h-3.5 text-amber-600 animate-bounce" />
             <span className="font-bold">{latestNotification.title}:</span>
-            <span className="font-medium text-slate-700">{latestNotification.message}</span>
+            <span className="font-medium text-slate-700 max-w-[200px] truncate">{latestNotification.message}</span>
+            <span className="text-[10px] text-amber-600 font-mono">✕</span>
           </div>
         )}
 
