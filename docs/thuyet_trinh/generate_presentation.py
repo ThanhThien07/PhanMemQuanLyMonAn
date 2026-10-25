@@ -28,9 +28,11 @@ def create_presentation():
     CARD_ALT = RGBColor(241, 245, 249)    # Slate 100
     WHITE = RGBColor(255, 255, 255)
 
-    media_dir = r'c:\Users\LENOVO\OneDrive\Documents\My Data Sources\PhanMemQuanLyMonAn\docx_media'
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    docs_dir = os.path.dirname(base_dir)
+    media_dir = os.path.join(docs_dir, 'assets', 'docx_media')
     TOTAL_SLIDES = 13
-    screenshots_dir = r'c:\Users\LENOVO\OneDrive\Documents\My Data Sources\PhanMemQuanLyMonAn\screenshots'
+    screenshots_dir = os.path.join(docs_dir, 'assets', 'screenshots')
 
     def set_slide_bg(slide, color=LIGHT_BG):
         bg = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(7.5))
@@ -1356,7 +1358,7 @@ def create_presentation():
     add_footer(slide13, 13)
 
     # --- SAVE FILE ---
-    output_path = r'c:\Users\LENOVO\OneDrive\Documents\My Data Sources\PhanMemQuanLyMonAn\BaoCao_TongQuan_DoAn_BackEnd_RoyalBistro.pptx'
+    output_path = os.path.join(base_dir, 'BaoCao_TongQuan_DoAn_BackEnd_RoyalBistro.pptx')
     prs.save(output_path)
     print(f"Successfully generated PowerPoint presentation with dedicated Thank You slide at: {output_path}")
 

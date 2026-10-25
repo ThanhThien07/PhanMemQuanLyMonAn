@@ -12,8 +12,13 @@ FE/dist-ssr/
 
 # Environment Variables
 .env
+.env.*
+!.env.example
 backend/.env
 frontend/.env.local
+BE/.env
+FE/.env
+FE/.env.local
 
 # Logs
 npm-debug.log*

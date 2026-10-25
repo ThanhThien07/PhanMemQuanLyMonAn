@@ -23,10 +23,10 @@ Hệ thống được xây dựng phục vụ mô hình kinh doanh ẩm thực n
 3. **Đầu bếp (KDS - Kitchen Display System):** Tiếp nhận thông tin gọi món theo thời gian thực, xem ghi chú chế biến (ít cay, không hành,...), cập nhật tiến độ chế biến và thông báo khi món ăn tạm hết.
 4. **Quản lý / Chủ nhà hàng (Admin):** Cấu hình danh mục thực đơn, giá bán, mặt bằng bàn ăn, quản lý tài khoản nhân sự và tra cứu báo cáo doanh thu, phân tích Top món bán chạy.
 
-![Hình 1.1: Giao diện Đăng nhập và Phân quyền người dùng trong hệ thống](screenshots/01_login.png)
+![Hình 1.1: Giao diện Đăng nhập và Phân quyền người dùng trong hệ thống](../assets/screenshots/01_login.png)
 *Hình 1.1: Giao diện Đăng nhập và Phân quyền người dùng trong hệ thống*
 
-![Hình 1.2: Hệ thống Màn hình Bếp (Kitchen Display System - KDS)](screenshots/05_kitchen.png)
+![Hình 1.2: Hệ thống Màn hình Bếp (Kitchen Display System - KDS)](../assets/screenshots/05_kitchen.png)
 *Hình 1.2: Hệ thống Màn hình Bếp (Kitchen Display System - KDS)*
 
 ### 1.3 Các chức năng chính của hệ thống
@@ -37,13 +37,13 @@ Hệ thống được xây dựng phục vụ mô hình kinh doanh ẩm thực n
 - **Thanh toán hóa đơn đa phương thức:** Tính tiền tự động, khấu trừ điểm thưởng, cộng thuế VAT 8%, thanh toán linh hoạt qua Tiền mặt, Chuyển khoản VietQR, Thẻ ngân hàng.
 - **Báo cáo & Thống kê doanh thu:** Tổng hợp doanh thu theo khoảng thời gian, phân loại dòng tiền, thống kê Top N món ăn bán chạy nhất.
 
-![Hình 1.3: Bảng điều khiển Quản trị (Admin Dashboard)](screenshots/02_dashboard.png)
+![Hình 1.3: Bảng điều khiển Quản trị (Admin Dashboard)](../assets/screenshots/02_dashboard.png)
 *Hình 1.3: Bảng điều khiển Quản trị (Admin Dashboard)*
 
-![Hình 1.4: Sơ đồ mặt bằng & Trạng thái Bàn ăn trực quan](screenshots/04_tables.png)
+![Hình 1.4: Sơ đồ mặt bằng & Trạng thái Bàn ăn trực quan](../assets/screenshots/04_tables.png)
 *Hình 1.4: Sơ đồ mặt bằng & Trạng thái Bàn ăn trực quan*
 
-![Hình 1.5: Quản lý Thực đơn & Món ăn](screenshots/06_dishes.png)
+![Hình 1.5: Quản lý Thực đơn & Món ăn](../assets/screenshots/06_dishes.png)
 *Hình 1.5: Quản lý Thực đơn & Món ăn*
 
 ### 1.4 Các quy trình nghiệp vụ và quy định tương ứng
@@ -62,10 +62,10 @@ Hệ thống được xây dựng phục vụ mô hình kinh doanh ẩm thực n
   - Nếu món ăn đã có trong hóa đơn, hệ thống tự động cộng dồn số lượng.
   - Tổng tiền tạm tính của hóa đơn phải được tự động tính lại mỗi khi có thay đổi món.
 
-![Hình 1.6: Giao diện POS Gọi món tại bàn](screenshots/03_pos_order.png)
+![Hình 1.6: Giao diện POS Gọi món tại bàn](../assets/screenshots/03_pos_order.png)
 *Hình 1.6: Giao diện POS Gọi món tại bàn dành cho Phục vụ*
 
-![Hình 1.7: Giao diện Khách hàng tự phục vụ quét mã QR gọi món tại bàn](screenshots/10_qr_order.png)
+![Hình 1.7: Giao diện Khách hàng tự phục vụ quét mã QR gọi món tại bàn](../assets/screenshots/10_qr_order.png)
 *Hình 1.7: Giao diện Khách hàng tự phục vụ quét mã QR gọi món tại bàn*
 
 #### Quy trình nghiệp vụ 2: Thanh toán hóa đơn và tích điểm thành viên CRM
@@ -83,10 +83,10 @@ Hệ thống được xây dựng phục vụ mô hình kinh doanh ẩm thực n
   - Điểm tích lũy mới chỉ được ghi nhận vào tài khoản khi hóa đơn đã thanh toán thành công.
   - Bàn ăn chỉ trở về trạng thái `trong` khi không còn khoản nợ chưa thanh toán.
 
-![Hình 1.8: Thanh toán hóa đơn đa phương thức & Mã VietQR tự động](screenshots/11_bill_payment.png)
+![Hình 1.8: Thanh toán hóa đơn đa phương thức & Mã VietQR tự động](../assets/screenshots/11_bill_payment.png)
 *Hình 1.8: Thanh toán hóa đơn đa phương thức & Mã VietQR tự động*
 
-![Hình 1.9: Quản lý Khách hàng thân thiết & Tích điểm CRM](screenshots/08_customers.png)
+![Hình 1.9: Quản lý Khách hàng thân thiết & Tích điểm CRM](../assets/screenshots/08_customers.png)
 *Hình 1.9: Quản lý Khách hàng thân thiết & Tích điểm CRM*
 
 #### Quy trình nghiệp vụ 3: Đặt bàn trước & Quản lý tiền cọc giữ chỗ
@@ -99,7 +99,7 @@ Hệ thống được xây dựng phục vụ mô hình kinh doanh ẩm thực n
   - Không cho phép đặt trùng bàn trong cùng khung giờ phục vụ.
   - Số lượng khách đặt không vượt quá sức chứa tối đa của bàn ăn.
 
-![Hình 1.10: Quản lý Đặt bàn trước (Reservations)](screenshots/07_reservations.png)
+![Hình 1.10: Quản lý Đặt bàn trước (Reservations)](../assets/screenshots/07_reservations.png)
 *Hình 1.10: Quản lý Đặt bàn trước (Reservations)*
 
 ### 1.5 Các chứng từ và báo cáo quản lý
@@ -108,7 +108,7 @@ Hệ thống được xây dựng phục vụ mô hình kinh doanh ẩm thực n
 - **Báo cáo doanh thu bán hàng:** Tổng hợp doanh số, lượng hóa đơn và cơ cấu thanh toán theo ngày/tháng.
 - **Báo cáo Top món ăn bán chạy:** Xếp hạng các món ăn được ưa chuộng nhất theo số lượng và doanh thu.
 
-![Hình 1.11: Báo cáo Thống kê Doanh thu & Top món ăn bán chạy](screenshots/09_reports.png)
+![Hình 1.11: Báo cáo Thống kê Doanh thu & Top món ăn bán chạy](../assets/screenshots/09_reports.png)
 *Hình 1.11: Báo cáo Thống kê Doanh thu & Top món ăn bán chạy*
 
 ---

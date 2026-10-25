@@ -131,13 +131,28 @@ PhanMemQuanLyMonAn/
 │   │   └── main.jsx                       # Điểm gắn kết React DOM với các Provider
 │   ├── package.json
 │   └── vite.config.js
-│
-├── CDBackEnd.docx                         # 📄 BÁO CÁO CHUYÊN ĐỀ BACK-END (MICROSOFT WORD HOÀN CHỈNH)
-├── docs/                                  # 📚 TÀI LIỆU CHÍNH THỨC NHÓM 5
-│   ├── Nhom5_NguyenNgocHaThao.docx        # Báo cáo Word chuyên đề của Nhóm 5
-│   └── Nhom5_NguyenNgocHaThao.md          # Bản thảo Markdown báo cáo của Nhóm 5
+├── docs/                                  # 📚 TÀI LIỆU, BÁO CÁO & TÀI NGUYÊN ĐỒ ÁN
+│   ├── bao_cao/                           # Báo cáo đồ án chuyên đề (.docx, .md)
+│   │   ├── 05_NguyenNgocHaThao_BaoCao.docx # Báo cáo hoàn chỉnh Microsoft Word
+│   │   ├── 05_NguyenNgocHaThao.docx       # Báo cáo đồ án Nhóm 5
+│   │   ├── 501250384_NguyenHoangHung_CDBackEnd.docx # Báo cáo Chuyên đề Back-End
+│   │   └── 05_NguyenNgocHaThao_BaoCao.md  # Báo cáo dạng Markdown hoàn chỉnh
+│   ├── thuyet_trinh/                      # Slide thuyết trình PowerPoint & công cụ sinh slide
+│   │   ├── 05_NguyenNgocHaThao.pptx       # Slide thuyết trình PowerPoint Nhóm 5
+│   │   ├── 5_NguyenNgocHaThao.pptx        # Bản cập nhật slide thuyết trình
+│   │   ├── BaoCao_TongQuan_DoAn_BackEnd_RoyalBistro.pptx # Slide tổng quan đồ án
+│   │   ├── generate_presentation.py       # Script Python tạo slide PowerPoint tự động
+│   │   └── slide_previews/                # Ảnh preview 13 slide thuyết trình
+│   ├── co_so_du_lieu/                     # CSDL & Kịch bản khởi tạo
+│   │   └── 05_NguyenNgocHaThao.sql        # Script tạo bảng và dữ liệu mẫu SQL
+│   └── assets/                            # Tài nguyên hình ảnh minh họa cho báo cáo
+│       ├── screenshots/                   # 11 ảnh chụp màn hình giao diện thực tế
+│       ├── docx_media/                    # Ảnh minh họa trích xuất từ tài liệu Word
+│       └── doc_extracted_full.txt         # Bản trích xuất nội dung văn bản
 │
 ├── package.json                           # Cấu hình Monorepo gốc khởi chạy BE & FE
+├── netlify.toml                           # Cấu hình triển khai tự động Netlify
+├── index.php                              # Cổng chuyển hướng thông minh cho Laragon
 └── README.md                              # Tài liệu hướng dẫn toàn diện hệ thống
 ```
 
