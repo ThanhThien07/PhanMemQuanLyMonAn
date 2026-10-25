@@ -98,10 +98,10 @@ export default function QuanLyKhoNguyenLieu() {
         </div>
 
         {/* Nút chuyển đổi Tab dạng Bootstrap Button Pills */}
-        <div className="d-flex align-items-center gap-2">
+        <div className="d-flex align-items-center gap-2 flex-wrap">
           <button
             onClick={() => setTabHienTai('ingredients')}
-            className={`btn btn-sm rounded-pill fw-bold text-xs px-3 py-1.5 transition-all ${
+            className={`btn btn-sm rounded-pill fw-bold text-xs px-3 py-1.5 transition-all flex-grow-1 flex-sm-grow-0 ${
               tabHienTai === 'ingredients'
                 ? 'btn-warning text-white shadow-sm'
                 : 'btn-outline-secondary bg-white text-slate-700'
@@ -111,7 +111,7 @@ export default function QuanLyKhoNguyenLieu() {
           </button>
           <button
             onClick={() => setTabHienTai('suppliers')}
-            className={`btn btn-sm rounded-pill fw-bold text-xs px-3 py-1.5 transition-all ${
+            className={`btn btn-sm rounded-pill fw-bold text-xs px-3 py-1.5 transition-all flex-grow-1 flex-sm-grow-0 ${
               tabHienTai === 'suppliers'
                 ? 'btn-warning text-white shadow-sm'
                 : 'btn-outline-secondary bg-white text-slate-700'
@@ -124,9 +124,9 @@ export default function QuanLyKhoNguyenLieu() {
 
       {/* Cảnh báo nếu có nguyên liệu sắp cạn kho dạng Bootstrap Alert */}
       {nguyenLieuSapHet.length > 0 && (
-        <div className="alert alert-danger d-flex align-items-center justify-content-between gap-3 p-3 rounded-4 shadow-sm border border-danger-subtle mb-0" role="alert">
-          <div className="d-flex align-items-center gap-2.5">
-            <AlertTriangle className="w-5 h-5 text-danger flex-shrink-0" />
+        <div className="alert alert-danger d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-3 p-3 rounded-4 shadow-sm border border-danger-subtle mb-0" role="alert">
+          <div className="d-flex align-items-start align-items-sm-center gap-2.5">
+            <AlertTriangle className="w-5 h-5 text-danger flex-shrink-0 mt-0.5 mt-sm-0" />
             <div>
               <div className="text-xs sm:text-sm fw-bold text-danger">
                 Có {nguyenLieuSapHet.length} nguyên liệu chạm hoặc dưới định mức tồn kho tối thiểu!
@@ -136,7 +136,7 @@ export default function QuanLyKhoNguyenLieu() {
               </div>
             </div>
           </div>
-          <span className="badge bg-danger rounded-pill px-2.5 py-1 text-xs fw-bold">Cần Nhập Ngay</span>
+          <span className="badge bg-danger rounded-pill px-2.5 py-1 text-xs fw-bold shrink-0 align-self-start align-self-sm-center">Cần Nhập Ngay</span>
         </div>
       )}
 
@@ -161,13 +161,13 @@ export default function QuanLyKhoNguyenLieu() {
                   const isLow = ing.is_low_stock || ing.so_luong_ton <= ing.dinh_muc_toi_thieu;
                   return (
                     <tr key={ing.id}>
-                      <td className="py-3 px-4 fw-bold text-slate-900">{ing.ten_nguyen_lieu}</td>
-                      <td className="py-3 px-4 font-monospace fw-bold fs-6 text-amber-700">
+                      <td className="py-3 px-4 fw-bold text-slate-900 whitespace-nowrap">{ing.ten_nguyen_lieu}</td>
+                      <td className="py-3 px-4 tabular-nums fw-bold fs-6 text-amber-700 whitespace-nowrap">
                         {ing.so_luong_ton}
                       </td>
-                      <td className="py-3 px-4 text-slate-500 text-uppercase text-xs fw-bold">{ing.don_vi_tinh}</td>
-                      <td className="py-3 px-4 text-slate-600">{ing.dinh_muc_toi_thieu} {ing.don_vi_tinh}</td>
-                      <td className="py-3 px-4 font-monospace text-xs fw-bold text-slate-700">
+                      <td className="py-3 px-4 text-slate-500 text-uppercase text-xs fw-bold whitespace-nowrap">{ing.don_vi_tinh}</td>
+                      <td className="py-3 px-4 text-slate-600 whitespace-nowrap">{ing.dinh_muc_toi_thieu} {ing.don_vi_tinh}</td>
+                      <td className="py-3 px-4 tabular-nums text-xs fw-bold text-slate-700 whitespace-nowrap">
                         {dinhDangTienTe(ing.gia_nhap_trung_binh)}
                       </td>
                       <td className="py-3 px-4">
@@ -230,7 +230,7 @@ export default function QuanLyKhoNguyenLieu() {
       {/* Modal Nhập Thêm Tồn Kho Nhanh dạng Bootstrap Modal */}
       {nguyenLieuChon && (
         <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(4px)' }}>
-          <div className="modal-dialog modal-dialog-centered modal-sm">
+          <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div className="modal-content border-0 rounded-4 shadow-2xl overflow-hidden">
               <div className="modal-header bg-slate-50 border-bottom border-slate-200 px-4 py-3">
                 <h5 className="modal-title text-sm font-black text-slate-900 d-flex align-items-center gap-1.5">

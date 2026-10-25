@@ -298,8 +298,8 @@ export default function QuanLySoDoBan({ setActiveTab }) {
 
       {/* Popup Xem Mã QR Bàn Ăn (Sử dụng ảnh QR chuẩn nhà hàng) */}
       {banXemQR && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl p-6 text-center space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-sm max-h-[92vh] overflow-y-auto shadow-2xl p-5 sm:p-6 text-center space-y-4">
             <div className="flex justify-between items-center pb-2 border-b border-slate-100">
               <div className="text-left">
                 <h3 className="font-black text-lg text-slate-900">Mã QR Bàn {banXemQR.so_ban}</h3>

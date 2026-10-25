@@ -330,37 +330,37 @@ export default function BaoCaoThongKeDoanhThu() {
       <div className="card bg-white border border-slate-200 rounded-4 overflow-hidden shadow-sm">
         {/* Thanh công cụ chuyển đổi Tab chi tiết */}
         <div className="p-4 border-b border-slate-200 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 bg-slate-50/50">
-          <div className="d-flex align-items-center gap-2">
+          <div className="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2 w-100 w-md-auto">
             <button
               type="button"
               onClick={() => setTabChiTiet('dishes')}
-              className={`btn btn-sm rounded-3 font-bold px-3 py-2 d-flex align-items-center gap-2 transition-all ${
+              className={`btn btn-sm rounded-3 font-bold px-3 py-2 d-flex align-items-center justify-content-center gap-2 transition-all ${
                 tabChiTiet === 'dishes'
                   ? 'btn-primary text-white shadow-xs'
                   : 'btn-outline-secondary bg-white text-slate-700'
               }`}
             >
-              <UtensilsCrossed className="w-4 h-4" />
-              <span>Chi Tiết Danh Sách Món Đã Bán ({danhSachMonDaLoc.length})</span>
+              <UtensilsCrossed className="w-4 h-4 shrink-0" />
+              <span>Món Đã Bán ({danhSachMonDaLoc.length})</span>
             </button>
 
             <button
               type="button"
               onClick={() => setTabChiTiet('orders')}
-              className={`btn btn-sm rounded-3 font-bold px-3 py-2 d-flex align-items-center gap-2 transition-all ${
+              className={`btn btn-sm rounded-3 font-bold px-3 py-2 d-flex align-items-center justify-content-center gap-2 transition-all ${
                 tabChiTiet === 'orders'
                   ? 'btn-primary text-white shadow-xs'
                   : 'btn-outline-secondary bg-white text-slate-700'
               }`}
             >
-              <ReceiptText className="w-4 h-4" />
-              <span>Chi Tiết Các Lượt Bán Hàng ({danhSachGiaoDichDaLoc.length})</span>
+              <ReceiptText className="w-4 h-4 shrink-0" />
+              <span>Lượt Bán Hàng ({danhSachGiaoDichDaLoc.length})</span>
             </button>
           </div>
 
           {/* Ô tìm kiếm món ăn hoặc lọc phương thức thanh toán */}
           {tabChiTiet === 'dishes' ? (
-            <div className="input-group input-group-sm" style={{ maxWidth: '280px' }}>
+            <div className="input-group input-group-sm w-100 max-w-sm">
               <span className="input-group-text bg-white border-slate-200 text-slate-400">
                 <Search className="w-3.5 h-3.5" />
               </span>
@@ -373,8 +373,8 @@ export default function BaoCaoThongKeDoanhThu() {
               />
             </div>
           ) : (
-            <div className="d-flex align-items-center gap-2">
-              <span className="text-xs font-bold text-slate-500">Thanh toán:</span>
+            <div className="d-flex align-items-center gap-2 w-100 w-sm-auto justify-content-between justify-content-sm-start">
+              <span className="text-xs font-bold text-slate-500 whitespace-nowrap">Thanh toán:</span>
               <select
                 value={locPhuongThuc}
                 onChange={(e) => setLocPhuongThuc(e.target.value)}

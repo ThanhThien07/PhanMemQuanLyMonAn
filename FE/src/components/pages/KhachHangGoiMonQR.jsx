@@ -490,11 +490,11 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
               <Flame className="w-5 h-5 fill-white" />
             </div>
             <div>
-              <div className="flex items-center gap-1.5 flex-wrap">
-                <span className="text-base font-black tracking-tight text-slate-900">ROYAL BISTRO</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-sm sm:text-base font-black tracking-tight text-slate-900 whitespace-nowrap">ROYAL BISTRO</span>
                 <button
                   onClick={() => setIsTableMapOpen(true)}
-                  className="px-2.5 py-0.5 rounded-full text-xs font-black bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 flex items-center gap-1 shadow-2xs transition-all active:scale-95 cursor-pointer"
+                  className="px-2.5 py-0.5 rounded-full text-xs font-black bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 flex items-center gap-1 shadow-2xs transition-all active:scale-95 cursor-pointer whitespace-nowrap"
                   title="Bấm để đổi số bàn ăn"
                 >
                   <span>BÀN {table?.so_ban || tableId}</span>
@@ -502,35 +502,36 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
                 </button>
                 <button
                   onClick={() => setIsTableMapOpen(true)}
-                  className="px-2 py-0.5 rounded-lg text-[11px] font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 flex items-center gap-1 transition-all active:scale-95 cursor-pointer"
+                  className="hidden sm:flex px-2 py-0.5 rounded-lg text-[11px] font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 items-center gap-1 transition-all active:scale-95 cursor-pointer"
                   title="Xem toàn bộ sơ đồ bàn"
                 >
                   <LayoutGrid className="w-3 h-3 text-slate-600" />
-                  <span className="hidden sm:inline">Sơ Đồ Bàn</span>
-                  <span className="sm:hidden">Đổi Bàn</span>
+                  <span>Sơ Đồ Bàn</span>
                 </button>
               </div>
-              <p className="text-xs text-slate-500 font-medium truncate max-w-[200px] sm:max-w-none">
+              <p className="text-[11px] sm:text-xs text-slate-500 font-medium truncate max-w-[160px] sm:max-w-none">
                 {table?.khu_vuc || 'Khu vực phục vụ khách'} • Gọi món tự động
               </p>
             </div>
           </div>
 
           {/* Nút hành động nhanh: Gọi nhân viên, Đăng Nhập / Vào Quản Trị */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button 
               onClick={handleCallWaiter}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-black shadow-2xs transition-all active:scale-95 cursor-pointer"
+              className="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-black shadow-2xs transition-all active:scale-95 cursor-pointer shrink-0"
+              title="Gọi nhân viên phục vụ"
             >
               <Bell className="w-3.5 h-3.5 animate-bounce text-rose-600" />
-              <span className="hidden xs:inline sm:inline">Gọi Phục Vụ</span>
+              <span className="hidden sm:inline">Gọi Phục Vụ</span>
+              <span className="sm:hidden text-2xs">Gọi NV</span>
             </button>
 
             {/* Chỗ Đăng Nhập / Vào Quản Trị theo yêu cầu */}
             {currentUser ? (
               <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 rounded-xl p-1">
                 <div className="hidden md:flex flex-col text-right px-1.5">
-                  <span className="text-[11px] font-black text-slate-900 leading-tight truncate max-w-[120px]">
+                  <span className="text-[11px] font-black text-slate-900 leading-tight truncate max-w-[200px]">
                     {currentUser.name || currentUser.ho_ten || 'Khách Hàng'}
                   </span>
                   <span className="text-[10px] text-amber-700 font-bold capitalize">

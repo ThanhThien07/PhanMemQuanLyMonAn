@@ -1,5 +1,31 @@
 @import "tailwindcss";
 
+/* === Custom Utility Classes bổ sung (thay thế Bootstrap CDN) === */
+/* Các class này được dùng rộng rãi trong toàn dự án */
+
+/* text-2xs: cỡ chữ nhỏ hơn xs */
+.text-2xs {
+  font-size: 0.625rem; /* 10px */
+  line-height: 0.875rem;
+}
+
+/* shadow-2xs: shadow cực nhỏ */
+.shadow-2xs {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+}
+
+/* shadow-xs */
+.shadow-xs {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Chuẩn hóa font-monospace hiển thị số và mã chuẩn gọn đẹp */
+.font-monospace {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
 @layer base {
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
@@ -227,5 +253,40 @@ a:hover {
 
 .animate-shrink-width {
   animation: shrinkWidth linear forwards;
+}
+
+/* ==========================================================================
+   Tối Ưu Hóa Giao Diện Thiết Bị Di Động (Responsive Mobile & Tablet Rules)
+   ========================================================================== */
+
+/* Tối ưu hóa hiển thị bảng cuộn trên thiết bị di động */
+.table-responsive {
+  -webkit-overflow-scrolling: touch;
+  border-radius: 0.75rem;
+}
+
+/* Đảm bảo modal căn giữa và co giãn linh hoạt trên mọi kích thước màn hình */
+.modal-dialog {
+  margin: 0.75rem auto;
+  max-width: 95vw;
+}
+
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 500px;
+    margin: 1.75rem auto;
+  }
+}
+
+@media (min-width: 992px) {
+  .modal-dialog.modal-lg {
+    max-width: 800px;
+  }
+}
+
+/* Ngăn ngừa tràn ngang (horizontal overflow) trên thiết bị di động */
+html, body, #root {
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 

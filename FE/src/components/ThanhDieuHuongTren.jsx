@@ -20,10 +20,11 @@ import {
   LogOut, 
   ShieldCheck, 
   ChefHat, 
-  UtensilsCrossed 
+  UtensilsCrossed,
+  Menu
 } from 'lucide-react';
 
-export default function ThanhDieuHuongTren({ activeTab }) {
+export default function ThanhDieuHuongTren({ activeTab, moSidebar }) {
   const { user, logout } = useAuth();
   const { connected, latestNotification, clearNotification } = useSocket();
 
@@ -37,7 +38,7 @@ export default function ThanhDieuHuongTren({ activeTab }) {
       case 'bep':
         return { label: 'Bếp Trưởng', color: 'badge-role-bep', icon: ChefHat };
       case 'khach_hang':
-        return { label: 'Khách Hàng Thân Thiết', color: 'badge-tier-vang', icon: UtensilsCrossed };
+        return { label: 'Khách Hàng Thân Thiết', color: 'badge-role-khachhang', icon: UtensilsCrossed };
       case 'nhan_vien':
       default:
         return { label: 'Thu Ngân / Phục Vụ', color: 'badge-role-thungan', icon: UtensilsCrossed };
@@ -48,14 +49,24 @@ export default function ThanhDieuHuongTren({ activeTab }) {
   const BieuTuongVaiTro = thongTinVaiTro.icon;
 
   return (
-    <header className="h-16 border-b border-slate-200 bg-white/90 backdrop-blur-xl px-6 flex items-center justify-between sticky top-0 z-30 shadow-xs">
-      {/* Tiêu đề phân hệ & Tab hiện tại */}
-      <div className="flex items-center gap-3">
-        <h1 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
-          Hệ Thống Quản Lý Nhà Hàng
+    <header className="h-16 border-b border-slate-200 bg-white/95 backdrop-blur-xl px-3 sm:px-6 flex items-center justify-between sticky top-0 z-30 shadow-xs">
+      {/* Tiêu đề phân hệ & Tab hiện tại & Nút menu Mobile */}
+      <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+        <button
+          type="button"
+          onClick={moSidebar}
+          className="p-2 -ml-1 rounded-xl text-slate-700 hover:bg-slate-100 lg:hidden cursor-pointer shrink-0 transition-colors"
+          title="Mở menu quản lý"
+        >
+          <Menu className="w-5 h-5 text-slate-700" />
+        </button>
+
+        <h1 className="text-sm sm:text-base md:text-lg font-extrabold text-slate-900 tracking-tight truncate">
+          <span className="hidden sm:inline">Hệ Thống Quản Lý Nhà Hàng</span>
+          <span className="sm:hidden">Royal Bistro</span>
         </h1>
-        <span className="text-slate-300 text-sm hidden sm:inline">/</span>
-        <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#CAF0F8] text-[#023E8A] border border-[#ADE8F4] hidden sm:inline-flex items-center gap-1.5 shadow-2xs">
+        <span className="text-slate-300 text-sm hidden md:inline">/</span>
+        <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-[#CAF0F8] text-[#023E8A] border border-[#ADE8F4] hidden md:inline-flex items-center gap-1.5 shadow-2xs">
           <span className="w-1.5 h-1.5 rounded-full bg-[#0077B6] animate-pulse"></span>
           {String(activeTab).toUpperCase()}
         </span>

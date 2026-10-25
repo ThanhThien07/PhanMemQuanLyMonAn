@@ -318,12 +318,12 @@ export default function QuanLyKhachHang() {
         </div>
 
         {/* Nút chuyển đổi Tab */}
-        <div className="d-flex items-center gap-2">
-          <div className="btn-group btn-group-sm bg-slate-100 p-1 rounded-3 border border-slate-200">
+        <div className="d-flex items-center gap-2 w-100 w-md-auto">
+          <div className="d-flex flex-wrap gap-1.5 p-1 bg-slate-100 rounded-3 border border-slate-200 w-100 w-md-auto">
             <button
               type="button"
               onClick={() => setTabHienTai('crm')}
-              className={`btn btn-sm rounded-2 font-bold px-3 py-1.5 transition-all text-xs ${
+              className={`btn btn-sm rounded-2 font-bold px-3 py-1.5 transition-all text-xs flex-grow-1 flex-md-grow-0 ${
                 tabHienTai === 'crm'
                   ? 'btn-primary text-white shadow-xs'
                   : 'btn-light bg-transparent text-slate-600 border-0 hover:bg-white'
@@ -337,7 +337,7 @@ export default function QuanLyKhachHang() {
               <button
                 type="button"
                 onClick={() => setTabHienTai('accounts')}
-                className={`btn btn-sm rounded-2 font-bold px-3 py-1.5 transition-all text-xs ${
+                className={`btn btn-sm rounded-2 font-bold px-3 py-1.5 transition-all text-xs flex-grow-1 flex-md-grow-0 ${
                   tabHienTai === 'accounts'
                     ? 'btn-primary text-white shadow-xs'
                     : 'btn-light bg-transparent text-slate-600 border-0 hover:bg-white'
@@ -356,8 +356,8 @@ export default function QuanLyKhachHang() {
       {/* ========================================================= */}
       {tabHienTai === 'crm' && (
         <div className="space-y-4">
-          <div className="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
-            <div className="input-group input-group-sm" style={{ maxWidth: '300px' }}>
+          <div className="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center justify-content-between gap-2.5">
+            <div className="input-group input-group-sm w-100 max-w-sm">
               <span className="input-group-text bg-white border-slate-200 text-slate-400">
                 <Search className="w-3.5 h-3.5" />
               </span>
@@ -372,7 +372,7 @@ export default function QuanLyKhachHang() {
 
             <button
               onClick={moModalThemCrm}
-              className="btn btn-warning text-white fw-bold px-3 py-2 rounded-3 d-flex align-items-center gap-2 shadow-xs shrink-0 text-xs sm:text-sm"
+              className="btn btn-warning text-white fw-bold px-3 py-2 rounded-3 d-flex align-items-center justify-content-center gap-2 shadow-xs shrink-0 text-xs sm:text-sm"
             >
               <Plus className="w-4 h-4" />
               <span>Thêm Hồ Sơ Khách Hàng</span>
@@ -413,18 +413,18 @@ export default function QuanLyKhachHang() {
                               <span>{c.ho_ten}</span>
                             </div>
                           </td>
-                          <td className="py-3 px-4 font-monospace fw-semibold">{c.so_dien_thoai}</td>
+                          <td className="py-3 px-4 tabular-nums fw-semibold whitespace-nowrap">{c.so_dien_thoai}</td>
                           <td className="py-3 px-4 text-slate-500">{c.email || '—'}</td>
-                          <td className="py-3 px-4 font-monospace fw-bold text-amber-700">
+                          <td className="py-3 px-4 tabular-nums fw-bold text-amber-700 whitespace-nowrap">
                             {c.diem_tich_luy} pts
                           </td>
-                          <td className="py-3 px-4">
+                          <td className="py-3 px-4 whitespace-nowrap">
                             <span className={`badge rounded-pill px-3 py-1 text-xs font-black border d-inline-flex align-items-center gap-1.5 ${thongTinHang.color}`}>
                               <Crown className="w-3.5 h-3.5 stroke-[2.5]" />
                               <span>{thongTinHang.label}</span>
                             </span>
                           </td>
-                          <td className="py-3 px-4 font-monospace fw-bold text-success text-end">
+                          <td className="py-3 px-4 tabular-nums fw-bold text-success text-end whitespace-nowrap">
                             {dinhDangTienTe(c.tong_chi_tieu || 0)}
                           </td>
                           <td className="py-3 px-4 text-center">
@@ -461,9 +461,9 @@ export default function QuanLyKhachHang() {
       {/* ========================================================= */}
       {tabHienTai === 'accounts' && laAdmin && (
         <div className="space-y-4">
-          <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
-            <div className="d-flex flex-wrap items-center gap-2.5">
-              <div className="input-group input-group-sm" style={{ minWidth: '240px' }}>
+          <div className="d-flex flex-column flex-md-row align-items-stretch align-items-md-center justify-content-between gap-2.5">
+            <div className="d-flex flex-column flex-sm-row items-stretch sm:items-center gap-2 flex-grow-1">
+              <div className="input-group input-group-sm flex-grow-1">
                 <span className="input-group-text bg-white border-slate-200 text-slate-400">
                   <Search className="w-3.5 h-3.5" />
                 </span>
@@ -479,8 +479,7 @@ export default function QuanLyKhachHang() {
               <select
                 value={locVaiTro}
                 onChange={(e) => setLocVaiTro(e.target.value)}
-                className="form-select form-select-sm bg-white border-slate-200 text-xs py-2 font-bold"
-                style={{ width: '160px' }}
+                className="form-select form-select-sm bg-white border-slate-200 text-xs py-2 font-bold w-100 sm:w-auto"
               >
                 <option value="all">Tất cả vai trò</option>
                 <option value="khach_hang">Khách Hàng</option>
@@ -493,7 +492,7 @@ export default function QuanLyKhachHang() {
 
             <button
               onClick={moModalThemAccount}
-              className="btn btn-primary text-white fw-bold px-3 py-2 rounded-3 d-flex align-items-center gap-2 shadow-xs shrink-0 text-xs sm:text-sm"
+              className="btn btn-primary text-white fw-bold px-3 py-2 rounded-3 d-flex align-items-center justify-content-center gap-2 shadow-xs shrink-0 text-xs sm:text-sm"
             >
               <Plus className="w-4 h-4" />
               <span>Tạo Tài Khoản Mới</span>
@@ -605,7 +604,7 @@ export default function QuanLyKhachHang() {
       {/* ========================================================= */}
       {hienModalCrm && (
         <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(4px)' }}>
-          <div className="modal-dialog modal-dialog-centered modal-sm">
+          <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div className="modal-content border-0 rounded-4 shadow-2xl overflow-hidden">
               <div className="modal-header bg-slate-50 border-bottom border-slate-200 px-4 py-3">
                 <h5 className="modal-title text-sm font-black text-slate-900 d-flex align-items-center gap-1.5">
@@ -695,7 +694,7 @@ export default function QuanLyKhachHang() {
       {/* ========================================================= */}
       {hienModalAccount && laAdmin && (
         <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(4px)' }}>
-          <div className="modal-dialog modal-dialog-centered modal-sm">
+          <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div className="modal-content border-0 rounded-4 shadow-2xl overflow-hidden">
               <div className="modal-header bg-slate-50 border-bottom border-slate-200 px-4 py-3">
                 <h5 className="modal-title text-sm font-black text-slate-900 d-flex align-items-center gap-1.5">

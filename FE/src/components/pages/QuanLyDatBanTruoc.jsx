@@ -130,7 +130,7 @@ export default function QuanLyDatBanTruoc() {
         </div>
         <button
           onClick={() => setHienModal(true)}
-          className="btn btn-warning text-white fw-bold px-3 py-2 rounded-3 d-flex align-items-center gap-2 shadow-sm"
+          className="btn btn-warning text-white fw-bold px-3 py-2 rounded-3 d-flex align-items-center justify-content-center gap-2 shadow-sm shrink-0 w-100 w-md-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Tạo Lịch Hẹn Mới</span>
@@ -180,10 +180,10 @@ export default function QuanLyDatBanTruoc() {
                       <Users className="w-3.5 h-3.5 text-slate-400" /> {r.so_luong_khach}
                     </span>
                   </td>
-                  <td className="py-3 px-4 fw-bold text-success">
+                  <td className="py-3 px-4 fw-bold text-success whitespace-nowrap tabular-nums">
                     {dinhDangTienTe(r.tien_coc)}
                   </td>
-                  <td className="py-3 px-4">
+                  <td className="py-3 px-4 whitespace-nowrap">
                     <span className={`badge rounded-pill px-2.5 py-1 text-xs fw-bold border ${
                       r.trang_thai === 'da_den' ? 'bg-success-subtle text-success border-success-subtle' :
                       r.trang_thai === 'da_huy' ? 'bg-danger-subtle text-danger border-danger-subtle' :
@@ -193,19 +193,19 @@ export default function QuanLyDatBanTruoc() {
                        r.trang_thai === 'da_huy' ? 'Đã hủy' : 'Đã xác nhận'}
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-end">
+                  <td className="py-3 px-4 text-end whitespace-nowrap">
                     {r.trang_thai === 'da_xac_nhan' && (
-                      <div className="d-flex justify-content-end gap-1.5">
+                      <div className="d-flex justify-content-end gap-2">
                         <button
                           onClick={() => xuLyCheckin(r.id)}
-                          className="btn btn-sm btn-success px-2.5 py-1 rounded-3 text-xs fw-bold text-white shadow-xs"
+                          className="btn btn-sm btn-success px-3 py-1 rounded-3 text-xs fw-bold text-white shadow-xs whitespace-nowrap"
                           title="Xác nhận khách đã đến"
                         >
                           Check-in
                         </button>
                         <button
                           onClick={() => xuLyHuyDat(r.id)}
-                          className="btn btn-sm btn-outline-danger px-2.5 py-1 rounded-3 text-xs fw-bold"
+                          className="btn btn-sm btn-outline-danger px-3 py-1 rounded-3 text-xs fw-bold whitespace-nowrap"
                           title="Hủy lịch đặt bàn"
                         >
                           Hủy
@@ -223,7 +223,7 @@ export default function QuanLyDatBanTruoc() {
       {/* Modal Thêm Lịch Đặt Bàn Mới dạng Bootstrap Modal */}
       {hienModal && (
         <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(4px)' }}>
-          <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div className="modal-content border-0 rounded-4 shadow-2xl overflow-hidden">
               <div className="modal-header bg-slate-50 border-bottom border-slate-200 px-4 py-3">
                 <h5 className="modal-title text-base font-black text-slate-900 d-flex align-items-center gap-2">

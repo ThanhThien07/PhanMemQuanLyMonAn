@@ -113,17 +113,17 @@ export default function TongQuanDashboard({ setActiveTab }) {
               Theo dõi doanh số, quản lý bàn ăn, điều phối nhà bếp và kho nguyên liệu tức thời.
             </p>
           </div>
-          <div className="d-flex align-items-center gap-2 shrink-0">
+          <div className="d-flex flex-wrap align-items-center gap-2">
             <button
               onClick={() => setActiveTab('pos')}
-              className="btn btn-warning text-white fw-bold px-3 py-2 rounded-3 d-flex align-items-center gap-2 shadow-sm"
+              className="btn btn-warning text-white fw-bold px-3 py-2 rounded-3 d-flex align-items-center justify-content-center gap-2 shadow-sm flex-fill sm:flex-initial"
             >
               <i className="bi bi-grid-3x3-gap-fill"></i>
               <span>Mở POS Gọi Món</span>
             </button>
             <button
               onClick={() => setActiveTab('kitchen')}
-              className="btn btn-outline-secondary bg-white text-slate-800 fw-bold px-3 py-2 rounded-3 d-flex align-items-center gap-2 shadow-xs"
+              className="btn btn-outline-secondary bg-white text-slate-800 fw-bold px-3 py-2 rounded-3 d-flex align-items-center justify-content-center gap-2 shadow-xs flex-fill sm:flex-initial"
             >
               <i className="bi bi-fire text-danger"></i>
               <span>Màn Hình Bếp</span>

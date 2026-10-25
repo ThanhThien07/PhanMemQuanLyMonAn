@@ -227,8 +227,8 @@ export default function QuanLyThucDonMonAn() {
           </p>
         </div>
 
-        <div className="d-flex align-items-center gap-2.5 flex-wrap flex-sm-nowrap">
-          <div className="input-group input-group-sm" style={{ minWidth: '220px' }}>
+        <div className="d-flex flex-column flex-sm-row align-items-stretch sm:align-items-center gap-2 w-100 sm:w-auto">
+          <div className="input-group input-group-sm flex-grow-1">
             <span className="input-group-text bg-white border-slate-200 text-slate-400">
               <i className="bi bi-search"></i>
             </span>
@@ -251,7 +251,7 @@ export default function QuanLyThucDonMonAn() {
           </div>
           <button
             onClick={() => setHienModalThem(true)}
-            className="btn btn-warning text-white fw-bold px-3 py-2 rounded-3 d-flex align-items-center gap-2 shadow-sm shrink-0"
+            className="btn btn-warning text-white fw-bold px-3 py-2 rounded-3 d-flex align-items-center justify-content-center gap-2 shadow-sm shrink-0"
           >
             <i className="bi bi-plus-lg"></i>
             <span>Thêm Món Mới</span>
@@ -439,7 +439,7 @@ export default function QuanLyThucDonMonAn() {
           tabIndex="-1"
           style={{ backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(4px)' }}
         >
-          <div className="modal-dialog modal-dialog-centered modal-lg">
+          <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
             <div className="modal-content border-0 rounded-4 shadow-2xl overflow-hidden">
               {/* Header Modal */}
               <div className="modal-header bg-gradient-to-r from-blue-50 to-indigo-50 border-bottom border-slate-200 px-4 py-3">
@@ -652,7 +652,7 @@ export default function QuanLyThucDonMonAn() {
           tabIndex="-1"
           style={{ backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(4px)' }}
         >
-          <div className="modal-dialog modal-dialog-centered modal-lg">
+          <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
             <div className="modal-content border-0 rounded-4 shadow-2xl overflow-hidden">
               <div className="modal-header bg-slate-50 border-bottom border-slate-200 px-4 py-3">
                 <h5 className="modal-title text-base font-black text-slate-900 d-flex align-items-center gap-2">

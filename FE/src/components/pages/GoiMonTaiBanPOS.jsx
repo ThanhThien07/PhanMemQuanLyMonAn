@@ -17,7 +17,8 @@ import {
   CheckCircle2, 
   Utensils, 
   Users,
-  Trash2
+  Trash2,
+  ShoppingBag
 } from 'lucide-react';
 import ModalInHoaDon from '../ModalInHoaDon';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu';
@@ -51,6 +52,8 @@ export default function GoiMonTaiBanPOS() {
   const [thanhCong, setThanhCong] = useState(false);
   // Điều khiển hiển thị modal in hóa đơn & thanh toán
   const [hienModalHoaDon, setHienModalHoaDon] = useState(false);
+  // Chế độ xem trên màn hình nhỏ (Mobile & Tablet < xl): 'menu' hoặc 'cart'
+  const [tabMobile, setTabMobile] = useState('menu');
 
   /**
    * Tải toàn bộ dữ liệu ban đầu gồm phân loại món, món ăn và danh sách bàn
@@ -218,12 +221,43 @@ export default function GoiMonTaiBanPOS() {
   const tongTienDangPhucVu = monDangPhucVu.reduce((tong, item) => tong + (item.tong_tien || 0), 0);
 
   return (
-    <div className="h-[calc(100vh-4rem)] flex overflow-hidden bg-slate-50">
+    <div className="h-[calc(100vh-4rem)] flex overflow-hidden bg-slate-50 relative">
       {/* KHU VỰC TRÁI VÀ GIỮA: CHỌN THỰC ĐƠN MÓN ĂN */}
-      <div className="flex-1 flex flex-col border-r border-slate-200 bg-slate-100/50 p-5 overflow-hidden">
+      <div className={`flex-1 flex flex-col border-r border-slate-200 bg-slate-100/50 p-3 sm:p-5 overflow-hidden ${
+        tabMobile === 'cart' ? 'hidden xl:flex' : 'flex'
+      }`}>
+        {/* Nút chuyển đổi Tab trên Mobile / Tablet (< xl) */}
+        <div className="flex items-center gap-1.5 p-1 bg-slate-200/80 rounded-xl mb-3 shrink-0 xl:hidden">
+          <button
+            type="button"
+            onClick={() => setTabMobile('menu')}
+            className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+              tabMobile === 'menu' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Utensils className="w-3.5 h-3.5" />
+            <span>Thực Đơn Món ({danhSachMonHienThi.length})</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setTabMobile('cart')}
+            className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 relative ${
+              tabMobile === 'cart' ? 'bg-amber-500 text-slate-950 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <ShoppingBag className="w-3.5 h-3.5" />
+            <span>Đơn Bàn {banHienTai?.so_ban}</span>
+            {(gioHang.length > 0 || monDangPhucVu.length > 0) && (
+              <span className="px-1.5 py-0.2 rounded-full bg-rose-600 text-white text-[10px] font-black">
+                {gioHang.length + monDangPhucVu.length}
+              </span>
+            )}
+          </button>
+        </div>
+
         {/* Thanh công cụ tìm kiếm và chọn nhanh bàn */}
-        <div className="space-y-4 mb-4">
-          <div className="flex items-center gap-3">
+        <div className="space-y-3 mb-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
             <div className="relative flex-1">
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
@@ -288,7 +322,7 @@ export default function GoiMonTaiBanPOS() {
 
         {/* Lưới danh sách món ăn */}
         <div className="flex-1 overflow-y-auto pr-1">
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
             {danhSachMonHienThi.map((mon) => (
               <div
                 key={mon.id}
@@ -308,7 +342,7 @@ export default function GoiMonTaiBanPOS() {
 
                 <div className="p-3.5 flex flex-col justify-between flex-1">
                   <div>
-                    <h4 className="text-sm font-bold text-slate-900 group-hover:text-amber-600 transition-colors line-clamp-1">
+                    <h4 className="text-sm font-bold text-slate-900 group-hover:text-amber-600 transition-colors line-clamp-2 min-h-[2.5rem]" title={mon.ten_mon}>
                       {mon.ten_mon}
                     </h4>
                     <p className="text-[11px] text-slate-500 line-clamp-2 mt-1">
@@ -332,21 +366,49 @@ export default function GoiMonTaiBanPOS() {
             ))}
           </div>
         </div>
+
+        {/* Thanh xem nhanh giỏ hàng trên Mobile khi có món mới */}
+        {gioHang.length > 0 && (
+          <div className="pt-2.5 mt-2 border-t border-slate-200 flex items-center justify-between xl:hidden shrink-0 bg-white p-3 rounded-2xl shadow-xs">
+            <div>
+              <div className="text-[11px] font-bold text-slate-500">{gioHang.length} món mới trong giỏ</div>
+              <div className="text-sm font-black text-amber-600">{dinhDangTienTe(tongTienGioHang)}</div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setTabMobile('cart')}
+              className="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-md shadow-amber-500/20 flex items-center gap-1.5 cursor-pointer"
+            >
+              <span>Xem Đơn & Gửi Bếp</span>
+              <Send className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* KHU VỰC PHẢI: GIỎ HÀNG VÀ MÓN ĐANG PHỤC VỤ CỦA BÀN */}
-      <div className="w-96 bg-white border-l border-slate-200 flex flex-col justify-between shrink-0 shadow-lg">
+      <div className={`w-full xl:w-96 bg-white border-l border-slate-200 flex flex-col justify-between shrink-0 shadow-lg ${
+        tabMobile === 'menu' ? 'hidden xl:flex' : 'flex'
+      }`}>
         {/* Thông tin bàn ăn ở đầu */}
-        <div className="p-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 font-black text-lg flex items-center justify-center shadow-md shadow-amber-500/20">
+        <div className="p-3 sm:p-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setTabMobile('menu')}
+              className="p-1.5 rounded-xl bg-slate-200/80 hover:bg-slate-300 text-slate-700 xl:hidden cursor-pointer"
+              title="Quay lại chọn món"
+            >
+              <Utensils className="w-4 h-4" />
+            </button>
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-500 text-slate-950 font-black text-base sm:text-lg flex items-center justify-center shadow-md shadow-amber-500/20 shrink-0">
               {banHienTai?.so_ban || '?'}
             </div>
             <div>
-              <div className="text-sm font-bold text-slate-900">
+              <div className="text-xs sm:text-sm font-bold text-slate-900">
                 Bàn {banHienTai?.so_ban} • {banHienTai?.khu_vuc}
               </div>
-              <div className="text-xs text-slate-500">
+              <div className="text-[11px] text-slate-500">
                 Sức chứa: {banHienTai?.suc_chua} người
               </div>
             </div>

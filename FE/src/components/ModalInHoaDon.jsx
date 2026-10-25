@@ -79,10 +79,10 @@ export default function ModalInHoaDon({ table, orders, onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/50 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/50 backdrop-blur-sm animate-fade-in">
+      <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-md max-h-[92vh] flex flex-col overflow-hidden shadow-2xl">
         {/* Tiêu đề Modal */}
-        <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+        <div className="p-3.5 sm:p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-black shadow-xs">
               B{table?.so_ban}
@@ -98,7 +98,7 @@ export default function ModalInHoaDon({ table, orders, onClose, onSuccess }) {
         </div>
 
         {/* Nội dung Phiếu Hóa Đơn */}
-        <div className="p-5 max-h-[55vh] overflow-y-auto space-y-4 text-sm font-mono bg-slate-50/50">
+        <div className="p-4 sm:p-5 flex-1 overflow-y-auto space-y-4 text-sm font-mono bg-slate-50/50">
           <div className="text-center border-b border-dashed border-slate-300 pb-3 font-sans">
             <div className="font-black text-slate-900 text-base">NHÀ HÀNG ROYAL BISTRO</div>
             <div className="text-xs text-slate-500">120 Nguyễn Thị Minh Khai, Q.3, TP.HCM</div>
