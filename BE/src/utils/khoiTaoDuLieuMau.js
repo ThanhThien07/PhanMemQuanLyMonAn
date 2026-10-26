@@ -52,7 +52,7 @@ export async function napDuLieuMau() {
 
       // 1. Chèn Tài khoản Người dùng (NguoiDung)
       await NguoiDung.insertMany([
-        { id: 1, name: 'Nguyễn Ngọc Hà Thảo (Quản Lý)', email: 'admin@nhahang.com', password: matKhauMacDinh, role: 'admin', so_dien_thoai: '0901234567', trang_thai: 'hoat_dong' },
+        { id: 1, name: 'Nguyễn Hoàng Hưng (Quản Lý)', email: 'admin@nhahang.com', password: matKhauMacDinh, role: 'admin', so_dien_thoai: '0901234567', trang_thai: 'hoat_dong' },
         { id: 2, name: 'Trần Văn Thu Ngân', email: 'thungan@nhahang.com', password: matKhauMacDinh, role: 'thu_ngan', so_dien_thoai: '0902345678', trang_thai: 'hoat_dong' },
         { id: 3, name: 'Lê Bếp Trưởng', email: 'bep@nhahang.com', password: matKhauMacDinh, role: 'bep', so_dien_thoai: '0903456789', trang_thai: 'hoat_dong' },
         { id: 4, name: 'Phạm Phục Vụ', email: 'phucvu@nhahang.com', password: matKhauMacDinh, role: 'phuc_vu', so_dien_thoai: '0904567890', trang_thai: 'hoat_dong' }
@@ -101,16 +101,16 @@ export async function napDuLieuMau() {
 
       // 5. Chèn Nguyên Liệu Kho (NguyenLieu)
       await NguyenLieu.insertMany([
-        { id: 1, ten_nguyen_lieu: 'Thịt Bò Wagyu A5', don_vi_tinh: 'kg', so_luong_ton: 18.5, gia_nhap_trung_binh: 950000, dinh_muc_toi_thieu: 5 },
-        { id: 2, ten_nguyen_lieu: 'Tôm Hùm Alaska', don_vi_tinh: 'kg', so_luong_ton: 8.2, gia_nhap_trung_binh: 1200000, dinh_muc_toi_thieu: 3 },
-        { id: 3, ten_nguyen_lieu: 'Cá Hồi Na Uy Tươi', don_vi_tinh: 'kg', so_luong_ton: 12.0, gia_nhap_trung_binh: 380000, dinh_muc_toi_thieu: 4 },
-        { id: 4, ten_nguyen_lieu: 'Sườn Heo Tươi Cắt Tảng', don_vi_tinh: 'kg', so_luong_ton: 25.0, gia_nhap_trung_binh: 140000, dinh_muc_toi_thieu: 8 },
-        { id: 5, ten_nguyen_lieu: 'Gà Ta Thả Vườn', don_vi_tinh: 'con', so_luong_ton: 30.0, gia_nhap_trung_binh: 160000, dinh_muc_toi_thieu: 10 },
-        { id: 6, ten_nguyen_lieu: 'Gạo Thơm Lài', don_vi_tinh: 'kg', so_luong_ton: 85.0, gia_nhap_trung_binh: 22000, dinh_muc_toi_thieu: 20 },
-        { id: 7, ten_nguyen_lieu: 'Bơ Lạt Anchor', don_vi_tinh: 'kg', so_luong_ton: 4.5, gia_nhap_trung_binh: 180000, dinh_muc_toi_thieu: 5 },
-        { id: 8, ten_nguyen_lieu: 'Tiêu Đen Phú Quốc', don_vi_tinh: 'kg', so_luong_ton: 3.0, gia_nhap_trung_binh: 220000, dinh_muc_toi_thieu: 2 },
-        { id: 9, ten_nguyen_lieu: 'Rau Xà Lách Romanie', don_vi_tinh: 'kg', so_luong_ton: 14.0, gia_nhap_trung_binh: 45000, dinh_muc_toi_thieu: 5 },
-        { id: 10, ten_nguyen_lieu: 'Vang Đỏ Chile Chai', don_vi_tinh: 'chai', so_luong_ton: 24.0, gia_nhap_trung_binh: 450000, dinh_muc_toi_thieu: 6 }
+        { id: 1, ten_nguyen_lieu: 'Thịt Bò Wagyu A5', don_vi_tinh: 'kg', so_luong_ton: 18.5, gia_nhap_trung_binh: 950000, dinh_muc_toi_thieu: 5, han_su_dung: new Date(Date.now() + 15 * 86400000) },
+        { id: 2, ten_nguyen_lieu: 'Tôm Hùm Alaska', don_vi_tinh: 'kg', so_luong_ton: 8.2, gia_nhap_trung_binh: 1200000, dinh_muc_toi_thieu: 3, han_su_dung: new Date(Date.now() + 8 * 86400000) },
+        { id: 3, ten_nguyen_lieu: 'Cá Hồi Na Uy Tươi', don_vi_tinh: 'kg', so_luong_ton: 12.0, gia_nhap_trung_binh: 380000, dinh_muc_toi_thieu: 4, han_su_dung: new Date(Date.now() + 4 * 86400000) },
+        { id: 4, ten_nguyen_lieu: 'Sườn Heo Tươi Cắt Tảng', don_vi_tinh: 'kg', so_luong_ton: 25.0, gia_nhap_trung_binh: 140000, dinh_muc_toi_thieu: 8, han_su_dung: new Date(Date.now() + 10 * 86400000) },
+        { id: 5, ten_nguyen_lieu: 'Gà Ta Thả Vườn', don_vi_tinh: 'con', so_luong_ton: 30.0, gia_nhap_trung_binh: 160000, dinh_muc_toi_thieu: 10, han_su_dung: new Date(Date.now() + 6 * 86400000) },
+        { id: 6, ten_nguyen_lieu: 'Gạo Thơm Lài', don_vi_tinh: 'kg', so_luong_ton: 85.0, gia_nhap_trung_binh: 22000, dinh_muc_toi_thieu: 20, han_su_dung: new Date(Date.now() + 180 * 86400000) },
+        { id: 7, ten_nguyen_lieu: 'Bơ Lạt Anchor', don_vi_tinh: 'kg', so_luong_ton: 4.5, gia_nhap_trung_binh: 180000, dinh_muc_toi_thieu: 5, han_su_dung: new Date(Date.now() + 45 * 86400000) },
+        { id: 8, ten_nguyen_lieu: 'Tiêu Đen Phú Quốc', don_vi_tinh: 'kg', so_luong_ton: 3.0, gia_nhap_trung_binh: 220000, dinh_muc_toi_thieu: 2, han_su_dung: new Date(Date.now() + 365 * 86400000) },
+        { id: 9, ten_nguyen_lieu: 'Rau Xà Lách Romanie', don_vi_tinh: 'kg', so_luong_ton: 14.0, gia_nhap_trung_binh: 45000, dinh_muc_toi_thieu: 5, han_su_dung: new Date(Date.now() + 3 * 86400000) },
+        { id: 10, ten_nguyen_lieu: 'Vang Đỏ Chile Chai', don_vi_tinh: 'chai', so_luong_ton: 24.0, gia_nhap_trung_binh: 450000, dinh_muc_toi_thieu: 6, han_su_dung: new Date(Date.now() + 730 * 86400000) }
       ]);
 
       // 6. Chèn Định Lượng BOM (MonAnNguyenLieu)
@@ -143,7 +143,7 @@ export async function napDuLieuMau() {
       // 9. Chèn Phiếu Đặt Bàn Trước (DatBanTruoc)
       await DatBanTruoc.insertMany([
         { id: 1, ma_reservation: 'RES-20260908-01', ten_khach: 'Trần Thị Bích', sdt: '0987654321', ban_id: 5, thoi_gian_hen: new Date(), so_luong_khach: 8, tien_coc: 500000, trang_thai: 'da_xac_nhan', ghi_chu: 'Tiệc sinh nhật, cần chuẩn bị nến và hoa' },
-        { id: 2, ma_reservation: 'RES-20260908-02', ten_khach: 'Lê Hoàng Nam', sdt: '0933112233', ban_id: 9, thoi_gian_hen: new Date(), so_luong_khach: 10, tien_coc: 1000000, trang_thai: 'da_xac_nhan', ghi_chu: 'Gặp đối tác quan trọng VIP' }
+        { id: 2, ma_reservation: 'RES-20260908-02', ten_khach: 'Lê Hoàng Nam', sdt: '0933112233', ban_id: 9, thoi_gian_hen: new Date(), so_luong_khach: 10, tien_coc: 1000000, trang_thai: 'da_den', ghi_chu: 'Gặp đối tác quan trọng VIP' }
       ]);
 
       // 10. Chèn Đơn Gọi Món Mẫu (DatMon)

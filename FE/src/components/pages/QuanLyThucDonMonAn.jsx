@@ -210,84 +210,86 @@ export default function QuanLyThucDonMonAn() {
     <div className="container-fluid px-2 px-md-4 py-3 max-w-7xl mx-auto space-y-4">
       {/* Tiêu đề trang & Thanh công cụ trong Card nổi khối */}
       <div className="card bg-white border-2 border-slate-200/90 rounded-3xl p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow">
-        <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+        {/* Hàng 1: Tiêu đề trang (Trái) & Nút Thêm Món Mới (Phải) - Luôn hiển thị to rõ, không bao giờ bị che khuất */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
           <div>
-            <div className="d-flex align-items-center gap-2 mb-1">
-              <span className="badge bg-red-600 text-white rounded-pill px-3 py-1 text-xs font-black shadow-2xs">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="badge bg-red-600 text-white rounded-pill px-3 py-1 text-xs font-black shadow-2xs whitespace-nowrap text-nowrap">
                 <i className="bi bi-book me-1"></i>Thực Đơn
               </span>
-              <span className="text-xs text-slate-600 font-bold">
+              <span className="text-xs text-slate-600 font-bold whitespace-nowrap text-nowrap">
                 {danhSachMon.length} món trong hệ thống
               </span>
             </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-1">
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-0 whitespace-nowrap text-nowrap">
               Quản Lý Thực Đơn Nhà Hàng
             </h2>
-            <p className="text-slate-600 text-xs sm:text-sm font-semibold mb-0">
-              Cập nhật món ăn, sửa giá bán, danh mục, hình ảnh và trạng thái phục vụ
-            </p>
           </div>
 
-          <div className="d-flex flex-column flex-sm-row align-items-stretch sm:align-items-center gap-2 w-100 sm:w-auto">
-            <div className="input-group input-group-sm flex-grow-1">
-              <span className="input-group-text bg-slate-50 border-slate-200 text-slate-500">
-                <i className="bi bi-search"></i>
-              </span>
-              <input
-                type="text"
-                value={tuKhoa}
-                onChange={(e) => setTuKhoa(e.target.value)}
-                placeholder="Tìm theo tên món, mô tả..."
-                className="form-control bg-slate-50 border-slate-200 text-xs"
-              />
-              {tuKhoa && (
-                <button
-                  className="btn btn-outline-secondary border-slate-200 text-xs px-2"
-                  onClick={() => setTuKhoa('')}
-                  title="Xóa tìm kiếm"
-                >
-                  <i className="bi bi-x-lg"></i>
-                </button>
-              )}
-            </div>
-            <button
-              onClick={() => setHienModalThem(true)}
-              className="btn btn-primary text-white font-black px-4 py-2.5 rounded-pill d-flex align-items-center justify-content-center gap-2 shadow-sm shrink-0 text-xs cursor-pointer"
-            >
-              <i className="bi bi-plus-lg"></i>
-              <span>Thêm Món Mới</span>
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => setHienModalThem(true)}
+            className="btn btn-primary text-white font-black px-4 py-2.5 rounded-pill inline-flex items-center justify-center gap-2 shadow-sm text-xs whitespace-nowrap cursor-pointer hover:shadow-md transition-all shrink-0 self-start sm:self-auto"
+          >
+            <i className="bi bi-plus-lg shrink-0"></i>
+            <span className="whitespace-nowrap">Thêm Món Mới</span>
+          </button>
         </div>
 
-        {/* Thanh tab lọc theo nhóm danh mục */}
-        <div className="d-flex align-items-center gap-1.5 overflow-x-auto pb-1 border-top border-slate-100 pt-3">
-          <button
-            onClick={() => setLoaiMonDangChon('all')}
-            className={`btn btn-sm rounded-pill px-3.5 py-1.5 text-xs font-black transition-all shrink-0 cursor-pointer ${
-              loaiMonDangChon === 'all'
-                ? 'btn-primary shadow-xs'
-                : 'btn-light border border-slate-200/90 text-slate-700 hover:text-blue-700'
-            }`}
-          >
-            Tất cả ({danhSachMon.length})
-          </button>
-          {danhMuc.map((dm) => {
-            const soLuongMon = danhSachMon.filter((m) => m.loai_mon_id === dm.id).length;
-            return (
+        {/* Hàng 2: Bộ lọc danh mục (Trái) & Ô tìm kiếm món ăn (Phải) */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+          {/* Thanh tab lọc theo nhóm danh mục */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full">
+            <button
+              onClick={() => setLoaiMonDangChon('all')}
+              className={`btn btn-sm rounded-pill px-3.5 py-1.5 text-xs font-black transition-all shrink-0 cursor-pointer ${
+                loaiMonDangChon === 'all'
+                  ? 'btn-primary shadow-xs'
+                  : 'btn-light border border-slate-200/90 text-slate-700 hover:text-blue-700'
+              }`}
+            >
+              Tất cả ({danhSachMon.length})
+            </button>
+            {danhMuc.map((dm) => {
+              const soLuongMon = danhSachMon.filter((m) => m.loai_mon_id === dm.id).length;
+              return (
+                <button
+                  key={dm.id}
+                  onClick={() => setLoaiMonDangChon(dm.id)}
+                  className={`btn btn-sm rounded-pill px-3.5 py-1.5 text-xs font-black transition-all shrink-0 cursor-pointer ${
+                    Number(loaiMonDangChon) === dm.id
+                      ? 'btn-primary text-white shadow-xs'
+                      : 'btn-light border border-slate-200/90 text-slate-700 hover:text-blue-700'
+                  }`}
+                >
+                  {dm.ten_loai} ({soLuongMon})
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Ô tìm kiếm món ăn */}
+          <div className="input-group input-group-sm w-full lg:w-72 shrink-0">
+            <span className="input-group-text bg-slate-50 border-slate-200 text-slate-500">
+              <i className="bi bi-search"></i>
+            </span>
+            <input
+              type="text"
+              value={tuKhoa}
+              onChange={(e) => setTuKhoa(e.target.value)}
+              placeholder="Tìm theo tên món, mô tả..."
+              className="form-control bg-slate-50 border-slate-200 text-xs"
+            />
+            {tuKhoa && (
               <button
-                key={dm.id}
-                onClick={() => setLoaiMonDangChon(dm.id)}
-                className={`btn btn-sm rounded-pill px-3.5 py-1.5 text-xs font-black transition-all shrink-0 cursor-pointer ${
-                  Number(loaiMonDangChon) === dm.id
-                    ? 'btn-primary text-white shadow-xs'
-                    : 'btn-light border border-slate-200/90 text-slate-700 hover:text-blue-700'
-                }`}
+                className="btn btn-outline-secondary border-slate-200 text-xs px-2"
+                onClick={() => setTuKhoa('')}
+                title="Xóa tìm kiếm"
               >
-                {dm.ten_loai} ({soLuongMon})
+                <i className="bi bi-x-lg"></i>
               </button>
-            );
-          })}
+            )}
+          </div>
         </div>
       </div>
 

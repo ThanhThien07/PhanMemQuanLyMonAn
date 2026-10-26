@@ -30,7 +30,7 @@ export default function BoCucGiaoDienChinh({ activeTab, setActiveTab, children }
           activeTab={activeTab} 
           moSidebar={() => setSidebarMo(true)}
         />
-        <main className="flex-1 overflow-y-auto bg-slate-100 px-3 sm:px-6 lg:px-8 py-5 sm:py-6">
+        <main className={`flex-1 overflow-y-auto bg-slate-100 ${activeTab === 'qr_order' ? 'p-0' : 'px-3 sm:px-6 lg:px-8 py-5 sm:py-6'}`}>
           {children}
         </main>
       </div>

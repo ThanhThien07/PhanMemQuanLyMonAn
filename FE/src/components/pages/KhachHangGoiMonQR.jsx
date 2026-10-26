@@ -38,7 +38,7 @@ const THONG_TIN_NGAN_HANG = {
   chuTaiKhoan: 'ROYAL BISTRO (NGUYEN NGOC HA THAO)'
 };
 
-export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff }) {
+export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff, isEmbedded = false }) {
   // Lấy mã bàn từ URL (?table=2 hoặc /table/2) hoặc từ prop
   const layMaBanBanDau = () => {
     if (propTableId) return propTableId;
@@ -481,9 +481,9 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
     .reduce((sum, o) => sum + (o.tong_tien || 0), 0);
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900 pb-28 font-sans select-none antialiased">
-      {/* 1. Header Cố Định Sang Trọng */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs px-4 sm:px-6 lg:px-8 py-3">
+    <div className={`w-full bg-slate-100 text-slate-900 pb-28 font-sans select-none antialiased ${isEmbedded ? '' : 'min-h-screen'}`}>
+      {/* 1. Header Cố Định Sang Trọng - Nền trắng tuyệt đối (bg-white) chống lộ thẻ món bên dưới */}
+      <header className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm px-4 sm:px-6 lg:px-8 py-3">
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#023E8A] to-[#00B4D8] flex items-center justify-center shadow-md shadow-blue-500/20 text-white shrink-0">
@@ -499,14 +499,6 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
                 >
                   <span>BÀN {table?.so_ban || tableId}</span>
                   <ChevronDown className="w-3.5 h-3.5 text-blue-700" />
-                </button>
-                <button
-                  onClick={() => setIsTableMapOpen(true)}
-                  className="hidden sm:flex px-3 py-1 rounded-full text-[11px] font-bold bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200 items-center gap-1 transition-all active:scale-95 cursor-pointer"
-                  title="Xem toàn bộ sơ đồ bàn"
-                >
-                  <LayoutGrid className="w-3 h-3 text-slate-600" />
-                  <span>Sơ Đồ Bàn</span>
                 </button>
               </div>
               <p className="text-[11px] sm:text-xs text-slate-500 font-medium truncate max-w-[160px] sm:max-w-none">
@@ -527,8 +519,20 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
               <span className="sm:hidden text-2xs">Gọi NV</span>
             </button>
 
-            {/* Chỗ Đăng Nhập / Vào Quản Trị theo yêu cầu */}
-            {currentUser ? (
+            {/* Khi nhúng trong Admin layout: chỉ hiển thị nút Sơ Đồ Bàn gọn gàng, không lặp lại thông tin user */}
+            {isEmbedded ? (
+              onExitToStaff && (
+                <button
+                  type="button"
+                  onClick={onExitToStaff}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow-xs transition-all active:scale-95 cursor-pointer shrink-0"
+                  title="Quay lại sơ đồ bàn nhân viên"
+                >
+                  <Grid3X3 className="w-3.5 h-3.5" />
+                  <span className="whitespace-nowrap">Về Sơ Đồ Bàn</span>
+                </button>
+              )
+            ) : currentUser ? (
               <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 rounded-full p-1 pl-3">
                 <div className="hidden md:flex flex-col text-right px-1.5">
                   <span className="text-[11px] font-black text-slate-900 leading-tight truncate max-w-[200px]">
@@ -544,7 +548,6 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
                       : 'Thu ngân / Phục vụ'}
                   </span>
                 </div>
-                {/* Chỉ nhân viên/quản lý mới có nút Về Sơ Đồ Bàn, Khách hàng tuyệt đối không hiển thị */}
                 {currentUser.role !== 'khach_hang' && currentUser.vai_tro !== 'khach_hang' && (
                   <button
                     type="button"
@@ -580,18 +583,6 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
                 <span>Đăng Nhập</span>
               </button>
             )}
-
-            {onExitToStaff && !currentUser && (
-              <button
-                type="button"
-                onClick={onExitToStaff}
-                className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-700 text-xs font-bold transition-all cursor-pointer"
-                title="Quay về giao diện sơ đồ bàn"
-              >
-                <Grid3X3 className="w-3.5 h-3.5" />
-                <span>Sơ Đồ Bàn</span>
-              </button>
-            )}
           </div>
         </div>
 
@@ -606,41 +597,41 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
             {alertBanner.message}
           </div>
         )}
+
+        {/* 2. Navigation Switcher: Thực đơn vs Món đã gọi (Nằm trong header, không bao giờ bị đè) */}
+        <div className="pt-2.5 mt-2.5 border-t border-slate-100">
+          <div className="max-w-md mx-auto flex items-center bg-slate-100 p-1 rounded-full gap-1">
+            <button
+              onClick={() => setActiveTab('menu')}
+              className={`flex-1 py-2 px-3 rounded-full text-xs font-black flex items-center justify-center gap-2 transition-all cursor-pointer whitespace-nowrap text-nowrap ${
+                activeTab === 'menu'
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'text-slate-600 hover:text-blue-700 hover:bg-white/80'
+              }`}
+            >
+              <UtensilsCrossed className="w-4 h-4 shrink-0" />
+              <span className="whitespace-nowrap text-nowrap">Thực Đơn Món Ăn</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('tracking')}
+              className={`flex-1 py-2 px-3 rounded-full text-xs font-black flex items-center justify-center gap-2 transition-all relative cursor-pointer whitespace-nowrap text-nowrap ${
+                activeTab === 'tracking'
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'text-slate-600 hover:text-blue-700 hover:bg-white/80'
+              }`}
+            >
+              <Clock className="w-4 h-4 shrink-0" />
+              <span className="whitespace-nowrap text-nowrap">Món Đã Gọi ({tableOrders.filter(o => o.trang_thai !== 'da_huy').length})</span>
+              {tableOrders.some(o => o.trang_thai === 'dang_che_bien') && (
+                <span className="w-2 h-2 rounded-full bg-red-600 animate-ping absolute right-2.5 top-2.5 shrink-0"></span>
+              )}
+            </button>
+          </div>
+        </div>
       </header>
 
-      {/* 2. Navigation Switcher: Thực đơn vs Món đã gọi (Bo tròn) */}
-      <div className="bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 sm:px-6 lg:px-8 py-2 sticky top-[65px] z-30 shadow-2xs">
-        <div className="max-w-md mx-auto flex items-center bg-slate-100 p-1 rounded-full gap-1">
-          <button
-            onClick={() => setActiveTab('menu')}
-            className={`flex-1 py-2 px-3 rounded-full text-xs font-black flex items-center justify-center gap-2 transition-all cursor-pointer ${
-              activeTab === 'menu'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-slate-600 hover:text-blue-700 hover:bg-white/80'
-            }`}
-          >
-            <UtensilsCrossed className="w-4 h-4" />
-            <span>Thực Đơn Món Ăn</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('tracking')}
-            className={`flex-1 py-2 px-3 rounded-full text-xs font-black flex items-center justify-center gap-2 transition-all relative cursor-pointer ${
-              activeTab === 'tracking'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-slate-600 hover:text-blue-700 hover:bg-white/80'
-            }`}
-          >
-            <Clock className="w-4 h-4" />
-            <span>Món Đã Gọi ({tableOrders.filter(o => o.trang_thai !== 'da_huy').length})</span>
-            {tableOrders.some(o => o.trang_thai === 'dang_che_bien') && (
-              <span className="w-2 h-2 rounded-full bg-red-600 animate-ping absolute right-2.5 top-2.5"></span>
-            )}
-          </button>
-        </div>
-      </div>
-
-      <main className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+      <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
         {/* ======================= TAB 1: THỰC ĐƠN GỌI MÓN ======================= */}
         {activeTab === 'menu' && (
           <>
@@ -754,7 +745,7 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
 
                     {/* Hàng giá bán: Màu ĐỎ khi có giảm giá, màu ĐEN khi giá bình thường */}
                     <div className="p-3.5 sm:p-4 pt-3 flex items-center justify-between border-t border-slate-100 mt-2">
-                      <div className={`font-black text-base sm:text-lg tracking-tight ${
+                      <div className={`font-black text-base sm:text-lg tracking-tight whitespace-nowrap text-nowrap ${
                         dish.phan_tram_giam || dish.is_discount ? 'text-red-600' : 'text-slate-900'
                       }`}>
                         {dinhDangTienTe(dish.gia)}
@@ -934,7 +925,7 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
             </div>
           </div>
         )}
-      </main>
+      </div>
 
       {/* 4. Thanh Giỏ Hàng Nổi Phía Dưới (Bottom Floating Cart Bar) */}
       {cart.length > 0 && activeTab === 'menu' && (
@@ -1400,7 +1391,7 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
       {/* 9. MODAL SƠ ĐỒ CHỌN BÀN ĂN (TABLE MAP PICKER) */}
       {isTableMapOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-xs animate-fade-in">
-          <div className="bg-white border-2 border-slate-200/90 w-full max-w-4xl rounded-3xl p-5 sm:p-6 space-y-4 shadow-2xl max-h-[90vh] flex flex-col">
+          <div className="bg-white border-2 border-slate-200/90 w-full max-w-5xl rounded-3xl p-5 sm:p-6 space-y-4 shadow-2xl max-h-[90vh] flex flex-col">
             {/* Header Modal */}
             <div className="flex justify-between items-start border-b border-slate-100 pb-3">
               <div>
@@ -1422,49 +1413,13 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
               </button>
             </div>
 
-            {/* Dải lọc theo Khu Vực */}
-            <ThanhCuonNgang fadeColor="from-white" scrollStep={200}>
-              {['all', ...new Set(allTables.map(t => t.khu_vuc).filter(Boolean))].map((khuVuc) => (
-                <button
-                  key={khuVuc}
-                  type="button"
-                  onClick={(e) => {
-                    setSelectedTableArea(khuVuc);
-                    e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-                  }}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
-                    selectedTableArea === khuVuc
-                      ? 'bg-slate-900 text-white shadow-xs'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
-                >
-                  {khuVuc === 'all' ? `Tất Cả (${allTables.length} bàn)` : khuVuc}
-                </button>
-              ))}
-            </ThanhCuonNgang>
-
-            {/* Chú thích màu sắc */}
-            <div className="flex items-center justify-between text-[11px] font-semibold text-slate-500 px-2 py-1.5 bg-slate-50 rounded-xl border border-slate-100 flex-wrap gap-2">
-              <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Bàn trống (Sẵn sàng)
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Đang có khách
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-sky-500"></span> Đã đặt trước
-              </span>
-            </div>
-
-            {/* Lưới các bàn */}
+            {/* Lưới các bàn - 6 cột giúp 12 bàn hiển thị trọn vẹn 2 hàng mà không cần cuộn */}
             <div className="overflow-y-auto flex-1 pr-1">
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                {allTables
-                  .filter(t => selectedTableArea === 'all' || t.khu_vuc === selectedTableArea)
-                  .map(ban => {
-                    const isCurrent = ban.id === Number(tableId) || ban.so_ban === Number(table?.so_ban || tableId);
-                    const isBusy = ban.trang_thai === 'co_khach' || ban.trang_thai === 'dang_dung';
-                    const isReserved = ban.trang_thai === 'da_dat';
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                {allTables.map(ban => {
+                  const isCurrent = ban.id === Number(tableId) || ban.so_ban === Number(table?.so_ban || tableId);
+                  const isBusy = ban.trang_thai === 'co_khach' || ban.trang_thai === 'dang_dung';
+                  const isReserved = ban.trang_thai === 'da_dat';
 
                     return (
                       <div
@@ -1472,7 +1427,7 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
                         onClick={() => handleSelectTable(ban)}
                         className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between h-28 hover:scale-[1.02] active:scale-95 ${
                           isCurrent
-                            ? 'border-amber-500 bg-amber-50 shadow-md ring-2 ring-amber-400/40'
+                            ? 'border-blue-600 bg-blue-50/90 shadow-md ring-2 ring-blue-500/30'
                             : isBusy
                             ? 'border-amber-200 bg-amber-50/40 hover:border-amber-300'
                             : isReserved
@@ -1480,35 +1435,36 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff 
                             : 'border-emerald-200 bg-emerald-50/40 hover:border-emerald-300'
                         }`}
                       >
-                        {isCurrent && (
-                          <span className="absolute -top-2.5 right-2 px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-white shadow-xs">
-                            ★ Đang Chọn
-                          </span>
-                        )}
-
-                        <div className="flex items-center justify-between">
-                          <span className="text-base font-black text-slate-900 tracking-tight">
+                        <div>
+                          <div className={`text-sm font-black tracking-tight ${isCurrent ? 'text-blue-900' : 'text-slate-900'}`}>
                             BÀN {ban.so_ban}
-                          </span>
-                          <span className="flex items-center gap-1 text-[11px] font-bold text-slate-500">
-                            <Users className="w-3 h-3 text-slate-400" />
-                            {ban.suc_chua}
-                          </span>
+                          </div>
+                          <div className={`text-[11px] font-medium truncate mt-0.5 ${isCurrent ? 'text-blue-700/80 font-bold' : 'text-slate-500'}`}>
+                            {ban.khu_vuc}
+                          </div>
                         </div>
 
-                        <div className="text-[11px] text-slate-500 font-medium truncate">
-                          {ban.khu_vuc}
-                        </div>
-
-                        <div className="pt-1 flex items-center justify-between border-t border-slate-200/60">
-                          <span className={`text-[11px] font-bold ${
-                            isBusy ? 'text-amber-700' : isReserved ? 'text-sky-700' : 'text-emerald-700'
-                          }`}>
-                            {isBusy ? '🟡 Có khách' : isReserved ? '🔵 Đã đặt' : '🟢 Bàn trống'}
-                          </span>
-                          <span className="text-[10px] font-black text-amber-700 hover:underline">
-                            Chọn →
-                          </span>
+                        <div className={`pt-1.5 flex items-center justify-between border-t ${isCurrent ? 'border-blue-200' : 'border-slate-200/60'}`}>
+                          {isCurrent ? (
+                            <span className="text-[11px] font-black text-blue-700 flex items-center gap-1.5">
+                              <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+                              <span>Đang chọn</span>
+                            </span>
+                          ) : (
+                            <>
+                              <span className={`text-[11px] font-bold flex items-center gap-1.5 ${
+                                isBusy ? 'text-amber-700' : isReserved ? 'text-sky-700' : 'text-emerald-700'
+                              }`}>
+                                <span className={`w-2 h-2 rounded-full ${
+                                  isBusy ? 'bg-amber-500' : isReserved ? 'bg-sky-500' : 'bg-emerald-500'
+                                }`}></span>
+                                <span>{isBusy ? 'Có khách' : isReserved ? 'Đã đặt' : 'Trống'}</span>
+                              </span>
+                              <span className="text-[11px] font-black text-blue-600 hover:underline">
+                                Chọn →
+                              </span>
+                            </>
+                          )}
                         </div>
                       </div>
                     );

@@ -75,6 +75,9 @@ export async function capNhatTonKho(req, res) {
     }
 
     nguyenLieu.so_luong_ton = Math.max(0, soLuongMoi);
+    if (req.body.han_su_dung) {
+      nguyenLieu.han_su_dung = new Date(req.body.han_su_dung);
+    }
     await nguyenLieu.save();
 
     res.json({ success: true, message: 'Cập nhật kho thành công!', ingredient: nguyenLieu.toJSON() });
@@ -91,7 +94,7 @@ export async function capNhatTonKho(req, res) {
  */
 export async function themNguyenLieuMoi(req, res) {
   try {
-    const { ten_nguyen_lieu, don_vi_tinh = 'kg', so_luong_ton = 0, gia_nhap_trung_binh = 0, dinh_muc_toi_thieu = 5 } = req.body;
+    const { ten_nguyen_lieu, don_vi_tinh = 'kg', so_luong_ton = 0, gia_nhap_trung_binh = 0, dinh_muc_toi_thieu = 5, han_su_dung = null } = req.body;
 
     if (!ten_nguyen_lieu) {
       return res.status(400).json({ success: false, message: 'Tên nguyên liệu là trường bắt buộc.' });
@@ -100,11 +103,12 @@ export async function themNguyenLieuMoi(req, res) {
     const maSoMoi = await layMaSoTiepTheo('ingredient_id');
     const nguyenLieuMoi = await NguyenLieu.create({
       id: maSoMoi,
-      ten_nguyen_lieu,
+      ten_nguyen_lieu: ten_nguyen_lieu.trim(),
       don_vi_tinh,
       so_luong_ton: Number(so_luong_ton),
       gia_nhap_trung_binh: Number(gia_nhap_trung_binh),
-      dinh_muc_toi_thieu: Number(dinh_muc_toi_thieu)
+      dinh_muc_toi_thieu: Number(dinh_muc_toi_thieu),
+      han_su_dung: han_su_dung ? new Date(han_su_dung) : null
     });
 
     res.status(201).json({ success: true, message: 'Thêm nguyên liệu vào kho thành công!', ingredient: nguyenLieuMoi.toJSON() });
@@ -128,19 +132,55 @@ export async function layDanhSachNhaCungCap(req, res) {
   }
 }
 
+/**
+ * Thêm nhà cung cấp mới vào hệ thống
+ * @function themNhaCungCapMoi
+ * @param {Object} req - Express Request
+ * @param {Object} res - Express Response
+ */
+export async function themNhaCungCapMoi(req, res) {
+  try {
+    const { ma_ncc, ten_ncc, so_dien_thoai = '', email = '', dia_chi = '', danh_gia_sao = 5.0 } = req.body;
+
+    if (!ten_ncc) {
+      return res.status(400).json({ success: false, message: 'Tên nhà cung cấp là trường bắt buộc.' });
+    }
+
+    const maSoMoi = await layMaSoTiepTheo('supplier_id');
+    const maNccTao = ma_ncc ? ma_ncc.trim().toUpperCase() : `NCC_${maSoMoi}`;
+
+    const nccMoi = await NhaCungCap.create({
+      id: maSoMoi,
+      ma_ncc: maNccTao,
+      ten_ncc: ten_ncc.trim(),
+      so_dien_thoai: so_dien_thoai.trim(),
+      email: email.trim(),
+      dia_chi: dia_chi.trim(),
+      danh_gia_sao: Number(danh_gia_sao) || 5.0
+    });
+
+    res.status(201).json({ success: true, message: 'Thêm nhà cung cấp thành công!', supplier: nccMoi.toJSON() });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+}
+
 // Bí danh tương thích
 export const getIngredients = layDanhSachNguyenLieu;
 export const updateStock = capNhatTonKho;
 export const createIngredient = themNguyenLieuMoi;
 export const getSuppliers = layDanhSachNhaCungCap;
+export const createSupplier = themNhaCungCapMoi;
 
 export default {
   layDanhSachNguyenLieu,
   capNhatTonKho,
   themNguyenLieuMoi,
   layDanhSachNhaCungCap,
+  themNhaCungCapMoi,
   getIngredients,
   updateStock,
   createIngredient,
-  getSuppliers
+  getSuppliers,
+  createSupplier
 };

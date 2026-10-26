@@ -536,10 +536,10 @@ export default function DangNhapHeThong() {
                 <div className="mt-3 pt-3 border-top border-slate-100">
                   <a
                     href="?table=1"
-                    className="btn btn-primary w-100 py-2.5 rounded-pill d-flex align-items-center justify-content-center gap-2 text-white font-black text-xs shadow-sm"
+                    className="btn btn-primary w-100 py-2.5 px-3 rounded-pill d-flex align-items-center justify-content-center gap-2 text-white font-bold text-xs shadow-sm overflow-hidden"
                   >
-                    <QrCode className="w-4 h-4" />
-                    <span>📱 Khách Quét Mã QR Gọi Món Tại Bàn</span>
+                    <QrCode className="w-4 h-4 shrink-0 text-white" />
+                    <span className="truncate">Khách Quét Mã QR Gọi Món Tại Bàn</span>
                   </a>
                 </div>
               </div>

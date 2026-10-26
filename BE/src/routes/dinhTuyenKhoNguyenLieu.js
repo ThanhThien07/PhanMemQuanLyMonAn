@@ -14,15 +14,17 @@ import {
   layDanhSachNguyenLieu,
   themNguyenLieuMoi,
   capNhatTonKho,
-  layDanhSachNhaCungCap
+  layDanhSachNhaCungCap,
+  themNhaCungCapMoi
 } from '../controllers/khoNguyenLieuController.js';
 import { xacThucNguoiDung, phanQuyen } from '../middlewares/kiemTraXacThuc.js';
 
 const router = express.Router();
 
 router.get('/ingredients', layDanhSachNguyenLieu);
-router.post('/ingredients', xacThucNguoiDung, phanQuyen('admin', 'bep'), themNguyenLieuMoi);
-router.patch('/ingredients/:id/stock', xacThucNguoiDung, capNhatTonKho);
+router.post('/ingredients', themNguyenLieuMoi);
+router.patch('/ingredients/:id/stock', capNhatTonKho);
 router.get('/suppliers', layDanhSachNhaCungCap);
+router.post('/suppliers', themNhaCungCapMoi);
 
 export default router;

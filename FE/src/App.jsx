@@ -94,7 +94,6 @@ export default function App() {
         'tables',
         'pos',
         'reservations',
-        'qr_order',
         'kitchen',
         'inventory',
         'dishes',
@@ -213,7 +212,7 @@ export default function App() {
             case 'reports':
               return <BaoCaoThongKeDoanhThu />;
             case 'qr_order':
-              return <KhachHangGoiMonQR onExitToStaff={() => thayDoiTab('tables')} />;
+              return <KhachHangGoiMonQR onExitToStaff={() => thayDoiTab('tables')} isEmbedded={true} />;
             default:
               return <QuanLySoDoBan setActiveTab={thayDoiTab} />;
           }

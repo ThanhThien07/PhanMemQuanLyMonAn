@@ -64,7 +64,7 @@ export default function ThanhMenuDieuHuong({ activeTab, setActiveTab, sidebarMo,
     { id: 'tables', label: 'Sơ Đồ Bàn', icon: Grid3X3, roles: ['admin', 'thu_ngan', 'phuc_vu'] },
     { id: 'pos', label: vaiTro === 'thu_ngan' ? 'POS Thu Ngân' : 'POS Gọi Món', icon: ShoppingBag, roles: ['admin', 'thu_ngan', 'phuc_vu'] },
     { id: 'reservations', label: 'Đặt Bàn Trước', icon: CalendarClock, roles: ['admin', 'phuc_vu'] },
-    { id: 'qr_order', label: 'Khách Quét QR Bàn', icon: QrCode, badge: 'QR', roles: ['admin', 'phuc_vu'] },
+    { id: 'qr_order', label: 'Khách Quét QR Bàn', icon: QrCode, badge: 'QR', roles: ['phuc_vu'] },
 
     // Phân hệ Chế biến Bếp & Kho (Admin xem để theo dõi định mức và kiểm kê)
     { id: 'kitchen', label: 'Màn Hình Bếp', icon: ChefHat, badge: 'Live', roles: ['admin', 'bep'] },

@@ -131,7 +131,7 @@ export default function ModalInHoaDon({ table, orders, onClose, onSuccess }) {
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between text-slate-600 font-medium">
               <span>Tạm tính:</span>
-              <span className="font-bold text-slate-800">{dinhDangTienTe(tongTamTinh)}</span>
+              <span className="font-bold text-slate-800 whitespace-nowrap text-nowrap">{dinhDangTienTe(tongTamTinh)}</span>
             </div>
             <div className="flex justify-between items-center text-slate-600 font-medium">
               <span>Giảm giá:</span>
@@ -146,12 +146,12 @@ export default function ModalInHoaDon({ table, orders, onClose, onSuccess }) {
                   <option value={10}>10% (Sinh Nhật)</option>
                   <option value={15}>15% (Đặc Biệt)</option>
                 </select>
-                <span className="font-bold text-rose-600">-{dinhDangTienTe(soTienGiamGia)}</span>
+                <span className="font-bold text-rose-600 whitespace-nowrap text-nowrap">-{dinhDangTienTe(soTienGiamGia)}</span>
               </div>
             </div>
             <div className="flex justify-between text-base font-black text-amber-700 pt-2 border-t border-slate-300 font-sans">
               <span>TỔNG THANH TOÁN:</span>
-              <span className="text-xl text-slate-900 font-black">{dinhDangTienTe(tongTienPhaiTra)}</span>
+              <span className="text-xl text-slate-900 font-black whitespace-nowrap text-nowrap">{dinhDangTienTe(tongTienPhaiTra)}</span>
             </div>
           </div>
 

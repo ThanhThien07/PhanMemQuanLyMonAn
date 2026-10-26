@@ -23,14 +23,66 @@ import { DatMon, BanAn, NguyenLieu, DatBanTruoc, MonAn } from '../models/moHinhD
  */
 export async function layThongKeTongQuan(req, res) {
   try {
-    // 1. Tính tổng doanh thu từ các đơn hàng đã thanh toán hoàn tất
+    const { range = 'all', date, month, year, startDate, endDate } = req.query;
+
+    const thoiDiemDauNgay = new Date();
+    thoiDiemDauNgay.setHours(0, 0, 0, 0);
+    const thoiDiemCuoiNgay = new Date();
+    thoiDiemCuoiNgay.setHours(23, 59, 59, 999);
+
+    const boLocThoiGian = { trang_thai: { $ne: 'da_huy' } };
+
+    // 1. Lọc theo ngày cụ thể (YYYY-MM-DD)
+    if (date) {
+      const d = new Date(date);
+      if (!isNaN(d.getTime())) {
+        const dauNgay = new Date(d);
+        dauNgay.setHours(0, 0, 0, 0);
+        const cuoiNgay = new Date(d);
+        cuoiNgay.setHours(23, 59, 59, 999);
+        boLocThoiGian.createdAt = { $gte: dauNgay, $lte: cuoiNgay };
+      }
+    } 
+    // 2. Lọc theo khoảng ngày (startDate -> endDate)
+    else if (startDate && endDate) {
+      const d1 = new Date(startDate);
+      d1.setHours(0, 0, 0, 0);
+      const d2 = new Date(endDate);
+      d2.setHours(23, 59, 59, 999);
+      boLocThoiGian.createdAt = { $gte: d1, $lte: d2 };
+    }
+    // 3. Lọc theo tháng và năm cụ thể
+    else if (month && year) {
+      const m = parseInt(month, 10) - 1;
+      const y = parseInt(year, 10);
+      const dauThang = new Date(y, m, 1, 0, 0, 0);
+      const cuoiThang = new Date(y, m + 1, 0, 23, 59, 59, 999);
+      boLocThoiGian.createdAt = { $gte: dauThang, $lte: cuoiThang };
+    }
+    // 4. Lọc theo preset range ('today', '7days', 'month', 'all')
+    else if (range === 'today') {
+      boLocThoiGian.createdAt = { $gte: thoiDiemDauNgay, $lte: thoiDiemCuoiNgay };
+    } else if (range === '7days') {
+      const bayNgayTruoc = new Date();
+      bayNgayTruoc.setDate(bayNgayTruoc.getDate() - 7);
+      bayNgayTruoc.setHours(0, 0, 0, 0);
+      boLocThoiGian.createdAt = { $gte: bayNgayTruoc, $lte: thoiDiemCuoiNgay };
+    } else if (range === 'month') {
+      const dauThang = new Date();
+      dauThang.setDate(1);
+      dauThang.setHours(0, 0, 0, 0);
+      boLocThoiGian.createdAt = { $gte: dauThang, $lte: thoiDiemCuoiNgay };
+    }
+
+    // 1. Tính tổng doanh thu và tổng số đơn theo bộ lọc thời gian
+    const boLocDoanhThu = {
+      ...boLocThoiGian,
+      phuong_thuc_thanh_toan: { $ne: 'chua_thanh_toan' },
+      trang_thai: 'hoan_thanh'
+    };
+
     const thongKeDoanhThu = await DatMon.aggregate([
-      {
-        $match: {
-          phuong_thuc_thanh_toan: { $ne: 'chua_thanh_toan' },
-          trang_thai: 'hoan_thanh'
-        }
-      },
+      { $match: boLocDoanhThu },
       {
         $group: {
           _id: null,
@@ -56,16 +108,11 @@ export async function layThongKeTongQuan(req, res) {
       count: t.count
     }));
 
-    // 3. Cảnh báo kho: Đếm số lượng nguyên liệu đang cạn kiệt (tồn <= định mức)
+    // 3. Cảnh báo kho: Đếm số lượng nguyên liệu đang cạn kiệt
     const toanBoNguyenLieu = await NguyenLieu.find({});
     const soLuongNguyenLieuCanKho = toanBoNguyenLieu.filter(i => i.so_luong_ton <= i.dinh_muc_toi_thieu).length;
 
     // 4. Lịch đặt bàn trước trong ngày hôm nay
-    const thoiDiemDauNgay = new Date();
-    thoiDiemDauNgay.setHours(0, 0, 0, 0);
-    const thoiDiemCuoiNgay = new Date();
-    thoiDiemCuoiNgay.setHours(23, 59, 59, 999);
-
     const soLichDatBanHomNay = await DatBanTruoc.countDocuments({
       thoi_gian_hen: { $gte: thoiDiemDauNgay, $lte: thoiDiemCuoiNgay },
       trang_thai: 'da_xac_nhan'
@@ -75,6 +122,7 @@ export async function layThongKeTongQuan(req, res) {
     const thongKeThanhToan = await DatMon.aggregate([
       {
         $match: {
+          ...boLocThoiGian,
           phuong_thuc_thanh_toan: { $ne: 'chua_thanh_toan' }
         }
       },
@@ -90,28 +138,35 @@ export async function layThongKeTongQuan(req, res) {
       total: p.total
     }));
 
-    // 6. Xếp hạng toàn bộ các món ăn đã bán (Sold Dishes Breakdown)
-    const { range = 'all' } = req.query;
-    const boLocThoiGian = { trang_thai: { $ne: 'da_huy' } };
-
-    if (range === 'today') {
-      boLocThoiGian.createdAt = { $gte: thoiDiemDauNgay, $lte: thoiDiemCuoiNgay };
-    } else if (range === '7days') {
-      const bayNgayTruoc = new Date();
-      bayNgayTruoc.setDate(bayNgayTruoc.getDate() - 7);
-      bayNgayTruoc.setHours(0, 0, 0, 0);
-      boLocThoiGian.createdAt = { $gte: bayNgayTruoc };
-    } else if (range === 'month') {
-      const dauThang = new Date();
-      dauThang.setDate(1);
-      dauThang.setHours(0, 0, 0, 0);
-      boLocThoiGian.createdAt = { $gte: dauThang };
-    }
-
-    const thongKeToanBoMon = await DatMon.aggregate([
+    // 6. Sơ đồ doanh thu theo từng ngày (Daily Revenue Timeline)
+    const thongKeDoanhThuTheoNgay = await DatMon.aggregate([
       {
-        $match: boLocThoiGian
+        $match: {
+          ...boLocThoiGian,
+          phuong_thuc_thanh_toan: { $ne: 'chua_thanh_toan' }
+        }
       },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: '%Y-%m-%d', date: '$createdAt' }
+          },
+          revenue: { $sum: '$tong_tien' },
+          count: { $sum: 1 }
+        }
+      },
+      { $sort: { _id: 1 } }
+    ]);
+
+    const soDoDoanhThu = thongKeDoanhThuTheoNgay.map(item => ({
+      date: item._id,
+      revenue: item.revenue,
+      count: item.count
+    }));
+
+    // 7. Xếp hạng toàn bộ các món ăn đã bán
+    const thongKeToanBoMon = await DatMon.aggregate([
+      { $match: boLocThoiGian },
       {
         $group: {
           _id: '$mon_an_id',
@@ -121,9 +176,7 @@ export async function layThongKeTongQuan(req, res) {
           last_order_at: { $max: '$createdAt' }
         }
       },
-      {
-        $sort: { total_revenue: -1 }
-      }
+      { $sort: { total_revenue: -1 } }
     ]);
 
     const dsIdMon = thongKeToanBoMon.map(t => t._id);
@@ -152,7 +205,7 @@ export async function layThongKeTongQuan(req, res) {
 
     const top5MonBanChay = danhSachMonDaBan.slice(0, 5);
 
-    // 7. Lấy danh sách giao dịch & chi tiết các lượt bán hàng gần nhất (Detailed Sales Orders)
+    // 8. Lấy danh sách giao dịch & chi tiết các lượt bán hàng gần nhất
     const cacDonBanChiTiet = await DatMon.find(boLocThoiGian)
       .sort({ createdAt: -1 })
       .limit(100);
@@ -186,6 +239,7 @@ export async function layThongKeTongQuan(req, res) {
         reservationsToday: soLichDatBanHomNay,
         tableStats: coCauBan,
         paymentBreakdown: coCauThanhToan,
+        dailyRevenue: soDoDoanhThu,
         topDishes: top5MonBanChay,
         soldDishes: danhSachMonDaBan,
         detailedOrders: danhSachDonHangChiTiet

@@ -241,19 +241,21 @@ export default function ManHinhBepKDS() {
                   <div className="pt-3 border-top border-slate-200/80">
                     {dangNau ? (
                       <button
+                        type="button"
                         onClick={() => capNhatTrangThai(mon.id, 'da_phuc_vu')}
-                        className="btn btn-success w-100 py-3 rounded-pill text-white font-black text-xs d-flex align-items-center justify-content-center gap-2 shadow-sm cursor-pointer"
+                        className="btn btn-success w-100 py-3 rounded-pill text-white font-black text-xs d-inline-flex align-items-center justify-content-center gap-2 shadow-sm cursor-pointer whitespace-nowrap"
                       >
-                        <CheckCircle2 className="w-4 h-4" />
-                        <span>Nấu Xong & Báo Phục Vụ</span>
+                        <CheckCircle2 className="w-4 h-4 shrink-0" />
+                        <span className="whitespace-nowrap">Nấu Xong & Báo Phục Vụ</span>
                       </button>
                     ) : (
                       <button
+                        type="button"
                         onClick={() => capNhatTrangThai(mon.id, 'dang_che_bien')}
-                        className="btn btn-primary w-100 py-3 rounded-pill text-white font-black text-xs d-flex align-items-center justify-content-center gap-2 shadow-sm cursor-pointer"
+                        className="btn btn-primary w-100 py-3 rounded-pill text-white font-black text-xs d-inline-flex align-items-center justify-content-center gap-2 shadow-sm cursor-pointer whitespace-nowrap"
                       >
-                        <Flame className="w-4 h-4 text-warning" />
-                        <span>Bắt Đầu Nấu (Trừ Kho BOM)</span>
+                        <Flame className="w-4 h-4 text-warning shrink-0" />
+                        <span className="whitespace-nowrap">Bắt Đầu Nấu (Trừ Kho BOM)</span>
                       </button>
                     )}
                   </div>

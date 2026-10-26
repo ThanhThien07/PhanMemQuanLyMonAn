@@ -23,7 +23,7 @@
   - Ảnh món ăn to rõ, bo tròn `rounded-2xl` hoặc ăn sát viền card.
 
 ## 2. Operations & Workflow Rules
-- **Admin**: Nhìn thấy **ĐẦY ĐỦ TẤT CẢ 10 phân hệ** trên menu để theo dõi, giám sát và xem báo cáo thống kê toàn diện (Dashboard, Báo Cáo Doanh Thu, Sơ Đồ Bàn, POS, Bếp KDS, Đặt Bàn, Thực Đơn, Kho BOM, CRM Khách Hàng, Khách Quét QR). Không được lược bỏ menu của Admin!
+- **Admin**: Nhìn thấy các phân hệ quản trị trên menu (Dashboard, Báo Cáo Doanh Thu, Sơ Đồ Bàn, POS, Bếp KDS, Đặt Bàn, Thực Đơn, Kho BOM, CRM Khách Hàng). Phân hệ "Khách Quét QR Bàn" dành riêng cho khách quét mã tại bàn và nhân viên phục vụ, không hiển thị trên menu Admin.
 - **Thu Ngân**: Khi bấm xác nhận thanh toán -> Tự động giải phóng bàn (`trang_thai: 'trong', so_luong_khach: 0`) ngay lập tức.
 - **Bếp Trưởng KDS**: Bấm 'Bắt Đầu Nấu' tự động trừ kho nguyên liệu theo định mức BOM.
 - **Phục Vụ**: Quản lý danh sách bàn đã đặt, đón khách chưa đặt -> mở bàn và hướng dẫn khách quét mã QR order món tại bàn.
@@ -36,7 +36,7 @@
      - Kiểm tra font có chân tiếng Việt (`Lora`, `Merriweather`, serif) toàn bộ web.
      - Kiểm tra nút bấm bo tròn viên thuốc `rounded-pill`, nút chính `btn-primary`.
      - Kiểm tra quy tắc tag và giá: BỎ tag đỏ danh mục trên ảnh món, CHỈ hiện tag đỏ khi có giảm giá và giá màu đỏ; món bình thường không có tag trên ảnh và giá màu đen.
-     - Kiểm tra Admin xem đầy đủ 10 phân hệ.
+     - Kiểm tra Admin xem đầy đủ các phân hệ quản trị (Dashboard, Báo Cáo Doanh Thu, Sơ Đồ Bàn, POS, Bếp KDS, Đặt Bàn, Thực Đơn, Kho BOM, CRM).
   2. **Skill `web-performance-and-seo`**:
      - Tối ưu Core Web Vitals (LCP ≤ 2.5s, INP ≤ 200ms, CLS ≤ 0.1).
      - Tất cả thẻ `<img>` bắt buộc có `width`, `height`, `loading="lazy"`, `decoding="async"`, `alt` có nghĩa để chống giật layout (CLS).

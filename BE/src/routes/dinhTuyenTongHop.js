@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
     phien_ban: '2.0.0',
     trang_thai: 'ONLINE',
     ngay_cap_nhat: '2026-09-15',
-    tac_gia: 'Nhóm 5 - Nguyễn Ngọc Hà Thảo',
+    tac_gia: 'Nguyễn Hoàng Hưng - MSSV: 501250384',
     mon_hoc: 'Chuyên Đề Back-End & Node.js RESTful API',
     cac_phan_he_api: {
       xac_thuc: '/api/auth',

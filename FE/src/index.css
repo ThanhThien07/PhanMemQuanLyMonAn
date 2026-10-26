@@ -53,25 +53,98 @@ p, span, div, a, button, input, select, textarea, label, table, th, td, tr, thea
   }
 }
 
-/* Áp dụng bo tròn hoàn toàn (pill rounded) cho tất cả các nút trên toàn web */
+/* Áp dụng bo tròn hoàn toàn (pill rounded) và chống rớt dòng cho tất cả các nút trên toàn web */
 button, .btn, input[type="button"], input[type="submit"], input[type="reset"] {
   border-radius: 9999px !important;
+  white-space: nowrap !important;
 }
 
-/* Custom modern scrollbar for Light Theme */
+/* Chống rớt dòng và vỡ layout toàn diện (Global Text, Numbers & Badge Safeguards) */
+.whitespace-nowrap, .text-nowrap {
+  white-space: nowrap !important;
+}
+
+/* Toàn bộ tiêu đề cột bảng th bắt buộc không bao giờ bị ngắt dòng từ */
+th, .table th, thead th, .table thead th,
+table th, table thead th {
+  white-space: nowrap !important;
+  vertical-align: middle !important;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap !important;
+}
+
+.badge, .badge.d-flex, .badge.flex, .badge.d-inline-flex, .badge.inline-flex {
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  vertical-align: middle !important;
+}
+
+.badge svg, .badge i {
+  flex-shrink: 0 !important;
+}
+
+.shrink-0 {
+  flex-shrink: 0 !important;
+}
+
+/* Nút bấm hành động nhỏ d-inline-flex / inline-flex luôn trải ngang 1 hàng */
+button.inline-flex, .btn.inline-flex,
+button.d-inline-flex, .btn.d-inline-flex {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+}
+
+/* Đảm bảo toàn bộ menu sidebar luôn căn trái tự nhiên theo quy chuẩn AGENTS.md */
+aside nav button,
+nav button.w-full {
+  display: flex !important;
+  width: 100% !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  text-align: left !important;
+}
+
+button svg, .btn svg {
+  flex-shrink: 0 !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+}
+
+/* Tối ưu cuộn mượt mà cho các form nhỏ, popup và modal */
+.modal, .modal-body, .modal-dialog-scrollable, [role="dialog"], .modal-content {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Custom modern scrollbar mượt mà tinh tế */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.5) transparent;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(241, 245, 249, 0.8);
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(203, 213, 225, 0.8);
+  background: rgba(148, 163, 184, 0.45);
   border-radius: 9999px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #1d4ed8;
+  background: #2563eb;
 }
 
 /* Tiện ích ẩn thanh cuộn nhưng vẫn cuộn được */
@@ -192,6 +265,17 @@ a:hover {
   box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25) !important;
 }
 
+.btn-outline-secondary {
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
+  border-radius: 9999px !important;
+}
+.btn-outline-secondary:hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #94a3b8 !important;
+}
+
 .btn-outline-danger {
   border-color: #dc2626 !important;
   color: #dc2626 !important;
@@ -201,6 +285,13 @@ a:hover {
   background: #dc2626 !important;
   color: #ffffff !important;
   box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25) !important;
+}
+
+/* Chống triệt để lỗi chữ trắng trên nền sáng khi hover vào nút */
+.btn.bg-white:hover, .btn[class*="bg-white"]:hover {
+  color: #1e40af !important;
+  border-color: #3b82f6 !important;
+  background-color: #f8fafc !important;
 }
 
 .btn-success {

@@ -16,8 +16,8 @@
  * @returns {string} Chuỗi tiền tệ (ví dụ: "450.000 đ")
  */
 export function dinhDangTienTe(soTien) {
-  if (soTien === undefined || soTien === null || isNaN(soTien)) return '0 đ';
-  return `${Number(soTien).toLocaleString('vi-VN')} đ`;
+  if (soTien === undefined || soTien === null || isNaN(soTien)) return '0\u00A0đ';
+  return `${Number(soTien).toLocaleString('vi-VN')}\u00A0đ`;
 }
 
 /**

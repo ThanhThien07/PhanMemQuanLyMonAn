@@ -17,6 +17,7 @@ import express from 'express';
 import {
   layDanhSachBan,
   layChiTietBan,
+  layLichSuBan,
   capNhatTrangThaiBan,
   capNhatSoLuongKhach,
   goiNhanVienPhucVu,
@@ -29,6 +30,7 @@ import { xacThucNguoiDung, phanQuyen } from '../middlewares/kiemTraXacThuc.js';
 const router = express.Router();
 
 router.get('/', layDanhSachBan);
+router.get('/:id/history', layLichSuBan);
 router.get('/:id', layChiTietBan);
 router.post('/', xacThucNguoiDung, phanQuyen('admin'), taoBanMoi);
 router.patch('/:id/status', xacThucNguoiDung, capNhatTrangThaiBan);

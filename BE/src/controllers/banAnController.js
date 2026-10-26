@@ -14,12 +14,12 @@
  * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
  */
 
-import { BanAn, DatMon, DanhGia, layMaSoTiepTheo } from '../models/moHinhDuLieu.js';
+import { BanAn, DatMon, DanhGia, MonAn, layMaSoTiepTheo } from '../models/moHinhDuLieu.js';
 import { phatSuKienTrangThaiBan, phatSuKienGoiNhanVien, phatSuKienYeuCauThanhToan } from '../utils/truyenThongSocket.js';
 import { chuyenDoiBoLocId } from '../utils/taoMaTuTang.js';
 
 /**
- * Lấy danh sách tất cả các bàn ăn kèm thông tin tạm tính và số món chưa thanh toán
+ * Lấy danh sách tất cả các bàn ăn kèm thông tin tạm tính, số món và danh sách món chưa thanh toán
  * @function layDanhSachBan
  * @param {Object} req - Express Request
  * @param {Object} res - Express Response
@@ -35,42 +35,100 @@ export async function layDanhSachBan(req, res) {
 
     const danhSachBan = await BanAn.find(boLoc).sort({ so_ban: 1 });
 
-    // Sử dụng MongoDB Aggregation Pipeline gom nhóm tổng tiền và số món chưa thanh toán
-    const donMonDangPhucVu = await DatMon.aggregate([
-      {
-        $match: {
-          phuong_thuc_thanh_toan: 'chua_thanh_toan',
-          trang_thai: { $ne: 'da_huy' }
-        }
-      },
-      {
-        $group: {
-          _id: '$ban_id',
-          tam_tinh: { $sum: '$tong_tien' },
-          so_mon: { $sum: 1 }
-        }
-      }
-    ]);
+    // Lấy tất cả các món ăn đang phục vụ chưa thanh toán
+    const cacMonDangPhucVu = await DatMon.find({
+      phuong_thuc_thanh_toan: 'chua_thanh_toan',
+      trang_thai: { $ne: 'da_huy' }
+    });
+
+    const dsMonId = [...new Set(cacMonDangPhucVu.map(m => m.mon_an_id))];
+    const dsMonAn = await MonAn.find({ id: { $in: dsMonId } });
+    const mapMonAn = {};
+    dsMonAn.forEach(m => { mapMonAn[m.id] = m; });
 
     const anhXaDonMon = {};
-    donMonDangPhucVu.forEach(don => {
-      anhXaDonMon[don._id] = {
-        tam_tinh: don.tam_tinh || 0,
-        so_mon: don.so_mon || 0
-      };
+    cacMonDangPhucVu.forEach(don => {
+      const banKey = don.ban_id;
+      if (!anhXaDonMon[banKey]) {
+        anhXaDonMon[banKey] = {
+          tam_tinh: 0,
+          so_mon: 0,
+          danh_sach_mon: []
+        };
+      }
+      anhXaDonMon[banKey].tam_tinh += (don.tong_tien || 0);
+      anhXaDonMon[banKey].so_mon += (don.so_luong || 1);
+      anhXaDonMon[banKey].danh_sach_mon.push({
+        id: don.id,
+        mon_an_id: don.mon_an_id,
+        ten_mon: mapMonAn[don.mon_an_id]?.ten_mon || `Món #${don.mon_an_id}`,
+        hinh_anh: mapMonAn[don.mon_an_id]?.hinh_anh || '',
+        so_luong: don.so_luong,
+        don_gia: don.don_gia || mapMonAn[don.mon_an_id]?.gia || 0,
+        tong_tien: don.tong_tien,
+        trang_thai: don.trang_thai
+      });
     });
 
     const ketQua = danhSachBan.map(ban => {
       const duLieuJson = ban.toJSON();
-      const thongKe = anhXaDonMon[ban.id] || anhXaDonMon[ban.so_ban] || { tam_tinh: 0, so_mon: 0 };
+      const thongKe = anhXaDonMon[ban.id] || anhXaDonMon[ban.so_ban] || { tam_tinh: 0, so_mon: 0, danh_sach_mon: [] };
       return {
         ...duLieuJson,
         tam_tinh: thongKe.tam_tinh,
-        so_mon: thongKe.so_mon
+        so_mon: thongKe.so_mon,
+        danh_sach_mon: thongKe.danh_sach_mon
       };
     });
 
     res.json({ success: true, tables: ketQua });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+}
+
+/**
+ * Tra cứu lịch sử gọi món & hóa đơn của riêng từng bàn
+ * @function layLichSuBan
+ * @param {Object} req - Express Request
+ * @param {Object} res - Express Response
+ */
+export async function layLichSuBan(req, res) {
+  try {
+    const { id } = req.params;
+    const banSo = Number(id);
+    const filter = !isNaN(banSo) ? { ban_id: banSo } : chuyenDoiBoLocId(id);
+
+    const danhSachDatMon = await DatMon.find(filter).sort({ createdAt: -1 }).limit(100);
+    const dsMonId = [...new Set(danhSachDatMon.map(m => m.mon_an_id))];
+    const dsMonAn = await MonAn.find({ id: { $in: dsMonId } });
+    const mapMonAn = {};
+    dsMonAn.forEach(m => { mapMonAn[m.id] = m; });
+
+    const lichSu = danhSachDatMon.map(d => ({
+      id: d.id,
+      mon_an_id: d.mon_an_id,
+      ten_mon: mapMonAn[d.mon_an_id]?.ten_mon || `Món #${d.mon_an_id}`,
+      hinh_anh: mapMonAn[d.mon_an_id]?.hinh_anh || '',
+      so_luong: d.so_luong,
+      don_gia: d.don_gia,
+      tong_tien: d.tong_tien,
+      trang_thai: d.trang_thai,
+      phuong_thuc_thanh_toan: d.phuong_thuc_thanh_toan,
+      createdAt: d.createdAt
+    }));
+
+    const tongTienDaBan = lichSu
+      .filter(d => d.phuong_thuc_thanh_toan !== 'chua_thanh_toan' && d.trang_thai !== 'da_huy')
+      .reduce((sum, d) => sum + (d.tong_tien || 0), 0);
+
+    res.json({
+      success: true,
+      ban_id: banSo,
+      tongTienDaBan,
+      soLuotGoi: lichSu.length,
+      history: lichSu
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

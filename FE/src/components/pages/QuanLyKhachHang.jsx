@@ -299,55 +299,47 @@ export default function QuanLyKhachHang() {
   return (
     <div className="container-fluid px-2 px-md-4 py-3 max-w-7xl mx-auto space-y-4">
       {/* Tiêu đề & Tab điều hướng chính */}
-      <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
-        <div>
+      <div className="d-flex flex-column flex-xl-row align-items-xl-center justify-content-between gap-3 shrink-0">
+        <div className="shrink-0">
           <div className="d-flex align-items-center gap-2 mb-1">
-            <span className="badge bg-primary text-white rounded-pill px-2.5 py-1 text-xs">
+            <span className="badge bg-primary text-white rounded-pill px-2.5 py-1 text-xs whitespace-nowrap text-nowrap">
               <i className="bi bi-person-lines-fill me-1"></i>Hệ Thống Thành Viên
             </span>
-            <span className="text-xs text-slate-500 font-semibold">
-              Quản lý tài khoản đăng nhập & chăm sóc khách hàng
-            </span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-1">
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-0 whitespace-nowrap text-nowrap">
             Khách Hàng & Quản Lý Tài Khoản
           </h2>
-          <p className="text-slate-500 text-xs sm:text-sm font-medium mb-0">
-            Hồ sơ tích điểm CRM, hạng thành viên VIP và tài khoản người dùng hệ thống
-          </p>
         </div>
 
-        {/* Nút chuyển đổi Tab */}
-        <div className="d-flex items-center gap-2 w-100 w-md-auto">
-          <div className="d-flex flex-wrap gap-1.5 p-1 bg-slate-100 rounded-3 border border-slate-200 w-100 w-md-auto">
+        {/* Nút chuyển đổi Tab độc lập, tách nền nổi bật */}
+        <div className="d-flex align-items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => setTabHienTai('crm')}
+            className={`px-4 py-2 rounded-pill font-black text-xs d-inline-flex align-items-center gap-2 transition-all cursor-pointer whitespace-nowrap text-nowrap border-2 ${
+              tabHienTai === 'crm'
+                ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/20'
+                : 'bg-white text-slate-700 border-slate-200/90 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-400 shadow-2xs'
+            }`}
+          >
+            <Crown className="w-3.5 h-3.5 shrink-0" />
+            <span className="whitespace-nowrap text-nowrap">Hồ Sơ Khách Hàng (CRM)</span>
+          </button>
+
+          {laAdmin && (
             <button
               type="button"
-              onClick={() => setTabHienTai('crm')}
-              className={`btn btn-sm rounded-2 font-bold px-3 py-1.5 transition-all text-xs flex-grow-1 flex-md-grow-0 ${
-                tabHienTai === 'crm'
-                  ? 'btn-primary text-white shadow-xs'
-                  : 'btn-light bg-transparent text-slate-600 border-0 hover:bg-white'
+              onClick={() => setTabHienTai('accounts')}
+              className={`px-4 py-2 rounded-pill font-black text-xs d-inline-flex align-items-center gap-2 transition-all cursor-pointer whitespace-nowrap text-nowrap border-2 ${
+                tabHienTai === 'accounts'
+                  ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/20'
+                  : 'bg-white text-slate-700 border-slate-200/90 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-400 shadow-2xs'
               }`}
             >
-              <Crown className="w-3.5 h-3.5 inline me-1.5" />
-              <span>Hồ Sơ Khách Hàng (CRM)</span>
+              <ShieldCheck className={`w-3.5 h-3.5 shrink-0 ${tabHienTai === 'accounts' ? 'text-white' : 'text-rose-500'}`} />
+              <span className="whitespace-nowrap text-nowrap">Tài Khoản Khách & Nhân Sự (Admin)</span>
             </button>
-
-            {laAdmin && (
-              <button
-                type="button"
-                onClick={() => setTabHienTai('accounts')}
-                className={`btn btn-sm rounded-2 font-bold px-3 py-1.5 transition-all text-xs flex-grow-1 flex-md-grow-0 ${
-                  tabHienTai === 'accounts'
-                    ? 'btn-primary text-white shadow-xs'
-                    : 'btn-light bg-transparent text-slate-600 border-0 hover:bg-white'
-                }`}
-              >
-                <ShieldCheck className="w-3.5 h-3.5 inline me-1.5 text-rose-500" />
-                <span>Tài Khoản Khách & Nhân Sự (Admin)</span>
-              </button>
-            )}
-          </div>
+          )}
         </div>
       </div>
 
@@ -371,11 +363,12 @@ export default function QuanLyKhachHang() {
             </div>
 
             <button
+              type="button"
               onClick={moModalThemCrm}
-              className="btn btn-primary text-white font-black px-4 py-2.5 rounded-pill d-flex align-items-center justify-content-center gap-2 shadow-xs shrink-0 text-xs sm:text-sm cursor-pointer"
+              className="btn btn-primary text-white font-black px-4 py-2.5 rounded-pill d-inline-flex align-items-center justify-content-center gap-2 shadow-xs shrink-0 text-xs sm:text-sm whitespace-nowrap cursor-pointer"
             >
-              <Plus className="w-4 h-4" />
-              <span>Thêm Hồ Sơ Khách Hàng</span>
+              <Plus className="w-4 h-4 shrink-0" />
+              <span className="whitespace-nowrap">Thêm Hồ Sơ Khách Hàng</span>
             </button>
           </div>
 
@@ -384,13 +377,13 @@ export default function QuanLyKhachHang() {
               <table className="table table-hover align-middle mb-0 w-full min-w-[900px]">
                 <thead className="bg-slate-50 text-xs font-black text-slate-700 uppercase tracking-wider border-bottom border-slate-200/90">
                   <tr>
-                    <th className="py-3.5 px-4">Khách Hàng</th>
-                    <th className="py-3.5 px-4">Số Điện Thoại</th>
-                    <th className="py-3.5 px-4">Email</th>
-                    <th className="py-3.5 px-4">Điểm Tích Lũy</th>
-                    <th className="py-3.5 px-4">Hạng Thành Viên</th>
-                    <th className="py-3.5 px-4 text-end">Tổng Chi Tiêu</th>
-                    <th className="py-3.5 px-4 text-center">Thao Tác</th>
+                    <th className="py-3.5 px-4 whitespace-nowrap text-nowrap">Khách Hàng</th>
+                    <th className="py-3.5 px-4 whitespace-nowrap text-nowrap">Số Điện Thoại</th>
+                    <th className="py-3.5 px-4 whitespace-nowrap text-nowrap">Email</th>
+                    <th className="py-3.5 px-4 whitespace-nowrap text-nowrap">Điểm Tích Lũy</th>
+                    <th className="py-3.5 px-4 whitespace-nowrap text-nowrap">Hạng Thành Viên</th>
+                    <th className="py-3.5 px-4 text-end whitespace-nowrap text-nowrap">Tổng Chi Tiêu</th>
+                    <th className="py-3.5 px-4 text-center whitespace-nowrap text-nowrap">Thao Tác</th>
                   </tr>
                 </thead>
                 <tbody className="text-sm">
@@ -491,11 +484,12 @@ export default function QuanLyKhachHang() {
             </div>
 
             <button
+              type="button"
               onClick={moModalThemAccount}
-              className="btn btn-primary text-white fw-bold px-3 py-2 rounded-3 d-flex align-items-center justify-content-center gap-2 shadow-xs shrink-0 text-xs sm:text-sm"
+              className="btn btn-primary text-white font-black px-4 py-2.5 rounded-pill d-inline-flex align-items-center justify-content-center gap-2 shadow-xs shrink-0 text-xs sm:text-sm whitespace-nowrap cursor-pointer"
             >
-              <Plus className="w-4 h-4" />
-              <span>Tạo Tài Khoản Mới</span>
+              <Plus className="w-4 h-4 shrink-0" />
+              <span className="whitespace-nowrap">Tạo Tài Khoản Mới</span>
             </button>
           </div>
 
@@ -504,12 +498,12 @@ export default function QuanLyKhachHang() {
               <table className="table table-hover align-middle mb-0 w-full min-w-[900px]">
                 <thead className="bg-slate-50 text-xs font-black text-slate-700 uppercase tracking-wider border-bottom border-slate-200/90">
                   <tr>
-                    <th className="py-3.5 px-4">Họ và Tên</th>
-                    <th className="py-3.5 px-4">Email Đăng Nhập</th>
-                    <th className="py-3.5 px-4">Số Điện Thoại</th>
-                    <th className="py-3.5 px-4">Vai Trò Hệ Thống</th>
-                    <th className="py-3.5 px-4">Trạng Thái</th>
-                    <th className="py-3.5 px-4 text-center">Thao Tác Quản Trị</th>
+                    <th className="py-3.5 px-4 whitespace-nowrap text-nowrap">Họ và Tên</th>
+                    <th className="py-3.5 px-4 whitespace-nowrap text-nowrap">Email Đăng Nhập</th>
+                    <th className="py-3.5 px-4 whitespace-nowrap text-nowrap">Số Điện Thoại</th>
+                    <th className="py-3.5 px-4 whitespace-nowrap text-nowrap">Vai Trò Hệ Thống</th>
+                    <th className="py-3.5 px-4 whitespace-nowrap text-nowrap">Trạng Thái</th>
+                    <th className="py-3.5 px-4 text-center whitespace-nowrap text-nowrap">Thao Tác Quản Trị</th>
                   </tr>
                 </thead>
                 <tbody className="text-sm">

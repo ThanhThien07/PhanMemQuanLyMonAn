@@ -9,7 +9,7 @@
 import React, { useEffect, useState } from 'react';
 import axiosApi from '../services/cauHinhAxiosApi';
 import { dinhDangTienTe, dinhDangNgayGio } from '../utils/dinhDangDuLieu';
-import { Plus, Phone, Users, Sparkles, CheckCircle, QrCode, X, ExternalLink, Copy } from 'lucide-react';
+import { Plus, Phone, Users, Sparkles, CheckCircle, QrCode, X, ExternalLink, Copy, Printer } from 'lucide-react';
 
 /**
  * Component Quản lý Đặt bàn trước
@@ -121,6 +121,137 @@ export default function QuanLyDatBanTruoc() {
     }
   };
 
+  /**
+   * In mã QR bàn ăn để dán lên bàn khi mã cũ bị mất hoặc hư hại
+   */
+  const inMaQRBan = (ban) => {
+    if (!ban) return;
+    const printWin = window.open('', '_blank', 'width=650,height=750');
+    if (!printWin) {
+      alert('Trình duyệt đã chặn cửa sổ pop-up in. Vui lòng cấp quyền mở pop-up.');
+      return;
+    }
+    const qrUrl = `${window.location.origin}/?table=${ban.id}`;
+    printWin.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8" />
+          <title>In Mã QR Bàn ${ban.so_ban} - Royal Bistro</title>
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+            * { box-sizing: border-box; font-family: 'Lora', Georgia, serif; }
+            body {
+              margin: 0;
+              padding: 24px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              min-height: 100vh;
+              background: #f8fafc;
+            }
+            .qr-card {
+              width: 330px;
+              border: 3px solid #1e40af;
+              border-radius: 24px;
+              padding: 24px;
+              text-align: center;
+              background: #ffffff;
+            }
+            .brand {
+              font-size: 20px;
+              font-weight: 900;
+              letter-spacing: 2px;
+              color: #1e3a8a;
+              margin-bottom: 2px;
+              text-transform: uppercase;
+            }
+            .sub-brand {
+              font-size: 11px;
+              font-weight: 700;
+              color: #64748b;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+              margin-bottom: 14px;
+            }
+            .table-badge {
+              display: inline-block;
+              background: #1e40af;
+              color: #ffffff;
+              font-size: 18px;
+              font-weight: 900;
+              padding: 6px 22px;
+              border-radius: 9999px;
+              margin-bottom: 4px;
+            }
+            .area-badge {
+              font-size: 12px;
+              color: #475569;
+              font-weight: 700;
+              margin-bottom: 14px;
+            }
+            .qr-frame {
+              background: #ffffff;
+              border: 2px solid #e2e8f0;
+              border-radius: 16px;
+              padding: 10px;
+              display: inline-block;
+              margin-bottom: 12px;
+            }
+            .qr-image {
+              width: 190px;
+              height: 190px;
+              display: block;
+              margin: 0 auto;
+              object-fit: contain;
+            }
+            .instructions {
+              font-size: 11.5px;
+              font-weight: 700;
+              color: #0f172a;
+              line-height: 1.4;
+              margin-bottom: 8px;
+            }
+            .url-text {
+              font-size: 10px;
+              color: #64748b;
+              font-family: monospace;
+              word-break: break-all;
+            }
+            @media print {
+              body { background: transparent; padding: 0; min-height: auto; }
+              .qr-card { box-shadow: none; border-color: #000; width: 100%; max-width: 320px; margin: 0 auto; }
+              @page { margin: 10mm; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="qr-card">
+            <div class="brand">Royal Bistro</div>
+            <div class="sub-brand">Fine Dining & Luxury Lounge</div>
+            <div class="table-badge">BÀN ${ban.so_ban}</div>
+            <div class="area-badge">${ban.khu_vuc || 'Tầng 1 - Sảnh Chính'}</div>
+            <div class="qr-frame">
+              <img class="qr-image" src="/ma_qr.jpg" alt="Mã QR Bàn ${ban.so_ban}" />
+            </div>
+            <div class="instructions">
+              Quý khách vui lòng dùng Camera điện thoại quét mã QR để xem thực đơn & gọi món
+            </div>
+            <div class="url-text">${qrUrl}</div>
+          </div>
+          <script>
+            window.onload = function() {
+              setTimeout(function() {
+                window.print();
+              }, 300);
+            };
+          </script>
+        </body>
+      </html>
+    `);
+    printWin.document.close();
+  };
+
   return (
     <div className="container-fluid px-2 px-md-4 py-3 max-w-7xl mx-auto space-y-4">
       {/* Tiêu đề & Nút tạo lịch mới */}
@@ -137,11 +268,12 @@ export default function QuanLyDatBanTruoc() {
           </h2>
         </div>
         <button
+          type="button"
           onClick={() => setHienModal(true)}
-          className="btn btn-primary text-white fw-bold px-4 py-2 rounded-pill flex items-center justify-center gap-2 shadow-xs shrink-0 self-start sm:self-auto transition-all cursor-pointer"
+          className="btn btn-primary text-white fw-bold px-4 py-2.5 rounded-pill d-inline-flex align-items-center justify-content-center gap-2 shadow-xs shrink-0 whitespace-nowrap transition-all cursor-pointer"
         >
-          <Plus className="w-4 h-4" />
-          <span>Tạo Lịch Hẹn Mới</span>
+          <Plus className="w-4 h-4 shrink-0" />
+          <span className="whitespace-nowrap">Tạo Lịch Hẹn Mới</span>
         </button>
       </div>
 
@@ -151,14 +283,14 @@ export default function QuanLyDatBanTruoc() {
           <table className="table table-hover align-middle mb-0 w-full min-w-[960px]">
             <thead className="table-light text-xs font-black text-slate-700 uppercase tracking-wider">
               <tr>
-                <th className="py-3.5 px-4 w-[140px]">Mã Đặt</th>
-                <th className="py-3.5 px-4 min-w-[260px]">Khách Hàng & Ghi Chú Đặc Biệt</th>
-                <th className="py-3.5 px-4 w-[160px]">Bàn & Khu Vực</th>
-                <th className="py-3.5 px-4 w-[140px]">Thời Gian Hẹn</th>
-                <th className="py-3.5 px-4 w-[100px]">Số Khách</th>
-                <th className="py-3.5 px-4 w-[120px]">Tiền Cọc</th>
-                <th className="py-3.5 px-4 w-[120px]">Trạng Thái</th>
-                <th className="py-3.5 px-4 w-[140px] text-end">Thao Tác</th>
+                <th className="py-3.5 px-4 whitespace-nowrap text-nowrap">Mã Đặt</th>
+                <th className="py-3.5 px-4 min-w-[260px] whitespace-nowrap text-nowrap">Khách Hàng & Ghi Chú Đặc Biệt</th>
+                <th className="py-3.5 px-4 whitespace-nowrap text-nowrap">Bàn & Khu Vực</th>
+                <th className="py-3.5 px-4 whitespace-nowrap text-nowrap">Thời Gian Hẹn</th>
+                <th className="py-3.5 px-4 whitespace-nowrap text-nowrap">Số Khách</th>
+                <th className="py-3.5 px-4 whitespace-nowrap text-nowrap">Tiền Cọc</th>
+                <th className="py-3.5 px-4 whitespace-nowrap text-nowrap">Trạng Thái</th>
+                <th className="py-3.5 px-4 text-end whitespace-nowrap text-nowrap">Thao Tác</th>
               </tr>
             </thead>
             <tbody className="text-sm font-medium">
@@ -363,14 +495,14 @@ export default function QuanLyDatBanTruoc() {
         </div>
       )}
 
-      {/* Popup Xem Mã QR Bàn Ăn Sau Khi Check-in */}
+      {/* Popup Xem & In Mã QR Bàn Ăn Sau Khi Check-in */}
       {banXemQR && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-white border-2 border-slate-200/90 rounded-3xl w-full max-w-sm max-h-[92vh] overflow-y-auto shadow-2xl p-5 sm:p-6 text-center space-y-4">
+          <div className="bg-white border-2 border-slate-200/90 rounded-3xl w-full max-w-sm shadow-2xl p-4 sm:p-5 text-center space-y-3 overflow-hidden">
             <div className="flex justify-between items-center pb-2 border-b border-slate-100">
               <div className="text-left">
-                <h3 className="font-black text-lg text-slate-900">Mã QR Bàn {banXemQR.so_ban}</h3>
-                <p className="text-xs text-slate-500 font-medium">{banXemQR.khu_vuc || 'Khu vực bàn'}</p>
+                <h3 className="font-black text-base sm:text-lg text-slate-900 mb-0">Mã QR Bàn {banXemQR.so_ban}</h3>
+                <p className="text-xs text-slate-500 font-medium mb-0">{banXemQR.khu_vuc || 'Tầng 1 - Sảnh Chính'}</p>
               </div>
               <button 
                 onClick={() => setBanXemQR(null)}
@@ -382,52 +514,37 @@ export default function QuanLyDatBanTruoc() {
 
             {/* Banner Hướng Dẫn Quét Mã Nổi Bật */}
             {thongBaoCheckin && (
-              <div className="p-3 bg-emerald-50 border-2 border-emerald-200/90 rounded-2xl text-xs text-emerald-900 font-bold flex items-center gap-2 text-left">
+              <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded-2xl text-xs text-emerald-900 font-bold flex items-center gap-2 text-left">
                 <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>{thongBaoCheckin}</span>
+                <span className="leading-tight">{thongBaoCheckin}</span>
               </div>
             )}
 
-            {/* Khung ảnh QR Code - Tối ưu CLS & Loading theo chuẩn Web Performance */}
-            <div className="p-4 bg-slate-50 rounded-2xl border-2 border-slate-200 inline-block mx-auto shadow-inner">
+            {/* Khung ảnh QR Code - Tối ưu CLS & Loading */}
+            <div className="p-3 bg-slate-50 rounded-2xl border-2 border-slate-200 inline-block mx-auto shadow-inner">
               <img
                 src="/ma_qr.jpg"
                 alt={`Mã QR Bàn ${banXemQR.so_ban}`}
-                width="192"
-                height="192"
+                width="160"
+                height="160"
                 loading="lazy"
                 decoding="async"
-                className="w-48 h-48 mx-auto rounded-xl shadow-md object-contain bg-white p-1 border-2 border-slate-100"
+                className="w-40 h-40 mx-auto rounded-xl shadow-xs object-contain bg-white p-1 border border-slate-100"
               />
-              <p className="text-[11px] text-blue-900 font-bold mt-2">
+              <p className="text-[11px] text-blue-900 font-bold mt-2 mb-0">
                 Khách dùng camera điện thoại quét để bắt đầu gọi món
               </p>
             </div>
 
-            <div className="text-2xs text-slate-500 font-mono bg-slate-100 p-2 rounded-xl break-all">
-              {window.location.origin}/?table={banXemQR.id}
-            </div>
-
-            <div className="space-y-2 pt-2">
+            {/* Nút hành động duy nhất: In Mã QR khi mã cũ bị mất hoặc rách */}
+            <div className="pt-1">
               <button
-                onClick={() => {
-                  window.open(`/?table=${banXemQR.id}`, '_blank');
-                }}
-                className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-pill text-xs flex items-center justify-center gap-2 shadow-md cursor-pointer transition-all"
+                type="button"
+                onClick={() => inMaQRBan(banXemQR)}
+                className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-pill text-xs flex items-center justify-center gap-2 shadow-md cursor-pointer transition-all hover:scale-[1.01]"
               >
-                <ExternalLink className="w-4 h-4" />
-                <span>Mở Trang Khách Gọi Món (Tab Mới)</span>
-              </button>
-
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(`${window.location.origin}/?table=${banXemQR.id}`);
-                  alert('Đã sao chép link quét mã của Bàn ' + banXemQR.so_ban);
-                }}
-                className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-pill text-xs flex items-center justify-center gap-2 cursor-pointer transition-all"
-              >
-                <Copy className="w-3.5 h-3.5" />
-                <span>Sao Chép Link QR</span>
+                <Printer className="w-4 h-4 shrink-0" />
+                <span>In Mã QR Bàn (Dán Lên Bàn)</span>
               </button>
             </div>
           </div>

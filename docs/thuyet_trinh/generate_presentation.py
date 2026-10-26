@@ -12,9 +12,8 @@ def create_presentation():
     prs.slide_height = Inches(7.5)
     blank_layout = prs.slide_layouts[6]
 
-    # --- COLOR PALETTE (BRIGHT, MODERN & HIGH CONTRAST) ---
+    # --- PALETTE MÀU HIỆN ĐẠI, TƯƠNG PHẢN CAO, CHUẨN ROYAL BISTRO ---
     LIGHT_BG = RGBColor(248, 250, 252)    # Slate 50
-    SLIDE_WHITE = RGBColor(255, 255, 255)
     PRIMARY = RGBColor(30, 58, 138)       # Royal Blue 900
     VIBRANT_BLUE = RGBColor(37, 99, 235)  # Blue 600
     SKY_BLUE = RGBColor(2, 132, 199)      # Sky 600
@@ -23,7 +22,6 @@ def create_presentation():
     RED = RGBColor(220, 38, 38)           # Red 600
     TEXT_DARK = RGBColor(15, 23, 42)      # Slate 900
     TEXT_MUTED = RGBColor(71, 85, 105)    # Slate 600
-    CARD_BG = RGBColor(255, 255, 255)
     CARD_BORDER = RGBColor(226, 232, 240) # Slate 200
     CARD_ALT = RGBColor(241, 245, 249)    # Slate 100
     WHITE = RGBColor(255, 255, 255)
@@ -31,8 +29,11 @@ def create_presentation():
     base_dir = os.path.dirname(os.path.abspath(__file__))
     docs_dir = os.path.dirname(base_dir)
     media_dir = os.path.join(docs_dir, 'assets', 'docx_media')
-    TOTAL_SLIDES = 13
-    screenshots_dir = os.path.join(docs_dir, 'assets', 'screenshots')
+    clean_screenshots_dir = os.path.join(docs_dir, 'assets', 'screenshots_clean')
+    if not os.path.exists(clean_screenshots_dir):
+        clean_screenshots_dir = os.path.join(docs_dir, 'assets', 'screenshots')
+
+    TOTAL_SLIDES = 8
 
     def set_slide_bg(slide, color=LIGHT_BG):
         bg = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(7.5))
@@ -41,8 +42,8 @@ def create_presentation():
         bg.line.fill.background()
         return bg
 
-    def add_header(slide, tag_text, title_text, subtitle_text="", tag_width=3.2):
-        header_box = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(1.15))
+    def add_header(slide, tag_text, title_text, subtitle_text="", tag_width=4.4):
+        header_box = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(1.2))
         header_box.fill.solid()
         header_box.fill.fore_color.rgb = WHITE
         header_box.line.color.rgb = CARD_BORDER
@@ -53,7 +54,8 @@ def create_presentation():
         accent_bar.fill.fore_color.rgb = VIBRANT_BLUE
         accent_bar.line.fill.background()
 
-        tag_shape = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(0.14), Inches(tag_width), Inches(0.26))
+        tag_shape = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(0.1), Inches(tag_width), Inches(0.29))
+        tag_shape.adjustments[0] = 0.3
         tag_shape.fill.solid()
         tag_shape.fill.fore_color.rgb = RGBColor(238, 242, 255)
         tag_shape.line.color.rgb = RGBColor(199, 210, 254)
@@ -62,17 +64,17 @@ def create_presentation():
         tf_tag.word_wrap = False
         tf_tag.margin_top = Inches(0.02)
         tf_tag.margin_bottom = Inches(0.02)
-        tf_tag.margin_left = Inches(0.08)
-        tf_tag.margin_right = Inches(0.08)
+        tf_tag.margin_left = Inches(0.1)
+        tf_tag.margin_right = Inches(0.1)
         p_tag = tf_tag.paragraphs[0]
         p_tag.text = tag_text.upper()
         p_tag.alignment = PP_ALIGN.CENTER
         p_tag.font.name = "Segoe UI"
-        p_tag.font.size = Pt(8.5)
+        p_tag.font.size = Pt(10.5)
         p_tag.font.bold = True
         p_tag.font.color.rgb = VIBRANT_BLUE
 
-        txBox = slide.shapes.add_textbox(Inches(0.8), Inches(0.44), Inches(11.7), Inches(0.65))
+        txBox = slide.shapes.add_textbox(Inches(0.8), Inches(0.40), Inches(11.733), Inches(0.76))
         tf = txBox.text_frame
         tf.word_wrap = True
         tf.margin_top = Inches(0)
@@ -80,7 +82,7 @@ def create_presentation():
         p = tf.paragraphs[0]
         p.text = title_text
         p.font.name = "Segoe UI"
-        p.font.size = Pt(19)
+        p.font.size = Pt(24)
         p.font.bold = True
         p.font.color.rgb = PRIMARY
 
@@ -88,8 +90,9 @@ def create_presentation():
             p2 = tf.add_paragraph()
             p2.text = subtitle_text
             p2.font.name = "Segoe UI"
-            p2.font.size = Pt(10.5)
+            p2.font.size = Pt(13)
             p2.font.color.rgb = TEXT_MUTED
+            p2.space_before = Pt(2)
 
     def add_footer(slide, current_idx, total_slides=TOTAL_SLIDES):
         footer_box = slide.shapes.add_textbox(Inches(0.8), Inches(7.12), Inches(11.733), Inches(0.32))
@@ -97,13 +100,13 @@ def create_presentation():
         tf.margin_left = Inches(0)
         tf.margin_top = Inches(0)
         p = tf.paragraphs[0]
-        p.text = f"Đồ Án Chuyên Đề Back-End: Royal Bistro | Sinh viên: Nguyễn Hoàng Hưng – 501250384 (K25)                                 Trang {current_idx}/{total_slides}"
+        p.text = f"Đồ Án Chuyên Đề Back-End: Royal Bistro  |  Sinh viên: Nguyễn Hoàng Hưng – 501250384 (K25)                                   Trang {current_idx}/{total_slides}"
         p.font.name = "Segoe UI"
-        p.font.size = Pt(9)
+        p.font.size = Pt(10.5)
         p.font.color.rgb = RGBColor(148, 163, 184)
 
     # ============================================================
-    # SLIDE 1: TRANG BÌA (BRIGHT, MODERN LIGHT THEME - DỄ NHÌN)
+    # SLIDE 1: TRANG BÌA (HOÀN HẢO 3 THẺ CÂN ĐỐI, CHỮ TO RÕ)
     # ============================================================
     slide1 = prs.slides.add_slide(blank_layout)
     set_slide_bg(slide1, LIGHT_BG)
@@ -113,22 +116,24 @@ def create_presentation():
     top_bar.fill.fore_color.rgb = VIBRANT_BLUE
     top_bar.line.fill.background()
 
-    sch_box = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.9), Inches(0.55), Inches(11.533), Inches(0.5))
+    sch_box = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.9), Inches(0.44), Inches(11.533), Inches(0.56))
+    sch_box.adjustments[0] = 0.2
     sch_box.fill.solid()
     sch_box.fill.fore_color.rgb = WHITE
     sch_box.line.color.rgb = CARD_BORDER
     sch_box.line.width = Pt(1)
     sch_tf = sch_box.text_frame
-    sch_tf.margin_top = Inches(0.08)
+    sch_tf.margin_top = Inches(0.1)
     sch_p = sch_tf.paragraphs[0]
     sch_p.text = "🏛️ TRƯỜNG CAO ĐẲNG CÔNG NGHỆ THÔNG TIN TP.HCM • KHOA CÔNG NGHỆ THÔNG TIN – ĐIỆN TỬ"
     sch_p.alignment = PP_ALIGN.CENTER
     sch_p.font.name = "Segoe UI"
-    sch_p.font.size = Pt(11)
+    sch_p.font.size = Pt(14)
     sch_p.font.bold = True
     sch_p.font.color.rgb = PRIMARY
 
-    main_card = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.9), Inches(1.25), Inches(11.533), Inches(2.35))
+    main_card = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.9), Inches(1.12), Inches(11.533), Inches(2.72))
+    main_card.adjustments[0] = 0.05
     main_card.fill.solid()
     main_card.fill.fore_color.rgb = WHITE
     main_card.line.color.rgb = RGBColor(199, 210, 254)
@@ -136,7 +141,7 @@ def create_presentation():
     
     m_tf = main_card.text_frame
     m_tf.word_wrap = True
-    m_tf.margin_top = Inches(0.22)
+    m_tf.margin_top = Inches(0.18)
     m_tf.margin_left = Inches(0.4)
     m_tf.margin_right = Inches(0.4)
 
@@ -144,7 +149,7 @@ def create_presentation():
     mp0.text = "BÁO CÁO ĐỒ ÁN MÔN HỌC: CHUYÊN ĐỀ BACK-END"
     mp0.alignment = PP_ALIGN.CENTER
     mp0.font.name = "Segoe UI"
-    mp0.font.size = Pt(13)
+    mp0.font.size = Pt(15.5)
     mp0.font.bold = True
     mp0.font.color.rgb = VIBRANT_BLUE
 
@@ -152,120 +157,125 @@ def create_presentation():
     mp1.text = "XÂY DỰNG HỆ THỐNG BACK-END CHO PHẦN MỀM\nQUẢN LÝ NHÀ HÀNG & GỌI MÓN (ROYAL BISTRO)"
     mp1.alignment = PP_ALIGN.CENTER
     mp1.font.name = "Segoe UI"
-    mp1.font.size = Pt(25)
+    mp1.font.size = Pt(28.5)
     mp1.font.bold = True
     mp1.font.color.rgb = PRIMARY
     mp1.space_before = Pt(6)
 
     mp2 = m_tf.add_paragraph()
-    mp2.text = "Kiến trúc máy chủ RESTful API & WebSocket Realtime • Điều phối Bếp KDS • Tự động trừ kho định lượng BOM"
+    mp2.text = "Kiến trúc RESTful API & WebSocket Realtime • Điều phối Bếp KDS • Tự động trừ kho định mức BOM • Báo cáo doanh thu"
     mp2.alignment = PP_ALIGN.CENTER
     mp2.font.name = "Segoe UI"
-    mp2.font.size = Pt(12)
+    mp2.font.size = Pt(13.5)
     mp2.font.color.rgb = TEXT_MUTED
     mp2.space_before = Pt(6)
 
-    info_cards = [
+    card_data = [
         ("👤 SINH VIÊN THỰC HIỆN", [
             ("Họ và tên:", "Nguyễn Hoàng Hưng"),
             ("MSSV:", "501250384"),
             ("Khóa đào tạo:", "Khóa K25"),
             ("Chuyên ngành:", "Công nghệ Phần mềm")
         ], VIBRANT_BLUE, RGBColor(238, 242, 255)),
+
         ("👨‍🏫 GIẢNG VIÊN HƯỚNG DẪN", [
-            ("Giảng viên:", "ThS. Nguyễn Minh Hải"),
-            ("Đơn vị:", "Khoa CNTT – Điện tử"),
+            ("Giảng viên:", "ThS. NGUYỄN MINH HẢI"),
+            ("Đơn vị:", "Khoa CNTT – ĐT (ITC)"),
             ("Môn học:", "Chuyên Đề Back-End"),
-            ("Thời gian:", "Tháng 10 / 2025")
+            ("Thời gian:", "Học kỳ I / 2026")
         ], EMERALD, RGBColor(236, 253, 245)),
+
         ("⚡ CÔNG NGHỆ CHÍNH", [
-            ("Môi trường:", "Node.js v20 & Express.js"),
-            ("Cơ sở dữ liệu:", "MongoDB & Mongoose"),
-            ("Thời gian thực:", "Socket.io WebSockets"),
-            ("Xác thực:", "JWT Bearer & Bcrypt")
+            ("Máy chủ:", "Node.js v20 & Express.js"),
+            ("Cơ sở dữ liệu:", "MongoDB v7 & Mongoose"),
+            ("Realtime:", "Socket.io WebSockets"),
+            ("Bảo mật:", "JWT Stateless & Bcrypt")
         ], GOLD, RGBColor(254, 243, 199))
     ]
 
-    cx = 0.9
-    for c_title, rows, c_color, c_bg in info_cards:
-        c_box = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(cx), Inches(3.8), Inches(3.68), Inches(2.75))
-        c_box.fill.solid()
-        c_box.fill.fore_color.rgb = WHITE
-        c_box.line.color.rgb = c_color
-        c_box.line.width = Pt(1.5)
+    c_left = 0.9
+    for c_title, rows, c_color, c_bg in card_data:
+        box = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(c_left), Inches(3.98), Inches(3.68), Inches(2.82))
+        box.adjustments[0] = 0.06
+        box.fill.solid()
+        box.fill.fore_color.rgb = WHITE
+        box.line.color.rgb = c_color
+        box.line.width = Pt(1.5)
 
-        ipill = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(cx + 0.2), Inches(3.98), Inches(3.28), Inches(0.38))
-        ipill.fill.solid()
-        ipill.fill.fore_color.rgb = c_bg
-        ipill.line.fill.background()
-        iptf = ipill.text_frame
-        iptf.margin_top = Inches(0.06)
-        ipp = iptf.paragraphs[0]
-        ipp.text = c_title
-        ipp.alignment = PP_ALIGN.CENTER
-        ipp.font.name = "Segoe UI"
-        ipp.font.size = Pt(11)
-        ipp.font.bold = True
-        ipp.font.color.rgb = c_color
+        pill = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(c_left + 0.15), Inches(4.14), Inches(3.38), Inches(0.44))
+        pill.adjustments[0] = 0.3
+        pill.fill.solid()
+        pill.fill.fore_color.rgb = c_bg
+        pill.line.fill.background()
+        ptf = pill.text_frame
+        ptf.margin_top = Inches(0.08)
+        pp = ptf.paragraphs[0]
+        pp.text = c_title
+        pp.alignment = PP_ALIGN.CENTER
+        pp.font.name = "Segoe UI"
+        pp.font.size = Pt(13.5)
+        pp.font.bold = True
+        pp.font.color.rgb = c_color
 
-        tx_info = slide1.shapes.add_textbox(Inches(cx + 0.25), Inches(4.5), Inches(3.18), Inches(1.9))
-        itf = tx_info.text_frame
+        tx = slide1.shapes.add_textbox(Inches(c_left + 0.16), Inches(4.68), Inches(3.36), Inches(1.98))
+        itf = tx.text_frame
         itf.margin_top = Inches(0)
         itf.margin_left = Inches(0)
-        for idx, (label, val) in enumerate(rows):
+        for idx, (lbl, val) in enumerate(rows):
             p = itf.paragraphs[0] if idx == 0 else itf.add_paragraph()
-            p.text = f"{label} "
+            p.text = f"{lbl} "
             p.font.name = "Segoe UI"
-            p.font.size = Pt(11)
+            p.font.size = Pt(13)
             p.font.color.rgb = TEXT_MUTED
             if idx > 0:
-                p.space_before = Pt(8)
+                p.space_before = Pt(6)
             run = p.add_run()
             run.text = val
             run.font.bold = True
             run.font.color.rgb = TEXT_DARK
 
-        cx += 3.93
+        c_left += 3.93
 
     add_footer(slide1, 1)
 
     # ============================================================
-    # SLIDE 2: ĐẶT VẤN ĐỀ & MỤC TIÊU ĐỀ TÀI (CHƯƠNG 1) - GỌN, ÍT CHỮ
+    # SLIDE 2: MỤC ĐÍCH DỰ ÁN & GIÁ TRỊ THỰC TIỄN (CHỮ TO RÕ, ĐỊNH TÍNH)
     # ============================================================
     slide2 = prs.slides.add_slide(blank_layout)
     set_slide_bg(slide2, LIGHT_BG)
-    add_header(slide2, "Chương 1: Giới Thiệu Tổng Quan", "Thực Trạng F&B & Mục Tiêu Hệ Thống", "Chuyển đổi quy trình thủ công sang tự động hóa thông minh với Back-End tập trung", tag_width=3.2)
+    add_header(slide2, "Mục Tiêu & Tác Động Thực Tế", "Mục Đích Dự Án & Giá Trị Thực Tiễn Cho Ngành F&B", "Khắc phục 3 bài toán nan giải của nhà hàng truyền thống và số hóa toàn diện quy trình vận hành", tag_width=4.4)
     add_footer(slide2, 2)
 
-    b_left = slide2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.35), Inches(5.7), Inches(4.35))
+    # Khung trái: Thực trạng nan giải
+    b_left = slide2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.35), Inches(5.7), Inches(4.15))
+    b_left.adjustments[0] = 0.05
     b_left.fill.solid()
     b_left.fill.fore_color.rgb = WHITE
     b_left.line.color.rgb = RGBColor(254, 202, 202)
     b_left.line.width = Pt(1.5)
     tf_l = b_left.text_frame
     tf_l.word_wrap = True
-    tf_l.margin_top = Inches(0.2)
+    tf_l.margin_top = Inches(0.18)
     tf_l.margin_left = Inches(0.25)
     tf_l.margin_right = Inches(0.25)
 
     p_lh = tf_l.paragraphs[0]
-    p_lh.text = "⚠️ 4 BẤT CẬP QUY TRÌNH TRUYỀN THỐNG"
+    p_lh.text = "⚠️ 3 BÀI TOÁN THỰC TẾ NAN GIẢI"
     p_lh.font.name = "Segoe UI"
-    p_lh.font.size = Pt(12.5)
+    p_lh.font.size = Pt(15.5)
     p_lh.font.bold = True
     p_lh.font.color.rgb = RED
 
     pains = [
-        ("Tắc nghẽn giờ cao điểm", "Ghi bill giấy chậm trễ, khách chờ lâu, giảm vòng quay bàn."),
-        ("Sai sót khi truyền đạt", "Chữ viết tay khó đọc, dễ nhầm món và quên ghi chú chế biến."),
-        ("Thất thoát nguyên vật liệu", "Không có công thức định lượng (BOM) gắn liền với tồn kho."),
-        ("Thiếu số liệu tức thời", "Không nắm được doanh số, tồn kho và công nợ theo thời gian thực.")
+        ("Tắc nghẽn giờ cao điểm", "Khách chờ gọi món và thanh toán lâu trong giờ đông khách; nhân viên chạy bàn quá tải, dễ sót order."),
+        ("Thất thoát kho nguyên liệu", "Đầu bếp nấu ước lượng tay; không có định mức (BOM) liên kết trực tiếp với kho gây hao hụt chi phí."),
+        ("Sai sót & chậm trễ order", "Ghi chép giấy dễ nhầm món, sót ghi chú của khách; truyền đạt từ bàn vào bếp bị gián đoạn.")
     ]
     for title, desc in pains:
         p_item = tf_l.add_paragraph()
         p_item.text = f"• {title}: "
         p_item.font.name = "Segoe UI"
-        p_item.font.size = Pt(10.5)
+        p_item.font.size = Pt(13.5)
         p_item.font.bold = True
         p_item.font.color.rgb = TEXT_DARK
         p_item.space_before = Pt(10)
@@ -274,35 +284,36 @@ def create_presentation():
         run.font.bold = False
         run.font.color.rgb = TEXT_MUTED
 
-    b_right = slide2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.35), Inches(5.7), Inches(4.35))
+    # Khung phải: Giá trị thực tiễn
+    b_right = slide2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.35), Inches(5.7), Inches(4.15))
+    b_right.adjustments[0] = 0.05
     b_right.fill.solid()
     b_right.fill.fore_color.rgb = WHITE
     b_right.line.color.rgb = RGBColor(167, 243, 208)
     b_right.line.width = Pt(1.5)
     tf_r = b_right.text_frame
     tf_r.word_wrap = True
-    tf_r.margin_top = Inches(0.2)
+    tf_r.margin_top = Inches(0.18)
     tf_r.margin_left = Inches(0.25)
     tf_r.margin_right = Inches(0.25)
 
     p_rh = tf_r.paragraphs[0]
-    p_rh.text = "🎯 4 MỤC TIÊU GIẢI PHÁP ROYAL BISTRO"
+    p_rh.text = "💎 3 GIÁ TRỊ THỰC TIỄN VƯỢT TRỘI"
     p_rh.font.name = "Segoe UI"
-    p_rh.font.size = Pt(12.5)
+    p_rh.font.size = Pt(15.5)
     p_rh.font.bold = True
     p_rh.font.color.rgb = EMERALD
 
     goals = [
-        ("Xác thực & RBAC 3 vai trò", "Phân quyền chặt chẽ Admin, Thu ngân/Phục vụ và Đầu bếp."),
-        ("Đồng bộ Realtime <50ms", "Truyền order ngay tức thì từ bàn ăn xuống màn hình Bếp KDS."),
-        ("Tự động trừ kho theo BOM", "Thuật toán trừ hao phí nguyên liệu chuẩn xác khi bếp nấu."),
-        ("Thanh toán QR & CRM", "Sinh mã VietQR động, tự động tích lũy điểm thưởng hội viên.")
+        ("Tối ưu nhân sự phục vụ", "Khách tự quét mã QR duyệt thực đơn và gọi món tại bàn trên điện thoại; tinh gọn số lượng nhân viên chạy bàn."),
+        ("Kiểm soát kho chính xác", "Thuật toán tự động trừ kho theo định mức BOM khi bếp bấm nấu; cảnh báo kịp thời khi nguyên liệu sắp cạn."),
+        ("Truyền đơn tức thời vào Bếp", "Đơn gọi món gửi trực tiếp vào màn hình Bếp KDS qua WebSocket; chuông reo nhận đơn để chế biến ngay lập tức.")
     ]
     for title, desc in goals:
         p_item = tf_r.add_paragraph()
         p_item.text = f"• {title}: "
         p_item.font.name = "Segoe UI"
-        p_item.font.size = Pt(10.5)
+        p_item.font.size = Pt(13.5)
         p_item.font.bold = True
         p_item.font.color.rgb = TEXT_DARK
         p_item.space_before = Pt(10)
@@ -311,116 +322,130 @@ def create_presentation():
         run.font.bold = False
         run.font.color.rgb = TEXT_MUTED
 
-    users = [
-        ("👑 Quản trị viên (Admin)", "Toàn quyền thực đơn, kho, nhân sự, báo cáo", VIBRANT_BLUE),
-        ("💳 Thu ngân / Phục vụ", "Mở bàn, tiếp nhận order POS, thanh toán", SKY_BLUE),
-        ("🍳 Đầu bếp (Kitchen/Chef)", "Xem hàng đợi KDS, nấu món, kích hoạt trừ kho", GOLD),
-        ("📱 Khách hàng (Customer)", "Quét mã QR tại bàn, xem menu, gọi món", EMERALD)
+    # 3 Hộp giá trị thực tiễn nổi bật
+    metrics = [
+        ("⚡ Real-Time", "Truyền đơn vào Bếp tức thời", VIBRANT_BLUE),
+        ("👥 Quét Mã QR", "Khách chủ động gọi món tại bàn", SKY_BLUE),
+        ("📦 Định Mức BOM", "Tự động trừ kho theo từng món", EMERALD)
     ]
-    u_left = 0.8
-    for u_title, u_sub, u_col in users:
-        u_box = slide2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(u_left), Inches(5.85), Inches(2.78), Inches(1.05))
-        u_box.fill.solid()
-        u_box.fill.fore_color.rgb = WHITE
-        u_box.line.color.rgb = CARD_BORDER
-        u_box.line.width = Pt(1)
-        u_tf = u_box.text_frame
-        u_tf.word_wrap = True
-        u_tf.margin_top = Inches(0.12)
-        u_tf.margin_left = Inches(0.15)
-        u_tf.margin_right = Inches(0.15)
+    m_left = 0.8
+    for m_val, m_desc, m_col in metrics:
+        m_box = slide2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(m_left), Inches(5.65), Inches(3.75), Inches(1.28))
+        m_box.adjustments[0] = 0.08
+        m_box.fill.solid()
+        m_box.fill.fore_color.rgb = WHITE
+        m_box.line.color.rgb = CARD_BORDER
+        m_box.line.width = Pt(1.5)
+        m_tf = m_box.text_frame
+        m_tf.word_wrap = True
+        m_tf.margin_top = Inches(0.18)
+        m_tf.margin_left = Inches(0.15)
+        m_tf.margin_right = Inches(0.15)
         
-        up1 = u_tf.paragraphs[0]
-        up1.text = u_title
-        up1.font.name = "Segoe UI"
-        up1.font.size = Pt(10)
-        up1.font.bold = True
-        up1.font.color.rgb = u_col
+        mp1 = m_tf.paragraphs[0]
+        mp1.text = m_val
+        mp1.alignment = PP_ALIGN.CENTER
+        mp1.font.name = "Segoe UI"
+        mp1.font.size = Pt(24)
+        mp1.font.bold = True
+        mp1.font.color.rgb = m_col
 
-        up2 = u_tf.add_paragraph()
-        up2.text = u_sub
-        up2.font.name = "Segoe UI"
-        up2.font.size = Pt(8.5)
-        up2.font.color.rgb = TEXT_MUTED
-        up2.space_before = Pt(2)
-        u_left += 2.97
+        mp2 = m_tf.add_paragraph()
+        mp2.text = m_desc
+        mp2.alignment = PP_ALIGN.CENTER
+        mp2.font.name = "Segoe UI"
+        mp2.font.size = Pt(13)
+        mp2.font.bold = True
+        mp2.font.color.rgb = TEXT_MUTED
+        mp2.space_before = Pt(3)
+        m_left += 3.99
 
     # ============================================================
-    # SLIDE 3: CÔNG NGHỆ CỐT LÕI & KIẾN TRÚC TỔNG THỂ (CHƯƠNG 1 & 2)
+    # SLIDE 3: BỘ CÔNG CỤ SỬ DỤNG ĐỂ BUILD (CHỮ TO RÕ)
     # ============================================================
     slide3 = prs.slides.add_slide(blank_layout)
     set_slide_bg(slide3, LIGHT_BG)
-    add_header(slide3, "Chương 1 & 2: Công Nghệ & Kiến Trúc", "Công Nghệ Cốt Lõi & Sơ Đồ Kiến Trúc Tổng Thể", "Kiến trúc máy chủ Client-Server phân tầng, xử lý Non-blocking I/O và WebSocket hai chiều", tag_width=3.6)
+    add_header(slide3, "Công Cụ & Hệ Sinh Thái Build", "Bộ Công Cụ & Công Nghệ Sử Dụng Để Xây Dựng Hệ Thống", "Bộ công nghệ tuyển chọn hiện đại: Non-blocking I/O, thời gian thực và tự động hóa kiểm thử", tag_width=4.5)
     add_footer(slide3, 3)
 
-    tech_cards = [
-        ("🟢 Node.js v20 & Express v4.19", "Non-blocking I/O, Event-driven, định tuyến RESTful API cực nhanh, chịu tải cao."),
-        ("🍃 MongoDB v7.0 & Mongoose v8.3", "NoSQL linh hoạt, 12 Collections chuẩn hóa, đồng nhất dữ liệu JSON từ CSDL đến Client."),
-        ("⚡ Socket.io v4.7 Realtime", "Kênh truyền thông WebSocket 2 chiều, phản hồi tức thời (<50ms) giữa POS và Bếp KDS."),
-        ("🔐 JWT & Bcrypt (10 Rounds)", "Xác thực phi trạng thái (Stateless), băm mật khẩu một chiều, phân quyền RBAC đa cấp.")
+    tool_blocks = [
+        ("🖥️ NỀN TẢNG MÁY CHỦ (SERVER RUNTIME)", [
+            ("Node.js v20 LTS:", "Môi trường thực thi JavaScript Non-blocking I/O, xử lý đa luồng bất đồng bộ tải cao."),
+            ("Express.js v4.19:", "Framework Back-End phân tầng MVC, quản lý pipeline middleware và định tuyến RESTful API.")
+        ], VIBRANT_BLUE, RGBColor(238, 242, 255)),
+
+        ("🍃 CƠ SỞ DỮ LIỆU & ORM (DATABASE)", [
+            ("MongoDB v7.0:", "Hệ quản trị CSDL NoSQL hướng tài liệu (JSON-like), mở rộng linh hoạt, lưu trữ 12 Collections."),
+            ("Mongoose v8.3 ODM:", "Mô hình hóa Schema chặt chẽ, ràng buộc dữ liệu toàn vẹn và thực thi Aggregation Pipeline.")
+        ], EMERALD, RGBColor(236, 253, 245)),
+
+        ("⚡ KÊNH REAL-TIME & BẢO MẬT", [
+            ("Socket.io v4.7:", "Kênh WebSocket 2 chiều phát sóng sự kiện thời gian thực giữa Bàn khách, POS và Bếp KDS."),
+            ("JWT & Bcrypt:", "Xác thực Token không lưu trạng thái (Stateless 24h) và băm mật khẩu bảo mật một chiều 10 salt rounds.")
+        ], GOLD, RGBColor(254, 243, 199)),
+
+        ("🛠️ CÔNG CỤ PHÁT TRIỂN & BUILD (DEV TOOLS)", [
+            ("VS Code & Postman:", "Môi trường lập trình chính và công cụ gửi request mô phỏng kiểm thử tự động toàn diện các API endpoints."),
+            ("Git / GitHub & NPM:", "Quản lý phiên bản mã nguồn phân tán Monorepo, quản lý gói phụ thuộc và tự động hóa build.")
+        ], SKY_BLUE, RGBColor(240, 249, 255))
     ]
-    t_top = 1.35
-    for t_name, t_desc in tech_cards:
-        t_box = slide3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(t_top), Inches(5.1), Inches(1.25))
-        t_box.fill.solid()
-        t_box.fill.fore_color.rgb = WHITE
-        t_box.line.color.rgb = CARD_BORDER
-        t_box.line.width = Pt(1)
-        
-        ttf = t_box.text_frame
-        ttf.word_wrap = True
-        ttf.margin_top = Inches(0.12)
-        ttf.margin_left = Inches(0.18)
-        ttf.margin_right = Inches(0.18)
 
-        tp1 = ttf.paragraphs[0]
-        tp1.text = t_name
-        tp1.font.name = "Segoe UI"
-        tp1.font.size = Pt(11)
-        tp1.font.bold = True
-        tp1.font.color.rgb = PRIMARY
+    coords = [
+        (0.8, 1.4),   # Top-left
+        (6.8, 1.4),   # Top-right
+        (0.8, 4.25),  # Bottom-left
+        (6.8, 4.25)   # Bottom-right
+    ]
 
-        tp2 = ttf.add_paragraph()
-        tp2.text = t_desc
-        tp2.font.name = "Segoe UI"
-        tp2.font.size = Pt(9.5)
-        tp2.font.color.rgb = TEXT_MUTED
-        tp2.space_before = Pt(3)
+    for (bx, by), (b_title, b_rows, b_col, b_bg) in zip(coords, tool_blocks):
+        tb_box = slide3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(bx), Inches(by), Inches(5.7), Inches(2.65))
+        tb_box.adjustments[0] = 0.05
+        tb_box.fill.solid()
+        tb_box.fill.fore_color.rgb = WHITE
+        tb_box.line.color.rgb = b_col
+        tb_box.line.width = Pt(1.5)
 
-        t_top += 1.42
+        tb_tf = tb_box.text_frame
+        tb_tf.word_wrap = True
+        tb_tf.margin_top = Inches(0.18)
+        tb_tf.margin_left = Inches(0.25)
+        tb_tf.margin_right = Inches(0.25)
 
-    img_arch_path = os.path.join(media_dir, "image15.png")
-    if os.path.exists(img_arch_path):
-        diag_bg = slide3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.2), Inches(1.35), Inches(6.333), Inches(5.55))
-        diag_bg.fill.solid()
-        diag_bg.fill.fore_color.rgb = WHITE
-        diag_bg.line.color.rgb = CARD_BORDER
-        diag_bg.line.width = Pt(1)
-        
-        cap_box = slide3.shapes.add_textbox(Inches(6.4), Inches(1.48), Inches(5.9), Inches(0.35))
-        cap_tf = cap_box.text_frame
-        cap_p = cap_tf.paragraphs[0]
-        cap_p.text = "Sơ đồ kiến trúc tổng thể hệ thống Royal Bistro (Hình 2.1)"
-        cap_p.font.name = "Segoe UI"
-        cap_p.font.size = Pt(11)
-        cap_p.font.bold = True
-        cap_p.font.color.rgb = PRIMARY
+        p0 = tb_tf.paragraphs[0]
+        p0.text = b_title
+        p0.font.name = "Segoe UI"
+        p0.font.size = Pt(14.5)
+        p0.font.bold = True
+        p0.font.color.rgb = b_col
 
-        slide3.shapes.add_picture(img_arch_path, Inches(6.35), Inches(1.95), width=Inches(6.033))
+        for row_lbl, row_desc in b_rows:
+            p = tb_tf.add_paragraph()
+            p.text = f"• {row_lbl} "
+            p.font.name = "Segoe UI"
+            p.font.size = Pt(13)
+            p.font.bold = True
+            p.font.color.rgb = TEXT_DARK
+            p.space_before = Pt(8)
+            run = p.add_run()
+            run.text = row_desc
+            run.font.bold = False
+            run.font.color.rgb = TEXT_MUTED
 
     # ============================================================
-    # SLIDE 4: TỔ CHỨC MONOREPO & 9 PHÂN HỆ NGHIỆP VỤ (CHƯƠNG 2)
+    # SLIDE 4: KIẾN TRÚC MÁY CHỦ & LUỒNG XỬ LÝ DỮ LIỆU
     # ============================================================
     slide4 = prs.slides.add_slide(blank_layout)
     set_slide_bg(slide4, LIGHT_BG)
-    add_header(slide4, "Chương 2: Thiết Kế Kiến Trúc", "Cấu Trúc Monorepo & 9 Phân Hệ Nghiệp Vụ", "Tổ chức mã nguồn khoa học, phân định rành mạch giữa Controller, Middleware, Model và Route", tag_width=3.2)
+    add_header(slide4, "Kiến Trúc & Tổ Chức Hệ Thống", "Kiến Trúc Máy Chủ Client-Server & Phân Tầng Mã Nguồn Back-End", "Mô hình phân tầng rõ ràng, kết hợp RESTful API với Kênh sự kiện thời gian thực WebSocket", tag_width=4.5)
     add_footer(slide4, 4)
 
-    left_m = slide4.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.35), Inches(4.5), Inches(5.55))
+    # Cột Trái: Cấu trúc thư mục Monorepo
+    left_m = slide4.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.35), Inches(5.7), Inches(5.55))
+    left_m.adjustments[0] = 0.05
     left_m.fill.solid()
     left_m.fill.fore_color.rgb = WHITE
     left_m.line.color.rgb = CARD_BORDER
-    left_m.line.width = Pt(1)
+    left_m.line.width = Pt(1.5)
     tf_m = left_m.text_frame
     tf_m.word_wrap = True
     tf_m.margin_top = Inches(0.2)
@@ -428,44 +453,90 @@ def create_presentation():
     tf_m.margin_right = Inches(0.25)
 
     pm_h = tf_m.paragraphs[0]
-    pm_h.text = "📁 PHÂN TẦNG MÃ NGUỒN (BE/src)"
+    pm_h.text = "📁 PHÂN TẦNG MÃ NGUỒN BACK-END (BE/src)"
     pm_h.font.name = "Segoe UI"
-    pm_h.font.size = Pt(12)
+    pm_h.font.size = Pt(15.5)
     pm_h.font.bold = True
     pm_h.font.color.rgb = PRIMARY
 
     dirs = [
-        ("config/", "Kết nối MongoDB, cấu hình port và JWT Secret."),
-        ("constants/", "Định nghĩa role: admin, cashier, kitchen."),
-        ("controllers/", "Xử lý nghiệp vụ chính của toàn hệ thống."),
-        ("middlewares/", "Xác thực JWT, phân quyền RBAC, log và bắt lỗi."),
-        ("models/", "Lược đồ Mongoose Schema & ràng buộc dữ liệu."),
-        ("routes/", "Định tuyến >30 RESTful API endpoints chuẩn mực."),
-        ("utils/", "Tiện ích: asyncHandler, socket emit, seeder CSDL."),
-        ("server.js", "Entry point, khởi tạo Express HTTP & Socket.io.")
+        ("controllers/", "Xử lý nghiệp vụ đặt bàn, gọi món, bếp KDS, kho BOM và tính doanh thu."),
+        ("middlewares/", "Xác thực JWT token, kiểm tra phân quyền RBAC 4 vai trò, bắt lỗi tập trung."),
+        ("models/", "12 Lược đồ Mongoose Schema & ràng buộc quan hệ n-n (BOM)."),
+        ("routes/", "Định tuyến hơn 30 RESTful API endpoints theo chuẩn RESTful conventions."),
+        ("utils/ & config/", "Kết nối CSDL MongoDB, tiện ích phát sóng Socket.io và xử lý asyncHandler."),
+        ("server.js", "Entry point khởi động Express HTTP Server & Socket.io WebSocket.")
     ]
     for d_name, d_desc in dirs:
         pd = tf_m.add_paragraph()
         pd.text = f"• {d_name} "
         pd.font.name = "Segoe UI"
-        pd.font.size = Pt(9.5)
+        pd.font.size = Pt(13)
         pd.font.bold = True
         pd.font.color.rgb = VIBRANT_BLUE
-        pd.space_before = Pt(5)
+        pd.space_before = Pt(7)
         run = pd.add_run()
         run.text = d_desc
         run.font.bold = False
         run.font.color.rgb = TEXT_MUTED
 
+    # Cột Phải: Luồng xử lý request 5 bước trực quan
+    right_m = slide4.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.35), Inches(5.7), Inches(5.55))
+    right_m.adjustments[0] = 0.05
+    right_m.fill.solid()
+    right_m.fill.fore_color.rgb = WHITE
+    right_m.line.color.rgb = CARD_BORDER
+    right_m.line.width = Pt(1.5)
+    tf_r4 = right_m.text_frame
+    tf_r4.word_wrap = True
+    tf_r4.margin_top = Inches(0.2)
+    tf_r4.margin_left = Inches(0.25)
+    tf_r4.margin_right = Inches(0.25)
+
+    pr_h = tf_r4.paragraphs[0]
+    pr_h.text = "🔄 LUỒNG XỬ LÝ REQUEST & REALTIME EVENT"
+    pr_h.font.name = "Segoe UI"
+    pr_h.font.size = Pt(15.5)
+    pr_h.font.bold = True
+    pr_h.font.color.rgb = EMERALD
+
+    steps = [
+        ("1. Khởi tạo yêu cầu:", "Khách quét QR hoặc Thu ngân POS gửi HTTP Request / Socket Event lên máy chủ."),
+        ("2. Gateway bảo mật:", "Middleware (Helmet, CORS, Rate Limit) chặn tấn công; xác thực JWT Token và quyền vai trò."),
+        ("3. Xử lý Controller:", "Controller kiểm tra tính hợp lệ dữ liệu, điều phối logic nghiệp vụ phù hợp."),
+        ("4. Tương tác CSDL:", "Mongoose ODM thực thi truy vấn MongoDB (CRUD, Transaction, Aggregation Pipeline)."),
+        ("5. Đồng bộ Realtime:", "Kích hoạt Socket.io phát sóng tức thời xuống màn hình Bếp KDS và Bàn ăn.")
+    ]
+    for s_title, s_desc in steps:
+        ps = tf_r4.add_paragraph()
+        ps.text = f"• {s_title} "
+        ps.font.name = "Segoe UI"
+        ps.font.size = Pt(13)
+        ps.font.bold = True
+        ps.font.color.rgb = TEXT_DARK
+        ps.space_before = Pt(7)
+        run = ps.add_run()
+        run.text = s_desc
+        run.font.bold = False
+        run.font.color.rgb = TEXT_MUTED
+
+    # ============================================================
+    # SLIDE 5: BẢN ĐỒ TỔNG QUAN 9 TÍNH NĂNG NGHIỆP VỤ (BẢNG RÕ RÀNG)
+    # ============================================================
+    slide5 = prs.slides.add_slide(blank_layout)
+    set_slide_bg(slide5, LIGHT_BG)
+    add_header(slide5, "Bản Đồ Tính Năng Hệ Thống", "Tổng Quan 9 Phân Hệ Tính Năng Nghiệp Vụ Cốt Lõi Của Back-End", "Bao phủ toàn diện vòng đời vận hành nhà hàng: Xác thực, Bàn ăn, Gọi món, Bếp KDS, Kho BOM, CRM và Báo cáo", tag_width=4.2)
+    add_footer(slide5, 5)
+
     rows = 10
     cols = 3
-    table_shape = slide4.shapes.add_table(rows, cols, Inches(5.6), Inches(1.35), Inches(6.933), Inches(5.55))
+    table_shape = slide5.shapes.add_table(rows, cols, Inches(0.8), Inches(1.35), Inches(11.733), Inches(5.55))
     tbl = table_shape.table
-    tbl.columns[0].width = Inches(1.9)
-    tbl.columns[1].width = Inches(1.8)
-    tbl.columns[2].width = Inches(3.233)
+    tbl.columns[0].width = Inches(3.2)
+    tbl.columns[1].width = Inches(2.3)
+    tbl.columns[2].width = Inches(6.233)
 
-    headers = ["Module Nghiệp Vụ", "API Tuyến Đường", "Chức Năng Trọng Tâm"]
+    headers = ["Phân Hệ Nghiệp Vụ", "Tuyến Đường API (Route)", "Mô Tả Chức Năng Trọng Tâm Của Back-End"]
     for c_idx, h_text in enumerate(headers):
         cell = tbl.cell(0, c_idx)
         cell.fill.solid()
@@ -473,22 +544,22 @@ def create_presentation():
         cp = cell.text_frame.paragraphs[0]
         cp.text = h_text
         cp.font.name = "Segoe UI"
-        cp.font.size = Pt(10)
+        cp.font.size = Pt(12.5)
         cp.font.bold = True
         cp.font.color.rgb = WHITE
         cell.text_frame.margin_top = Inches(0.06)
         cell.text_frame.margin_bottom = Inches(0.06)
 
     mod_data = [
-        ("Xác thực & Nhân sự", "/api/v1/auth", "Đăng nhập, đăng ký, JWT token, 1-Click Demo Login"),
-        ("Quản lý Bàn ăn", "/api/v1/tables", "Sơ đồ mặt bằng, sức chứa, trạng thái động"),
-        ("Thực đơn & Món ăn", "/api/v1/dishes", "Phân loại danh mục, đơn giá, chuyển trạng thái bán"),
-        ("Bán hàng POS", "/api/v1/orders", "Gọi món tại bàn, ghi chú chế biến, mức ưu tiên"),
-        ("Điều phối Bếp KDS", "/api/v1/orders/:id/status", "Tiếp nhận món, cập nhật nấu xong, trừ kho BOM"),
-        ("Quản lý Đặt bàn", "/api/v1/reservations", "Đặt trước bàn, kiểm tra bàn trống, nhận cọc"),
-        ("Kho & Định lượng BOM", "/api/v1/inventory", "Theo dõi tồn kho, cảnh báo cạn kiệt, định mức món"),
-        ("Khách hàng & CRM", "/api/v1/customers", "Tích lũy điểm thưởng theo giá trị hóa đơn"),
-        ("Báo cáo & Thống kê", "/api/v1/reports", "Doanh thu ngày/tháng, Top 5 món bán chạy nhất")
+        ("1. Xác Thực & Phân Quyền RBAC", "/api/v1/auth", "Đăng nhập, cấp JWT 24h, băm Bcrypt 10 rounds, phân quyền 4 vai trò (Admin, Thu ngân, Bếp, Phục vụ)"),
+        ("2. Quản Lý Sơ Đồ Bàn Ăn", "/api/v1/tables", "Giám sát trạng thái bàn động (Trống, Có khách, Đã đặt), chuyển bàn, gộp bàn và tự động giải phóng bàn"),
+        ("3. Thực Đơn & Danh Mục Món", "/api/v1/dishes", "Phân loại món ăn (Khai vị, Món chính, Đồ uống...), giá niêm yết, bật/tắt phục vụ và upload ảnh đám mây"),
+        ("4. Điểm Bán POS & Khách Quét QR", "/api/v1/orders", "Lập đơn gọi món tại bàn, ghi chú khẩu vị (ít cay, không hành...), phát sóng Socket.io sự kiện đơn mới tức thời"),
+        ("5. Điều Phối Màn Hình Bếp KDS", "/api/v1/orders/:id/status", "Tiếp nhận đơn tức thời, chuông reo báo hiệu, cập nhật tiến độ nấu 1 chạm và kích hoạt khấu trừ kho BOM"),
+        ("6. Kho Nguyên Liệu & Định Mức BOM", "/api/v1/inventory", "Thuật toán tự động trừ kho theo công thức BOM từng gram, cảnh báo cạn kiệt khi chạm ngưỡng tồn tối thiểu"),
+        ("7. Đặt Bàn Tiệc Trước (Reservation)", "/api/v1/reservations", "Khách hẹn đặt bàn trước, kiểm tra bàn trống theo giờ, nhận tiền cọc giữ chỗ và tự động check-in khi khách đến"),
+        ("8. Khách Hàng Thân Thiết & CRM", "/api/v1/customers", "Tra cứu SĐT khách hàng, tự động tích điểm thưởng (100k = 1 điểm), nâng hạng thẻ VIP và chiết khấu trực tiếp"),
+        ("9. Báo Cáo Doanh Thu & Thống Kê", "/api/v1/reports", "MongoDB Aggregation tính doanh thu theo ngày/tuần/tháng, tỷ lệ dòng tiền VietQR/tiền mặt, Top 5 món bán chạy")
     ]
     for r_idx, (m_name, m_route, m_func) in enumerate(mod_data, start=1):
         bg_col = WHITE if r_idx % 2 != 0 else CARD_ALT
@@ -499,868 +570,315 @@ def create_presentation():
             cp = cell.text_frame.paragraphs[0]
             cp.text = text_val
             cp.font.name = "Segoe UI"
-            cp.font.size = Pt(9.5)
+            cp.font.size = Pt(11.5)
             if c_idx == 0:
                 cp.font.bold = True
                 cp.font.color.rgb = TEXT_DARK
             elif c_idx == 1:
                 cp.font.color.rgb = VIBRANT_BLUE
                 cp.font.name = "Consolas"
-                cp.font.size = Pt(8.5)
+                cp.font.size = Pt(11)
             else:
                 cp.font.color.rgb = TEXT_MUTED
             cell.text_frame.margin_top = Inches(0.04)
             cell.text_frame.margin_bottom = Inches(0.04)
 
     # ============================================================
-    # SLIDE 5: THIẾT KẾ CƠ SỞ DỮ LIỆU - 12 COLLECTIONS (CHƯƠNG 2)
-    # ============================================================
-    slide5 = prs.slides.add_slide(blank_layout)
-    set_slide_bg(slide5, LIGHT_BG)
-    add_header(slide5, "Chương 2: Cơ Sở Dữ Liệu", "Thiết Kế Cơ Sở Dữ Liệu NoSQL 12 Collections", "Tối ưu hóa cấu trúc dữ liệu NoSQL với Mongoose ODM, giải quyết triệt để quan hệ định mức n-n (BOM)", tag_width=3.0)
-    add_footer(slide5, 5)
-
-    left_c = slide5.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.35), Inches(5.2), Inches(5.55))
-    left_c.fill.solid()
-    left_c.fill.fore_color.rgb = WHITE
-    left_c.line.color.rgb = CARD_BORDER
-    left_c.line.width = Pt(1)
-    tf_c = left_c.text_frame
-    tf_c.word_wrap = True
-    tf_c.margin_top = Inches(0.2)
-    tf_c.margin_left = Inches(0.25)
-    tf_c.margin_right = Inches(0.25)
-
-    pc_h = tf_c.paragraphs[0]
-    pc_h.text = "🗄️ 4 NHÓM THỰC THỂ DỮ LIỆU CHÍNH"
-    pc_h.font.name = "Segoe UI"
-    pc_h.font.size = Pt(12)
-    pc_h.font.bold = True
-    pc_h.font.color.rgb = PRIMARY
-
-    c_groups = [
-        ("1. Người Dùng & Bàn Ăn", "NguoiDung (Admin, Cashier, Kitchen), BanAn & KhuVuc (Sơ đồ mặt bằng, trạng thái bàn động)."),
-        ("2. Thực Đơn & Gọi Món", "MonAn, LoaiMon (Danh mục & giá bán), DatMon (Chi tiết gọi món POS, ghi chú đặc biệt)."),
-        ("3. Kho & Công Thức BOM", "NguyenLieu (Tồn kho thực tế), MonAnNguyenLieu (Bảng định lượng liên kết n-n trừ kho tự động)."),
-        ("4. Đặt Bàn, Hóa Đơn & CRM", "DatBan (Khách hẹn trước), HoaDon (Thanh toán tiền mặt/VietQR), KhachHang (Tích điểm loyalty).")
-    ]
-    for grp_t, grp_d in c_groups:
-        pg = tf_c.add_paragraph()
-        pg.text = f"• {grp_t}: "
-        pg.font.name = "Segoe UI"
-        pg.font.size = Pt(10.5)
-        pg.font.bold = True
-        pg.font.color.rgb = VIBRANT_BLUE
-        pg.space_before = Pt(10)
-        run = pg.add_run()
-        run.text = grp_d
-        run.font.bold = False
-        run.font.color.rgb = TEXT_MUTED
-
-    img_erd_path = os.path.join(media_dir, "image19.png")
-    if os.path.exists(img_erd_path):
-        erd_bg = slide5.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.3), Inches(1.35), Inches(6.233), Inches(5.55))
-        erd_bg.fill.solid()
-        erd_bg.fill.fore_color.rgb = WHITE
-        erd_bg.line.color.rgb = CARD_BORDER
-        erd_bg.line.width = Pt(1)
-
-        cap_erd = slide5.shapes.add_textbox(Inches(6.5), Inches(1.48), Inches(5.8), Inches(0.35))
-        cap_etf = cap_erd.text_frame
-        cap_ep = cap_etf.paragraphs[0]
-        cap_ep.text = "Sơ đồ thực thể quan hệ (ERD) 12 Collections MongoDB (Hình 2.5)"
-        cap_ep.font.name = "Segoe UI"
-        cap_ep.font.size = Pt(11)
-        cap_ep.font.bold = True
-        cap_ep.font.color.rgb = PRIMARY
-
-        slide5.shapes.add_picture(img_erd_path, Inches(6.45), Inches(1.95), width=Inches(5.933))
-
-    # ============================================================
-    # SLIDE 6: CÁC LUỒNG NGHIỆP VỤ TRỌNG TÂM (CHƯƠNG 2) - GỌN + LƯU ĐỒ
+    # SLIDE 6: TÍNH NĂNG CỐT LÕI (PHẦN 1: BÀN ĂN & GỌI MÓN)
     # ============================================================
     slide6 = prs.slides.add_slide(blank_layout)
     set_slide_bg(slide6, LIGHT_BG)
-    add_header(slide6, "Chương 2: Luồng Xử Lý Nghiệp Vụ", "3 Luồng Nghiệp Vụ Trọng Tâm Của Hệ Thống", "Quy trình xác thực RBAC, gọi món POS - KDS Realtime và thuật toán trừ kho BOM tự động", tag_width=3.6)
+    add_header(slide6, "Tính Năng Thực Nghiệm (1 & 2)", "Sơ Đồ Bàn Ăn Thời Gian Thực & Gọi Món Đa Kênh (POS / Khách QR)", "Số hóa toàn bộ khâu tiếp đón khách, mở bàn và truyền nhận đơn hàng siêu tốc", tag_width=4.5)
     add_footer(slide6, 6)
 
-    flows_data = [
-        ("🔐 LUỒNG 1: XÁC THỰC & PHÂN QUYỀN RBAC", [
-            ("Đăng nhập:", "POST /api/v1/auth/login kèm email/mật khẩu."),
-            ("So khớp mật khẩu:", "Bcrypt kiểm tra băm 10 salt rounds."),
-            ("Cấp JWT Token:", "Thời hạn 24h chứa vai trò (Admin/Cashier/Kitchen)."),
-            ("Chặn truy cập:", "Middleware RBAC bảo vệ từng API endpoint.")
-        ], VIBRANT_BLUE),
-        ("⚡ LUỒNG 2: GỌI MÓN POS -> BẾP KDS REALTIME", [
-            ("Lên đơn tại bàn:", "Nhân viên chọn món, ghi chú cay/ngọt, gửi đơn."),
-            ("Đổi trạng thái bàn:", "Chuyển bàn sang 'co_khach' tức thời."),
-            ("Phát sóng Socket.io:", "Gửi sự kiện 'order:new' xuống màn hình bếp."),
-            ("Bếp nhận <50ms:", "Chuông reo báo hiệu, xếp vào hàng đợi ưu tiên.")
-        ], GOLD),
-        ("🍳 LUỒNG 3: ĐIỀU PHỐI BẾP & TRỪ KHO BOM", [
-            ("Đầu bếp bấm 'Nấu':", "Gửi PUT /api/v1/orders/:id/status ('dang_nau')."),
-            ("Truy vấn bảng BOM:", "Lấy công thức tiêu hao từ MonAnNguyenLieu."),
-            ("Tính toán hao phí:", "soLuongCanTru = bom.dinh_muc * don.so_luong."),
-            ("Trừ kho an toàn:", "Trừ tồn kho và cảnh báo khi chạm ngưỡng tối thiểu.")
-        ], EMERALD)
+    left_f6 = slide6.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.35), Inches(5.5), Inches(5.55))
+    left_f6.adjustments[0] = 0.05
+    left_f6.fill.solid()
+    left_f6.fill.fore_color.rgb = WHITE
+    left_f6.line.color.rgb = CARD_BORDER
+    left_f6.line.width = Pt(1.5)
+    tf_f6 = left_f6.text_frame
+    tf_f6.word_wrap = True
+    tf_f6.margin_top = Inches(0.2)
+    tf_f6.margin_left = Inches(0.25)
+    tf_f6.margin_right = Inches(0.25)
+
+    p6_h1 = tf_f6.paragraphs[0]
+    p6_h1.text = "🪑 1. SƠ ĐỒ BÀN ĂN REALTIME"
+    p6_h1.font.name = "Segoe UI"
+    p6_h1.font.size = Pt(15.5)
+    p6_h1.font.bold = True
+    p6_h1.font.color.rgb = PRIMARY
+
+    f6_items1 = [
+        ("Trạng thái động 3 màu:", "Bàn trống (Xanh lá), Có khách (Đỏ), Khách đã đặt hẹn trước (Vàng cam)."),
+        ("Tự động giải phóng bàn:", "Khi thu ngân xác nhận thanh toán ➔ Hệ thống tự động trả bàn về trạng thái 'trống' tức thì.")
     ]
+    for lbl, desc in f6_items1:
+        p = tf_f6.add_paragraph()
+        p.text = f"• {lbl} "
+        p.font.name = "Segoe UI"
+        p.font.size = Pt(13.5)
+        p.font.bold = True
+        p.font.color.rgb = EMERALD
+        p.space_before = Pt(8)
+        run = p.add_run()
+        run.text = desc
+        run.font.bold = False
+        run.font.color.rgb = TEXT_MUTED
 
-    fl_top = 1.35
-    for fl_title, steps, fl_col in flows_data:
-        fl_box = slide6.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(fl_top), Inches(5.8), Inches(1.75))
-        fl_box.fill.solid()
-        fl_box.fill.fore_color.rgb = WHITE
-        fl_box.line.color.rgb = fl_col
-        fl_box.line.width = Pt(1.5)
-        
-        fl_tf = fl_box.text_frame
-        fl_tf.word_wrap = True
-        fl_tf.margin_top = Inches(0.1)
-        fl_tf.margin_left = Inches(0.18)
-        fl_tf.margin_right = Inches(0.18)
+    p6_h2 = tf_f6.add_paragraph()
+    p6_h2.text = "📱 2. GỌI MÓN ĐA KÊNH & BẮN ĐƠN BẾP"
+    p6_h2.font.name = "Segoe UI"
+    p6_h2.font.size = Pt(15.5)
+    p6_h2.font.bold = True
+    p6_h2.font.color.rgb = PRIMARY
+    p6_h2.space_before = Pt(16)
 
-        fl_p = fl_tf.paragraphs[0]
-        fl_p.text = fl_title
-        fl_p.font.name = "Segoe UI"
-        fl_p.font.size = Pt(10.5)
-        fl_p.font.bold = True
-        fl_p.font.color.rgb = fl_col
+    f6_items2 = [
+        ("Khách tự quét mã QR:", "Khách tự gọi món trên điện thoại, tùy chỉnh khẩu vị (ít cay, không hành, ít đá...)."),
+        ("POS Phục vụ bàn:", "Nhân viên mở bàn, thêm món nhanh chóng bằng màn hình cảm ứng POS."),
+        ("Bắn đơn Socket.io tức thời:", "Xác nhận gọi món ➔ Sự kiện 'order:new' bắn thẳng xuống Bếp KDS chuông reo tức thì.")
+    ]
+    for lbl, desc in f6_items2:
+        p = tf_f6.add_paragraph()
+        p.text = f"• {lbl} "
+        p.font.name = "Segoe UI"
+        p.font.size = Pt(13.5)
+        p.font.bold = True
+        p.font.color.rgb = VIBRANT_BLUE
+        p.space_before = Pt(8)
+        run = p.add_run()
+        run.text = desc
+        run.font.bold = False
+        run.font.color.rgb = TEXT_MUTED
 
-        for s_title, s_desc in steps:
-            fl_ps = fl_tf.add_paragraph()
-            fl_ps.text = f"• {s_title} "
-            fl_ps.font.name = "Segoe UI"
-            fl_ps.font.size = Pt(9)
-            fl_ps.font.bold = True
-            fl_ps.font.color.rgb = TEXT_DARK
-            fl_ps.space_before = Pt(2)
-            run = fl_ps.add_run()
-            run.text = s_desc
-            run.font.bold = False
-            run.font.color.rgb = TEXT_MUTED
+    # Cột phải: Ảnh chụp màn hình Sơ đồ bàn ăn sạch sẽ
+    r_box6 = slide6.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.6), Inches(1.35), Inches(5.933), Inches(5.55))
+    r_box6.adjustments[0] = 0.05
+    r_box6.fill.solid()
+    r_box6.fill.fore_color.rgb = WHITE
+    r_box6.line.color.rgb = CARD_BORDER
+    r_box6.line.width = Pt(1.5)
 
-        fl_top += 1.88
+    r_cap6 = slide6.shapes.add_textbox(Inches(6.8), Inches(1.48), Inches(5.5), Inches(0.38))
+    rc_tf6 = r_cap6.text_frame
+    rc_p6 = rc_tf6.paragraphs[0]
+    rc_p6.text = "📸 Giao diện Sơ Đồ Bàn Ăn Thời Gian Thực (Table Map)"
+    rc_p6.font.name = "Segoe UI"
+    rc_p6.font.size = Pt(13.5)
+    rc_p6.font.bold = True
+    rc_p6.font.color.rgb = PRIMARY
 
-    img_flow_path = os.path.join(media_dir, "image21.png")
-    if os.path.exists(img_flow_path):
-        flow_bg = slide6.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.9), Inches(1.35), Inches(5.633), Inches(5.55))
-        flow_bg.fill.solid()
-        flow_bg.fill.fore_color.rgb = WHITE
-        flow_bg.line.color.rgb = CARD_BORDER
-        flow_bg.line.width = Pt(1)
-
-        cap_fl = slide6.shapes.add_textbox(Inches(7.1), Inches(1.48), Inches(5.2), Inches(0.35))
-        cap_ftf = cap_fl.text_frame
-        cap_fp = cap_ftf.paragraphs[0]
-        cap_fp.text = "Lưu đồ gọi món POS & điều phối Bếp KDS Real-time (Hình 2.7)"
-        cap_fp.font.name = "Segoe UI"
-        cap_fp.font.size = Pt(10.5)
-        cap_fp.font.bold = True
-        cap_fp.font.color.rgb = PRIMARY
-
-        slide6.shapes.add_picture(img_flow_path, Inches(7.05), Inches(1.95), width=Inches(5.333))
+    img_tables = os.path.join(clean_screenshots_dir, "04_tables.png")
+    if os.path.exists(img_tables):
+        slide6.shapes.add_picture(img_tables, Inches(6.75), Inches(1.95), width=Inches(5.633))
 
     # ============================================================
-    # SLIDE 7: LUỒNG HOẠT ĐỘNG KHÁCH HÀNG (CUSTOMER WORKFLOW)
+    # SLIDE 7: TÍNH NĂNG CỐT LÕI (PHẦN 2: BẾP KDS, KHO BOM & BÁO CÁO)
     # ============================================================
     slide7 = prs.slides.add_slide(blank_layout)
     set_slide_bg(slide7, LIGHT_BG)
-    add_header(slide7, "Chương 2: Luồng Khách Hàng", "Luồng Hoạt Động Của Khách Hàng: Đặt Món Tại Bàn & Thanh Toán Số", "Chu trình khép kín 4 bước: Quét mã QR ➔ Chọn món trực tuyến ➔ Nhận đơn Real-time ➔ Thanh toán VietQR & Tích điểm", tag_width=4.0)
+    add_header(slide7, "Tính Năng Thực Nghiệm (3 & 4)", "Điều Phối Bếp KDS, Trừ Kho BOM & Báo Cáo Doanh Thu", "Tự động hóa khấu trừ nguyên liệu từng gram và phân tích tài chính thông minh", tag_width=4.5)
     add_footer(slide7, 7)
 
-    cust_steps = [
-        ("📱 BƯỚC 1: QUÉT MÃ QR & MỞ BÀN TỰ ĐỘNG", [
-            ("Khách quét mã QR tại bàn:", "Dùng camera điện thoại thông minh quét mã QR định danh bàn ăn (không cần cài app)."),
-            ("Nhận diện & Khởi tạo:", "Back-End giải mã tableId, kiểm tra tính hợp lệ và chuyển trạng thái bàn sang 'co_khach'."),
-        ], VIBRANT_BLUE, RGBColor(238, 242, 255)),
-        ("📖 BƯỚC 2: DUYỆT THỰC ĐƠN SỐ & TÙY CHỌN MÓN", [
-            ("Xem menu trực quan:", "Duyệt danh mục món ăn (khai vị, món chính, đồ uống) với hình ảnh sắc nét & giá niêm yết."),
-            ("Cá nhân hóa khẩu vị:", "Thêm món vào giỏ hàng và ghi chú tùy chỉnh chi tiết (không cay, ít ngọt, không hành...)."),
-        ], SKY_BLUE, RGBColor(240, 249, 255)),
-        ("⚡ BƯỚC 3: GỬI ĐƠN & THEO DÕI TIẾN ĐỘ REAL-TIME", [
-            ("Đặt món tức thì:", "Bấm 'Xác nhận gọi món' ➔ Back-End tạo Order và kích hoạt Socket.io sự kiện 'order:new'."),
-            ("Bếp nhận <50ms:", "Màn hình Bếp KDS reo chuông nhận đơn; Khách theo dõi: Chờ nấu ➔ Đang nấu ➔ Sẵn sàng."),
-        ], GOLD, RGBColor(254, 243, 199)),
-        ("💳 BƯỚC 4: THANH TOÁN VIETQR & TÍCH ĐIỂM CRM", [
-            ("Thanh toán không tiền mặt:", "Hệ thống sinh mã VietQR động tự điền số tiền và nội dung chuyển khoản chính xác."),
-            ("Tích điểm hội viên:", "Nhập SĐT để tích lũy điểm (100k = 1 điểm) và tự động chiết khấu giảm giá trực tiếp."),
-        ], EMERALD, RGBColor(236, 253, 245)),
+    left_f7 = slide7.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.35), Inches(5.5), Inches(5.55))
+    left_f7.adjustments[0] = 0.05
+    left_f7.fill.solid()
+    left_f7.fill.fore_color.rgb = WHITE
+    left_f7.line.color.rgb = CARD_BORDER
+    left_f7.line.width = Pt(1.5)
+    tf_f7 = left_f7.text_frame
+    tf_f7.word_wrap = True
+    tf_f7.margin_top = Inches(0.2)
+    tf_f7.margin_left = Inches(0.25)
+    tf_f7.margin_right = Inches(0.25)
+
+    p7_h1 = tf_f7.paragraphs[0]
+    p7_h1.text = "🍳 3. ĐIỀU PHỐI BẾP KDS & TRỪ KHO BOM"
+    p7_h1.font.name = "Segoe UI"
+    p7_h1.font.size = Pt(15.5)
+    p7_h1.font.bold = True
+    p7_h1.font.color.rgb = PRIMARY
+
+    f7_items1 = [
+        ("Màn hình Bếp KDS 1 chạm:", "Chuông reo báo đơn; đầu bếp bấm 'Bắt Đầu Nấu' ➔ 'Hoàn Tất' để đồng bộ tiến độ món."),
+        ("Thuật toán tự động trừ kho:", "Bếp bấm nấu ➔ Back-End tự tính toán theo bảng định mức BOM và trừ thẳng kho nguyên liệu từng gram.")
     ]
+    for lbl, desc in f7_items1:
+        p = tf_f7.add_paragraph()
+        p.text = f"• {lbl} "
+        p.font.name = "Segoe UI"
+        p.font.size = Pt(13.5)
+        p.font.bold = True
+        p.font.color.rgb = GOLD
+        p.space_before = Pt(8)
+        run = p.add_run()
+        run.text = desc
+        run.font.bold = False
+        run.font.color.rgb = TEXT_MUTED
 
-    c_top = 1.35
-    for step_title, s_rows, s_col, s_bg in cust_steps:
-        s_box = slide7.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(c_top), Inches(6.3), Inches(1.28))
-        s_box.fill.solid()
-        s_box.fill.fore_color.rgb = WHITE
-        s_box.line.color.rgb = s_col
-        s_box.line.width = Pt(1.5)
+    p7_h2 = tf_f7.add_paragraph()
+    p7_h2.text = "📊 4. BÁO CÁO DOANH THU & DÒNG TIỀN"
+    p7_h2.font.name = "Segoe UI"
+    p7_h2.font.size = Pt(15.5)
+    p7_h2.font.bold = True
+    p7_h2.font.color.rgb = PRIMARY
+    p7_h2.space_before = Pt(16)
 
-        s_tf = s_box.text_frame
-        s_tf.word_wrap = True
-        s_tf.margin_top = Inches(0.08)
-        s_tf.margin_left = Inches(0.18)
-        s_tf.margin_right = Inches(0.18)
+    f7_items2 = [
+        ("MongoDB Aggregation Pipeline:", "Truy vấn đường ống tính toán doanh số tự động theo thời gian thực."),
+        ("Phân tích cơ cấu dòng tiền:", "Thống kê tỷ lệ thanh toán chuyển khoản VietQR vs. Tiền mặt; xếp hạng Top món bán chạy nhất.")
+    ]
+    for lbl, desc in f7_items2:
+        p = tf_f7.add_paragraph()
+        p.text = f"• {lbl} "
+        p.font.name = "Segoe UI"
+        p.font.size = Pt(13.5)
+        p.font.bold = True
+        p.font.color.rgb = EMERALD
+        p.space_before = Pt(8)
+        run = p.add_run()
+        run.text = desc
+        run.font.bold = False
+        run.font.color.rgb = TEXT_MUTED
 
-        sp0 = s_tf.paragraphs[0]
-        sp0.text = step_title
-        sp0.font.name = "Segoe UI"
-        sp0.font.size = Pt(10.5)
-        sp0.font.bold = True
-        sp0.font.color.rgb = s_col
-
-        for row_label, row_val in s_rows:
-            sp = s_tf.add_paragraph()
-            sp.text = f"• {row_label} "
-            sp.font.name = "Segoe UI"
-            sp.font.size = Pt(8.8)
-            sp.font.bold = True
-            sp.font.color.rgb = TEXT_DARK
-            sp.space_before = Pt(2)
-            run = sp.add_run()
-            run.text = row_val
-            run.font.bold = False
-            run.font.color.rgb = TEXT_MUTED
-
-        c_top += 1.41
-
-    # Right side: Screenshot + Highlight Card
-    r_box7 = slide7.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(7.3), Inches(1.35), Inches(5.233), Inches(5.55))
+    # Cột phải: Ảnh chụp màn hình Bếp KDS sạch sẽ
+    r_box7 = slide7.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.6), Inches(1.35), Inches(5.933), Inches(5.55))
+    r_box7.adjustments[0] = 0.05
     r_box7.fill.solid()
     r_box7.fill.fore_color.rgb = WHITE
     r_box7.line.color.rgb = CARD_BORDER
-    r_box7.line.width = Pt(1)
+    r_box7.line.width = Pt(1.5)
 
-    r_cap7 = slide7.shapes.add_textbox(Inches(7.45), Inches(1.45), Inches(4.9), Inches(0.32))
+    r_cap7 = slide7.shapes.add_textbox(Inches(6.8), Inches(1.48), Inches(5.5), Inches(0.38))
     rc_tf7 = r_cap7.text_frame
     rc_p7 = rc_tf7.paragraphs[0]
-    rc_p7.text = "📱 GIAO DIỆN GỌI MÓN QR & THANH TOÁN VIETQR"
+    rc_p7.text = "📸 Giao diện Điều Phối Màn Hình Bếp KDS Thông Minh"
     rc_p7.font.name = "Segoe UI"
-    rc_p7.font.size = Pt(10)
+    rc_p7.font.size = Pt(13.5)
     rc_p7.font.bold = True
     rc_p7.font.color.rgb = PRIMARY
 
-    img_qr_path = os.path.join(screenshots_dir, "10_qr_order.png")
-    if os.path.exists(img_qr_path):
-        slide7.shapes.add_picture(img_qr_path, Inches(7.45), Inches(1.85), width=Inches(4.933), height=Inches(2.78))
-
-    # Bottom benefit highlight card
-    b_card7 = slide7.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(7.45), Inches(4.75), Inches(4.933), Inches(2.0))
-    b_card7.fill.solid()
-    b_card7.fill.fore_color.rgb = RGBColor(236, 253, 245)
-    b_card7.line.color.rgb = RGBColor(167, 243, 208)
-    b_card7.line.width = Pt(1.2)
-
-    b_tf7 = b_card7.text_frame
-    b_tf7.word_wrap = True
-    b_tf7.margin_top = Inches(0.1)
-    b_tf7.margin_left = Inches(0.18)
-    b_tf7.margin_right = Inches(0.18)
-
-    bp0 = b_tf7.paragraphs[0]
-    bp0.text = "💎 GIÁ TRỊ TRẢI NGHIỆM KHÁCH HÀNG TẠI BÀN"
-    bp0.font.name = "Segoe UI"
-    bp0.font.size = Pt(10.5)
-    bp0.font.bold = True
-    bp0.font.color.rgb = EMERALD
-
-    cust_benefits = [
-        ("Tự phục vụ thông minh", "Không cần chờ nhân viên mang menu giấy, gọi món chủ động và riêng tư."),
-        ("Bếp nhận đơn tức thì", "Món ăn vào thẳng Bếp KDS <50ms qua Socket.io, giảm 80% thời gian chờ đợi."),
-        ("Minh bạch & Tiện lợi", "Xem hóa đơn tạm tính rõ ràng, quét mã VietQR tự khớp số tiền và tích điểm hội viên.")
-    ]
-    for b_title, b_desc in cust_benefits:
-        bp = b_tf7.add_paragraph()
-        bp.text = f"✓ {b_title}: "
-        bp.font.name = "Segoe UI"
-        bp.font.size = Pt(8.8)
-        bp.font.bold = True
-        bp.font.color.rgb = TEXT_DARK
-        bp.space_before = Pt(3)
-        run = bp.add_run()
-        run.text = b_desc
-        run.font.bold = False
-        run.font.color.rgb = TEXT_MUTED
+    img_kds = os.path.join(clean_screenshots_dir, "05_kitchen.png")
+    if os.path.exists(img_kds):
+        slide7.shapes.add_picture(img_kds, Inches(6.75), Inches(1.95), width=Inches(5.633))
 
     # ============================================================
-    # SLIDE 8: LUỒNG HOẠT ĐỘNG QUẢN TRỊ VIÊN (ADMIN OPERATIONS FLOW)
+    # SLIDE 8: CẢM ƠN & PHẦN HỎI ĐÁP (CHUẨN HOÀN TOÀN, CHỮ TO RÕ)
     # ============================================================
     slide8 = prs.slides.add_slide(blank_layout)
     set_slide_bg(slide8, LIGHT_BG)
-    add_header(slide8, "Chương 2: Luồng Quản Trị Hệ Thống", "Luồng Quản Trị Hệ Thống: Cấu Hình, Kiểm Soát Kho & Giám Sát KPI", "Chu trình 4 trụ cột vận hành: Phân quyền RBAC ➔ Thực đơn & Định mức BOM ➔ Quản lý kho ➔ Phân tích Dashboard", tag_width=4.0)
-    add_footer(slide8, 8)
 
-    admin_pillars = [
-        ("🔐 TRỤ CỘT 1: ĐĂNG NHẬP BẢO MẬT & PHÂN QUYỀN RBAC", [
-            ("Xác thực JWT an toàn:", "Admin đăng nhập qua POST /api/v1/auth/login, kiểm tra Bcrypt 10 rounds, cấp JWT 24h."),
-            ("Phân quyền đa tầng:", "Quản lý tài khoản nhân sự; Middleware RBAC chặn nghiêm ngặt các vai trò Thu ngân và Bếp."),
-        ], VIBRANT_BLUE, RGBColor(238, 242, 255)),
-        ("🍲 TRỤ CỘT 2: QUẢN TRỊ MENU & THIẾT LẬP ĐỊNH MỨC BOM", [
-            ("Quản lý thực đơn:", "CRUD danh mục, thêm món ăn, upload ảnh đại diện Cloudinary, quản lý trạng thái bật/tắt bán."),
-            ("Cấu hình công thức BOM:", "Thiết lập liên kết MonAnNguyenLieu (định lượng gram/ml tiêu hao chính xác cho mỗi món)."),
-        ], GOLD, RGBColor(254, 243, 199)),
-        ("📦 TRỤ CỘT 3: KIỂM SOÁT KHO & CẢNH BÁO TỒN TỐI THIỂU", [
-            ("Nhập kho nguyên liệu:", "Quản lý chứng từ nhập kho, cập nhật đơn giá, nhà cung cấp và số lượng tồn hiện hành."),
-            ("Tự động trừ kho & Cảnh báo:", "Bếp bấm nấu ➔ Back-End tự khấu trừ kho theo BOM; kích hoạt cảnh báo khi chạm ngưỡng tối thiểu."),
-        ], RED, RGBColor(254, 242, 242)),
-        ("📊 TRỤ CỘT 4: GIÁM SÁT DASHBOARD & PHÂN TÍCH KPI TÀI CHÍNH", [
-            ("Dashboard thời gian thực:", "Theo dõi tức thì doanh thu ca/ngày, tỷ lệ lấp đầy bàn ăn, số lượng đơn hoàn tất."),
-            ("Báo cáo chuyên sâu:", "Biểu đồ phân tích doanh thu theo kỳ, Top 5 món bán chạy nhất và tỷ suất hao hụt nguyên vật liệu."),
-        ], EMERALD, RGBColor(236, 253, 245)),
-    ]
+    top_bar8 = slide8.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(0.12))
+    top_bar8.fill.solid()
+    top_bar8.fill.fore_color.rgb = VIBRANT_BLUE
+    top_bar8.line.fill.background()
 
-    a_top = 1.35
-    for pil_title, p_rows, p_col, p_bg in admin_pillars:
-        p_box = slide8.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(a_top), Inches(6.3), Inches(1.28))
-        p_box.fill.solid()
-        p_box.fill.fore_color.rgb = WHITE
-        p_box.line.color.rgb = p_col
-        p_box.line.width = Pt(1.5)
+    # Khung chính giữa to, sang trọng
+    thank_card = slide8.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(1.2), Inches(0.85), Inches(10.933), Inches(4.3))
+    thank_card.adjustments[0] = 0.05
+    thank_card.fill.solid()
+    thank_card.fill.fore_color.rgb = WHITE
+    thank_card.line.color.rgb = RGBColor(199, 210, 254)
+    thank_card.line.width = Pt(1.5)
 
-        p_tf = p_box.text_frame
-        p_tf.word_wrap = True
-        p_tf.margin_top = Inches(0.08)
-        p_tf.margin_left = Inches(0.18)
-        p_tf.margin_right = Inches(0.18)
+    t_tf = thank_card.text_frame
+    t_tf.word_wrap = True
+    t_tf.margin_top = Inches(0.32)
+    t_tf.margin_left = Inches(0.5)
+    t_tf.margin_right = Inches(0.5)
 
-        pp0 = p_tf.paragraphs[0]
-        pp0.text = pil_title
-        pp0.font.name = "Segoe UI"
-        pp0.font.size = Pt(10.5)
-        pp0.font.bold = True
-        pp0.font.color.rgb = p_col
+    tp0 = t_tf.paragraphs[0]
+    tp0.text = "🏛️ KHOA CÔNG NGHỆ THÔNG TIN – ĐIỆN TỬ • ITC"
+    tp0.alignment = PP_ALIGN.CENTER
+    tp0.font.name = "Segoe UI"
+    tp0.font.size = Pt(15)
+    tp0.font.bold = True
+    tp0.font.color.rgb = VIBRANT_BLUE
 
-        for row_label, row_val in p_rows:
-            pp = p_tf.add_paragraph()
-            pp.text = f"• {row_label} "
-            pp.font.name = "Segoe UI"
-            pp.font.size = Pt(8.8)
-            pp.font.bold = True
-            pp.font.color.rgb = TEXT_DARK
-            pp.space_before = Pt(2)
-            run = pp.add_run()
-            run.text = row_val
-            run.font.bold = False
-            run.font.color.rgb = TEXT_MUTED
+    tp1 = t_tf.add_paragraph()
+    tp1.text = "XIN CHÂN THÀNH CẢM ƠN!"
+    tp1.alignment = PP_ALIGN.CENTER
+    tp1.font.name = "Segoe UI"
+    tp1.font.size = Pt(34)
+    tp1.font.bold = True
+    tp1.font.color.rgb = PRIMARY
+    tp1.space_before = Pt(12)
 
-        a_top += 1.41
+    tp2 = t_tf.add_paragraph()
+    tp2.text = "Kính chúc Quý Thầy Cô trong Hội đồng thật nhiều sức khỏe, hạnh phúc và thành công!"
+    tp2.alignment = PP_ALIGN.CENTER
+    tp2.font.name = "Segoe UI"
+    tp2.font.size = Pt(16.5)
+    tp2.font.color.rgb = TEXT_MUTED
+    tp2.space_before = Pt(8)
 
-    # Right side: Screenshot + Highlight Card
-    r_box8 = slide8.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(7.3), Inches(1.35), Inches(5.233), Inches(5.55))
-    r_box8.fill.solid()
-    r_box8.fill.fore_color.rgb = WHITE
-    r_box8.line.color.rgb = CARD_BORDER
-    r_box8.line.width = Pt(1)
+    tp3 = t_tf.add_paragraph()
+    tp3.text = "❓ PHẦN HỎI & ĐÁP (Q & A)"
+    tp3.alignment = PP_ALIGN.CENTER
+    tp3.font.name = "Segoe UI"
+    tp3.font.size = Pt(23)
+    tp3.font.bold = True
+    tp3.font.color.rgb = GOLD
+    tp3.space_before = Pt(18)
 
-    r_cap8 = slide8.shapes.add_textbox(Inches(7.45), Inches(1.45), Inches(4.9), Inches(0.32))
-    rc_tf8 = r_cap8.text_frame
-    rc_p8 = rc_tf8.paragraphs[0]
-    rc_p8.text = "📊 BẢNG ĐIỀU KHIỂN QUẢN TRỊ VIÊN (ADMIN DASHBOARD)"
-    rc_p8.font.name = "Segoe UI"
-    rc_p8.font.size = Pt(10)
-    rc_p8.font.bold = True
-    rc_p8.font.color.rgb = PRIMARY
+    tp4 = t_tf.add_paragraph()
+    tp4.text = "Em rất mong nhận được những câu hỏi phản biện, lời nhận xét và góp ý quý báu của Quý Thầy Cô để hoàn thiện đề tài."
+    tp4.alignment = PP_ALIGN.CENTER
+    tp4.font.name = "Segoe UI"
+    tp4.font.size = Pt(15.5)
+    tp4.font.color.rgb = TEXT_MUTED
+    tp4.space_before = Pt(6)
 
-    img_dash_path = os.path.join(screenshots_dir, "02_dashboard.png")
-    if os.path.exists(img_dash_path):
-        slide8.shapes.add_picture(img_dash_path, Inches(7.45), Inches(1.85), width=Inches(4.933), height=Inches(2.78))
+    # Thẻ thông tin sinh viên ở đáy
+    info_card8 = slide8.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(1.2), Inches(5.35), Inches(10.933), Inches(1.4))
+    info_card8.adjustments[0] = 0.1
+    info_card8.fill.solid()
+    info_card8.fill.fore_color.rgb = RGBColor(238, 242, 255)
+    info_card8.line.color.rgb = RGBColor(199, 210, 254)
+    info_card8.line.width = Pt(1)
 
-    # Bottom management value highlight card
-    b_card8 = slide8.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(7.45), Inches(4.75), Inches(4.933), Inches(2.0))
-    b_card8.fill.solid()
-    b_card8.fill.fore_color.rgb = RGBColor(238, 242, 255)
-    b_card8.line.color.rgb = RGBColor(199, 210, 254)
-    b_card8.line.width = Pt(1.2)
+    i_tf8 = info_card8.text_frame
+    i_tf8.word_wrap = True
+    i_tf8.margin_top = Inches(0.2)
+    i_tf8.margin_left = Inches(0.4)
+    i_tf8.margin_right = Inches(0.4)
 
-    b_tf8 = b_card8.text_frame
-    b_tf8.word_wrap = True
-    b_tf8.margin_top = Inches(0.1)
-    b_tf8.margin_left = Inches(0.18)
-    b_tf8.margin_right = Inches(0.18)
+    ip1 = i_tf8.paragraphs[0]
+    ip1.text = "👤 Sinh viên: NGUYỄN HOÀNG HƯNG   |   MSSV: 501250384   |   Lớp: Khóa K25 – Công nghệ Phần mềm"
+    ip1.alignment = PP_ALIGN.CENTER
+    ip1.font.name = "Segoe UI"
+    ip1.font.size = Pt(14)
+    ip1.font.bold = True
+    ip1.font.color.rgb = PRIMARY
 
-    bp8_0 = b_tf8.paragraphs[0]
-    bp8_0.text = "⚙️ NĂNG LỰC ĐIỀU HÀNH TẬP TRUNG CỦA BACK-END"
-    bp8_0.font.name = "Segoe UI"
-    bp8_0.font.size = Pt(10.5)
-    bp8_0.font.bold = True
-    bp8_0.font.color.rgb = PRIMARY
+    ip2 = i_tf8.add_paragraph()
+    ip2.text = "👨‍🏫 Giảng viên hướng dẫn: ThS. NGUYỄN MINH HẢI   |   Đề tài: Hệ Thống Back-End Quản Lý Nhà Hàng & Gọi Món (Royal Bistro)"
+    ip2.alignment = PP_ALIGN.CENTER
+    ip2.font.name = "Segoe UI"
+    ip2.font.size = Pt(13)
+    ip2.font.color.rgb = TEXT_MUTED
+    ip2.space_before = Pt(6)
 
-    admin_values = [
-        ("Tự động hóa 100%", "Khấu trừ nguyên liệu theo BOM và thống kê doanh số hoàn toàn tự động."),
-        ("Toàn vẹn CSDL MongoDB", "Mô hình quan hệ 12 Collections chặt chẽ, loại bỏ sai lệch số liệu và thất thoát kho."),
-        ("Ra quyết định chuẩn xác", "Nắm bắt trực quan món bán chạy, công suất phục vụ bàn và chi phí tức thì.")
-    ]
-    for v_title, v_desc in admin_values:
-        bp = b_tf8.add_paragraph()
-        bp.text = f"✓ {v_title}: "
-        bp.font.name = "Segoe UI"
-        bp.font.size = Pt(8.8)
-        bp.font.bold = True
-        bp.font.color.rgb = TEXT_DARK
-        bp.space_before = Pt(3)
-        run = bp.add_run()
-        run.text = v_desc
-        run.font.bold = False
-        run.font.color.rgb = TEXT_MUTED
+    add_footer(slide8, 8, total_slides=8)
 
     # ============================================================
-    # SLIDE 9: GIAO DIỆN & TÍNH NĂNG THỰC NGHIỆM (CHƯƠNG 3) - ẢNH NỔI BẬT
+    # LƯU FILE POWERPOINT & ĐỒNG BỘ
     # ============================================================
-    slide9 = prs.slides.add_slide(blank_layout)
-    set_slide_bg(slide9, LIGHT_BG)
-    add_header(slide9, "Chương 3: Cài Đặt Thực Nghiệm", "Giao Diện & Tính Năng Thực Nghiệm Trực Quan", "Kiểm thử thực tế hệ thống trên các màn hình Dashboard quản trị, sơ đồ bàn ăn và điều phối Bếp KDS", tag_width=3.4)
-    add_footer(slide9, 9)
-
-    ui_cards = [
-        ("BẢNG ĐIỀU KHIỂN QUẢN TRỊ (DASHBOARD)", "image24.png", "• Thống kê doanh số theo ngày/ca làm việc.\n• Top 5 món bán chạy nhất & tỷ lệ lấp đầy bàn."),
-        ("SƠ ĐỒ BÀN ĂN TRẠNG THÁI ĐỘNG", "image25.png", "• Hiển thị trực quan mặt bằng theo khu vực.\n• Đổi màu động (trống, có khách, đã đặt), chuyển bàn."),
-        ("MÀN HÌNH BẾP KDS REAL-TIME", "image27.png", "• Nhận đơn tức thì (<50ms), chuông reo báo hiệu.\n• Cập nhật tiến độ 1 chạm & kích hoạt trừ kho BOM.")
-    ]
-
-    card_x = 0.8
-    for ui_title, img_name, ui_desc in ui_cards:
-        u_box = slide9.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(card_x), Inches(1.35), Inches(3.75), Inches(5.55))
-        u_box.fill.solid()
-        u_box.fill.fore_color.rgb = WHITE
-        u_box.line.color.rgb = CARD_BORDER
-        u_box.line.width = Pt(1)
-        
-        u_tf = u_box.text_frame
-        u_tf.word_wrap = True
-        u_tf.margin_top = Inches(0.15)
-        u_tf.margin_left = Inches(0.18)
-        u_tf.margin_right = Inches(0.18)
-
-        up = u_tf.paragraphs[0]
-        up.text = ui_title
-        up.font.name = "Segoe UI"
-        up.font.size = Pt(10)
-        up.font.bold = True
-        up.font.color.rgb = PRIMARY
-
-        img_p = os.path.join(media_dir, img_name)
-        if os.path.exists(img_p):
-            slide9.shapes.add_picture(img_p, Inches(card_x + 0.15), Inches(1.9), width=Inches(3.45))
-
-        desc_box = slide9.shapes.add_textbox(Inches(card_x + 0.15), Inches(4.3), Inches(3.45), Inches(2.4))
-        dtf = desc_box.text_frame
-        dtf.word_wrap = True
-        dtf.margin_left = Inches(0)
-        dtf.margin_top = Inches(0)
-        dp = dtf.paragraphs[0]
-        dp.text = ui_desc
-        dp.font.name = "Segoe UI"
-        dp.font.size = Pt(9.5)
-        dp.font.color.rgb = TEXT_MUTED
-
-        card_x += 3.99
-
-    # ============================================================
-    # SLIDE 10: XỬ LÝ LỖI & GIÁM SÁT HỆ THỐNG (CHƯƠNG 4) - NGẮN GỌN
-    # ============================================================
-    slide10 = prs.slides.add_slide(blank_layout)
-    set_slide_bg(slide10, LIGHT_BG)
-    add_header(slide10, "Chương 4: Xử Lý Lỗi & Giám Sát", "Kiến Trúc Xử Lý Lỗi Tập Trung & Giám Sát Hiệu Năng", "Cơ chế bắt lỗi bất đồng bộ asyncHandler, bảng mã lỗi HTTP chuẩn hóa và Request Logger đo độ trễ", tag_width=3.6)
-    add_footer(slide10, 10)
-
-    left_e = slide10.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.35), Inches(5.5), Inches(5.55))
-    left_e.fill.solid()
-    left_e.fill.fore_color.rgb = WHITE
-    left_e.line.color.rgb = CARD_BORDER
-    left_e.line.width = Pt(1)
-    tf_e = left_e.text_frame
-    tf_e.word_wrap = True
-    tf_e.margin_top = Inches(0.2)
-    tf_e.margin_left = Inches(0.25)
-    tf_e.margin_right = Inches(0.25)
-
-    pe_h = tf_e.paragraphs[0]
-    pe_h.text = "🛡️ 4 CƠ CHẾ XỬ LÝ LỖI CHUYÊN SÂU"
-    pe_h.font.name = "Segoe UI"
-    pe_h.font.size = Pt(12)
-    pe_h.font.bold = True
-    pe_h.font.color.rgb = PRIMARY
-
-    err_points = [
-        ("Tiện ích asyncHandler", "Bọc quanh các controller async/await, loại bỏ mã lặp try/catch thừa, tự động đẩy lỗi về middleware."),
-        ("Custom Error kế thừa AppError", "Định nghĩa mã lỗi chuẩn HTTP: LoiYeuCauKhongHopLe, LoiChuaXacThuc, LoiKhongTimThay..."),
-        ("Middleware xử lý lỗi tập trung", "Không bao giờ để lộ stack trace nhạy cảm khi chạy production; trả về JSON đồng nhất."),
-        ("Middleware Request Logger", "Đo thời gian phản hồi (ms) cho từng request HTTP, phát hiện sớm các API bị nghẽn cổ chai.")
-    ]
-    for ep_name, ep_desc in err_points:
-        pe = tf_e.add_paragraph()
-        pe.text = f"• {ep_name}: "
-        pe.font.name = "Segoe UI"
-        pe.font.size = Pt(10)
-        pe.font.bold = True
-        pe.font.color.rgb = VIBRANT_BLUE
-        pe.space_before = Pt(10)
-        run = pe.add_run()
-        run.text = ep_desc
-        run.font.bold = False
-        run.font.color.rgb = TEXT_MUTED
-
-    t_shape8 = slide10.shapes.add_table(7, 3, Inches(6.6), Inches(1.35), Inches(5.933), Inches(5.55))
-    tbl8 = t_shape8.table
-    tbl8.columns[0].width = Inches(1.4)
-    tbl8.columns[1].width = Inches(1.9)
-    tbl8.columns[2].width = Inches(2.633)
-
-    h8 = ["HTTP Code", "Custom Error Class", "Tình Huống Xảy Ra"]
-    for c_idx, h_text in enumerate(h8):
-        cell = tbl8.cell(0, c_idx)
-        cell.fill.solid()
-        cell.fill.fore_color.rgb = PRIMARY
-        cp = cell.text_frame.paragraphs[0]
-        cp.text = h_text
-        cp.font.name = "Segoe UI"
-        cp.font.size = Pt(10)
-        cp.font.bold = True
-        cp.font.color.rgb = WHITE
-        cell.text_frame.margin_top = Inches(0.06)
-
-    codes_data = [
-        ("400 Bad Request", "LoiYeuCauKhongHopLe", "Thiếu tham số bắt buộc, số lượng món <= 0"),
-        ("401 Unauthorized", "LoiChuaXacThuc", "Chưa gửi token, token hết hạn, sai mật khẩu"),
-        ("403 Forbidden", "LoiKhongCoQuyen", "Nhân viên cố truy cập chức năng của Admin"),
-        ("404 Not Found", "LoiKhongTimThay", "Mã bàn, món ăn hoặc đơn hàng không tồn tại"),
-        ("409 Conflict", "LoiXungDotDuLieu", "Email nhân viên đã tồn tại; bàn đang có khách"),
-        ("500 Server Error", "LoiHeThong", "Lỗi máy chủ nội bộ hoặc lỗi kết nối MongoDB")
-    ]
-    for r_idx, (code, err_cls, cond) in enumerate(codes_data, start=1):
-        bg = WHITE if r_idx % 2 != 0 else CARD_ALT
-        for c_idx, val in enumerate([code, err_cls, cond]):
-            cell = tbl8.cell(r_idx, c_idx)
-            cell.fill.solid()
-            cell.fill.fore_color.rgb = bg
-            cp = cell.text_frame.paragraphs[0]
-            cp.text = val
-            cp.font.name = "Segoe UI"
-            cp.font.size = Pt(9.5)
-            if c_idx == 0:
-                cp.font.bold = True
-                cp.font.color.rgb = RED
-            elif c_idx == 1:
-                cp.font.name = "Consolas"
-                cp.font.size = Pt(8.5)
-                cp.font.color.rgb = VIBRANT_BLUE
-            else:
-                cp.font.color.rgb = TEXT_MUTED
-            cell.text_frame.margin_top = Inches(0.05)
-
-    # ============================================================
-    # SLIDE 11: BẢO MẬT & KIỂM THỬ CHỊU TẢI (CHƯƠNG 4) - NGẮN GỌN
-    # ============================================================
-    slide11 = prs.slides.add_slide(blank_layout)
-    set_slide_bg(slide11, LIGHT_BG)
-    add_header(slide11, "Chương 4: Bảo Mật & Kiểm Thử", "Bảo Mật Đa Tầng & Kết Quả Kiểm Thử Chịu Tải API", "Triển khai Helmet, CORS, Rate Limiting, Bcrypt, JWT và kiểm thử chịu tải với 100% tỷ lệ phản hồi thành công", tag_width=3.4)
-    add_footer(slide11, 11)
-
-    left_s = slide11.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.35), Inches(5.0), Inches(5.55))
-    left_s.fill.solid()
-    left_s.fill.fore_color.rgb = WHITE
-    left_s.line.color.rgb = CARD_BORDER
-    left_s.line.width = Pt(1)
-    tf_s = left_s.text_frame
-    tf_s.word_wrap = True
-    tf_s.margin_top = Inches(0.2)
-    tf_s.margin_left = Inches(0.25)
-    tf_s.margin_right = Inches(0.25)
-
-    ps_h = tf_s.paragraphs[0]
-    ps_h.text = "🔒 5 LỚP BẢO MẬT HỆ THỐNG"
-    ps_h.font.name = "Segoe UI"
-    ps_h.font.size = Pt(12)
-    ps_h.font.bold = True
-    ps_h.font.color.rgb = PRIMARY
-
-    sec_items = [
-        ("Helmet.js Headers", "Chống các lỗ hổng web phổ biến (XSS, Clickjacking, MIME sniffing)."),
-        ("CORS Whitelist", "Chỉ chấp nhận request từ domain Front-End hợp lệ."),
-        ("Express Rate Limit", "100 req/15 phút (API chung) và 20 req/15 phút (Auth), chống DoS và Brute-force."),
-        ("Bcrypt (10 Rounds)", "Mật khẩu băm một chiều với muối ngẫu nhiên trước khi lưu DB."),
-        ("Stateless JWT 24h", "Phiên làm việc phi trạng thái, không tốn session RAM máy chủ.")
-    ]
-    for s_name, s_desc in sec_items:
-        ps = tf_s.add_paragraph()
-        ps.text = f"• {s_name}: "
-        ps.font.name = "Segoe UI"
-        ps.font.size = Pt(10)
-        ps.font.bold = True
-        ps.font.color.rgb = VIBRANT_BLUE
-        ps.space_before = Pt(8)
-        run = ps.add_run()
-        run.text = s_desc
-        run.font.bold = False
-        run.font.color.rgb = TEXT_MUTED
-
-    t_shape9 = slide11.shapes.add_table(6, 5, Inches(6.1), Inches(1.35), Inches(6.433), Inches(3.6))
-    tbl9 = t_shape9.table
-    tbl9.columns[0].width = Inches(2.2)
-    tbl9.columns[1].width = Inches(1.1)
-    tbl9.columns[2].width = Inches(1.1)
-    tbl9.columns[3].width = Inches(1.1)
-    tbl9.columns[4].width = Inches(0.933)
-
-    h9 = ["Kịch Bản Kiểm Thử", "Yêu Cầu", "Đồng Thời", "TG Phản Hồi", "Tỷ Lệ Lỗi"]
-    for c_idx, h_text in enumerate(h9):
-        cell = tbl9.cell(0, c_idx)
-        cell.fill.solid()
-        cell.fill.fore_color.rgb = PRIMARY
-        cp = cell.text_frame.paragraphs[0]
-        cp.text = h_text
-        cp.font.name = "Segoe UI"
-        cp.font.size = Pt(9.5)
-        cp.font.bold = True
-        cp.font.color.rgb = WHITE
-        cell.text_frame.margin_top = Inches(0.05)
-
-    perf_data = [
-        ("Lấy DS bàn ăn (GET /tables)", "1,000 req", "50 kết nối", "18.5 ms", "0.0%"),
-        ("Lấy thực đơn (GET /dishes)", "1,000 req", "50 kết nối", "22.1 ms", "0.0%"),
-        ("Tạo đơn mới (POST /orders)", "500 req", "25 kết nối", "42.8 ms", "0.0%"),
-        ("Cập nhật & trừ kho BOM", "500 req", "25 kết nối", "38.4 ms", "0.0%"),
-        ("Thanh toán (POST /payment)", "200 req", "10 kết nối", "48.2 ms", "0.0%"),
-    ]
-    for r_idx, row in enumerate(perf_data, start=1):
-        bg = WHITE if r_idx % 2 != 0 else CARD_ALT
-        for c_idx, val in enumerate(row):
-            cell = tbl9.cell(r_idx, c_idx)
-            cell.fill.solid()
-            cell.fill.fore_color.rgb = bg
-            cp = cell.text_frame.paragraphs[0]
-            cp.text = val
-            cp.font.name = "Segoe UI"
-            cp.font.size = Pt(9.5)
-            if c_idx == 0:
-                cp.font.bold = True
-                cp.font.color.rgb = TEXT_DARK
-            elif c_idx == 3 or c_idx == 4:
-                cp.font.bold = True
-                cp.font.color.rgb = EMERALD
-            else:
-                cp.font.color.rgb = TEXT_MUTED
-            cell.text_frame.margin_top = Inches(0.04)
-
-    eval_box = slide11.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.1), Inches(5.15), Inches(6.433), Inches(1.75))
-    eval_box.fill.solid()
-    eval_box.fill.fore_color.rgb = RGBColor(236, 253, 245)
-    eval_box.line.color.rgb = RGBColor(167, 243, 208)
-    eval_box.line.width = Pt(1.5)
-    
-    etf = eval_box.text_frame
-    etf.word_wrap = True
-    etf.margin_top = Inches(0.12)
-    etf.margin_left = Inches(0.2)
-    etf.margin_right = Inches(0.2)
-
-    ep1 = etf.paragraphs[0]
-    ep1.text = "✅ ĐÁNH GIÁ CHỨC NĂNG NGHIỆP VỤ (BẢNG 3.3)"
-    ep1.font.name = "Segoe UI"
-    ep1.font.size = Pt(11)
-    ep1.font.bold = True
-    ep1.font.color.rgb = EMERALD
-
-    ep2 = etf.add_paragraph()
-    ep2.text = "• 9/9 nhóm chức năng chính được kiểm thử thực tế và đánh giá ĐẠT CHUẨN 100%."
-    ep2.font.name = "Segoe UI"
-    ep2.font.size = Pt(9.5)
-    ep2.font.color.rgb = TEXT_DARK
-    ep2.space_before = Pt(3)
-
-    ep3 = etf.add_paragraph()
-    ep3.text = "• Thời gian phản hồi API trung bình dưới 50ms, độ tin cậy tuyệt đối không phát sinh lỗi ngoại lệ."
-    ep3.font.name = "Segoe UI"
-    ep3.font.size = Pt(9.5)
-    ep3.font.color.rgb = TEXT_DARK
-    ep3.space_before = Pt(2)
-
-    # ============================================================
-    # SLIDE 12: TỔNG KẾT & HƯỚNG PHÁT TRIỂN (CHƯƠNG 5) - TRANG RIÊNG
-    # ============================================================
-    slide12 = prs.slides.add_slide(blank_layout)
-    set_slide_bg(slide12, LIGHT_BG)
-    add_header(slide12, "Chương 5: Kết Luận & Hướng Phát Triển", "Tổng Kết Đề Tài & Định Hướng Nâng Cấp", "Đánh giá các kết quả đạt được và lộ trình phát triển hệ thống trong tương lai", tag_width=4.0)
-    add_footer(slide12, 12)
-
-    # Left Card: Achievements (Full Height, Rộng Rãi)
-    left_10 = slide12.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.35), Inches(5.7), Inches(5.55))
-    left_10.fill.solid()
-    left_10.fill.fore_color.rgb = WHITE
-    left_10.line.color.rgb = RGBColor(167, 243, 208)
-    left_10.line.width = Pt(1.5)
-    tf_10l = left_10.text_frame
-    tf_10l.word_wrap = True
-    tf_10l.margin_top = Inches(0.25)
-    tf_10l.margin_left = Inches(0.28)
-    tf_10l.margin_right = Inches(0.28)
-
-    p10_lh = tf_10l.paragraphs[0]
-    p10_lh.text = "🌟 4 THÀNH TỰU CỐT LÕI ĐÃ ĐẠT ĐƯỢC"
-    p10_lh.font.name = "Segoe UI"
-    p10_lh.font.size = Pt(13)
-    p10_lh.font.bold = True
-    p10_lh.font.color.rgb = EMERALD
-
-    achieves = [
-        ("Kiến trúc Back-End chuẩn mực", "Xây dựng máy chủ Node.js & Express phân tầng rành mạch, kiểm soát hoàn toàn hơn 30 RESTful API endpoints."),
-        ("CSDL 12 Collections hoàn thiện", "Mô hình hóa Mongoose ODM quan hệ chặt chẽ, giải quyết triệt để bài toán công thức định mức BOM n-n."),
-        ("Thời gian thực Realtime vượt trội", "Ứng dụng Socket.io WebSockets phát sóng tức thời giữa POS và Bếp KDS với độ trễ <50ms."),
-        ("Bảo mật & Xử lý lỗi vững chắc", "asyncHandler loại bỏ try/catch thừa, kiểm soát lỗi tập trung, tích hợp Helmet, CORS, Rate Limit và JWT.")
-    ]
-    for ach_t, ach_d in achieves:
-        pach = tf_10l.add_paragraph()
-        pach.text = f"• {ach_t}: "
-        pach.font.name = "Segoe UI"
-        pach.font.size = Pt(10.5)
-        pach.font.bold = True
-        pach.font.color.rgb = TEXT_DARK
-        pach.space_before = Pt(14)
-        run = pach.add_run()
-        run.text = ach_d
-        run.font.bold = False
-        run.font.color.rgb = TEXT_MUTED
-
-    # Right Card: Future Roadmap (Full Height, Rộng Rãi)
-    right_10 = slide12.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.35), Inches(5.7), Inches(5.55))
-    right_10.fill.solid()
-    right_10.fill.fore_color.rgb = WHITE
-    right_10.line.color.rgb = RGBColor(253, 230, 138)
-    right_10.line.width = Pt(1.5)
-    tf_10r = right_10.text_frame
-    tf_10r.word_wrap = True
-    tf_10r.margin_top = Inches(0.25)
-    tf_10r.margin_left = Inches(0.28)
-    tf_10r.margin_right = Inches(0.28)
-
-    p10_rh = tf_10r.paragraphs[0]
-    p10_rh.text = "🚀 LỘ TRÌNH PHÁT TRIỂN TIẾP THEO"
-    p10_rh.font.name = "Segoe UI"
-    p10_rh.font.size = Pt(13)
-    p10_rh.font.bold = True
-    p10_rh.font.color.rgb = GOLD
-
-    futures = [
-        ("Tích hợp Redis Cache", "Lưu bộ nhớ đệm thực đơn & sơ đồ bàn ăn để giảm tải truy vấn MongoDB và tăng tốc phản hồi."),
-        ("Webhook Ngân hàng tự động", "Kết nối SePAY hoặc VietQR Webhook để tự động xác nhận hóa đơn khi tiền vào tài khoản."),
-        ("Kiến trúc Microservices", "Tách độc lập Service Báo cáo (Reporting) và Service Kho nguyên liệu (Inventory) để mở rộng quy mô."),
-        ("Ứng dụng Trí tuệ nhân tạo (AI)", "Xây dựng mô hình AI dự báo lượng khách và định lượng tiêu hao nguyên liệu theo ngày trong tuần.")
-    ]
-    for fut_t, fut_d in futures:
-        pfut = tf_10r.add_paragraph()
-        pfut.text = f"• {fut_t}: "
-        pfut.font.name = "Segoe UI"
-        pfut.font.size = Pt(10.5)
-        pfut.font.bold = True
-        pfut.font.color.rgb = TEXT_DARK
-        pfut.space_before = Pt(14)
-        run = pfut.add_run()
-        run.text = fut_d
-        run.font.bold = False
-        run.font.color.rgb = TEXT_MUTED
-
-    # ============================================================
-    # SLIDE 13: SLIDE CẢM ƠN & HỎI ĐÁP (DEDICATED THANK YOU & Q&A)
-    # ============================================================
-    slide13 = prs.slides.add_slide(blank_layout)
-    set_slide_bg(slide13, LIGHT_BG)
-
-    # Top accent bar
-    top_bar11 = slide13.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(0.12))
-    top_bar11.fill.solid()
-    top_bar11.fill.fore_color.rgb = VIBRANT_BLUE
-    top_bar11.line.fill.background()
-
-    # Main Center Gratitude Card
-    thanks_card = slide13.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(1.5), Inches(1.0), Inches(10.333), Inches(4.3))
-    thanks_card.fill.solid()
-    thanks_card.fill.fore_color.rgb = WHITE
-    thanks_card.line.color.rgb = RGBColor(199, 210, 254)
-    thanks_card.line.width = Pt(1.5)
-
-    tt_frame = thanks_card.text_frame
-    tt_frame.word_wrap = True
-    tt_frame.margin_top = Inches(0.4)
-    tt_frame.margin_left = Inches(0.5)
-    tt_frame.margin_right = Inches(0.5)
-
-    p_tbadge = tt_frame.paragraphs[0]
-    p_tbadge.text = "🏛️ KHOA CÔNG NGHỆ THÔNG TIN – ĐIỆN TỬ • ITC"
-    p_tbadge.alignment = PP_ALIGN.CENTER
-    p_tbadge.font.name = "Segoe UI"
-    p_tbadge.font.size = Pt(11)
-    p_tbadge.font.bold = True
-    p_tbadge.font.color.rgb = VIBRANT_BLUE
-
-    p_thx = tt_frame.add_paragraph()
-    p_thx.text = "XIN CHÂN THÀNH CẢM ƠN!"
-    p_thx.alignment = PP_ALIGN.CENTER
-    p_thx.font.name = "Segoe UI"
-    p_thx.font.size = Pt(30)
-    p_thx.font.bold = True
-    p_thx.font.color.rgb = PRIMARY
-    p_thx.space_before = Pt(8)
-
-    p_sub = tt_frame.add_paragraph()
-    p_sub.text = "Kính chúc Quý Thầy Cô trong Hội đồng thật nhiều sức khỏe, hạnh phúc và thành công!"
-    p_sub.alignment = PP_ALIGN.CENTER
-    p_sub.font.name = "Segoe UI"
-    p_sub.font.size = Pt(13)
-    p_sub.font.color.rgb = TEXT_MUTED
-    p_sub.space_before = Pt(8)
-
-    # Q&A Highlight inside the card
-    p_qa = tt_frame.add_paragraph()
-    p_qa.text = "❓ PHẦN HỎI & ĐÁP (Q & A)"
-    p_qa.alignment = PP_ALIGN.CENTER
-    p_qa.font.name = "Segoe UI"
-    p_qa.font.size = Pt(16)
-    p_qa.font.bold = True
-    p_qa.font.color.rgb = GOLD
-    p_qa.space_before = Pt(20)
-
-    p_qa_desc = tt_frame.add_paragraph()
-    p_qa_desc.text = "Em rất mong nhận được những câu hỏi phản biện, lời nhận xét và góp ý quý báu của Quý Thầy Cô để hoàn thiện đề tài."
-    p_qa_desc.alignment = PP_ALIGN.CENTER
-    p_qa_desc.font.name = "Segoe UI"
-    p_qa_desc.font.size = Pt(11.5)
-    p_qa_desc.font.color.rgb = TEXT_DARK
-    p_qa_desc.space_before = Pt(6)
-
-    # Bottom Contact / Author Info Card
-    contact_card = slide13.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(1.5), Inches(5.55), Inches(10.333), Inches(1.3))
-    contact_card.fill.solid()
-    contact_card.fill.fore_color.rgb = RGBColor(238, 242, 255)
-    contact_card.line.color.rgb = RGBColor(199, 210, 254)
-    contact_card.line.width = Pt(1)
-
-    ctf = contact_card.text_frame
-    ctf.word_wrap = True
-    ctf.margin_top = Inches(0.18)
-    ctf.margin_left = Inches(0.4)
-    ctf.margin_right = Inches(0.4)
-
-    cp1 = ctf.paragraphs[0]
-    cp1.text = "👤 Sinh viên thực hiện: Nguyễn Hoàng Hưng  •  MSSV: 501250384  •  Lớp: K25  •  Chuyên ngành: Công nghệ Phần mềm"
-    cp1.alignment = PP_ALIGN.CENTER
-    cp1.font.name = "Segoe UI"
-    cp1.font.size = Pt(11)
-    cp1.font.bold = True
-    cp1.font.color.rgb = PRIMARY
-
-    cp2 = ctf.add_paragraph()
-    cp2.text = "👨‍🏫 Giảng viên hướng dẫn: ThS. Nguyễn Minh Hải  |  Đề tài: Hệ Thống Back-End Quản Lý Nhà Hàng & Gọi Món (Royal Bistro)"
-    cp2.alignment = PP_ALIGN.CENTER
-    cp2.font.name = "Segoe UI"
-    cp2.font.size = Pt(10.5)
-    cp2.font.color.rgb = TEXT_MUTED
-    cp2.space_before = Pt(4)
-
-    add_footer(slide13, 13)
-
-    # --- SAVE FILE ---
-    output_path = os.path.join(base_dir, 'BaoCao_TongQuan_DoAn_BackEnd_RoyalBistro.pptx')
+    output_path = os.path.join(base_dir, "BaoCao_TongQuan_DoAn_BackEnd_RoyalBistro.pptx")
     prs.save(output_path)
-    print(f"Successfully generated PowerPoint presentation with dedicated Thank You slide at: {output_path}")
+    print(f"✅ Đã tạo thành công PowerPoint tại: {output_path}")
+
+    sync_targets = [
+        "05_NguyenHoangHung.pptx",
+        "05_NguyenNgocHaThao.pptx",
+        "5_NguyenNgocHaThao.pptx"
+    ]
+    for target in sync_targets:
+        t_path = os.path.join(base_dir, target)
+        prs.save(t_path)
+        print(f"✅ Đã đồng bộ sang: {t_path}")
 
 if __name__ == "__main__":
     create_presentation()
