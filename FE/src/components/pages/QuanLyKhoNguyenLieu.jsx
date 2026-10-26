@@ -143,8 +143,8 @@ export default function QuanLyKhoNguyenLieu() {
       {/* Nội dung bảng dữ liệu chính dạng Bootstrap Table */}
       {tabHienTai === 'ingredients' ? (
         <div className="card bg-white border border-slate-200/90 rounded-3xl overflow-hidden shadow-sm">
-          <div className="table-responsive">
-            <table className="table table-hover align-middle mb-0">
+          <div className="table-responsive overflow-x-auto">
+            <table className="table table-hover align-middle mb-0 w-full min-w-[900px]">
               <thead className="bg-slate-50 text-xs font-black text-slate-700 uppercase tracking-wider border-bottom border-slate-200/90">
                 <tr>
                   <th className="py-3.5 px-4">Tên Nguyên Liệu</th>
@@ -198,8 +198,8 @@ export default function QuanLyKhoNguyenLieu() {
       ) : (
         /* Bảng Nhà Cung Cấp */
         <div className="card bg-white border border-slate-200/90 rounded-3xl overflow-hidden shadow-sm">
-          <div className="table-responsive">
-            <table className="table table-hover align-middle mb-0">
+          <div className="table-responsive overflow-x-auto">
+            <table className="table table-hover align-middle mb-0 w-full min-w-[900px]">
               <thead className="bg-slate-50 text-xs font-black text-slate-700 uppercase tracking-wider border-bottom border-slate-200/90">
                 <tr>
                   <th className="py-3.5 px-4">Mã NCC</th>

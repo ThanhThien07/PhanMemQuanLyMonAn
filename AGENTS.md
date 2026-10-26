@@ -27,3 +27,19 @@
 - **Thu Ngân**: Khi bấm xác nhận thanh toán -> Tự động giải phóng bàn (`trang_thai: 'trong', so_luong_khach: 0`) ngay lập tức.
 - **Bếp Trưởng KDS**: Bấm 'Bắt Đầu Nấu' tự động trừ kho nguyên liệu theo định mức BOM.
 - **Phục Vụ**: Quản lý danh sách bàn đã đặt, đón khách chưa đặt -> mở bàn và hướng dẫn khách quét mã QR order món tại bàn.
+
+## 3. Quy Tắc Tự Động Thực Thi Sau Khi Sửa Giao Diện (Bắt Buộc)
+- **Tự động áp dụng song song 2 Skill ngay sau khi fix/chỉnh sửa UI**:
+  1. **Skill `restaurant-ui-design-system`**:
+     - Kiểm tra kiến trúc tách nền 3 tầng (Tầng 0: `bg-slate-100`, Tầng 1: `bg-white border-2 border-slate-200/90 rounded-3xl`, Tầng 2: `bg-slate-50/90 border-2 rounded-2xl`).
+     - Kiểm tra hiệu ứng hover (nâng nhẹ, đổi viền xanh, đổ bóng sâu).
+     - Kiểm tra font có chân tiếng Việt (`Lora`, `Merriweather`, serif) toàn bộ web.
+     - Kiểm tra nút bấm bo tròn viên thuốc `rounded-pill`, nút chính `btn-primary`.
+     - Kiểm tra quy tắc tag và giá: BỎ tag đỏ danh mục trên ảnh món, CHỈ hiện tag đỏ khi có giảm giá và giá màu đỏ; món bình thường không có tag trên ảnh và giá màu đen.
+     - Kiểm tra Admin xem đầy đủ 10 phân hệ.
+  2. **Skill `web-performance-and-seo`**:
+     - Tối ưu Core Web Vitals (LCP ≤ 2.5s, INP ≤ 200ms, CLS ≤ 0.1).
+     - Tất cả thẻ `<img>` bắt buộc có `width`, `height`, `loading="lazy"`, `decoding="async"`, `alt` có nghĩa để chống giật layout (CLS).
+     - Bảng dữ liệu có `w-full min-w-[...]` và `overflow-x-auto` chống bóp méo chữ và biến dạng badge.
+     - Kiểm tra Code Splitting, Resource Hints, Semantic HTML và chạy `npm run build` xác thực 100% không lỗi.
+

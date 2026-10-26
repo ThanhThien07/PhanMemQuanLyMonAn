@@ -390,8 +390,8 @@ export default function BaoCaoThongKeDoanhThu() {
 
         {/* Nội dung Tab 1: BẢNG CHI TIẾT TỪNG MÓN ĂN ĐÃ BÁN */}
         {tabChiTiet === 'dishes' && (
-          <div className="table-responsive">
-            <table className="table table-hover align-middle mb-0">
+          <div className="table-responsive overflow-x-auto">
+            <table className="table table-hover align-middle mb-0 w-full min-w-[920px]">
               <thead className="table-light text-xs font-bold text-slate-500 uppercase">
                 <tr>
                   <th className="py-3 px-4" style={{ width: '60px' }}>#</th>
@@ -493,8 +493,8 @@ export default function BaoCaoThongKeDoanhThu() {
 
         {/* Nội dung Tab 2: BẢNG LỊCH SỬ GIAO DỊCH & CHI TIẾT TỪNG LƯỢT GỌI MÓN */}
         {tabChiTiet === 'orders' && (
-          <div className="table-responsive">
-            <table className="table table-hover align-middle mb-0">
+          <div className="table-responsive overflow-x-auto">
+            <table className="table table-hover align-middle mb-0 w-full min-w-[960px]">
               <thead className="table-light text-xs font-bold text-slate-500 uppercase">
                 <tr>
                   <th className="py-3 px-4" style={{ width: '80px' }}>Mã Đơn</th>
