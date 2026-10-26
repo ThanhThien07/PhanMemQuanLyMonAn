@@ -122,16 +122,23 @@ export async function khachNhanBanCheckIn(req, res) {
     phieuDat.trang_thai = 'da_den';
     await phieuDat.save();
 
+    let banAnCapNhat = null;
     if (phieuDat.ban_id) {
-      const banAn = await BanAn.findOneAndUpdate(
+      banAnCapNhat = await BanAn.findOneAndUpdate(
         { id: phieuDat.ban_id },
         { trang_thai: 'co_khach', so_luong_khach: phieuDat.so_luong_khach },
         { returnDocument: 'after' }
       );
-      if (banAn) phatSuKienTrangThaiBan(banAn.toJSON());
+      if (banAnCapNhat) phatSuKienTrangThaiBan(banAnCapNhat.toJSON());
     }
 
-    res.json({ success: true, message: 'Check-in thành công! Khách đã vào bàn.' });
+    res.json({ 
+      success: true, 
+      message: 'Check-in thành công! Khách đã vào bàn.',
+      ban_id: phieuDat.ban_id,
+      ban: banAnCapNhat ? banAnCapNhat.toJSON() : null,
+      reservation: phieuDat.toJSON()
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

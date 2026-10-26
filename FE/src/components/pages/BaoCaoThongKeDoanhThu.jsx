@@ -177,67 +177,67 @@ export default function BaoCaoThongKeDoanhThu() {
         </div>
       </div>
 
-      {/* Thẻ chỉ số tổng quan (KPI Cards) */}
+      {/* Thẻ chỉ số tổng quan (KPI Cards) tách nền, border 2px, đổ bóng sâu */}
       <div className="row g-3 g-md-4">
         <div className="col-12 col-sm-6 col-lg-3">
-          <div className="card h-100 p-4 rounded-4 bg-white border border-slate-200 shadow-sm space-y-1.5">
+          <div className="card h-100 p-5 rounded-3xl bg-white border-2 border-slate-200/90 shadow-sm hover:shadow-xl hover:border-blue-400 transition-all hover:-translate-y-1 space-y-2">
             <div className="d-flex align-items-center justify-content-between">
-              <span className="text-xs font-bold uppercase text-slate-500">Tổng Doanh Thu</span>
-              <span className="badge bg-warning-subtle text-amber-800 rounded-pill px-2.5 py-1 text-xs">
+              <span className="text-xs font-black uppercase text-slate-600">Tổng Doanh Thu</span>
+              <span className="badge bg-amber-50 text-amber-800 border-2 border-amber-200 rounded-pill px-3 py-1 text-xs font-black">
                 <i className="bi bi-cash-stack me-1"></i>Đã Thu
               </span>
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-amber-600">
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 tabular-nums">
               {dinhDangTienTe(duLieuBaoCao?.totalRevenue || 0)}
             </div>
-            <p className="text-xs text-slate-400 font-medium mb-0">Hóa đơn thanh toán hoàn tất</p>
+            <p className="text-xs text-slate-500 font-bold mb-0">Hóa đơn thanh toán hoàn tất</p>
           </div>
         </div>
 
         <div className="col-12 col-sm-6 col-lg-3">
-          <div className="card h-100 p-4 rounded-4 bg-white border border-slate-200 shadow-sm space-y-1.5">
+          <div className="card h-100 p-5 rounded-3xl bg-white border-2 border-slate-200/90 shadow-sm hover:shadow-xl hover:border-blue-400 transition-all hover:-translate-y-1 space-y-2">
             <div className="d-flex align-items-center justify-content-between">
-              <span className="text-xs font-bold uppercase text-slate-500">Tổng Đơn Phục Vụ</span>
-              <span className="badge bg-success-subtle text-emerald-800 rounded-pill px-2.5 py-1 text-xs">
+              <span className="text-xs font-black uppercase text-slate-600">Tổng Đơn Phục Vụ</span>
+              <span className="badge bg-emerald-50 text-emerald-800 border-2 border-emerald-200 rounded-pill px-3 py-1 text-xs font-black">
                 <i className="bi bi-bag-check me-1"></i>Orders
               </span>
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-emerald-600">
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 tabular-nums">
               {duLieuBaoCao?.totalOrders || 0} lượt
             </div>
-            <p className="text-xs text-slate-400 font-medium mb-0">Các lượt gọi món thành công</p>
+            <p className="text-xs text-slate-500 font-bold mb-0">Các lượt gọi món thành công</p>
           </div>
         </div>
 
         <div className="col-12 col-sm-6 col-lg-3">
-          <div className="card h-100 p-4 rounded-4 bg-white border border-slate-200 shadow-sm space-y-1.5">
+          <div className="card h-100 p-5 rounded-3xl bg-white border-2 border-slate-200/90 shadow-sm hover:shadow-xl hover:border-blue-400 transition-all hover:-translate-y-1 space-y-2">
             <div className="d-flex align-items-center justify-content-between">
-              <span className="text-xs font-bold uppercase text-slate-500">Số Loại Món Đã Bán</span>
-              <span className="badge bg-info-subtle text-sky-800 rounded-pill px-2.5 py-1 text-xs">
+              <span className="text-xs font-black uppercase text-slate-600">Số Loại Món Đã Bán</span>
+              <span className="badge bg-blue-50 text-blue-800 border-2 border-blue-200 rounded-pill px-3 py-1 text-xs font-black">
                 <UtensilsCrossed className="w-3 h-3 inline me-1" />Thực Đơn
               </span>
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-sky-600">
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 tabular-nums">
               {duLieuBaoCao?.soldDishes?.length || 0} món
             </div>
-            <p className="text-xs text-slate-400 font-medium mb-0">Các món ăn phát sinh doanh thu</p>
+            <p className="text-xs text-slate-500 font-bold mb-0">Các món ăn phát sinh doanh thu</p>
           </div>
         </div>
 
         <div className="col-12 col-sm-6 col-lg-3">
-          <div className="card h-100 p-4 rounded-4 bg-white border border-slate-200 shadow-sm space-y-1.5">
+          <div className="card h-100 p-5 rounded-3xl bg-white border-2 border-slate-200/90 shadow-sm hover:shadow-xl hover:border-blue-400 transition-all hover:-translate-y-1 space-y-2">
             <div className="d-flex align-items-center justify-content-between">
-              <span className="text-xs font-bold uppercase text-slate-500">Giá Trị TB / Lượt</span>
-              <span className="badge bg-purple-subtle text-purple-800 rounded-pill px-2.5 py-1 text-xs">
+              <span className="text-xs font-black uppercase text-slate-600">Giá Trị TB / Lượt</span>
+              <span className="badge bg-purple-50 text-purple-800 border-2 border-purple-200 rounded-pill px-3 py-1 text-xs font-black">
                 <i className="bi bi-calculator me-1"></i>TB Đơn
               </span>
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-indigo-600">
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 tabular-nums">
               {duLieuBaoCao?.totalOrders > 0
                 ? dinhDangTienTe(Math.round(duLieuBaoCao.totalRevenue / duLieuBaoCao.totalOrders))
                 : '0 đ'}
             </div>
-            <p className="text-xs text-slate-400 font-medium mb-0">Mức chi tiêu trung bình / lượt</p>
+            <p className="text-xs text-slate-500 font-bold mb-0">Mức chi tiêu trung bình / lượt</p>
           </div>
         </div>
       </div>
@@ -246,7 +246,7 @@ export default function BaoCaoThongKeDoanhThu() {
       <div className="row g-4">
         {/* Cột Trái: Cơ Cấu Phương Thức Thanh Toán */}
         <div className="col-12 col-lg-6">
-          <div className="card h-100 p-4 rounded-4 bg-white border border-slate-200 shadow-sm space-y-3">
+          <div className="card h-100 p-5 rounded-3xl bg-white border-2 border-slate-200/90 shadow-sm hover:shadow-md transition-shadow space-y-3">
             <div className="d-flex align-items-center justify-content-between">
               <div className="d-flex align-items-center gap-2">
                 <PieChart className="w-5 h-5 text-amber-600" />
@@ -254,14 +254,14 @@ export default function BaoCaoThongKeDoanhThu() {
                   Cơ Cấu Phương Thức Thanh Toán
                 </h3>
               </div>
-              <span className="badge bg-secondary-subtle text-secondary rounded-pill px-2 py-1 text-xs">
+              <span className="badge bg-secondary-subtle text-secondary rounded-pill px-2.5 py-1 text-xs">
                 Theo loại tiền
               </span>
             </div>
 
-            <div className="space-y-2 pt-1">
+            <div className="space-y-2.5 pt-1">
               {duLieuBaoCao?.paymentBreakdown?.map((p, idx) => (
-                <div key={idx} className="p-3 rounded-3 bg-slate-50 border border-slate-200 d-flex align-items-center justify-content-between">
+                <div key={idx} className="p-3.5 rounded-2xl bg-slate-50/90 border-2 border-slate-200/90 hover:bg-white hover:border-blue-400 hover:shadow-sm transition-all d-flex align-items-center justify-content-between">
                   <div>
                     <div className="text-sm font-bold text-slate-900 capitalize d-flex align-items-center gap-2">
                       {p.phuong_thuc_thanh_toan === 'tien_mat' ? (
@@ -280,7 +280,7 @@ export default function BaoCaoThongKeDoanhThu() {
                     </div>
                     <div className="text-xs text-slate-500 font-medium">Giao dịch đã hoàn tất</div>
                   </div>
-                  <div className="badge bg-amber-100 text-amber-900 px-3 py-1.5 rounded-pill text-sm fw-bold">
+                  <div className="badge bg-amber-100 text-amber-900 border border-amber-300 px-3 py-1.5 rounded-pill text-sm fw-bold">
                     {dinhDangTienTe(p.total)}
                   </div>
                 </div>
@@ -291,7 +291,7 @@ export default function BaoCaoThongKeDoanhThu() {
 
         {/* Cột Phải: Top 5 Món Đóng Góp Doanh Thu Cao Nhất */}
         <div className="col-12 col-lg-6">
-          <div className="card h-100 p-4 rounded-4 bg-white border border-slate-200 shadow-sm space-y-3">
+          <div className="card h-100 p-5 rounded-3xl bg-white border-2 border-slate-200/90 shadow-sm hover:shadow-md transition-shadow space-y-3">
             <div className="d-flex align-items-center justify-content-between">
               <div className="d-flex align-items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-emerald-600" />
@@ -299,16 +299,16 @@ export default function BaoCaoThongKeDoanhThu() {
                   Top 5 Món Bán Chạy Nhất
                 </h3>
               </div>
-              <span className="badge bg-success-subtle text-success rounded-pill px-2 py-1 text-xs">
+              <span className="badge bg-success-subtle text-success rounded-pill px-2.5 py-1 text-xs">
                 Doanh số cao
               </span>
             </div>
 
-            <div className="space-y-2 pt-1">
+            <div className="space-y-2.5 pt-1">
               {duLieuBaoCao?.topDishes?.map((mon, idx) => (
-                <div key={idx} className="p-2.5 rounded-3 bg-slate-50 border border-slate-200 d-flex align-items-center justify-content-between">
+                <div key={idx} className="p-3 rounded-2xl bg-slate-50/90 border-2 border-slate-200/90 hover:bg-white hover:border-blue-400 hover:shadow-sm transition-all d-flex align-items-center justify-content-between">
                   <div className="d-flex align-items-center gap-2.5">
-                    <span className="w-6 h-6 rounded-circle bg-white border border-slate-200 text-xs font-black text-slate-800 d-flex align-items-center justify-content-center shadow-2xs">
+                    <span className="w-7 h-7 rounded-circle bg-white border-2 border-slate-200 text-xs font-black text-slate-800 d-flex align-items-center justify-content-center shadow-2xs">
                       #{idx + 1}
                     </span>
                     <div>
@@ -327,7 +327,7 @@ export default function BaoCaoThongKeDoanhThu() {
       </div>
 
       {/* KHỐI BẢNG CHI TIẾT CỦA BÁO CÁO: CHI TIẾT MÓN ĐÃ BÁN & GIAO DỊCH */}
-      <div className="card bg-white border border-slate-200 rounded-4 overflow-hidden shadow-sm">
+      <div className="card bg-white border-2 border-slate-200/90 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
         {/* Thanh công cụ chuyển đổi Tab chi tiết */}
         <div className="p-4 border-b border-slate-200 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 bg-slate-50/50">
           <div className="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2 w-100 w-md-auto">

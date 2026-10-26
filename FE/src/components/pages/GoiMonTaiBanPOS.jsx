@@ -221,17 +221,18 @@ export default function GoiMonTaiBanPOS() {
   const tongTienDangPhucVu = monDangPhucVu.reduce((tong, item) => tong + (item.tong_tien || 0), 0);
 
   return (
-    <div className="h-[calc(100vh-4rem)] flex overflow-hidden bg-slate-50 relative">
+    <div className="h-[calc(100vh-5.5rem)] flex gap-4 overflow-hidden bg-slate-100 relative">
       {/* KHU VỰC TRÁI VÀ GIỮA: CHỌN THỰC ĐƠN MÓN ĂN */}
-      <div className={`flex-1 flex flex-col border-r border-slate-200 bg-slate-100/50 p-3 sm:p-5 overflow-hidden ${
+      <div className={`flex-1 flex flex-col bg-white border border-slate-200/90 rounded-3xl p-4 sm:p-5 shadow-sm overflow-hidden ${
         tabMobile === 'cart' ? 'hidden xl:flex' : 'flex'
       }`}>
         {/* Nút chuyển đổi Tab trên Mobile / Tablet (< xl) */}
-        <div className="flex items-center gap-1.5 p-1 bg-slate-200/80 rounded-xl mb-3 shrink-0 xl:hidden">
+        {/* Nút chuyển đổi Tab trên Mobile / Tablet (< xl) */}
+        <div className="flex items-center gap-1.5 p-1 bg-slate-200/80 rounded-full mb-3 shrink-0 xl:hidden">
           <button
             type="button"
             onClick={() => setTabMobile('menu')}
-            className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+            className={`flex-1 py-1.5 px-3 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
               tabMobile === 'menu' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -241,14 +242,14 @@ export default function GoiMonTaiBanPOS() {
           <button
             type="button"
             onClick={() => setTabMobile('cart')}
-            className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 relative ${
-              tabMobile === 'cart' ? 'bg-amber-500 text-slate-950 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+            className={`flex-1 py-1.5 px-3 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 relative ${
+              tabMobile === 'cart' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             <ShoppingBag className="w-3.5 h-3.5" />
             <span>Đơn Bàn {banHienTai?.so_ban}</span>
             {(gioHang.length > 0 || monDangPhucVu.length > 0) && (
-              <span className="px-1.5 py-0.2 rounded-full bg-rose-600 text-white text-[10px] font-black">
+              <span className="px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[10px] font-black">
                 {gioHang.length + monDangPhucVu.length}
               </span>
             )}
@@ -265,7 +266,7 @@ export default function GoiMonTaiBanPOS() {
                 value={tuKhoaTimKiem}
                 onChange={(e) => setTuKhoaTimKiem(e.target.value)}
                 placeholder="Tìm món theo tên, nguyên liệu, hương vị..."
-                className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 shadow-2xs"
+                className="w-full bg-white border border-slate-200 rounded-full pl-10 pr-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 shadow-2xs"
               />
             </div>
 
@@ -276,7 +277,7 @@ export default function GoiMonTaiBanPOS() {
                 const timThay = danhSachBan.find((t) => String(t.id) === String(e.target.value) || t.id === Number(e.target.value));
                 setBanHienTai(timThay || null);
               }}
-              className="bg-white border border-amber-300 text-amber-900 font-extrabold text-sm px-4 py-2.5 rounded-xl focus:outline-none shadow-2xs cursor-pointer"
+              className="bg-white border border-blue-300 text-blue-900 font-extrabold text-sm px-4 py-2.5 rounded-full focus:outline-none shadow-2xs cursor-pointer"
             >
               {danhSachBan.map((t) => (
                 <option key={t.id} value={t.id}>
@@ -293,10 +294,10 @@ export default function GoiMonTaiBanPOS() {
                 setDanhMucChon('all');
                 e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
               }}
-              className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
+              className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                 danhMucChon === 'all'
-                  ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/25'
-                  : 'bg-white text-slate-600 hover:text-slate-950 border border-slate-200 shadow-2xs'
+                  ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25'
+                  : 'bg-white text-slate-600 hover:text-blue-700 hover:border-blue-200 border border-slate-200 shadow-2xs'
               }`}
             >
               Tất Cả Món ({danhSachMon.length})
@@ -308,10 +309,10 @@ export default function GoiMonTaiBanPOS() {
                   setDanhMucChon(cat.id.toString());
                   e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                 }}
-                className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
+                className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                   danhMucChon === cat.id.toString()
-                    ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/25'
-                    : 'bg-white text-slate-600 hover:text-slate-950 border border-slate-200 shadow-2xs'
+                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25'
+                    : 'bg-white text-slate-600 hover:text-blue-700 hover:border-blue-200 border border-slate-200 shadow-2xs'
                 }`}
               >
                 {cat.ten_loai}
@@ -320,29 +321,33 @@ export default function GoiMonTaiBanPOS() {
           </ThanhCuonNgang>
         </div>
 
-        {/* Lưới danh sách món ăn */}
+        {/* Lưới danh sách món ăn: Ảnh to ăn sát card, tag đỏ best seller, giá đen, button bo tròn */}
         <div className="flex-1 overflow-y-auto pr-1">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
             {danhSachMonHienThi.map((mon) => (
               <div
                 key={mon.id}
                 onClick={() => themVaoGio(mon)}
-                className="group relative bg-white border border-slate-200 hover:border-amber-400 rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 hover:-translate-y-1 shadow-xs hover:shadow-md flex flex-col justify-between"
+                className="group relative bg-white border-2 border-slate-200/90 hover:border-blue-500 rounded-3xl overflow-hidden cursor-pointer transition-all duration-200 hover:-translate-y-1 shadow-sm hover:shadow-xl flex flex-col justify-between"
               >
-                <div className="relative h-32 overflow-hidden bg-slate-100">
+                <div className="relative h-36 overflow-hidden bg-slate-100">
                   <img
                     src={mon.hinh_anh || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300'}
                     alt={mon.ten_mon}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  <span className="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-md text-[10px] font-bold text-amber-700 border border-amber-200 shadow-2xs">
-                    {mon.ten_loai}
-                  </span>
+                  {/* Chỉ hiển thị Tag đỏ khi món có GIẢM GIÁ */}
+                  {Boolean(mon.phan_tram_giam || mon.is_discount) && (
+                    <span className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full bg-red-600 text-white text-[10px] font-black shadow-md flex items-center gap-1 uppercase tracking-wide">
+                      <Flame className="w-3 h-3 fill-white" />
+                      Giảm {mon.phan_tram_giam || 15}%
+                    </span>
+                  )}
                 </div>
 
                 <div className="p-3.5 flex flex-col justify-between flex-1">
                   <div>
-                    <h4 className="text-sm font-bold text-slate-900 group-hover:text-amber-600 transition-colors line-clamp-2 min-h-[2.5rem]" title={mon.ten_mon}>
+                    <h4 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 min-h-[2.5rem]" title={mon.ten_mon}>
                       {mon.ten_mon}
                     </h4>
                     <p className="text-[11px] text-slate-500 line-clamp-2 mt-1">
@@ -351,12 +356,14 @@ export default function GoiMonTaiBanPOS() {
                   </div>
 
                   <div className="mt-3 flex items-center justify-between pt-2 border-t border-slate-100">
-                    <span className="text-sm font-black text-amber-600">
+                    <span className={`text-sm sm:text-base font-black ${
+                      mon.phan_tram_giam || mon.is_discount ? 'text-red-600' : 'text-slate-900'
+                    }`}>
                       {dinhDangTienTe(mon.gia)}
                     </span>
                     <button
                       type="button"
-                      className="w-7 h-7 rounded-lg bg-amber-50 group-hover:bg-amber-500 text-amber-700 group-hover:text-slate-950 flex items-center justify-center transition-colors shadow-2xs cursor-pointer"
+                      className="w-8 h-8 rounded-full bg-blue-600 hover:bg-red-600 text-white flex items-center justify-center transition-colors shadow-2xs cursor-pointer"
                     >
                       <Plus className="w-4 h-4" />
                     </button>
@@ -372,12 +379,12 @@ export default function GoiMonTaiBanPOS() {
           <div className="pt-2.5 mt-2 border-t border-slate-200 flex items-center justify-between xl:hidden shrink-0 bg-white p-3 rounded-2xl shadow-xs">
             <div>
               <div className="text-[11px] font-bold text-slate-500">{gioHang.length} món mới trong giỏ</div>
-              <div className="text-sm font-black text-amber-600">{dinhDangTienTe(tongTienGioHang)}</div>
+              <div className="text-sm font-black text-black">{dinhDangTienTe(tongTienGioHang)}</div>
             </div>
             <button
               type="button"
               onClick={() => setTabMobile('cart')}
-              className="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-md shadow-amber-500/20 flex items-center gap-1.5 cursor-pointer"
+              className="px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-black text-xs shadow-md shadow-red-500/20 flex items-center gap-1.5 cursor-pointer"
             >
               <span>Xem Đơn & Gửi Bếp</span>
               <Send className="w-3.5 h-3.5" />
@@ -387,12 +394,12 @@ export default function GoiMonTaiBanPOS() {
       </div>
 
       {/* KHU VỰC PHẢI: GIỎ HÀNG VÀ MÓN ĐANG PHỤC VỤ CỦA BÀN */}
-      <div className={`w-full xl:w-96 bg-white border-l border-slate-200 flex flex-col justify-between shrink-0 shadow-lg ${
+      <div className={`w-full xl:w-[410px] bg-white border-2 border-slate-200/90 rounded-3xl flex flex-col justify-between shrink-0 shadow-sm overflow-hidden ${
         tabMobile === 'menu' ? 'hidden xl:flex' : 'flex'
       }`}>
         {/* Thông tin bàn ăn ở đầu */}
-        <div className="p-3 sm:p-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="p-4 sm:p-5 border-b-2 border-slate-200 bg-gradient-to-r from-blue-50/70 to-slate-50 flex items-center justify-between">
+          <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => setTabMobile('menu')}
@@ -401,14 +408,14 @@ export default function GoiMonTaiBanPOS() {
             >
               <Utensils className="w-4 h-4" />
             </button>
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-500 text-slate-950 font-black text-base sm:text-lg flex items-center justify-center shadow-md shadow-amber-500/20 shrink-0">
+            <div className="w-11 h-11 rounded-2xl bg-blue-600 text-white font-black text-lg flex items-center justify-center shadow-md shadow-blue-600/20 shrink-0">
               {banHienTai?.so_ban || '?'}
             </div>
             <div>
-              <div className="text-xs sm:text-sm font-bold text-slate-900">
+              <div className="text-sm font-black text-slate-900">
                 Bàn {banHienTai?.so_ban} • {banHienTai?.khu_vuc}
               </div>
-              <div className="text-[11px] text-slate-500">
+              <div className="text-xs text-slate-600 font-bold mt-0.5">
                 Sức chứa: {banHienTai?.suc_chua} người
               </div>
             </div>
@@ -417,7 +424,7 @@ export default function GoiMonTaiBanPOS() {
           {monDangPhucVu.length > 0 && (
             <button
               onClick={() => setHienModalHoaDon(true)}
-              className="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-500 hover:text-white border border-emerald-300 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs"
+              className="px-4 py-2 rounded-full bg-red-600 text-white hover:bg-red-700 text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer shadow-xs"
             >
               <CreditCard className="w-3.5 h-3.5" />
               Thanh Toán
@@ -427,7 +434,7 @@ export default function GoiMonTaiBanPOS() {
 
         {/* Thông báo gửi bếp thành công */}
         {thanhCong && (
-          <div className="m-3 p-3 bg-emerald-50 border border-emerald-300 text-emerald-800 rounded-xl text-xs font-bold flex items-center gap-2 animate-bounce shadow-xs">
+          <div className="m-3 p-3 bg-emerald-50 border-2 border-emerald-300 text-emerald-800 rounded-2xl text-xs font-bold flex items-center gap-2 animate-bounce shadow-xs">
             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>Đã gửi món vào Bếp thành công!</span>
           </div>
@@ -450,7 +457,7 @@ export default function GoiMonTaiBanPOS() {
             </div>
 
             {gioHang.length === 0 ? (
-              <div className="p-4 rounded-xl border border-dashed border-slate-200 text-center text-xs text-slate-400 font-medium">
+              <div className="p-4 rounded-2xl border-2 border-dashed border-slate-200 text-center text-xs text-slate-400 font-medium">
                 Chạm vào món ăn ở bên trái để thêm vào bàn
               </div>
             ) : (
@@ -458,7 +465,7 @@ export default function GoiMonTaiBanPOS() {
                 {gioHang.map((item) => (
                   <div
                     key={item.mon_an_id}
-                    className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 shadow-2xs"
+                    className="p-3.5 rounded-2xl bg-slate-50 border-2 border-slate-200/90 space-y-1.5 shadow-2xs hover:bg-white hover:border-blue-300 transition-all"
                   >
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-slate-900">{item.dish.ten_mon}</span>
@@ -469,7 +476,7 @@ export default function GoiMonTaiBanPOS() {
 
                     <div className="flex items-center justify-between gap-2">
                       {/* Điều khiển số lượng */}
-                      <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-lg p-0.5 shadow-2xs">
+                      <div className="flex items-center gap-1.5 bg-white border-2 border-slate-200/80 rounded-lg p-0.5 shadow-2xs">
                         <button
                           onClick={() => capNhatSoLuong(item.mon_an_id, -1)}
                           className="w-5 h-5 rounded flex items-center justify-center text-slate-600 hover:text-slate-950 hover:bg-slate-100 cursor-pointer"
@@ -504,7 +511,7 @@ export default function GoiMonTaiBanPOS() {
 
           {/* Phần 2: Các món đang phục vụ tại bàn */}
           {monDangPhucVu.length > 0 && (
-            <div className="pt-3 border-t border-slate-200">
+            <div className="pt-3 border-t-2 border-slate-200">
               <div className="text-xs font-extrabold uppercase tracking-wider text-slate-500 mb-2 flex items-center justify-between">
                 <span>📋 Món Đang Phục Vụ ({monDangPhucVu.length})</span>
                 <span className="text-emerald-700 font-black">
@@ -516,7 +523,7 @@ export default function GoiMonTaiBanPOS() {
                 {monDangPhucVu.map((don) => (
                   <div
                     key={don.id}
-                    className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs"
+                    className="p-3 rounded-2xl bg-slate-50 border-2 border-slate-200/90 flex items-center justify-between text-xs shadow-2xs hover:bg-white hover:border-blue-300 transition-all"
                   >
                     <div>
                       <span className="text-slate-900 font-bold">{don.ten_mon}</span>
@@ -557,7 +564,7 @@ export default function GoiMonTaiBanPOS() {
         <div className="p-4 border-t border-slate-200 bg-slate-50 space-y-3">
           <div className="flex justify-between items-center text-sm font-bold">
             <span className="text-slate-500">Tổng Món Mới:</span>
-            <span className="text-lg font-black text-amber-600">
+            <span className="text-lg font-black text-black">
               {dinhDangTienTe(tongTienGioHang)}
             </span>
           </div>
@@ -565,14 +572,14 @@ export default function GoiMonTaiBanPOS() {
           <button
             disabled={gioHang.length === 0 || dangXuLy}
             onClick={guiDonVaoBep}
-            className={`w-full py-3.5 rounded-xl font-black text-sm shadow-lg flex items-center justify-center gap-2 transition-all cursor-pointer ${
+            className={`w-full py-3.5 rounded-full font-black text-sm shadow-lg flex items-center justify-center gap-2 transition-all cursor-pointer ${
               gioHang.length > 0
-                ? 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 shadow-amber-500/25'
+                ? 'bg-red-600 hover:bg-red-700 text-white shadow-red-500/25'
                 : 'bg-slate-200 text-slate-400 cursor-not-allowed'
             }`}
           >
             <Send className="w-4 h-4" />
-            <span>Gửi Vào Bếp (Realtime KDS)</span>
+            <span>Gửi Bếp KDS</span>
           </button>
         </div>
       </div>
@@ -584,7 +591,8 @@ export default function GoiMonTaiBanPOS() {
           orders={monDangPhucVu}
           onClose={() => setHienModalHoaDon(false)}
           onSuccess={() => {
-            taiMonCuaBan(banHienTai.id);
+            setMonDangPhucVu([]);
+            setBanHienTai((prev) => prev ? { ...prev, trang_thai: 'trong', so_luong_khach: 0, tam_tinh: 0, so_mon: 0 } : null);
             taiDuLieuBanDau();
           }}
         />

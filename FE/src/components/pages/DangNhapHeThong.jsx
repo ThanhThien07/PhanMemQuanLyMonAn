@@ -171,25 +171,25 @@ export default function DangNhapHeThong() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 d-flex align-items-center justify-content-center p-3 relative">
+    <div className="min-h-screen bg-slate-100 d-flex align-items-center justify-content-center p-3 relative">
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
             {/* Khối Thương Hiệu */}
             <div className="text-center mb-3">
-              <div className="inline-flex w-14 h-14 rounded-3 bg-gradient-to-tr from-[#023E8A] to-[#00B4D8] items-center justify-center shadow-lg shadow-blue-500/20 mb-2.5 transform hover:scale-105 transition-all">
+              <div className="inline-flex w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#023E8A] to-[#00B4D8] items-center justify-center shadow-lg shadow-blue-500/20 mb-2.5 transform hover:scale-105 transition-all">
                 <Flame className="w-7 h-7 text-white fill-white" />
               </div>
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-wider uppercase bg-gradient-to-r from-[#03045E] via-[#0077B6] to-[#00B4D8] bg-clip-text text-transparent">
                 ROYAL BISTRO POS
               </h2>
-              <p className="text-xs font-semibold text-slate-500 mt-0.5">
-                Quản Lý Nhà Hàng & Đặt Món Khách Hàng Thông Minh
+              <p className="text-xs font-semibold text-slate-600 mt-0.5">
+                Hệ Thống Nhà Hàng & Đặt Món
               </p>
             </div>
 
-            {/* Khung Form Card Bootstrap */}
-            <div className="card shadow-lg border-0 rounded-4 overflow-hidden bg-white">
+            {/* Khung Form Card Bootstrap Nổi Khối */}
+            <div className="card shadow-xl border border-slate-200/90 rounded-3xl overflow-hidden bg-white">
               {/* Tab chuyển đổi Đăng Nhập <-> Đăng Ký */}
               <div className="d-flex border-bottom border-slate-200 bg-slate-50/70 p-1.5 gap-1">
                 <button
@@ -198,13 +198,13 @@ export default function DangNhapHeThong() {
                     setTabHienTai('login');
                     setThongBaoLoi('');
                   }}
-                  className={`btn flex-1 py-2 rounded-3 text-xs font-black d-flex align-items-center justify-content-center gap-1.5 transition-all ${
+                  className={`btn flex-1 py-2 rounded-pill text-xs font-black d-flex align-items-center justify-content-center gap-1.5 transition-all ${
                     tabHienTai === 'login'
                       ? 'btn-white bg-white text-slate-900 shadow-xs border border-slate-200'
                       : 'text-slate-500 hover:text-slate-800 border-0'
                   }`}
                 >
-                  <LogIn className="w-4 h-4 text-[#0077B6]" />
+                  <LogIn className="w-4 h-4 text-blue-600" />
                   <span>Đăng Nhập</span>
                 </button>
 
@@ -215,20 +215,20 @@ export default function DangNhapHeThong() {
                     setThongBaoLoi('');
                     setRegErrors({});
                   }}
-                  className={`btn flex-1 py-2 rounded-3 text-xs font-black d-flex align-items-center justify-content-center gap-1.5 transition-all ${
+                  className={`btn flex-1 py-2 rounded-pill text-xs font-black d-flex align-items-center justify-content-center gap-1.5 transition-all ${
                     tabHienTai === 'register'
                       ? 'btn-white bg-white text-slate-900 shadow-xs border border-slate-200'
                       : 'text-slate-500 hover:text-slate-800 border-0'
                   }`}
                 >
-                  <UserPlus className="w-4 h-4 text-emerald-600" />
+                  <UserPlus className="w-4 h-4 text-blue-600" />
                   <span>Đăng Ký Mới</span>
                 </button>
               </div>
 
               <div className="card-body p-4 p-sm-5 pt-4">
                 {thongBaoLoi && (
-                  <div className="alert alert-danger d-flex align-items-center gap-2 py-2 px-3 rounded-3 text-xs font-bold mb-3">
+                  <div className="alert alert-danger d-flex align-items-center gap-2 py-2 px-3 rounded-pill text-xs font-bold mb-3">
                     <i className="bi bi-exclamation-triangle-fill flex-shrink-0"></i>
                     <div>{thongBaoLoi}</div>
                   </div>
@@ -279,7 +279,7 @@ export default function DangNhapHeThong() {
                       <button
                         type="submit"
                         disabled={dangXuLy}
-                        className="btn btn-primary w-100 py-2.5 rounded-3 text-white font-black text-sm d-flex align-items-center justify-content-center gap-2 shadow-md transition-all mt-2"
+                        className="btn btn-primary w-100 py-2.5 rounded-pill text-white font-black text-sm d-flex align-items-center justify-content-center gap-2 shadow-md transition-all mt-2 cursor-pointer"
                       >
                         {dangXuLy ? (
                           <>
@@ -288,7 +288,7 @@ export default function DangNhapHeThong() {
                           </>
                         ) : (
                           <>
-                            <span>Đăng Nhập Vào Hệ Thống</span>
+                            <span>Đăng Nhập</span>
                             <i className="bi bi-arrow-right"></i>
                           </>
                         )}
@@ -305,7 +305,7 @@ export default function DangNhapHeThong() {
                           <button
                             type="button"
                             onClick={() => xuLyDangNhapNhanh('admin@nhahang.com')}
-                            className="btn btn-outline-danger w-100 py-1.5 rounded-3 d-flex flex-column align-items-center gap-0.5 text-xs"
+                            className="btn btn-outline-danger w-100 py-1.5 rounded-pill d-flex flex-column align-items-center gap-0.5 text-xs cursor-pointer"
                             title="Quản lý Admin"
                           >
                             <i className="bi bi-shield-lock-fill fs-6"></i>
@@ -317,7 +317,7 @@ export default function DangNhapHeThong() {
                           <button
                             type="button"
                             onClick={() => xuLyDangNhapNhanh('thungan@nhahang.com')}
-                            className="btn btn-outline-success w-100 py-1.5 rounded-3 d-flex flex-column align-items-center gap-0.5 text-xs"
+                            className="btn btn-outline-primary w-100 py-1.5 rounded-pill d-flex flex-column align-items-center gap-0.5 text-xs cursor-pointer"
                             title="Thu Ngân"
                           >
                             <i className="bi bi-cash-coin fs-6"></i>
@@ -329,7 +329,7 @@ export default function DangNhapHeThong() {
                           <button
                             type="button"
                             onClick={() => xuLyDangNhapNhanh('bep@nhahang.com')}
-                            className="btn btn-outline-warning w-100 py-1.5 rounded-3 d-flex flex-column align-items-center gap-0.5 text-xs"
+                            className="btn btn-outline-danger w-100 py-1.5 rounded-pill d-flex flex-column align-items-center gap-0.5 text-xs cursor-pointer"
                             title="Bếp Trưởng"
                           >
                             <i className="bi bi-fire fs-6"></i>
@@ -341,7 +341,7 @@ export default function DangNhapHeThong() {
                           <button
                             type="button"
                             onClick={() => xuLyDangNhapNhanh('phucvu@nhahang.com')}
-                            className="btn btn-outline-primary w-100 py-1.5 rounded-3 d-flex flex-column align-items-center gap-0.5 text-xs"
+                            className="btn btn-outline-primary w-100 py-1.5 rounded-pill d-flex flex-column align-items-center gap-0.5 text-xs cursor-pointer"
                             title="Phục Vụ"
                           >
                             <i className="bi bi-person-badge fs-6"></i>
@@ -515,7 +515,7 @@ export default function DangNhapHeThong() {
                     <button
                       type="submit"
                       disabled={dangXuLy}
-                      className="btn btn-success w-100 py-2.5 rounded-3 text-white font-black text-sm d-flex align-items-center justify-content-center gap-2 shadow-md transition-all mt-3"
+                      className="btn btn-primary w-100 py-2.5 rounded-pill text-white font-black text-sm d-flex align-items-center justify-content-center gap-2 shadow-md transition-all mt-3 cursor-pointer"
                     >
                       {dangXuLy ? (
                         <>
@@ -536,7 +536,7 @@ export default function DangNhapHeThong() {
                 <div className="mt-3 pt-3 border-top border-slate-100">
                   <a
                     href="?table=1"
-                    className="btn btn-warning w-100 py-2 rounded-3 d-flex align-items-center justify-content-center gap-2 text-white font-bold text-xs shadow-xs"
+                    className="btn btn-primary w-100 py-2.5 rounded-pill d-flex align-items-center justify-content-center gap-2 text-white font-black text-xs shadow-sm"
                   >
                     <QrCode className="w-4 h-4" />
                     <span>📱 Khách Quét Mã QR Gọi Món Tại Bàn</span>

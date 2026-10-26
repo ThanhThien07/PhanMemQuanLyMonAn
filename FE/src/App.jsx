@@ -71,6 +71,46 @@ export default function App() {
     window.history.replaceState({}, '', url.toString());
   };
 
+  // Tự động điều hướng sang tab được phép theo đúng vai trò RBAC
+  useEffect(() => {
+    if (!nguoiDung || laKhachQuetQR) return;
+
+    let vaiTro = nguoiDung?.role || 'phuc_vu';
+    const email = (nguoiDung?.email || '').toLowerCase();
+    if (email.includes('admin') || nguoiDung?.role === 'admin') vaiTro = 'admin';
+    else if (email.includes('thungan') || nguoiDung?.role === 'thu_ngan') vaiTro = 'thu_ngan';
+    else if (email.includes('bep') || nguoiDung?.role === 'bep') vaiTro = 'bep';
+    else if (email.includes('phucvu') || nguoiDung?.role === 'phuc_vu' || nguoiDung?.role === 'nhan_vien') vaiTro = 'phuc_vu';
+
+    // Phân quyền danh sách các tab được phép truy cập theo từng vai trò:
+    // - Admin: Xem ĐẦY ĐỦ TẤT CẢ 10 phân hệ để giám sát, theo dõi báo cáo và kiểm tra vận hành toàn hệ thống.
+    // - Thu Ngân: Bàn ăn & POS thanh toán hóa đơn, giải phóng bàn.
+    // - Phục Vụ: Bàn ăn, Đặt bàn trước, POS gọi món, Giao diện QR gọi món tại bàn.
+    // - Bếp: Màn hình bếp KDS điều phối chế biến, Quản lý kho & định mức BOM.
+    const cacTabHopLeCuaRole = {
+      admin: [
+        'dashboard',
+        'reports',
+        'tables',
+        'pos',
+        'reservations',
+        'qr_order',
+        'kitchen',
+        'inventory',
+        'dishes',
+        'customers'
+      ],
+      thu_ngan: ['tables', 'pos'],
+      phuc_vu: ['tables', 'reservations', 'pos', 'qr_order'],
+      bep: ['kitchen', 'inventory']
+    };
+
+    const danhSachHopLe = cacTabHopLeCuaRole[vaiTro] || ['tables'];
+    if (!danhSachHopLe.includes(tabHienTai)) {
+      thayDoiTab(danhSachHopLe[0]);
+    }
+  }, [nguoiDung, tabHienTai]);
+
   // Dynamic Page Title cho SPA (Slide 27: Cập nhật title theo từng ngữ cảnh điều hướng)
   useEffect(() => {
     if (laKhachQuetQR || nguoiDung?.role === 'khach_hang') {

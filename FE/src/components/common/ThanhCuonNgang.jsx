@@ -155,7 +155,7 @@ export default function ThanhCuonNgang({
           <button
             type="button"
             onClick={() => handleScrollBy(-scrollStep)}
-            className="absolute left-0.5 w-8 h-8 rounded-full bg-white/95 backdrop-blur-sm border border-slate-200 shadow-md flex items-center justify-center text-slate-700 hover:bg-amber-500 hover:text-slate-950 hover:border-amber-500 transition-all active:scale-90 pointer-events-auto cursor-pointer"
+            className="absolute left-0.5 w-8 h-8 rounded-full bg-white/95 backdrop-blur-sm border border-slate-200 shadow-md flex items-center justify-center text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all active:scale-90 pointer-events-auto cursor-pointer"
             title="Cuộn sang trái"
             aria-label="Cuộn sang trái"
           >
@@ -188,7 +188,7 @@ export default function ThanhCuonNgang({
           <button
             type="button"
             onClick={() => handleScrollBy(scrollStep)}
-            className="absolute right-0.5 w-8 h-8 rounded-full bg-white/95 backdrop-blur-sm border border-slate-200 shadow-md flex items-center justify-center text-slate-700 hover:bg-amber-500 hover:text-slate-950 hover:border-amber-500 transition-all active:scale-90 pointer-events-auto cursor-pointer"
+            className="absolute right-0.5 w-8 h-8 rounded-full bg-white/95 backdrop-blur-sm border border-slate-200 shadow-md flex items-center justify-center text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all active:scale-90 pointer-events-auto cursor-pointer"
             title="Cuộn sang phải"
             aria-label="Cuộn sang phải"
           >

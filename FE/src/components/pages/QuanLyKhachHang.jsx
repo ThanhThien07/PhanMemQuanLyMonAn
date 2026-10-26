@@ -372,25 +372,25 @@ export default function QuanLyKhachHang() {
 
             <button
               onClick={moModalThemCrm}
-              className="btn btn-warning text-white fw-bold px-3 py-2 rounded-3 d-flex align-items-center justify-content-center gap-2 shadow-xs shrink-0 text-xs sm:text-sm"
+              className="btn btn-primary text-white font-black px-4 py-2.5 rounded-pill d-flex align-items-center justify-content-center gap-2 shadow-xs shrink-0 text-xs sm:text-sm cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Thêm Hồ Sơ Khách Hàng</span>
             </button>
           </div>
 
-          <div className="card bg-white border border-slate-200 rounded-4 overflow-hidden shadow-sm">
+          <div className="card bg-white border border-slate-200/90 rounded-3xl overflow-hidden shadow-sm">
             <div className="table-responsive">
               <table className="table table-hover align-middle mb-0">
-                <thead className="table-light text-xs font-bold text-slate-500 uppercase">
+                <thead className="bg-slate-50 text-xs font-black text-slate-700 uppercase tracking-wider border-bottom border-slate-200/90">
                   <tr>
-                    <th className="py-3 px-4">Khách Hàng</th>
-                    <th className="py-3 px-4">Số Điện Thoại</th>
-                    <th className="py-3 px-4">Email</th>
-                    <th className="py-3 px-4">Điểm Tích Lũy</th>
-                    <th className="py-3 px-4">Hạng Thành Viên</th>
-                    <th className="py-3 px-4 text-end">Tổng Chi Tiêu</th>
-                    <th className="py-3 px-4 text-center">Thao Tác</th>
+                    <th className="py-3.5 px-4">Khách Hàng</th>
+                    <th className="py-3.5 px-4">Số Điện Thoại</th>
+                    <th className="py-3.5 px-4">Email</th>
+                    <th className="py-3.5 px-4">Điểm Tích Lũy</th>
+                    <th className="py-3.5 px-4">Hạng Thành Viên</th>
+                    <th className="py-3.5 px-4 text-end">Tổng Chi Tiêu</th>
+                    <th className="py-3.5 px-4 text-center">Thao Tác</th>
                   </tr>
                 </thead>
                 <tbody className="text-sm">
@@ -499,17 +499,17 @@ export default function QuanLyKhachHang() {
             </button>
           </div>
 
-          <div className="card bg-white border border-slate-200 rounded-4 overflow-hidden shadow-sm">
+          <div className="card bg-white border border-slate-200/90 rounded-3xl overflow-hidden shadow-sm">
             <div className="table-responsive">
               <table className="table table-hover align-middle mb-0">
-                <thead className="table-light text-xs font-bold text-slate-500 uppercase">
+                <thead className="bg-slate-50 text-xs font-black text-slate-700 uppercase tracking-wider border-bottom border-slate-200/90">
                   <tr>
-                    <th className="py-3 px-4">Họ và Tên</th>
-                    <th className="py-3 px-4">Email Đăng Nhập</th>
-                    <th className="py-3 px-4">Số Điện Thoại</th>
-                    <th className="py-3 px-4">Vai Trò Hệ Thống</th>
-                    <th className="py-3 px-4">Trạng Thái</th>
-                    <th className="py-3 px-4 text-center">Thao Tác Quản Trị</th>
+                    <th className="py-3.5 px-4">Họ và Tên</th>
+                    <th className="py-3.5 px-4">Email Đăng Nhập</th>
+                    <th className="py-3.5 px-4">Số Điện Thoại</th>
+                    <th className="py-3.5 px-4">Vai Trò Hệ Thống</th>
+                    <th className="py-3.5 px-4">Trạng Thái</th>
+                    <th className="py-3.5 px-4 text-center">Thao Tác Quản Trị</th>
                   </tr>
                 </thead>
                 <tbody className="text-sm">
@@ -678,7 +678,7 @@ export default function QuanLyKhachHang() {
                     <button type="button" onClick={() => setHienModalCrm(false)} className="btn btn-light border w-50 py-2 rounded-3 fw-bold text-xs">
                       Hủy
                     </button>
-                    <button type="submit" className="btn btn-warning text-white w-50 py-2 rounded-3 fw-bold text-xs shadow-sm">
+                    <button type="submit" className="btn btn-primary text-white w-50 py-2.5 rounded-pill font-black text-xs shadow-sm cursor-pointer">
                       Lưu Hồ Sơ
                     </button>
                   </div>

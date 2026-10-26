@@ -19,8 +19,23 @@
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
 }
 
+:root {
+  --bs-body-font-family: 'Lora', 'Merriweather', 'Times New Roman', Georgia, serif !important;
+  --bs-font-sans-serif: 'Lora', 'Merriweather', 'Times New Roman', Georgia, serif !important;
+}
+
+/* Áp dụng triệt để font chữ tiếng Việt có chân cho toàn bộ hệ thống */
+html, body, #root, *, *::before, *::after {
+  font-family: 'Lora', 'Merriweather', 'Times New Roman', Georgia, serif;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6,
+p, span, div, a, button, input, select, textarea, label, table, th, td, tr, thead, tbody, .btn, .card, .badge, .navbar, .nav-link {
+  font-family: 'Lora', 'Merriweather', 'Times New Roman', Georgia, serif;
+}
+
 /* Chuẩn hóa font-monospace hiển thị số và mã chuẩn gọn đẹp */
-.font-monospace {
+.font-monospace, code, pre, kbd {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
@@ -28,10 +43,19 @@
 
 @layer base {
   body {
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    background-color: #ffffff;
+    font-family: 'Lora', 'Merriweather', 'Times New Roman', Georgia, serif !important;
+    background-color: #f1f5f9;
     color: #0f172a;
   }
+
+  *, html, button, input, select, textarea {
+    font-family: 'Lora', 'Merriweather', 'Times New Roman', Georgia, serif !important;
+  }
+}
+
+/* Áp dụng bo tròn hoàn toàn (pill rounded) cho tất cả các nút trên toàn web */
+button, .btn, input[type="button"], input[type="submit"], input[type="reset"] {
+  border-radius: 9999px !important;
 }
 
 /* Custom modern scrollbar for Light Theme */
@@ -47,7 +71,7 @@
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 119, 182, 0.8);
+  background: #1d4ed8;
 }
 
 /* Tiện ích ẩn thanh cuộn nhưng vẫn cuộn được */
@@ -60,28 +84,35 @@
 }
 
 :root {
-  --blue-900: #03045E;
-  --blue-800: #023E8A;
-  --blue-700: #0077B6;
-  --blue-600: #0096C7;
-  --blue-500: #00B4D8;
-  --blue-400: #48CAE4;
-  --blue-300: #90E0EF;
-  --blue-200: #ADE8F4;
-  --blue-100: #CAF0F8;
+  --blue-900: #1e3a8a;
+  --blue-800: #1e40af;
+  --blue-700: #1d4ed8;
+  --blue-600: #2563eb;
+  --blue-500: #3b82f6;
+  --blue-400: #60a5fa;
+  --blue-300: #93c5fd;
+  --blue-200: #bfdbfe;
+  --blue-100: #dbeafe;
+  --blue-50: #eff6ff;
+
+  --red-700: #b91c1c;
+  --red-600: #dc2626;
+  --red-500: #ef4444;
+  --red-100: #fee2e2;
+  --red-50: #fef2f2;
 }
 
 /* Light Glassmorphism utilities */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(173, 232, 244, 0.5);
+  border: 1px solid rgba(219, 234, 254, 0.8);
 }
 
 .glass-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px 0 rgba(3, 4, 94, 0.05), 0 1px 2px -1px rgba(3, 4, 94, 0.05);
+  box-shadow: 0 1px 3px 0 rgba(29, 78, 216, 0.05), 0 1px 2px -1px rgba(29, 78, 216, 0.05);
 }
 
 .glass-card-hover {
@@ -89,17 +120,21 @@
 }
 .glass-card-hover:hover {
   transform: translateY(-2px);
-  border-color: rgba(0, 180, 216, 0.6);
-  box-shadow: 0 10px 25px -5px rgba(0, 119, 182, 0.15), 0 8px 10px -6px rgba(3, 4, 94, 0.05);
+  border-color: rgba(37, 99, 235, 0.6);
+  box-shadow: 0 10px 25px -5px rgba(29, 78, 216, 0.15), 0 8px 10px -6px rgba(29, 78, 216, 0.05);
 }
 
 /* Subtle Glow effects */
 .glow-blue-light {
-  box-shadow: 0 4px 20px rgba(0, 119, 182, 0.20);
+  box-shadow: 0 4px 20px rgba(29, 78, 216, 0.20);
+}
+
+.glow-red-light {
+  box-shadow: 0 4px 20px rgba(220, 38, 38, 0.20);
 }
 
 /* ==========================================================================
-   Tương Thích và Đồng Bộ Bootstrap 5 + Tailwind CSS
+   Tương Thích và Đồng Bộ Bootstrap 5 + Tailwind CSS (Trắng - Đỏ - Xanh Dương)
    ========================================================================== */
 
 /* Tránh gạch chân mặc định từ Bootstrap reboot */
@@ -110,28 +145,68 @@ a:hover {
   text-decoration: none;
 }
 
-/* Nâng cấp các Component Bootstrap theo thiết kế Royal Bistro */
+/* Nâng cấp các Component Bootstrap theo thiết kế Trắng - Đỏ - Xanh Dương */
 .btn {
   font-family: inherit;
   font-weight: 700;
+  border-radius: 9999px !important;
   transition: all 0.2s ease-in-out;
 }
 
+/* Nút chính Xanh Dương Hoàng Gia (Royal Blue) */
 .btn-primary {
-  background: linear-gradient(135deg, #023E8A 0%, #0077B6 100%);
-  border: none;
-  color: #ffffff;
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+  border-radius: 9999px !important;
 }
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
-  background: linear-gradient(135deg, #03045E 0%, #023E8A 100%) !important;
+  background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%) !important;
   color: #ffffff !important;
-  box-shadow: 0 8px 20px -4px rgba(0, 119, 182, 0.35);
+  box-shadow: 0 8px 20px -4px rgba(29, 78, 216, 0.45) !important;
   transform: translateY(-1px);
+}
+
+/* Nút Đỏ Điểm Nhấn / Thao Tác Quan Trọng (Vivid Red) */
+.btn-danger {
+  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+  border-radius: 9999px !important;
+}
+.btn-danger:hover, .btn-danger:focus, .btn-danger:active {
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 20px -4px rgba(220, 38, 38, 0.45) !important;
+  transform: translateY(-1px);
+}
+
+.btn-outline-primary {
+  border-color: #1d4ed8 !important;
+  color: #1d4ed8 !important;
+  border-radius: 9999px !important;
+}
+.btn-outline-primary:hover {
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25) !important;
+}
+
+.btn-outline-danger {
+  border-color: #dc2626 !important;
+  color: #dc2626 !important;
+  border-radius: 9999px !important;
+}
+.btn-outline-danger:hover {
+  background: #dc2626 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25) !important;
 }
 
 .btn-success {
   background: linear-gradient(135deg, #059669 0%, #10b981 100%);
   border: none;
+  border-radius: 9999px !important;
 }
 .btn-success:hover {
   background: linear-gradient(135deg, #047857 0%, #059669 100%);
@@ -139,19 +214,42 @@ a:hover {
 }
 
 .btn-warning {
-  background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
-  border: none;
-  color: #ffffff;
+  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+  border-radius: 9999px !important;
 }
 .btn-warning:hover {
-  background: linear-gradient(135deg, #b45309 0%, #d97706 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%) !important;
+  color: #ffffff !important;
   transform: translateY(-1px);
 }
 
+/* Chuẩn hóa Card tạo khối vững chắc: Border 2px, tách nền 3 tầng */
 .card {
-  border-color: #e2e8f0;
+  border: 2px solid #cbd5e1 !important;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px -1px rgba(15, 23, 42, 0.06), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover {
+  border-color: #94a3b8 !important;
+  box-shadow: 0 12px 24px -4px rgba(15, 23, 42, 0.10), 0 4px 8px -2px rgba(15, 23, 42, 0.05);
+}
+
+/* Khối item con bên trong tách lớp (Layer 2) */
+.sub-card, .item-block {
+  border: 2px solid #e2e8f0;
+  background-color: rgba(248, 250, 252, 0.95);
   transition: all 0.2s ease-in-out;
+}
+
+.sub-card:hover, .item-block:hover {
+  background-color: #ffffff;
+  border-color: #60a5fa;
+  box-shadow: 0 6px 16px -2px rgba(37, 99, 235, 0.12);
+  transform: translateY(-1px);
 }
 
 .badge {

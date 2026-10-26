@@ -101,9 +101,9 @@ export default function QuanLyKhoNguyenLieu() {
         <div className="d-flex align-items-center gap-2 flex-wrap">
           <button
             onClick={() => setTabHienTai('ingredients')}
-            className={`btn btn-sm rounded-pill fw-bold text-xs px-3 py-1.5 transition-all flex-grow-1 flex-sm-grow-0 ${
+            className={`btn btn-sm rounded-pill font-black text-xs px-3.5 py-2 transition-all flex-grow-1 flex-sm-grow-0 cursor-pointer ${
               tabHienTai === 'ingredients'
-                ? 'btn-warning text-white shadow-sm'
+                ? 'btn-primary text-white shadow-sm'
                 : 'btn-outline-secondary bg-white text-slate-700'
             }`}
           >
@@ -111,9 +111,9 @@ export default function QuanLyKhoNguyenLieu() {
           </button>
           <button
             onClick={() => setTabHienTai('suppliers')}
-            className={`btn btn-sm rounded-pill fw-bold text-xs px-3 py-1.5 transition-all flex-grow-1 flex-sm-grow-0 ${
+            className={`btn btn-sm rounded-pill font-black text-xs px-3.5 py-2 transition-all flex-grow-1 flex-sm-grow-0 cursor-pointer ${
               tabHienTai === 'suppliers'
-                ? 'btn-warning text-white shadow-sm'
+                ? 'btn-primary text-white shadow-sm'
                 : 'btn-outline-secondary bg-white text-slate-700'
             }`}
           >
@@ -142,18 +142,18 @@ export default function QuanLyKhoNguyenLieu() {
 
       {/* Nội dung bảng dữ liệu chính dạng Bootstrap Table */}
       {tabHienTai === 'ingredients' ? (
-        <div className="card bg-white border border-slate-200 rounded-4 overflow-hidden shadow-sm">
+        <div className="card bg-white border border-slate-200/90 rounded-3xl overflow-hidden shadow-sm">
           <div className="table-responsive">
             <table className="table table-hover align-middle mb-0">
-              <thead className="table-light text-xs font-bold text-slate-500 uppercase">
+              <thead className="bg-slate-50 text-xs font-black text-slate-700 uppercase tracking-wider border-bottom border-slate-200/90">
                 <tr>
-                  <th className="py-3 px-4">Tên Nguyên Liệu</th>
-                  <th className="py-3 px-4">Số Lượng Tồn</th>
-                  <th className="py-3 px-4">Đơn Vị</th>
-                  <th className="py-3 px-4">Định Mức Tối Thiểu</th>
-                  <th className="py-3 px-4">Giá Nhập TB</th>
-                  <th className="py-3 px-4">Trạng Thái Kho</th>
-                  <th className="py-3 px-4 text-end">Thao Tác</th>
+                  <th className="py-3.5 px-4">Tên Nguyên Liệu</th>
+                  <th className="py-3.5 px-4">Số Lượng Tồn</th>
+                  <th className="py-3.5 px-4">Đơn Vị</th>
+                  <th className="py-3.5 px-4">Định Mức Tối Thiểu</th>
+                  <th className="py-3.5 px-4">Giá Nhập TB</th>
+                  <th className="py-3.5 px-4">Trạng Thái Kho</th>
+                  <th className="py-3.5 px-4 text-end">Thao Tác</th>
                 </tr>
               </thead>
               <tbody className="text-sm">
@@ -197,17 +197,17 @@ export default function QuanLyKhoNguyenLieu() {
         </div>
       ) : (
         /* Bảng Nhà Cung Cấp */
-        <div className="card bg-white border border-slate-200 rounded-4 overflow-hidden shadow-sm">
+        <div className="card bg-white border border-slate-200/90 rounded-3xl overflow-hidden shadow-sm">
           <div className="table-responsive">
             <table className="table table-hover align-middle mb-0">
-              <thead className="table-light text-xs font-bold text-slate-500 uppercase">
+              <thead className="bg-slate-50 text-xs font-black text-slate-700 uppercase tracking-wider border-bottom border-slate-200/90">
                 <tr>
-                  <th className="py-3 px-4">Mã NCC</th>
-                  <th className="py-3 px-4">Tên Nhà Cung Cấp</th>
-                  <th className="py-3 px-4">Số Điện Thoại</th>
-                  <th className="py-3 px-4">Email</th>
-                  <th className="py-3 px-4">Địa Chỉ</th>
-                  <th className="py-3 px-4">Đánh Giá</th>
+                  <th className="py-3.5 px-4">Mã NCC</th>
+                  <th className="py-3.5 px-4">Tên Nhà Cung Cấp</th>
+                  <th className="py-3.5 px-4">Số Điện Thoại</th>
+                  <th className="py-3.5 px-4">Email</th>
+                  <th className="py-3.5 px-4">Địa Chỉ</th>
+                  <th className="py-3.5 px-4">Đánh Giá</th>
                 </tr>
               </thead>
               <tbody className="text-sm">
@@ -278,7 +278,7 @@ export default function QuanLyKhoNguyenLieu() {
                     </button>
                     <button
                       type="submit"
-                      className="btn btn-warning text-white w-50 py-2 rounded-3 fw-bold text-xs shadow-sm"
+                      className="btn btn-primary text-white w-50 py-2.5 rounded-pill font-black text-xs shadow-sm cursor-pointer"
                     >
                       Xác Nhận
                     </button>

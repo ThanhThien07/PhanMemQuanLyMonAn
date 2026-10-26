@@ -208,85 +208,87 @@ export default function QuanLyThucDonMonAn() {
 
   return (
     <div className="container-fluid px-2 px-md-4 py-3 max-w-7xl mx-auto space-y-4">
-      {/* Tiêu đề trang & Thanh công cụ */}
-      <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
-        <div>
-          <div className="d-flex align-items-center gap-2 mb-1">
-            <span className="badge bg-warning text-dark rounded-pill px-2.5 py-1 text-xs fw-bold">
-              <i className="bi bi-book me-1"></i>Thực Đơn
-            </span>
-            <span className="text-xs text-slate-500 font-semibold">
-              {danhSachMon.length} món trong hệ thống
-            </span>
+      {/* Tiêu đề trang & Thanh công cụ trong Card nổi khối */}
+      <div className="card bg-white border-2 border-slate-200/90 rounded-3xl p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+          <div>
+            <div className="d-flex align-items-center gap-2 mb-1">
+              <span className="badge bg-red-600 text-white rounded-pill px-3 py-1 text-xs font-black shadow-2xs">
+                <i className="bi bi-book me-1"></i>Thực Đơn
+              </span>
+              <span className="text-xs text-slate-600 font-bold">
+                {danhSachMon.length} món trong hệ thống
+              </span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-1">
+              Quản Lý Thực Đơn Nhà Hàng
+            </h2>
+            <p className="text-slate-600 text-xs sm:text-sm font-semibold mb-0">
+              Cập nhật món ăn, sửa giá bán, danh mục, hình ảnh và trạng thái phục vụ
+            </p>
           </div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-1">
-            Quản Lý Thực Đơn Nhà Hàng
-          </h2>
-          <p className="text-slate-500 text-xs sm:text-sm font-medium mb-0">
-            Cập nhật món ăn, sửa giá bán, danh mục, hình ảnh và trạng thái phục vụ
-          </p>
-        </div>
 
-        <div className="d-flex flex-column flex-sm-row align-items-stretch sm:align-items-center gap-2 w-100 sm:w-auto">
-          <div className="input-group input-group-sm flex-grow-1">
-            <span className="input-group-text bg-white border-slate-200 text-slate-400">
-              <i className="bi bi-search"></i>
-            </span>
-            <input
-              type="text"
-              value={tuKhoa}
-              onChange={(e) => setTuKhoa(e.target.value)}
-              placeholder="Tìm theo tên món, mô tả..."
-              className="form-control bg-white border-slate-200 text-xs"
-            />
-            {tuKhoa && (
-              <button
-                className="btn btn-outline-secondary border-slate-200 text-xs px-2"
-                onClick={() => setTuKhoa('')}
-                title="Xóa tìm kiếm"
-              >
-                <i className="bi bi-x-lg"></i>
-              </button>
-            )}
-          </div>
-          <button
-            onClick={() => setHienModalThem(true)}
-            className="btn btn-warning text-white fw-bold px-3 py-2 rounded-3 d-flex align-items-center justify-content-center gap-2 shadow-sm shrink-0"
-          >
-            <i className="bi bi-plus-lg"></i>
-            <span>Thêm Món Mới</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Thanh tab lọc theo nhóm danh mục */}
-      <div className="d-flex align-items-center gap-1.5 overflow-x-auto pb-1 border-bottom border-slate-200">
-        <button
-          onClick={() => setLoaiMonDangChon('all')}
-          className={`btn btn-sm rounded-pill px-3 py-1 text-xs font-bold transition-all shrink-0 ${
-            loaiMonDangChon === 'all'
-              ? 'btn-dark shadow-xs'
-              : 'btn-light border border-slate-200 text-slate-600 hover:text-slate-900'
-          }`}
-        >
-          Tất cả ({danhSachMon.length})
-        </button>
-        {danhMuc.map((dm) => {
-          const soLuongMon = danhSachMon.filter((m) => m.loai_mon_id === dm.id).length;
-          return (
+          <div className="d-flex flex-column flex-sm-row align-items-stretch sm:align-items-center gap-2 w-100 sm:w-auto">
+            <div className="input-group input-group-sm flex-grow-1">
+              <span className="input-group-text bg-slate-50 border-slate-200 text-slate-500">
+                <i className="bi bi-search"></i>
+              </span>
+              <input
+                type="text"
+                value={tuKhoa}
+                onChange={(e) => setTuKhoa(e.target.value)}
+                placeholder="Tìm theo tên món, mô tả..."
+                className="form-control bg-slate-50 border-slate-200 text-xs"
+              />
+              {tuKhoa && (
+                <button
+                  className="btn btn-outline-secondary border-slate-200 text-xs px-2"
+                  onClick={() => setTuKhoa('')}
+                  title="Xóa tìm kiếm"
+                >
+                  <i className="bi bi-x-lg"></i>
+                </button>
+              )}
+            </div>
             <button
-              key={dm.id}
-              onClick={() => setLoaiMonDangChon(dm.id)}
-              className={`btn btn-sm rounded-pill px-3 py-1 text-xs font-bold transition-all shrink-0 ${
-                Number(loaiMonDangChon) === dm.id
-                  ? 'btn-warning text-white shadow-xs'
-                  : 'btn-light border border-slate-200 text-slate-600 hover:text-slate-900'
-              }`}
+              onClick={() => setHienModalThem(true)}
+              className="btn btn-primary text-white font-black px-4 py-2.5 rounded-pill d-flex align-items-center justify-content-center gap-2 shadow-sm shrink-0 text-xs cursor-pointer"
             >
-              {dm.ten_loai} ({soLuongMon})
+              <i className="bi bi-plus-lg"></i>
+              <span>Thêm Món Mới</span>
             </button>
-          );
-        })}
+          </div>
+        </div>
+
+        {/* Thanh tab lọc theo nhóm danh mục */}
+        <div className="d-flex align-items-center gap-1.5 overflow-x-auto pb-1 border-top border-slate-100 pt-3">
+          <button
+            onClick={() => setLoaiMonDangChon('all')}
+            className={`btn btn-sm rounded-pill px-3.5 py-1.5 text-xs font-black transition-all shrink-0 cursor-pointer ${
+              loaiMonDangChon === 'all'
+                ? 'btn-primary shadow-xs'
+                : 'btn-light border border-slate-200/90 text-slate-700 hover:text-blue-700'
+            }`}
+          >
+            Tất cả ({danhSachMon.length})
+          </button>
+          {danhMuc.map((dm) => {
+            const soLuongMon = danhSachMon.filter((m) => m.loai_mon_id === dm.id).length;
+            return (
+              <button
+                key={dm.id}
+                onClick={() => setLoaiMonDangChon(dm.id)}
+                className={`btn btn-sm rounded-pill px-3.5 py-1.5 text-xs font-black transition-all shrink-0 cursor-pointer ${
+                  Number(loaiMonDangChon) === dm.id
+                    ? 'btn-primary text-white shadow-xs'
+                    : 'btn-light border border-slate-200/90 text-slate-700 hover:text-blue-700'
+                }`}
+              >
+                {dm.ten_loai} ({soLuongMon})
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Trạng thái đang tải dữ liệu */}
@@ -327,8 +329,8 @@ export default function QuanLyThucDonMonAn() {
             return (
               <div key={mon.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
                 <div
-                  className={`card h-100 bg-white border rounded-4 overflow-hidden shadow-sm hover:shadow-md transition-all ${
-                    laHetHang || laTamNgung ? 'border-rose-200 opacity-90' : 'border-slate-200'
+                  className={`card h-100 bg-white border-2 rounded-4 overflow-hidden shadow-sm hover:shadow-xl hover:border-blue-500 transition-all hover:-translate-y-1 ${
+                    laHetHang || laTamNgung ? 'border-rose-300 opacity-90' : 'border-slate-200/90'
                   }`}
                 >
                   {/* Khung ảnh & huy hiệu trạng thái */}
@@ -343,14 +345,13 @@ export default function QuanLyThucDonMonAn() {
                       className="w-100 h-100 object-cover"
                     />
 
-                    {/* Danh mục (Top-left) */}
-                    <span
-                      className="position-absolute top-2 start-2 px-2.5 py-1 rounded-pill bg-white/95 border border-amber-200 shadow-xs fw-bold text-[11px]"
-                      style={{ color: '#78350f' }}
-                    >
-                      <i className="bi bi-tag-fill me-1 text-amber-600"></i>
-                      {mon.ten_loai || 'Món'}
-                    </span>
+                    {/* Chỉ hiển thị Tag đỏ khi món ăn có chương trình GIẢM GIÁ */}
+                    {Boolean(mon.phan_tram_giam || mon.is_discount) && (
+                      <span className="position-absolute top-2.5 start-2.5 px-2.5 py-1 rounded-pill bg-red-600 text-white shadow-sm font-black text-xs d-flex align-items-center gap-1">
+                        <i className="bi bi-tag-fill"></i>
+                        Giảm {mon.phan_tram_giam || 15}%
+                      </span>
+                    )}
 
                     {/* Trạng thái phục vụ (Top-right) */}
                     <span className="position-absolute top-2 end-2">
@@ -388,13 +389,15 @@ export default function QuanLyThucDonMonAn() {
                       </p>
                     </div>
 
-                    {/* Giá bán và Các nút hành động: Chỉnh Sửa & Xóa */}
+                    {/* Giá bán: Màu ĐỎ khi có giảm giá, màu ĐEN khi giá bình thường */}
                     <div className="pt-2.5 border-top border-slate-100 d-flex align-items-center justify-content-between gap-2">
                       <div>
                         <span className="text-[10px] text-slate-400 font-semibold block uppercase">
-                          Giá niêm yết
+                          {mon.phan_tram_giam || mon.is_discount ? 'Giá ưu đãi' : 'Giá niêm yết'}
                         </span>
-                        <span className="text-sm sm:text-base font-black text-amber-600">
+                        <span className={`text-sm sm:text-base font-black ${
+                          mon.phan_tram_giam || mon.is_discount ? 'text-red-600' : 'text-slate-900'
+                        }`}>
                           {dinhDangTienTe(mon.gia)}
                         </span>
                       </div>
@@ -404,7 +407,7 @@ export default function QuanLyThucDonMonAn() {
                         <button
                           type="button"
                           onClick={() => moModalSua(mon)}
-                          className="btn btn-sm btn-outline-primary rounded-3 px-2.5 py-1.5 d-flex align-items-center gap-1 text-xs fw-bold shadow-xs hover:shadow transition-all"
+                          className="btn btn-sm btn-outline-primary rounded-pill px-3 py-1.5 d-flex align-items-center gap-1 text-xs fw-bold shadow-xs hover:shadow transition-all"
                           title="Chỉnh sửa thông tin món ăn này"
                         >
                           <i className="bi bi-pencil-square"></i>
@@ -415,7 +418,7 @@ export default function QuanLyThucDonMonAn() {
                         <button
                           type="button"
                           onClick={() => xuLyXoaMon(mon.id, mon.ten_mon)}
-                          className="btn btn-sm btn-outline-danger rounded-3 p-1.5 d-flex align-items-center justify-content-center shadow-xs hover:shadow transition-all"
+                          className="btn btn-sm btn-outline-danger rounded-pill p-1.5 d-flex align-items-center justify-content-center shadow-xs hover:shadow transition-all"
                           title="Xóa món ăn khỏi thực đơn"
                         >
                           <i className="bi bi-trash3"></i>
@@ -814,7 +817,7 @@ export default function QuanLyThucDonMonAn() {
                     <button
                       type="submit"
                       disabled={dangLuu}
-                      className="btn btn-warning text-white px-4 py-2 rounded-3 fw-bold text-xs shadow-sm d-flex align-items-center gap-1.5"
+                      className="btn btn-primary text-white px-4 py-2 rounded-pill fw-bold text-xs shadow-sm d-flex align-items-center gap-1.5"
                     >
                       {dangLuu ? (
                         <>

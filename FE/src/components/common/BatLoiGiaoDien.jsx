@@ -58,10 +58,10 @@ export class BatLoiGiaoDien extends React.Component {
 
             <button
               onClick={this.handleReload}
-              className="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-sm shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
+              className="w-full py-3 rounded-pill bg-blue-600 hover:bg-blue-700 text-white font-black text-sm shadow-md shadow-blue-600/30 flex items-center justify-center gap-2 transition-all cursor-pointer"
             >
-              <RefreshCw className="w-4 h-4" />
-              Tải Lại Ứng Dụng
+              <RefreshCw className="w-4 h-4 text-white" />
+              <span>Tải Lại Ứng Dụng</span>
             </button>
           </div>
         </div>

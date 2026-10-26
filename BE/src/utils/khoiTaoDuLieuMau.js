@@ -53,9 +53,9 @@ export async function napDuLieuMau() {
       // 1. Chèn Tài khoản Người dùng (NguoiDung)
       await NguoiDung.insertMany([
         { id: 1, name: 'Nguyễn Ngọc Hà Thảo (Quản Lý)', email: 'admin@nhahang.com', password: matKhauMacDinh, role: 'admin', so_dien_thoai: '0901234567', trang_thai: 'hoat_dong' },
-        { id: 2, name: 'Trần Văn Thu Ngân', email: 'thungan@nhahang.com', password: matKhauMacDinh, role: 'nhan_vien', so_dien_thoai: '0902345678', trang_thai: 'hoat_dong' },
+        { id: 2, name: 'Trần Văn Thu Ngân', email: 'thungan@nhahang.com', password: matKhauMacDinh, role: 'thu_ngan', so_dien_thoai: '0902345678', trang_thai: 'hoat_dong' },
         { id: 3, name: 'Lê Bếp Trưởng', email: 'bep@nhahang.com', password: matKhauMacDinh, role: 'bep', so_dien_thoai: '0903456789', trang_thai: 'hoat_dong' },
-        { id: 4, name: 'Phạm Phục Vụ', email: 'phucvu@nhahang.com', password: matKhauMacDinh, role: 'nhan_vien', so_dien_thoai: '0904567890', trang_thai: 'hoat_dong' }
+        { id: 4, name: 'Phạm Phục Vụ', email: 'phucvu@nhahang.com', password: matKhauMacDinh, role: 'phuc_vu', so_dien_thoai: '0904567890', trang_thai: 'hoat_dong' }
       ]);
 
       // 2. Chèn Danh mục Loại Món (LoaiMon)
@@ -172,7 +172,14 @@ export async function napDuLieuMau() {
 
       console.log('✅ Đã nạp thành công bộ dữ liệu mẫu vào MongoDB!');
     } else {
-      console.log('ℹ️ MongoDB đã có sẵn dữ liệu, bỏ qua bước nạp mẫu.');
+      // Đồng bộ lại vai trò chuẩn nếu đã có tài khoản cũ
+      await Promise.all([
+        NguoiDung.updateOne({ email: 'thungan@nhahang.com' }, { role: 'thu_ngan' }),
+        NguoiDung.updateOne({ email: 'phucvu@nhahang.com' }, { role: 'phuc_vu' }),
+        NguoiDung.updateOne({ email: 'bep@nhahang.com' }, { role: 'bep' }),
+        NguoiDung.updateOne({ email: 'admin@nhahang.com' }, { role: 'admin' })
+      ]).catch(() => {});
+      console.log('ℹ️ MongoDB đã có sẵn dữ liệu (đã đồng bộ phân quyền chuẩn cho các tài khoản demo).');
     }
   } catch (error) {
     console.error('❌ Lỗi khi khởi tạo CSDL MongoDB:', error);

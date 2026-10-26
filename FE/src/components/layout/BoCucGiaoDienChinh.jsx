@@ -15,8 +15,8 @@ export default function BoCucGiaoDienChinh({ activeTab, setActiveTab, children }
   const [sidebarMo, setSidebarMo] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 flex selection:bg-[#0077B6] selection:text-white relative overflow-x-hidden">
-      {/* Thanh Menu điều hướng bên trái hỗ trợ Drawer trên Mobile & Tablet */}
+    <div className="h-screen w-full flex overflow-hidden bg-slate-100 text-slate-900 selection:bg-[#0077B6] selection:text-white relative antialiased">
+      {/* Thanh Menu điều hướng bên trái cố định Sticky */}
       <ThanhMenuDieuHuong 
         activeTab={activeTab} 
         setActiveTab={setActiveTab} 
@@ -24,13 +24,13 @@ export default function BoCucGiaoDienChinh({ activeTab, setActiveTab, children }
         dongSidebar={() => setSidebarMo(false)}
       />
 
-      {/* Phân vùng giao diện làm việc chính */}
-      <div className="flex-1 flex flex-col min-w-0 w-full overflow-x-hidden">
+      {/* Phân vùng giao diện làm việc chính tách nền, cuộn nội dung độc lập */}
+      <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden bg-slate-100">
         <ThanhDieuHuongTren 
           activeTab={activeTab} 
           moSidebar={() => setSidebarMo(true)}
         />
-        <main className="flex-1 overflow-y-auto bg-white p-3 sm:p-5 lg:p-6">
+        <main className="flex-1 overflow-y-auto bg-slate-100 px-3 sm:px-6 lg:px-8 py-5 sm:py-6">
           {children}
         </main>
       </div>

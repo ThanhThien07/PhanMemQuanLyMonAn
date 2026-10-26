@@ -31,21 +31,30 @@ export default function ThanhDieuHuongTren({ activeTab, moSidebar }) {
   /**
    * Tạo huy hiệu phân quyền dựa trên vai trò tài khoản
    */
-  const layHuyHieuVaiTro = (vaiTro) => {
-    switch (vaiTro) {
+  const layHuyHieuVaiTro = () => {
+    let role = user?.role || 'phuc_vu';
+    const email = (user?.email || '').toLowerCase();
+    if (email.includes('admin') || user?.role === 'admin') role = 'admin';
+    else if (email.includes('thungan') || user?.role === 'thu_ngan') role = 'thu_ngan';
+    else if (email.includes('bep') || user?.role === 'bep') role = 'bep';
+    else if (email.includes('phucvu') || user?.role === 'phuc_vu') role = 'phuc_vu';
+
+    switch (role) {
       case 'admin':
-        return { label: 'Quản Lý (Admin)', color: 'badge-role-admin', icon: ShieldCheck };
+        return { label: 'Admin', color: 'badge-role-admin', icon: ShieldCheck };
+      case 'thu_ngan':
+        return { label: 'Thu Ngân', color: 'badge-role-thungan', icon: UtensilsCrossed };
       case 'bep':
         return { label: 'Bếp Trưởng', color: 'badge-role-bep', icon: ChefHat };
       case 'khach_hang':
-        return { label: 'Khách Hàng Thân Thiết', color: 'badge-role-khachhang', icon: UtensilsCrossed };
-      case 'nhan_vien':
+        return { label: 'Khách Hàng', color: 'badge-role-khachhang', icon: UtensilsCrossed };
+      case 'phuc_vu':
       default:
-        return { label: 'Thu Ngân / Phục Vụ', color: 'badge-role-thungan', icon: UtensilsCrossed };
+        return { label: 'Phục Vụ', color: 'badge-role-thungan', icon: UtensilsCrossed };
     }
   };
 
-  const thongTinVaiTro = layHuyHieuVaiTro(user?.role);
+  const thongTinVaiTro = layHuyHieuVaiTro();
   const BieuTuongVaiTro = thongTinVaiTro.icon;
 
   return (
@@ -61,13 +70,12 @@ export default function ThanhDieuHuongTren({ activeTab, moSidebar }) {
           <Menu className="w-5 h-5 text-slate-700" />
         </button>
 
-        <h1 className="text-sm sm:text-base md:text-lg font-extrabold text-slate-900 tracking-tight truncate">
-          <span className="hidden sm:inline">Hệ Thống Quản Lý Nhà Hàng</span>
-          <span className="sm:hidden">Royal Bistro</span>
+        <h1 className="text-sm sm:text-base md:text-lg font-black text-slate-900 tracking-tight truncate">
+          Royal Bistro POS
         </h1>
         <span className="text-slate-300 text-sm hidden md:inline">/</span>
-        <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-[#CAF0F8] text-[#023E8A] border border-[#ADE8F4] hidden md:inline-flex items-center gap-1.5 shadow-2xs">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#0077B6] animate-pulse"></span>
+        <span className="text-xs font-bold px-3 py-1 rounded-full bg-blue-50 text-blue-800 border border-blue-200 hidden md:inline-flex items-center gap-1.5 shadow-2xs">
+          <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
           {String(activeTab).toUpperCase()}
         </span>
       </div>
@@ -75,12 +83,12 @@ export default function ThanhDieuHuongTren({ activeTab, moSidebar }) {
       {/* Các công cụ điều khiển bên phải */}
       <div className="flex items-center gap-3.5">
         {/* Đèn báo trạng thái kết nối Socket.io Realtime */}
-        <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border ${
+        <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${
           connected 
             ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
-            : 'bg-rose-50 text-rose-700 border-rose-200'
+            : 'bg-red-50 text-red-700 border-red-200'
         }`}>
-          {connected ? <Wifi className="w-3.5 h-3.5 text-emerald-600" /> : <WifiOff className="w-3.5 h-3.5 text-rose-600" />}
+          {connected ? <Wifi className="w-3.5 h-3.5 text-emerald-600" /> : <WifiOff className="w-3.5 h-3.5 text-red-600" />}
           <span className="hidden md:inline">{connected ? 'Socket Live' : 'Mất kết nối'}</span>
         </div>
 
@@ -88,13 +96,13 @@ export default function ThanhDieuHuongTren({ activeTab, moSidebar }) {
         {latestNotification && (
           <div 
             onClick={clearNotification}
-            className="flex items-center gap-2 bg-amber-50 border border-amber-300 text-amber-900 px-3 py-1.5 rounded-xl text-xs cursor-pointer shadow-md shadow-amber-500/10 hover:bg-amber-100 transition-all"
+            className="flex items-center gap-2 bg-blue-50 border border-blue-300 text-blue-900 px-3.5 py-1.5 rounded-full text-xs cursor-pointer shadow-md shadow-blue-500/10 hover:bg-blue-100 transition-all"
             title="Bấm để đóng thông báo"
           >
-            <Bell className="w-3.5 h-3.5 text-amber-600 animate-bounce" />
+            <Bell className="w-3.5 h-3.5 text-blue-600 animate-bounce" />
             <span className="font-bold">{latestNotification.title}:</span>
             <span className="font-medium text-slate-700 max-w-[200px] truncate">{latestNotification.message}</span>
-            <span className="text-[10px] text-amber-600 font-mono">✕</span>
+            <span className="text-[10px] text-blue-600 font-mono">✕</span>
           </div>
         )}
 
@@ -110,7 +118,7 @@ export default function ThanhDieuHuongTren({ activeTab, moSidebar }) {
 
           <button
             onClick={logout}
-            className="btn btn-sm btn-outline-danger rounded-3 p-2 d-flex align-items-center justify-content-center"
+            className="btn btn-sm btn-outline-danger rounded-pill p-2 d-flex align-items-center justify-content-center cursor-pointer"
             title="Đăng xuất khỏi hệ thống"
           >
             <LogOut className="w-4 h-4" />

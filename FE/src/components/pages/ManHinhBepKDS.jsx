@@ -119,48 +119,50 @@ export default function ManHinhBepKDS() {
 
   return (
     <div className="container-fluid px-2 px-md-4 py-3 max-w-7xl mx-auto space-y-4">
-      {/* Tiêu đề & Trạng thái hoạt động */}
-      <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
-        <div className="d-flex align-items-center gap-3">
-          <div className="w-12 h-12 rounded-3 bg-amber-50 text-amber-700 border border-amber-200 d-flex align-items-center justify-content-center shadow-xs">
-            <ChefHat className="w-6 h-6" />
-          </div>
-          <div>
-            <div className="d-flex align-items-center gap-2 mb-1">
-              <span className="badge bg-danger text-white rounded-pill px-2.5 py-1 text-xs fw-bold">
-                <i className="bi bi-broadcast me-1"></i>Realtime KDS
-              </span>
-              <span className="text-xs text-slate-500 font-semibold">Tự động trừ kho theo BOM</span>
+      {/* Tiêu đề & Trạng thái hoạt động trong Card nổi khối */}
+      <div className="card bg-white border-2 border-slate-200/90 rounded-3xl p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+          <div className="d-flex align-items-center gap-3">
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-700 border-2 border-amber-200/90 d-flex align-items-center justify-content-center shadow-2xs">
+              <ChefHat className="w-6 h-6" />
             </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-0">
-              Màn Hình Bếp Trưởng (Kitchen Display System)
-            </h2>
+            <div>
+              <div className="d-flex align-items-center gap-2 mb-1">
+                <span className="badge bg-red-600 text-white rounded-pill px-3 py-1 text-xs font-black shadow-2xs">
+                  <i className="bi bi-broadcast me-1"></i>Realtime KDS
+                </span>
+                <span className="text-xs text-slate-600 font-bold">Tự động trừ kho theo BOM</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-0">
+                Màn Hình Bếp Trưởng (Kitchen Display System)
+              </h2>
+            </div>
           </div>
-        </div>
 
-        <div className="d-flex align-items-center gap-2.5">
-          <button
-            onClick={taiDanhSachMonBep}
-            className="btn btn-sm btn-outline-secondary bg-white text-slate-800 fw-bold px-3 py-2 rounded-3 d-flex align-items-center gap-2 shadow-xs"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${dangTai ? 'animate-spin' : ''}`} />
-            <span>Làm Mới</span>
-          </button>
+          <div className="d-flex align-items-center gap-2.5">
+            <button
+              onClick={taiDanhSachMonBep}
+              className="btn btn-sm btn-outline-secondary bg-slate-50 text-slate-800 font-black px-4 py-2 rounded-pill d-flex align-items-center gap-2 shadow-2xs border-2 border-slate-200/90 hover:bg-slate-100 transition-all cursor-pointer"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${dangTai ? 'animate-spin' : ''}`} />
+              <span>Làm Mới</span>
+            </button>
 
-          <span className="badge bg-warning-subtle text-amber-900 border border-warning-subtle px-3 py-2 rounded-pill fw-bold text-xs">
-            <i className="bi bi-hourglass-split me-1"></i>Đang Chờ: {danhSachMonBep.length} món
-          </span>
+            <span className="badge bg-amber-50 text-amber-900 border-2 border-amber-200/90 px-3.5 py-2 rounded-pill font-black text-xs shadow-2xs">
+              <i className="bi bi-hourglass-split me-1"></i>Đang Chờ: {danhSachMonBep.length} món
+            </span>
+          </div>
         </div>
       </div>
 
       {/* Lưới danh sách các món cần chế biến */}
       {danhSachMonBep.length === 0 ? (
-        <div className="p-5 rounded-4 bg-white border border-dashed border-slate-300 text-center space-y-3 shadow-sm my-4">
-          <div className="w-16 h-16 rounded-3 bg-emerald-50 text-emerald-600 d-flex align-items-center justify-content-center mx-auto border border-emerald-200 shadow-xs">
+        <div className="p-6 sm:p-8 rounded-3xl bg-white border-2 border-slate-200/90 text-center space-y-3 shadow-sm my-4">
+          <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 d-flex align-items-center justify-content-center mx-auto border-2 border-emerald-200 shadow-2xs">
             <CheckCircle2 className="w-8 h-8" />
           </div>
           <h3 className="text-lg font-black text-slate-900 mb-1">Tất Cả Món Đã Được Phục Vụ!</h3>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium max-w-md mx-auto mb-0">
+          <p className="text-xs sm:text-sm text-slate-600 font-semibold max-w-md mx-auto mb-0">
             Hiện tại không có đơn món nào đang chờ chế biến. Bếp có thể nghỉ ngơi hoặc chuẩn bị sơ chế nguyên liệu.
           </p>
         </div>
@@ -172,30 +174,30 @@ export default function ManHinhBepKDS() {
             return (
               <div key={mon.id} className="col-12 col-md-6 col-xl-4">
                 <div
-                  className={`card h-100 rounded-4 p-4 border transition-all duration-300 d-flex flex-column justify-content-between shadow-sm ${
+                  className={`card h-100 rounded-3xl p-5 border-2 transition-all duration-300 d-flex flex-column justify-content-between shadow-sm hover:shadow-xl hover:-translate-y-1 ${
                     dangNau
-                      ? 'bg-sky-50/70 border-sky-300 shadow-sky-500/10'
-                      : 'bg-white border-amber-300 shadow-amber-500/10'
+                      ? 'bg-sky-50/70 border-sky-400 shadow-sky-500/10'
+                      : 'bg-white border-amber-400 shadow-amber-500/10'
                   }`}
                 >
                   <div>
                     {/* Thông tin số bàn & Trạng thái */}
                     <div className="d-flex align-items-center justify-content-between pb-3 border-bottom border-slate-200/80">
-                      <div className="d-flex align-items-center gap-2">
-                        <span className="badge bg-warning text-dark font-black fs-6 px-2.5 py-1.5 rounded-3 shadow-xs">
+                      <div className="d-flex align-items-center gap-2.5">
+                        <span className="badge bg-slate-900 text-white font-black fs-6 px-3 py-1.5 rounded-2xl shadow-xs">
                           B{mon.so_ban}
                         </span>
                         <div>
-                          <div className="text-xs font-extrabold text-slate-900">Bàn {mon.so_ban}</div>
-                          <div className="text-2xs text-slate-500 font-medium">{mon.khu_vuc}</div>
+                          <div className="text-sm font-black text-slate-900">Bàn {mon.so_ban}</div>
+                          <div className="text-xs text-blue-600 font-bold">{mon.khu_vuc}</div>
                         </div>
                       </div>
 
                       <span
-                        className={`badge rounded-pill px-2.5 py-1 text-xs fw-bold ${
+                        className={`badge rounded-pill px-3 py-1.5 text-xs font-black ${
                           dangNau
-                            ? 'bg-info-subtle text-sky-900 border border-info-subtle'
-                            : 'bg-warning-subtle text-amber-900 border border-warning-subtle animate-pulse'
+                            ? 'bg-sky-100 text-sky-900 border-2 border-sky-300'
+                            : 'bg-amber-100 text-amber-900 border-2 border-amber-300 animate-pulse'
                         }`}
                       >
                         {dangNau ? '🔥 Đang Nấu' : '⏳ Chờ Nấu'}
@@ -208,21 +210,21 @@ export default function ManHinhBepKDS() {
                         <h4 className="text-base font-black text-slate-900 mb-1 leading-snug">
                           {mon.ten_mon}
                         </h4>
-                        <span className="badge bg-slate-900 text-white font-black fs-6 px-2.5 py-1 rounded-3 shrink-0">
+                        <span className="badge bg-red-600 text-white font-black fs-6 px-3 py-1 rounded-pill shrink-0 shadow-2xs">
                           x{mon.so_luong}
                         </span>
                       </div>
 
-                      {/* Ghi chú của khách hoặc thu ngân */}
+                      {/* Ghi chú của khách hoặc thu ngân (Layer 2) */}
                       {mon.ghi_chu && (
-                        <div className="mt-2 p-2 rounded-3 bg-amber-100/60 border border-amber-200 text-amber-950 text-xs font-bold d-flex align-items-start gap-1.5">
-                          <span className="shrink-0 text-amber-700">📌 Ghi chú:</span>
+                        <div className="mt-2.5 p-2.5 rounded-2xl bg-amber-100/70 border-2 border-amber-300/80 text-amber-950 text-xs font-bold d-flex align-items-start gap-1.5 shadow-2xs">
+                          <span className="shrink-0 text-amber-800">📌 Ghi chú:</span>
                           <span>{mon.ghi_chu}</span>
                         </div>
                       )}
 
                       {/* Thời gian nhận đơn */}
-                      <div className="text-2xs text-slate-400 font-medium mt-2 d-flex align-items-center gap-1">
+                      <div className="text-xs text-slate-500 font-semibold mt-2.5 d-flex align-items-center gap-1.5">
                         <i className="bi bi-clock"></i>
                         <span>
                           Nhận lúc:{' '}
@@ -235,12 +237,12 @@ export default function ManHinhBepKDS() {
                     </div>
                   </div>
 
-                  {/* Nút bấm chuyển trạng thái */}
+                  {/* Nút bấm chuyển trạng thái bo tròn viên thuốc */}
                   <div className="pt-3 border-top border-slate-200/80">
                     {dangNau ? (
                       <button
                         onClick={() => capNhatTrangThai(mon.id, 'da_phuc_vu')}
-                        className="btn btn-success w-100 py-2.5 rounded-3 text-white fw-bold text-xs d-flex align-items-center justify-content-center gap-2 shadow-sm"
+                        className="btn btn-success w-100 py-3 rounded-pill text-white font-black text-xs d-flex align-items-center justify-content-center gap-2 shadow-sm cursor-pointer"
                       >
                         <CheckCircle2 className="w-4 h-4" />
                         <span>Nấu Xong & Báo Phục Vụ</span>
@@ -248,7 +250,7 @@ export default function ManHinhBepKDS() {
                     ) : (
                       <button
                         onClick={() => capNhatTrangThai(mon.id, 'dang_che_bien')}
-                        className="btn btn-primary w-100 py-2.5 rounded-3 text-white fw-bold text-xs d-flex align-items-center justify-content-center gap-2 shadow-sm"
+                        className="btn btn-primary w-100 py-3 rounded-pill text-white font-black text-xs d-flex align-items-center justify-content-center gap-2 shadow-sm cursor-pointer"
                       >
                         <Flame className="w-4 h-4 text-warning" />
                         <span>Bắt Đầu Nấu (Trừ Kho BOM)</span>
