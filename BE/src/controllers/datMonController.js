@@ -70,6 +70,7 @@ export async function layDanhSachDonMon(req, res) {
         ten_mon: mon?.ten_mon || '',
         hinh_anh: mon?.hinh_anh || '',
         gia_goc: mon?.gia || 0,
+        thoi_gian_nau: mon?.thoi_gian_nau || 15,
         so_ban: ban?.so_ban || don.ban_id,
         khu_vuc: ban?.khu_vuc || '',
         ten_khach: khach?.ho_ten || ''
@@ -116,6 +117,7 @@ export async function layDonMonChoBep(req, res) {
         ...json,
         ten_mon: mon?.ten_mon || '',
         hinh_anh: mon?.hinh_anh || '',
+        thoi_gian_nau: mon?.thoi_gian_nau || 15,
         so_ban: ban?.so_ban || don.ban_id,
         khu_vuc: ban?.khu_vuc || ''
       };

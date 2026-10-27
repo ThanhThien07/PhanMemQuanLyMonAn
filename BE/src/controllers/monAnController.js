@@ -134,7 +134,7 @@ export async function layChiTietMonAn(req, res) {
  */
 export async function themMonAnMoi(req, res) {
   try {
-    const { ten_mon, loai_mon_id, gia, mo_ta, hinh_anh, trang_thai = 'con_hang', bom = [] } = req.body;
+    const { ten_mon, loai_mon_id, gia, mo_ta, hinh_anh, thoi_gian_nau = 15, trang_thai = 'con_hang', bom = [] } = req.body;
 
     if (!ten_mon || gia === undefined) {
       return res.status(400).json({ success: false, message: 'Tên món ăn và đơn giá là bắt buộc.' });
@@ -148,6 +148,7 @@ export async function themMonAnMoi(req, res) {
       gia: Number(gia),
       mo_ta: mo_ta || '',
       hinh_anh: hinh_anh || '',
+      thoi_gian_nau: Number(thoi_gian_nau) > 0 ? Number(thoi_gian_nau) : 15,
       trang_thai
     });
 
@@ -182,7 +183,7 @@ export async function themMonAnMoi(req, res) {
 export async function capNhatMonAn(req, res) {
   try {
     const { id } = req.params;
-    const { ten_mon, loai_mon_id, gia, mo_ta, hinh_anh, trang_thai } = req.body;
+    const { ten_mon, loai_mon_id, gia, mo_ta, hinh_anh, thoi_gian_nau, trang_thai } = req.body;
 
     const duLieuCapNhat = {};
     if (ten_mon !== undefined) duLieuCapNhat.ten_mon = ten_mon;
@@ -190,6 +191,7 @@ export async function capNhatMonAn(req, res) {
     if (gia !== undefined) duLieuCapNhat.gia = Number(gia);
     if (mo_ta !== undefined) duLieuCapNhat.mo_ta = mo_ta;
     if (hinh_anh !== undefined) duLieuCapNhat.hinh_anh = hinh_anh;
+    if (thoi_gian_nau !== undefined) duLieuCapNhat.thoi_gian_nau = Number(thoi_gian_nau) > 0 ? Number(thoi_gian_nau) : 15;
     if (trang_thai !== undefined) duLieuCapNhat.trang_thai = trang_thai;
 
     const monDaCapNhat = await MonAn.findOneAndUpdate(

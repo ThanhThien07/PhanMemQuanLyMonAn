@@ -17,6 +17,7 @@ const monAnSchema = new mongoose.Schema(
     gia: { type: Number, required: true, default: 0 },    // Đơn giá bán (VNĐ)
     mo_ta: { type: String, default: '' },                 // Mô tả thành phần, khẩu vị
     hinh_anh: { type: String, default: '' },              // Đường dẫn hình ảnh món ăn
+    thoi_gian_nau: { type: Number, default: 15 },         // Thời gian chế biến / làm món ước tính (phút) để khách biết thời gian chờ
     trang_thai: { 
       type: String, 
       enum: ['con_hang', 'tam_ngung', 'het_hang'], 

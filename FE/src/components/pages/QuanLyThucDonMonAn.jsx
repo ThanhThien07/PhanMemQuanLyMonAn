@@ -36,6 +36,7 @@ export default function QuanLyThucDonMonAn() {
     ten_mon: '',
     loai_mon_id: 1,
     gia: '',
+    thoi_gian_nau: 15,
     mo_ta: '',
     hinh_anh: '',
     trang_thai: 'con_hang'
@@ -48,6 +49,7 @@ export default function QuanLyThucDonMonAn() {
     ten_mon: '',
     loai_mon_id: 1,
     gia: '',
+    thoi_gian_nau: 15,
     mo_ta: '',
     hinh_anh: '',
     trang_thai: 'con_hang'
@@ -91,6 +93,7 @@ export default function QuanLyThucDonMonAn() {
       ten_mon: mon.ten_mon || '',
       loai_mon_id: mon.loai_mon_id || (danhMuc[0]?.id || 1),
       gia: mon.gia || '',
+      thoi_gian_nau: mon.thoi_gian_nau || 15,
       mo_ta: mon.mo_ta || '',
       hinh_anh: mon.hinh_anh || '',
       trang_thai: mon.trang_thai || 'con_hang'
@@ -118,6 +121,7 @@ export default function QuanLyThucDonMonAn() {
         ten_mon: duLieuFormThem.ten_mon.trim(),
         loai_mon_id: Number(duLieuFormThem.loai_mon_id),
         gia: Number(duLieuFormThem.gia),
+        thoi_gian_nau: Number(duLieuFormThem.thoi_gian_nau) > 0 ? Number(duLieuFormThem.thoi_gian_nau) : 15,
         mo_ta: duLieuFormThem.mo_ta.trim(),
         hinh_anh: duLieuFormThem.hinh_anh.trim()
       });
@@ -128,6 +132,7 @@ export default function QuanLyThucDonMonAn() {
           ten_mon: '',
           loai_mon_id: danhMuc[0]?.id || 1,
           gia: '',
+          thoi_gian_nau: 15,
           mo_ta: '',
           hinh_anh: '',
           trang_thai: 'con_hang'
@@ -161,6 +166,7 @@ export default function QuanLyThucDonMonAn() {
         ten_mon: duLieuFormSua.ten_mon.trim(),
         loai_mon_id: Number(duLieuFormSua.loai_mon_id),
         gia: Number(duLieuFormSua.gia),
+        thoi_gian_nau: Number(duLieuFormSua.thoi_gian_nau) > 0 ? Number(duLieuFormSua.thoi_gian_nau) : 15,
         mo_ta: duLieuFormSua.mo_ta.trim(),
         hinh_anh: duLieuFormSua.hinh_anh.trim(),
         trang_thai: duLieuFormSua.trang_thai
@@ -340,6 +346,10 @@ export default function QuanLyThucDonMonAn() {
                     <img
                       src={mon.hinh_anh || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400'}
                       alt={mon.ten_mon}
+                      width="400"
+                      height="175"
+                      loading="lazy"
+                      decoding="async"
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400';
@@ -386,9 +396,17 @@ export default function QuanLyThucDonMonAn() {
                       >
                         {mon.ten_mon}
                       </h4>
-                      <p className="card-text text-xs text-slate-500 line-clamp-2 mb-3 min-h-[32px]">
+                      <p className="card-text text-xs text-slate-500 line-clamp-2 mb-2 min-h-[32px]">
                         {mon.mo_ta || 'Món ngon hảo hạng phục vụ tại bàn của nhà hàng Royal Bistro.'}
                       </p>
+
+                      {/* Thời gian làm món dự kiến để khách biết trước */}
+                      <div className="d-flex align-items-center gap-1.5 mb-2">
+                        <span className="badge bg-slate-100 text-slate-700 border border-slate-200/90 rounded-pill px-2.5 py-1 text-[11px] font-bold d-inline-flex align-items-center gap-1 shadow-2xs">
+                          <i className="bi bi-clock-history text-amber-600"></i>
+                          <span>Làm trong ~{mon.thoi_gian_nau || 15} phút</span>
+                        </span>
+                      </div>
                     </div>
 
                     {/* Giá bán: Màu ĐỎ khi có giảm giá, màu ĐEN khi giá bình thường */}
@@ -535,22 +553,51 @@ export default function QuanLyThucDonMonAn() {
                         </div>
                       </div>
 
-                      {/* Trạng Thái Phục Vụ */}
-                      <div>
-                        <label className="form-label text-xs font-bold text-slate-700 uppercase mb-1">
-                          Trạng Thái Phục Vụ <span className="text-danger">*</span>
-                        </label>
-                        <select
-                          value={duLieuFormSua.trang_thai}
-                          onChange={(e) =>
-                            setDuLieuFormSua({ ...duLieuFormSua, trang_thai: e.target.value })
-                          }
-                          className="form-select form-select-sm bg-slate-50 border-slate-200 text-xs py-2 font-semibold"
-                        >
-                          <option value="con_hang">🟢 Còn Hàng (Sẵn sàng phục vụ khách)</option>
-                          <option value="het_hang">🔴 Tạm Hết Hàng (Ngừng nhận đơn trên POS & Menu QR)</option>
-                          <option value="tam_ngung">⚪ Tạm Ngưng Bán (Ẩn hoặc ngưng mùa)</option>
-                        </select>
+                      {/* Hàng Thời Gian Làm Món & Trạng Thái Phục Vụ */}
+                      <div className="row g-2">
+                        {/* Thời Gian Chế Biến / Làm Món */}
+                        <div className="col-6">
+                          <label className="form-label text-xs font-bold text-slate-700 uppercase mb-1 d-flex align-items-center gap-1">
+                            <i className="bi bi-clock-history text-amber-600"></i>
+                            <span>Thời Gian Làm (Phút)</span>
+                          </label>
+                          <div className="input-group input-group-sm">
+                            <input
+                              type="number"
+                              min="1"
+                              max="180"
+                              required
+                              value={duLieuFormSua.thoi_gian_nau}
+                              onChange={(e) =>
+                                setDuLieuFormSua({ ...duLieuFormSua, thoi_gian_nau: e.target.value })
+                              }
+                              placeholder="15"
+                              className="form-control form-control-sm bg-slate-50 border-slate-200 text-xs py-2 font-bold text-slate-900"
+                            />
+                            <span className="input-group-text bg-slate-100 border-slate-200 text-xs text-slate-600 font-bold">
+                              phút
+                            </span>
+                          </div>
+                          <span className="text-[10px] text-slate-400 font-medium">Khách sẽ biết món làm bao lâu</span>
+                        </div>
+
+                        {/* Trạng Thái Phục Vụ */}
+                        <div className="col-6">
+                          <label className="form-label text-xs font-bold text-slate-700 uppercase mb-1">
+                            Trạng Thái Phục Vụ <span className="text-danger">*</span>
+                          </label>
+                          <select
+                            value={duLieuFormSua.trang_thai}
+                            onChange={(e) =>
+                              setDuLieuFormSua({ ...duLieuFormSua, trang_thai: e.target.value })
+                            }
+                            className="form-select form-select-sm bg-slate-50 border-slate-200 text-xs py-2 font-semibold"
+                          >
+                            <option value="con_hang">🟢 Còn Hàng (Phục vụ ngay)</option>
+                            <option value="het_hang">🔴 Tạm Hết Hàng (Ngừng nhận đơn)</option>
+                            <option value="tam_ngung">⚪ Tạm Ngưng Bán</option>
+                          </select>
+                        </div>
                       </div>
 
                       {/* URL Hình Ảnh */}
@@ -733,21 +780,51 @@ export default function QuanLyThucDonMonAn() {
                         </div>
                       </div>
 
-                      <div>
-                        <label className="form-label text-xs font-bold text-slate-700 uppercase mb-1">
-                          Trạng Thái Phục Vụ
-                        </label>
-                        <select
-                          value={duLieuFormThem.trang_thai}
-                          onChange={(e) =>
-                            setDuLieuFormThem({ ...duLieuFormThem, trang_thai: e.target.value })
-                          }
-                          className="form-select form-select-sm bg-slate-50 border-slate-200 text-xs py-2"
-                        >
-                          <option value="con_hang">🟢 Còn Hàng (Phục vụ ngay)</option>
-                          <option value="het_hang">🔴 Tạm Hết Hàng</option>
-                          <option value="tam_ngung">⚪ Tạm Ngưng Bán</option>
-                        </select>
+                      {/* Hàng Thời Gian Làm Món & Trạng Thái Phục Vụ */}
+                      <div className="row g-2">
+                        {/* Thời Gian Chế Biến / Làm Món */}
+                        <div className="col-6">
+                          <label className="form-label text-xs font-bold text-slate-700 uppercase mb-1 d-flex align-items-center gap-1">
+                            <i className="bi bi-clock-history text-amber-600"></i>
+                            <span>Thời Gian Làm (Phút)</span>
+                          </label>
+                          <div className="input-group input-group-sm">
+                            <input
+                              type="number"
+                              min="1"
+                              max="180"
+                              required
+                              value={duLieuFormThem.thoi_gian_nau}
+                              onChange={(e) =>
+                                setDuLieuFormThem({ ...duLieuFormThem, thoi_gian_nau: e.target.value })
+                              }
+                              placeholder="15"
+                              className="form-control form-control-sm bg-slate-50 border-slate-200 text-xs py-2 font-bold text-slate-900"
+                            />
+                            <span className="input-group-text bg-slate-100 border-slate-200 text-xs text-slate-600 font-bold">
+                              phút
+                            </span>
+                          </div>
+                          <span className="text-[10px] text-slate-400 font-medium">Khách sẽ biết món làm bao lâu</span>
+                        </div>
+
+                        {/* Trạng Thái Phục Vụ */}
+                        <div className="col-6">
+                          <label className="form-label text-xs font-bold text-slate-700 uppercase mb-1">
+                            Trạng Thái Phục Vụ
+                          </label>
+                          <select
+                            value={duLieuFormThem.trang_thai}
+                            onChange={(e) =>
+                              setDuLieuFormThem({ ...duLieuFormThem, trang_thai: e.target.value })
+                            }
+                            className="form-select form-select-sm bg-slate-50 border-slate-200 text-xs py-2 font-semibold"
+                          >
+                            <option value="con_hang">🟢 Còn Hàng (Phục vụ ngay)</option>
+                            <option value="het_hang">🔴 Tạm Hết Hàng</option>
+                            <option value="tam_ngung">⚪ Tạm Ngưng Bán</option>
+                          </select>
+                        </div>
                       </div>
 
                       <div>

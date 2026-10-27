@@ -70,17 +70,17 @@ export async function napDuLieuMau() {
 
       // 3. Chèn Thực đơn Món Ăn (MonAn)
       await MonAn.insertMany([
-        { id: 1, ten_mon: 'Bò Wagyu A5 Nướng Sốt Tiêu Đen', loai_mon_id: 3, gia: 450000, mo_ta: 'Thịt bò Wagyu vân mỡ tuyệt hảo nướng than hoa kèm sốt tiêu Phú Quốc đặc biệt', hinh_anh: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=500', trang_thai: 'con_hang' },
-        { id: 2, ten_mon: 'Tôm Hùm Alaska Sốt Bơ Tỏi', loai_mon_id: 4, gia: 680000, mo_ta: 'Tôm hùm Alaska tươi nguyên con nướng bơ tỏi thơm lừng kèm bánh mì nướng', hinh_anh: 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=500', trang_thai: 'con_hang' },
-        { id: 3, ten_mon: 'Lẩu Hải Sản Hoàng Gia', loai_mon_id: 4, gia: 520000, mo_ta: 'Nước dùng chua cay đậm đà, tôm sú, mực ống, cua biển và nấm tươi', hinh_anh: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=500', trang_thai: 'con_hang' },
-        { id: 4, ten_mon: 'Salad Cá Hồi Xông Khói Sốt Mè Rang', loai_mon_id: 1, gia: 135000, mo_ta: 'Cá hồi Na Uy xông khói, xà lách Romanie, trứng cá chuồn sốt mè Nhật Bản', hinh_anh: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500', trang_thai: 'con_hang' },
-        { id: 5, ten_mon: 'Súp Bào Ngư Vi Cá Thượng Hạng', loai_mon_id: 1, gia: 280000, mo_ta: 'Bào ngư tươi hầm nước cốt gà thượng hạng thơm bùi bổ dưỡng', hinh_anh: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=500', trang_thai: 'con_hang' },
-        { id: 6, ten_mon: 'Sườn Heo Nướng Tảng BBQ', loai_mon_id: 3, gia: 320000, mo_ta: 'Sườn heo ướp sốt BBQ đậm vị nướng chậm 4 tiếng mềm tan trong miệng', hinh_anh: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=500', trang_thai: 'con_hang' },
-        { id: 7, ten_mon: 'Gà Ta Hấp Muối Hoa Tiêu', loai_mon_id: 2, gia: 260000, mo_ta: 'Gà đồi hấp muối hột giữ trọn độ ngọt dai tự nhiên kèm muối ớt chanh', hinh_anh: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=500', trang_thai: 'con_hang' },
-        { id: 8, ten_mon: 'Cơm Chiên Hải Sản Hoàng Bào', loai_mon_id: 2, gia: 160000, mo_ta: 'Cơm chiên hạt ngọc, tôm, mực, cồi sò điệp gói trong lớp trứng mỏng', hinh_anh: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500', trang_thai: 'con_hang' },
-        { id: 9, ten_mon: 'Bánh Mousse Chanh Leo Tráng Miệng', loai_mon_id: 5, gia: 65000, mo_ta: 'Bánh mềm xốp chua ngọt thanh mát giải ngấy sau bữa tiệc', hinh_anh: 'https://images.unsplash.com/photo-1508737027454-e6454ef45afd?w=500', trang_thai: 'con_hang' },
-        { id: 10, ten_mon: 'Trà Đào Cam Sả Tươi', loai_mon_id: 6, gia: 45000, mo_ta: 'Trà đen Ceylon ủ lạnh kết hợp đào miếng giòn ngọt và cam vàng sả tươi', hinh_anh: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500', trang_thai: 'con_hang' },
-        { id: 11, ten_mon: 'Rượu Vang Đỏ Cabernet Sauvignon', loai_mon_id: 6, gia: 850000, mo_ta: 'Vang đỏ Chile 2020 hậu vị tannin mượt mà, kết hợp hoàn hảo với bò Wagyu', hinh_anh: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=500', trang_thai: 'con_hang' }
+        { id: 1, ten_mon: 'Bò Wagyu A5 Nướng Sốt Tiêu Đen', loai_mon_id: 3, gia: 450000, mo_ta: 'Thịt bò Wagyu vân mỡ tuyệt hảo nướng than hoa kèm sốt tiêu Phú Quốc đặc biệt', hinh_anh: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=500', thoi_gian_nau: 20, trang_thai: 'con_hang' },
+        { id: 2, ten_mon: 'Tôm Hùm Alaska Sốt Bơ Tỏi', loai_mon_id: 4, gia: 680000, mo_ta: 'Tôm hùm Alaska tươi nguyên con nướng bơ tỏi thơm lừng kèm bánh mì nướng', hinh_anh: 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=500', thoi_gian_nau: 25, trang_thai: 'con_hang' },
+        { id: 3, ten_mon: 'Lẩu Hải Sản Hoàng Gia', loai_mon_id: 4, gia: 520000, mo_ta: 'Nước dùng chua cay đậm đà, tôm sú, mực ống, cua biển và nấm tươi', hinh_anh: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=500', thoi_gian_nau: 25, trang_thai: 'con_hang' },
+        { id: 4, ten_mon: 'Salad Cá Hồi Xông Khói Sốt Mè Rang', loai_mon_id: 1, gia: 135000, mo_ta: 'Cá hồi Na Uy xông khói, xà lách Romanie, trứng cá chuồn sốt mè Nhật Bản', hinh_anh: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500', thoi_gian_nau: 10, trang_thai: 'con_hang' },
+        { id: 5, ten_mon: 'Súp Bào Ngư Vi Cá Thượng Hạng', loai_mon_id: 1, gia: 280000, mo_ta: 'Bào ngư tươi hầm nước cốt gà thượng hạng thơm bùi bổ dưỡng', hinh_anh: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=500', thoi_gian_nau: 15, trang_thai: 'con_hang' },
+        { id: 6, ten_mon: 'Sườn Heo Nướng Tảng BBQ', loai_mon_id: 3, gia: 320000, mo_ta: 'Sườn heo ướp sốt BBQ đậm vị nướng chậm 4 tiếng mềm tan trong miệng', hinh_anh: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=500', thoi_gian_nau: 20, trang_thai: 'con_hang' },
+        { id: 7, ten_mon: 'Gà Ta Hấp Muối Hoa Tiêu', loai_mon_id: 2, gia: 260000, mo_ta: 'Gà đồi hấp muối hột giữ trọn độ ngọt dai tự nhiên kèm muối ớt chanh', hinh_anh: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=500', thoi_gian_nau: 20, trang_thai: 'con_hang' },
+        { id: 8, ten_mon: 'Cơm Chiên Hải Sản Hoàng Bào', loai_mon_id: 2, gia: 160000, mo_ta: 'Cơm chiên hạt ngọc, tôm, mực, cồi sò điệp gói trong lớp trứng mỏng', hinh_anh: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500', thoi_gian_nau: 15, trang_thai: 'con_hang' },
+        { id: 9, ten_mon: 'Bánh Mousse Chanh Leo Tráng Miệng', loai_mon_id: 5, gia: 65000, mo_ta: 'Bánh mềm xốp chua ngọt thanh mát giải ngấy sau bữa tiệc', hinh_anh: 'https://images.unsplash.com/photo-1508737027454-e6454ef45afd?w=500', thoi_gian_nau: 8, trang_thai: 'con_hang' },
+        { id: 10, ten_mon: 'Trà Đào Cam Sả Tươi', loai_mon_id: 6, gia: 45000, mo_ta: 'Trà đen Ceylon ủ lạnh kết hợp đào miếng giòn ngọt và cam vàng sả tươi', hinh_anh: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500', thoi_gian_nau: 5, trang_thai: 'con_hang' },
+        { id: 11, ten_mon: 'Rượu Vang Đỏ Cabernet Sauvignon', loai_mon_id: 6, gia: 850000, mo_ta: 'Vang đỏ Chile 2020 hậu vị tannin mượt mà, kết hợp hoàn hảo với bò Wagyu', hinh_anh: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=500', thoi_gian_nau: 5, trang_thai: 'con_hang' }
       ]);
 
       // 4. Chèn Sơ đồ Bàn Ăn (BanAn)
@@ -179,11 +179,60 @@ export async function napDuLieuMau() {
         NguoiDung.updateOne({ email: 'bep@nhahang.com' }, { role: 'bep' }),
         NguoiDung.updateOne({ email: 'admin@nhahang.com' }, { role: 'admin' })
       ]).catch(() => {});
-      console.log('ℹ️ MongoDB đã có sẵn dữ liệu (đã đồng bộ phân quyền chuẩn cho các tài khoản demo).');
+
+      // Tự động đồng bộ thời gian chế biến dự đoán cho tất cả món ăn có sẵn
+      await dongBoThoiGianNauChoMonAn();
+      console.log('ℹ️ MongoDB đã có sẵn dữ liệu (đã đồng bộ phân quyền và thời gian chế biến cho toàn bộ món ăn).');
     }
   } catch (error) {
     console.error('❌ Lỗi khi khởi tạo CSDL MongoDB:', error);
     throw error;
+  }
+}
+
+/**
+ * Hàm đồng bộ thời gian chế biến dự kiến cho các món ăn có sẵn trong CSDL
+ */
+export async function dongBoThoiGianNauChoMonAn() {
+  try {
+    await ketNoiCSDL();
+    const banDoThoiGianTheoMon = {
+      1: 20, // Bò Wagyu A5 Nướng Sốt Tiêu Đen
+      2: 25, // Tôm Hùm Alaska Sốt Bơ Tỏi
+      3: 25, // Lẩu Hải Sản Hoàng Gia
+      4: 10, // Salad Cá Hồi Xông Khói
+      5: 15, // Súp Bào Ngư Vi Cá
+      6: 20, // Sườn Heo Nướng Tảng BBQ
+      7: 20, // Gà Ta Hấp Muối Hoa Tiêu
+      8: 15, // Cơm Chiên Hải Sản Hoàng Bào
+      9: 8,  // Bánh Mousse Chanh Leo
+      10: 5, // Trà Đào Cam Sả Tươi
+      11: 5, // Rượu Vang Đỏ
+      13: 18,// Cá kho tiêu
+      14: 15 // Cá chiên
+    };
+
+    const danhSachMon = await MonAn.find({});
+    for (const mon of danhSachMon) {
+      let thoiGian = banDoThoiGianTheoMon[mon.id];
+      if (!thoiGian) {
+        if (mon.thoi_gian_nau && mon.thoi_gian_nau > 0) {
+          continue;
+        }
+        // Gán thời gian theo nhóm danh mục nếu món mới tạo thêm
+        if (mon.loai_mon_id === 1) thoiGian = 10;
+        else if (mon.loai_mon_id === 2) thoiGian = 18;
+        else if (mon.loai_mon_id === 3) thoiGian = 20;
+        else if (mon.loai_mon_id === 4) thoiGian = 22;
+        else if (mon.loai_mon_id === 5) thoiGian = 8;
+        else if (mon.loai_mon_id === 6) thoiGian = 5;
+        else thoiGian = 15;
+      }
+      await MonAn.updateOne({ _id: mon._id }, { $set: { thoi_gian_nau: thoiGian } });
+    }
+    console.log('⏱️ Đã đồng bộ thời gian làm dự kiến cho toàn bộ món ăn trong thực đơn!');
+  } catch (loi) {
+    console.warn('Lỗi đồng bộ thời gian chế biến món ăn:', loi.message);
   }
 }
 
