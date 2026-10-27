@@ -4,7 +4,7 @@
  * Hiển thị số lượng tồn kho, định mức tối thiểu, cảnh báo nguyên liệu sắp hết, nhập thêm tồn kho nhanh chóng
  * và quản lý danh sách nhà cung cấp thực phẩm.
  * @module pages/QuanLyKhoNguyenLieu
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React, { useEffect, useState } from 'react';

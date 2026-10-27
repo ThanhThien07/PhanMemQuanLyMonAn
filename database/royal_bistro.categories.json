@@ -1,0 +1,90 @@
+[{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88660"
+  },
+  "id": 1,
+  "ma_loai": "KV",
+  "ten_loai": "Món Khai Vị",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.739Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.739Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88661"
+  },
+  "id": 2,
+  "ma_loai": "MC",
+  "ten_loai": "Món Chính Đặc Sắc",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.739Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.739Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88662"
+  },
+  "id": 3,
+  "ma_loai": "NUONG",
+  "ten_loai": "Món Nướng BBQ",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.739Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.739Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88663"
+  },
+  "id": 4,
+  "ma_loai": "HAISAN",
+  "ten_loai": "Hải Sản Tươi Sống",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.739Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.739Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88664"
+  },
+  "id": 5,
+  "ma_loai": "TM",
+  "ten_loai": "Tráng Miệng",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.739Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.739Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88665"
+  },
+  "id": 6,
+  "ma_loai": "DU",
+  "ten_loai": "Đồ Uống & Rượu Vang",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.739Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.739Z"
+  }
+}]

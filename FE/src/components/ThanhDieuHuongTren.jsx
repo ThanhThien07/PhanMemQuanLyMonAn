@@ -7,7 +7,7 @@
  * 3. Hộp popup thông báo nhanh (Live Notification) khi có đơn món mới reo chuông.
  * 4. Huy hiệu phân quyền người dùng (Admin, Bếp Trưởng, Thu Ngân) và nút Đăng xuất an toàn.
  * @module components/ThanhDieuHuongTren
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React from 'react';

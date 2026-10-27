@@ -1,0 +1,48 @@
+[{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88696"
+  },
+  "id": 1,
+  "ma_reservation": "RES-20260908-01",
+  "ten_khach": "Trần Thị Bích",
+  "sdt": "0987654321",
+  "ban_id": 5,
+  "thoi_gian_hen": {
+    "$date": "2026-10-14T00:31:31.818Z"
+  },
+  "so_luong_khach": 8,
+  "tien_coc": 500000,
+  "trang_thai": "da_xac_nhan",
+  "ghi_chu": "Tiệc sinh nhật, cần chuẩn bị nến và hoa",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.820Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.820Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88697"
+  },
+  "id": 2,
+  "ma_reservation": "RES-20260908-02",
+  "ten_khach": "Lê Hoàng Nam",
+  "sdt": "0933112233",
+  "ban_id": 9,
+  "thoi_gian_hen": {
+    "$date": "2026-10-14T00:31:31.818Z"
+  },
+  "so_luong_khach": 10,
+  "tien_coc": 1000000,
+  "trang_thai": "da_den",
+  "ghi_chu": "Gặp đối tác quan trọng VIP",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.820Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-26T14:11:56.082Z"
+  }
+}]

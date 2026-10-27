@@ -2,7 +2,7 @@
  * @file HuyHieuTrangThai.jsx
  * @description Component giao diện hiển thị Huy hiệu trạng thái (Badge) và Biểu tượng xoay tải (Spinner).
  * @module components/common/HuyHieuTrangThai
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React from 'react';

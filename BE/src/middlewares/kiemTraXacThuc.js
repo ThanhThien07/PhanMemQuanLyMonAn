@@ -5,7 +5,7 @@
  * 2. phanQuyen (authorize): Kiểm soát truy cập dựa trên vai trò (Role-Based Access Control - RBAC).
  * Đảm bảo tài khoản có đúng quyền (admin, nhan_vien, bep, thu_ngan) mới được phép gọi API tương ứng.
  * @module middlewares/kiemTraXacThuc
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import { xacThucMaToken } from '../config/cauHinhJWT.js';

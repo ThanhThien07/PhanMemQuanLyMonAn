@@ -1,7 +1,7 @@
 # 🍽️ ROYAL BISTRO - HỆ THỐNG QUẢN LÝ NHÀ HÀNG & GỌI MÓN THÔNG MINH
 > **Kiến Trúc:** Fullstack JavaScript (Node.js Express REST API + MongoDB Mongoose ODM + React.js SPA + Socket.io Realtime + Tailwind CSS)  
 > **Phân Chia Chuyên Đề:** 2 Phân Hệ Độc Lập — Chuyên Đề Back-End (`BE/`) & Chuyên Đề Front-End (`FE/`)  
-> **Tác Giả Đồ Án:** Nhóm 5 - Nguyễn Ngọc Hà Thảo | Khoá K24 - Trường Cao đẳng CNTT TP.HCM  
+> **Tác Giả Đồ Án:** Nguyễn Hoàng Hưng | Khoá K24 - Trường Cao đẳng CNTT TP.HCM  
 
 ---
 
@@ -248,5 +248,5 @@ Hệ thống sử dụng WebSockets hai chiều toàn phần để đồng bộ 
 Tuân thủ nghiêm ngặt yêu cầu lưu trữ tài liệu của đồ án, trong thư mục dự án chỉ duy trì đúng **4 tệp tin tài liệu**:
 1. `CDBackEnd.docx`: Báo cáo Word chuẩn mực chi tiết môn học Chuyên Đề Back-End.
 2. `README.md`: Tài liệu hướng dẫn triển khai, cài đặt và kiến trúc hệ thống tổng quan.
-3. `docs/Nhom5_NguyenNgocHaThao.docx`: Báo cáo chính thức của Nhóm 5 (Nguyễn Ngọc Hà Thảo).
+3. `docs/Nhom5_NguyenNgocHaThao.docx`: Báo cáo chính thức của Nhóm 5 (Nguyễn Hoàng Hưng).
 4. `docs/Nhom5_NguyenNgocHaThao.md`: Bản thảo Markdown báo cáo của Nhóm 5.

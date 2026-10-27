@@ -6,7 +6,7 @@
  * - Cập nhật Title động theo từng màn hình phục vụ On-page SEO cho SPA (Slide 27).
  * - Giảm thời gian LCP & FCP cho khách hàng quét mã QR trên thiết bị di động.
  * @module App
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React, { useState, useEffect, lazy, Suspense } from 'react';

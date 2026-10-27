@@ -4,7 +4,7 @@
  * Giúp tự động bắt ngoại lệ phát sinh (Catch Error) và chuyển tiếp tới Middleware xử lý lỗi tập trung,
  * triệt tiêu hoàn toàn sự lặp lại của các khối try/catch trong tầng Controller.
  * @module utils/xuLyBatDongBo
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 /**

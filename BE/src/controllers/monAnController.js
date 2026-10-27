@@ -9,7 +9,7 @@
  * 5. capNhatMonAn (updateDish): Cập nhật tên, đơn giá, hình ảnh, mô tả hoặc tạm ngừng phục vụ món.
  * 6. xoaMonAn (deleteDish): Xóa món ăn khỏi thực đơn và tự động dọn dẹp các bản ghi định lượng BOM liên quan.
  * @module controllers/monAnController
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import { LoaiMon, MonAn, MonAnNguyenLieu, NguyenLieu, layMaSoTiepTheo } from '../models/moHinhDuLieu.js';

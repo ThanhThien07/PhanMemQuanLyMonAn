@@ -8,7 +8,7 @@
  * - PUT    /api/dishes/:id: Cập nhật món ăn (admin, bep)
  * - DELETE /api/dishes/:id: Xóa món ăn (admin)
  * @module routes/dinhTuyenMonAn
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import express from 'express';

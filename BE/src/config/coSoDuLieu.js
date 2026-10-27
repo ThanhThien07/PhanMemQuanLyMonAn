@@ -3,7 +3,7 @@
  * @description Cấu hình và thiết lập kết nối cơ sở dữ liệu MongoDB thông qua thư viện Mongoose ODM.
  * Hỗ trợ tự động kết nối lại, quản lý pool kết nối và ghi nhận trạng thái kết nối máy chủ.
  * @module config/coSoDuLieu
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import mongoose from 'mongoose';

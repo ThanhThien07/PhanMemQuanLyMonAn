@@ -6,7 +6,7 @@
  * - PATCH /api/reservations/:id/checkin: Khách đến nhận bàn (check-in)
  * - PATCH /api/reservations/:id/cancel: Hủy lịch đặt bàn
  * @module routes/dinhTuyenDatBan
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import express from 'express';

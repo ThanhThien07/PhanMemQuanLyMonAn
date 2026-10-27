@@ -4,7 +4,7 @@
  * Lưu trữ thông tin tài khoản (user), token JWT, tự động tải lại phiên làm việc từ localStorage
  * và cung cấp các hàm đăng nhập (dangNhap), đăng nhập nhanh demo (dangNhapNhanh) và đăng xuất (dangXuat).
  * @module context/NguoiDungContext
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React, { createContext, useContext, useState, useEffect } from 'react';

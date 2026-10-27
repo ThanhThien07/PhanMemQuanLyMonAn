@@ -7,7 +7,7 @@
  * - PATCH /api/orders/:id/status: Đổi trạng thái món & tự động trừ kho BOM
  * - POST  /api/orders/pay/:ban_id: Thanh toán hóa đơn bàn ăn
  * @module routes/dinhTuyenDatMon
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import express from 'express';

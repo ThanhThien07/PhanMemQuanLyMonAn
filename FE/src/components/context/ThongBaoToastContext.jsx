@@ -7,7 +7,7 @@
  * 3. Hàng đợi FIFO: Khi đã có 5 thông báo mà có thêm thông báo mới, thông báo cũ nhất sẽ tự động bị xóa để nhường chỗ cho cái mới nhất.
  * 4. Tích hợp âm thanh chuông reo báo phục vụ (Web Audio API Synthesizer) không cần tệp ngoài.
  * @module context/ThongBaoToastContext
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React, { createContext, useContext, useState, useCallback, useRef } from 'react';

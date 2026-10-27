@@ -10,7 +10,7 @@
  * 5. Phân tích cơ cấu doanh thu theo phương thức thanh toán (Tiền mặt vs Quét mã chuyển khoản VietQR).
  * 6. Xếp hạng Top 5 món ăn bán chạy nhất nhà hàng (Best Sellers).
  * @module controllers/baoCaoController
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import { DatMon, BanAn, NguyenLieu, DatBanTruoc, MonAn } from '../models/moHinhDuLieu.js';

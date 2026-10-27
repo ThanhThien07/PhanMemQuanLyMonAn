@@ -3,7 +3,7 @@
  * @description Trang Bảng Điều Khiển Tổng Quan (Dashboard) của hệ thống Royal Bistro.
  * Hiển thị các chỉ số kinh doanh then chốt (KPIs), cảnh báo tồn kho, danh sách món bán chạy và trạng thái bàn ăn.
  * @module pages/TongQuanDashboard
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React, { useEffect, useState } from 'react';

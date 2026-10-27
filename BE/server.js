@@ -7,7 +7,7 @@
  * 3. Kết nối Cơ sở dữ liệu MongoDB qua Mongoose và tự động nạp dữ liệu mẫu ban đầu (Seeding).
  * 4. Tích hợp bộ lọc lỗi tập trung, Middleware ghi nhật ký request và bảo vệ CORS.
  * @module server
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import express from 'express';

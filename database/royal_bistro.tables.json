@@ -1,0 +1,229 @@
+[{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88671"
+  },
+  "id": 1,
+  "so_ban": 1,
+  "suc_chua": 4,
+  "trang_thai": "trong",
+  "khu_vuc": "Tầng 1 - Sảnh Chính",
+  "yeu_cau_thanh_toan": 0,
+  "so_luong_khach": 0,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-26T14:07:32.336Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88672"
+  },
+  "id": 2,
+  "so_ban": 2,
+  "suc_chua": 4,
+  "trang_thai": "trong",
+  "khu_vuc": "Tầng 1 - Sảnh Chính",
+  "yeu_cau_thanh_toan": 0,
+  "so_luong_khach": 0,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-26T14:07:52.941Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88673"
+  },
+  "id": 3,
+  "so_ban": 3,
+  "suc_chua": 2,
+  "trang_thai": "co_khach",
+  "khu_vuc": "Tầng 1 - Sảnh Chính",
+  "yeu_cau_thanh_toan": 0,
+  "so_luong_khach": 1,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T00:25:32.294Z"
+  },
+  "goi_phuc_vu": false
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88674"
+  },
+  "id": 4,
+  "so_ban": 4,
+  "suc_chua": 6,
+  "trang_thai": "trong",
+  "khu_vuc": "Tầng 1 - Sảnh Chính",
+  "yeu_cau_thanh_toan": 0,
+  "so_luong_khach": 0,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-20T01:35:14.112Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88675"
+  },
+  "id": 5,
+  "so_ban": 5,
+  "suc_chua": 8,
+  "trang_thai": "da_dat",
+  "khu_vuc": "Tầng 1 - Cửa Sổ View",
+  "yeu_cau_thanh_toan": 0,
+  "so_luong_khach": 0,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88676"
+  },
+  "id": 6,
+  "so_ban": 6,
+  "suc_chua": 4,
+  "trang_thai": "trong",
+  "khu_vuc": "Tầng 2 - Ban Công",
+  "yeu_cau_thanh_toan": 0,
+  "so_luong_khach": 0,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88677"
+  },
+  "id": 7,
+  "so_ban": 7,
+  "suc_chua": 4,
+  "trang_thai": "trong",
+  "khu_vuc": "Tầng 2 - Ban Công",
+  "yeu_cau_thanh_toan": 0,
+  "so_luong_khach": 0,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T00:31:46.539Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88678"
+  },
+  "id": 8,
+  "so_ban": 8,
+  "suc_chua": 6,
+  "trang_thai": "trong",
+  "khu_vuc": "Tầng 2 - Ban Công",
+  "yeu_cau_thanh_toan": 0,
+  "so_luong_khach": 0,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88679"
+  },
+  "id": 9,
+  "so_ban": 9,
+  "suc_chua": 10,
+  "trang_thai": "trong",
+  "khu_vuc": "Phòng VIP 1 (Hoàng Gia)",
+  "yeu_cau_thanh_toan": 0,
+  "so_luong_khach": 0,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8867a"
+  },
+  "id": 10,
+  "so_ban": 10,
+  "suc_chua": 12,
+  "trang_thai": "trong",
+  "khu_vuc": "Phòng VIP 2 (Kim Cương)",
+  "yeu_cau_thanh_toan": 0,
+  "so_luong_khach": 0,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-26T14:08:14.302Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8867b"
+  },
+  "id": 11,
+  "so_ban": 11,
+  "suc_chua": 4,
+  "trang_thai": "trong",
+  "khu_vuc": "Tầng 1 - Sảnh Chính",
+  "yeu_cau_thanh_toan": 0,
+  "so_luong_khach": 0,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8867c"
+  },
+  "id": 12,
+  "so_ban": 12,
+  "suc_chua": 4,
+  "trang_thai": "trong",
+  "khu_vuc": "Tầng 2 - Ban Công",
+  "yeu_cau_thanh_toan": 0,
+  "so_luong_khach": 0,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.751Z"
+  }
+}]

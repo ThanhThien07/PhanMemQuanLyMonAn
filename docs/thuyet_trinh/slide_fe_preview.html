@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide Thuyết Trình: Đồ Án Chuyên Đề Front-End – Royal Bistro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --canvas-bg: #0F172A;
+      --slide-bg: #F1F5F9;
+      --primary: #1E3A8A;
+      --vibrant: #2563EB;
+      --sky: #0284C7;
+      --emerald: #059669;
+      --gold: #D97706;
+      --red: #DC2626;
+      --purple: #7C3AED;
+      --text-dark: #0F172A;
+      --text-muted: #475569;
+      --border-card: #CBD5E1;
+      --border-light: #E2E8F0;
+      --white: #FFFFFF;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--canvas-bg);
+      font-family: var(--font-sans);
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* Top Bar Control */
+    .top-control {
+      height: 50px;
+      background: #1E293B;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      color: #F8FAFC;
+      z-index: 100;
+      flex-shrink: 0;
+    }
+
+    .top-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge-live {
+      background: rgba(37, 99, 235, 0.2);
+      color: #60A5FA;
+      border: 1px solid rgba(96, 165, 250, 0.4);
+      padding: 2px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .nav-buttons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-ctrl {
+      background: #334155;
+      border: 1px solid #475569;
+      color: #FFFFFF;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-ctrl:hover {
+      background: #475569;
+      border-color: #64748B;
+    }
+
+    .btn-ctrl.btn-primary {
+      background: var(--vibrant);
+      border-color: #3B82F6;
+    }
+
+    .btn-ctrl.btn-primary:hover {
+      background: #1D4ED8;
+    }
+
+    .slide-counter {
+      font-size: 13px;
+      font-weight: 700;
+      color: #94A3B8;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    /* Main Viewport */
+    .viewport {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      position: relative;
+      background: radial-gradient(circle at center, #1E293B 0%, #0F172A 100%);
+    }
+
+    /* 16:9 Canvas */
+    .slide-canvas {
+      width: 1280px;
+      height: 720px;
+      background: var(--slide-bg);
+      border-radius: 12px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      transform-origin: center center;
+      transition: transform 0.15s ease-out;
+    }
+
+    .slide-view {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      flex-direction: column;
+      background: var(--slide-bg);
+    }
+
+    .slide-view.active {
+      display: flex;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.996); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Header */
+    .slide-header {
+      height: 86px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border-card);
+      padding: 8px 36px 0 36px;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .slide-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: var(--vibrant);
+    }
+
+    .pill-tag {
+      display: inline-block;
+      background: #EEF2FF;
+      border: 1px solid #C7D2FE;
+      color: var(--vibrant);
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 10px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    .slide-header h2 {
+      font-size: 21px;
+      font-weight: 900;
+      color: var(--primary);
+      line-height: 1.15;
+    }
+
+    .slide-header p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Body */
+    .slide-body {
+      flex: 1;
+      padding: 12px 36px;
+      display: flex;
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Footer */
+    .slide-footer {
+      height: 36px;
+      background: transparent;
+      padding: 0 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #94A3B8;
+      border-top: 1px solid rgba(203, 213, 225, 0.4);
+      flex-shrink: 0;
+    }
+
+    .slide-footer .page-num {
+      font-weight: 800;
+      color: var(--vibrant);
+    }
+
+    /* Cards */
+    .card-panel {
+      background: var(--white);
+      border: 2px solid var(--border-card);
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 900;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .bullet-list li {
+      font-size: 12.5px;
+      line-height: 1.35;
+      color: var(--text-dark);
+      position: relative;
+      padding-left: 18px;
+      font-weight: 500;
+    }
+
+    .bullet-list li::before {
+      content: '•';
+      position: absolute;
+      left: 2px;
+      color: var(--vibrant);
+      font-size: 16px;
+      line-height: 1;
+      top: -1px;
+    }
+
+    .bullet-list strong {
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .img-preview {
+      width: 100%;
+      height: 290px;
+      object-fit: contain;
+      background: #F8FAFC;
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    /* Thumbnails */
+    .thumb-strip {
+      height: 64px;
+      background: #0F172A;
+      border-top: 1px solid #1E293B;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 16px;
+      overflow-x: auto;
+      flex-shrink: 0;
+    }
+
+    .thumb-item {
+      min-width: 85px;
+      height: 44px;
+      background: #1E293B;
+      border: 2px solid #334155;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #94A3B8;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      padding: 0 6px;
+    }
+
+    .thumb-item:hover {
+      border-color: #64748B;
+      color: #FFFFFF;
+    }
+
+    .thumb-item.active {
+      border-color: var(--vibrant);
+      background: rgba(37, 99, 235, 0.25);
+      color: #93C5FD;
+    }
+
+    /* Cover Hero */
+    .cover-hero {
+      background: var(--white);
+      border: 2px solid #C7D2FE;
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+      margin-bottom: 16px;
+    }
+
+    .cover-hero .badge {
+      display: inline-block;
+      color: var(--vibrant);
+      font-size: 13.5px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .cover-hero h1 {
+      font-size: 27px;
+      font-weight: 900;
+      color: var(--primary);
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .cover-hero p {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar Controls -->
+  <div class="top-control">
+    <div class="top-title">
+      <span>🍽️ BÁO CÁO ĐỒ ÁN FRONT-END: ROYAL BISTRO</span>
+      <span class="badge-live">Chức Năng UI • Không Số Liệu Tùy Tiện</span>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn-ctrl" onclick="prevSlide()" title="Phím tắt: Mũi tên trái">◀ Trước</button>
+      <span class="slide-counter" id="slideCount">1 / 12</span>
+      <button class="btn-ctrl" onclick="nextSlide()" title="Phím tắt: Mũi tên phải / Phím cách">Sau ▶</button>
+      <button class="btn-ctrl btn-primary" onclick="toggleFullScreen()" title="Phím tắt: F">⛶ Toàn màn hình</button>
+    </div>
+  </div>
+
+  <!-- Slide Viewport -->
+  <div class="viewport" id="viewport">
+    <div class="slide-canvas" id="slideCanvas">
+
+      <!-- ========================================== -->
+      <!-- SLIDE 1: TRANG BÌA -->
+      <!-- ========================================== -->
+      <div class="slide-view active" id="slide-1">
+        <div style="height: 8px; background: var(--vibrant); width: 100%;"></div>
+        <div style="padding: 20px 36px; display: flex; flex-direction: column; height: 100%;">
+          
+          <div style="background: var(--white); border: 1px solid var(--border-card); border-radius: 10px; padding: 8px; text-align: center; font-weight: 800; color: var(--primary); font-size: 13px; margin-bottom: 12px;">
+            🏛️ TRƯỜNG CAO ĐẲNG CÔNG NGHỆ THÔNG TIN TP.HCM • KHOA CNTT – ĐIỆN TỬ
+          </div>
+
+          <div class="cover-hero">
+            <div class="badge">BÁO CÁO ĐỒ ÁN MÔN HỌC: CHUYÊN ĐỀ FRONT-END</div>
+            <h1>PHẦN MỀM QUẢN LÝ NHÀ HÀNG & GỌI MÓN (ROYAL BISTRO)</h1>
+            <p>React 19 • Vite 6 • Tailwind CSS v4 • Gọi Món QR • Bếp KDS Real-time • POS Bán Hàng</p>
+          </div>
+
+          <div style="display: flex; gap: 18px; flex: 1;">
+            <div class="card-panel" style="border-color: var(--vibrant);">
+              <div style="background: #EEF2FF; color: var(--vibrant); padding: 5px; border-radius: 9999px; font-size: 12.5px; font-weight: 800; text-align: center; margin-bottom: 12px;">
+                👤 SINH VIÊN
+              </div>
+              <ul class="bullet-list" style="gap: 12px; font-size: 13px;">
+                <li>Họ và tên: <strong>Nguyễn Hoàng Hưng</strong></li>
+                <li>MSSV: <strong>501250384</strong></li>
+                <li>Lớp: <strong>Khóa K25 – CN Phần mềm</strong></li>
+              </ul>
+            </div>
+
+            <div class="card-panel" style="border-color: var(--emerald);">
+              <div style="background: #ECFDF5; color: var(--emerald); padding: 5px; border-radius: 9999px; font-size: 12.5px; font-weight: 800; text-align: center; margin-bottom: 12px;">
+                👨‍🏫 GIẢNG VIÊN
+              </div>
+              <ul class="bullet-list" style="gap: 12px; font-size: 13px;">
+                <li>GV 1: <strong>ThS. HÀ MĨ TRINH</strong></li>
+                <li>GV 2: <strong>ThS. NGUYỄN MINH HẢI</strong></li>
+                <li>Bộ môn: <strong>Công nghệ Phần mềm</strong></li>
+              </ul>
+            </div>
+
+            <div class="card-panel" style="border-color: var(--gold);">
+              <div style="background: #FEF3C7; color: var(--gold); padding: 5px; border-radius: 9999px; font-size: 12.5px; font-weight: 800; text-align: center; margin-bottom: 12px;">
+                ⚡ CÔNG NGHỆ CHÍNH
+              </div>
+              <ul class="bullet-list" style="gap: 12px; font-size: 13px;">
+                <li>Core: <strong>React 19 & Vite 6</strong></li>
+                <li>Styling: <strong>Tailwind CSS v4 (3 tầng)</strong></li>
+                <li>Real-time: <strong>Socket.io Client</strong></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="slide-footer" style="padding: 0; margin-top: 10px;">
+            <span>Đồ Án Chuyên Đề Front-End: Royal Bistro  |  Sinh viên: Nguyễn Hoàng Hưng – MSSV: 501250384</span>
+            <span class="page-num">Trang 1/12</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 2: ĐẶT VẤN ĐỀ (KHÔNG SỐ LIỆU TÙY TIỆN) -->
+      <!-- ========================================== -->
+      <div class="slide-view" id="slide-2">
+        <div class="slide-header">
+          <span class="pill-tag">01. Đặt Vấn Đề</span>
+          <h2>Các Bất Cập Lớn Trong Quản Lý Nhà Hàng Thủ Công</h2>
+          <p>Thách thức lớn khi chưa số hóa giao diện phục vụ F&B</p>
+        </div>
+        <div class="slide-body" style="flex-direction: column;">
+          <div style="display: flex; gap: 18px; flex: 1;">
+            
+            <div class="card-panel" style="border-color: var(--red);">
+              <div class="card-title" style="color: var(--red); justify-content: center; font-size: 14.5px;">
+                ⏳ TẮC NGHẼN CAO ĐIỂM
+              </div>
+              <div style="background: #FEF2F2; color: var(--red); border: 1px solid #FECACA; padding: 4px; border-radius: 9999px; font-size: 12px; font-weight: 800; text-align: center; margin-bottom: 12px;">
+                Quá Tải Cao Điểm
+              </div>
+              <ul class="bullet-list" style="gap: 12px; font-size: 13px;">
+                <li>Khách đợi gọi món quá lâu</li>
+                <li>Nhân viên quá tải, sót bàn</li>
+                <li>Trải nghiệm khách giảm sút</li>
+              </ul>
+            </div>
+
+            <div class="card-panel" style="border-color: var(--gold);">
+              <div class="card-title" style="color: var(--gold); justify-content: center; font-size: 14.5px;">
+                📝 ORDER GIẤY SAI SÓT
+              </div>
+              <div style="background: #FEF3C7; color: var(--gold); border: 1px solid #FDE68A; padding: 4px; border-radius: 9999px; font-size: 12px; font-weight: 800; text-align: center; margin-bottom: 12px;">
+                Dễ Bị Nhầm Món
+              </div>
+              <ul class="bullet-list" style="gap: 12px; font-size: 13px;">
+                <li>Ghi tay dễ nhầm món, mất bill</li>
+                <li>Bỏ quên ghi chú khẩu vị</li>
+                <li>Truyền đạt vào bếp thiếu sót</li>
+              </ul>
+            </div>
+
+            <div class="card-panel" style="border-color: var(--primary);">
+              <div class="card-title" style="color: var(--primary); justify-content: center; font-size: 14.5px;">
+                📵 GIAO DIỆN RỜI RẠC
+              </div>
+              <div style="background: #EEF2FF; color: var(--vibrant); border: 1px solid #C7D2FE; padding: 4px; border-radius: 9999px; font-size: 12px; font-weight: 800; text-align: center; margin-bottom: 12px;">
+                Thủ Công Hoàn Toàn
+              </div>
+              <ul class="bullet-list" style="gap: 12px; font-size: 13px;">
+                <li>Thiếu màn hình điều phối chung</li>
+                <li>Nhân viên di chuyển liên tục</li>
+                <li>Khó theo dõi trạng thái bàn ăn</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div style="display: flex; gap: 18px; height: 65px;">
+            <div class="card-panel" style="align-items: center; justify-content: center; font-weight: 800; color: var(--red); font-size: 13.5px; border-color: var(--border-light);">
+              ❌ Trải nghiệm khách hàng giảm sút
+            </div>
+            <div class="card-panel" style="align-items: center; justify-content: center; font-weight: 800; color: var(--gold); font-size: 13.5px; border-color: var(--border-light);">
+              ❌ Giảm hiệu suất nhân sự
+            </div>
+            <div class="card-panel" style="align-items: center; justify-content: center; font-weight: 800; color: var(--primary); font-size: 13.5px; border-color: var(--border-light);">
+              ❌ Thao tác thủ công chậm chạp
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span>Đồ Án Chuyên Đề Front-End: Royal Bistro  |  Sinh viên: Nguyễn Hoàng Hưng – MSSV: 501250384</span>
+          <span class="page-num">Trang 2/12</span>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 3: BÀI TOÁN & MỤC TIÊU -->
+      <!-- ========================================== -->
+      <div class="slide-view" id="slide-3">
+        <div class="slide-header">
+          <span class="pill-tag">02. Bài Toán & Mục Tiêu</span>
+          <h2>Mục Tiêu Giao Diện & Tiêu Chuẩn Trải Nghiệm Người Dùng</h2>
+          <p>Xây dựng ứng dụng Web SPA trực quan, thao tác nhanh nhạy</p>
+        </div>
+        <div class="slide-body" style="flex-direction: column;">
+          <div style="display: flex; gap: 18px; flex: 1;">
+            
+            <div class="card-panel" style="border-color: var(--vibrant);">
+              <div class="card-title" style="color: var(--vibrant); font-size: 15px;">
+                🎯 MỤC TIÊU TÍNH NĂNG GIAO DIỆN
+              </div>
+              <ul class="bullet-list" style="gap: 12px; font-size: 13.5px;">
+                <li><strong>Giao Diện SPA Siêu Tốc:</strong> Chuyển màn hình tức thì, không reload</li>
+                <li><strong>Menu QR Điện Thoại:</strong> Khách tự chọn món và gửi order tại bàn</li>
+                <li><strong>Giao Diện POS Cảm Ứng:</strong> Nhân viên phục vụ chọn món nhanh chóng</li>
+                <li><strong>Màn Hình Bếp KDS:</strong> Nhận món chuông reo & đổi trạng thái nấu</li>
+                <li><strong>Giao Diện Hóa Đơn:</strong> Xem trước bill và hiển thị mã VietQR động</li>
+              </ul>
+            </div>
+
+            <div class="card-panel" style="border-color: var(--emerald);">
+              <div class="card-title" style="color: var(--emerald); font-size: 15px;">
+                💎 TIÊU CHUẨN TRẢI NGHIỆM UI/UX
+              </div>
+              <ul class="bullet-list" style="gap: 12px; font-size: 13.5px;">
+                <li><strong>Đa Thiết Bị:</strong> Chuẩn Mobile, Tablet & Desktop</li>
+                <li><strong>Tải Trang Nhanh:</strong> Tối ưu mượt mà, chống giật layout</li>
+                <li><strong>Thiết Kế 3 Tầng:</strong> Layered Depth nổi khối, bo tròn</li>
+                <li><strong>Chuông Báo Đơn:</strong> Âm thanh & Popup tức thì</li>
+                <li><strong>Thao Tác Trực Quan:</strong> Bố cục tối giản, font tiếng Việt sang trọng</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div style="display: flex; gap: 18px; height: 70px;">
+            <div class="card-panel" style="align-items: center; justify-content: center; border-color: var(--border-light); padding: 8px;">
+              <span style="font-size: 20px; font-weight: 900; color: var(--vibrant);">⚡ Tức Thời</span>
+              <span style="font-size: 11.5px; color: var(--text-muted); font-weight: 600;">Phản hồi nhanh, chuyển tab mượt mà</span>
+            </div>
+            <div class="card-panel" style="align-items: center; justify-content: center; border-color: var(--border-light); padding: 8px;">
+              <span style="font-size: 20px; font-weight: 900; color: var(--emerald);">📱 Linh Hoạt</span>
+              <span style="font-size: 11.5px; color: var(--text-muted); font-weight: 600;">Tương thích mọi kích cỡ màn hình</span>
+            </div>
+            <div class="card-panel" style="align-items: center; justify-content: center; border-color: var(--border-light); padding: 8px;">
+              <span style="font-size: 20px; font-weight: 900; color: var(--gold);">🔄 Real-time</span>
+              <span style="font-size: 11.5px; color: var(--text-muted); font-weight: 600;">Cập nhật giao diện tức thì qua Socket.io</span>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span>Đồ Án Chuyên Đề Front-End: Royal Bistro  |  Sinh viên: Nguyễn Hoàng Hưng – MSSV: 501250384</span>
+          <span class="page-num">Trang 3/12</span>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 4: KIẾN TRÚC FRONT-END (KHÔNG SỐ LIỆU TÙY TIỆN) -->
+      <!-- ========================================== -->
+      <div class="slide-view" id="slide-4">
+        <div class="slide-header">
+          <span class="pill-tag">03. Kiến Trúc Front-End</span>
+          <h2>Ngăn Xếp Công Nghệ & Cấu Trúc Mã Nguồn Front-End</h2>
+          <p>Tổ chức module hóa cao, xây dựng bằng các công nghệ hiện đại nhất</p>
+        </div>
+        <div class="slide-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+          
+          <div class="card-panel" style="border-color: var(--vibrant);">
+            <div style="background: #EEF2FF; color: var(--vibrant); padding: 6px; border-radius: 9999px; font-size: 13px; font-weight: 800; text-align: center; margin-bottom: 12px;">
+              ⚛️ REACT 19 & VITE 6
+            </div>
+            <ul class="bullet-list" style="gap: 12px; font-size: 13px;">
+              <li>Component tái sử dụng cao</li>
+              <li>Vite HMR cập nhật tức thì khi code</li>
+              <li>Tối ưu bundle & tải trang mượt mà</li>
+            </ul>
+          </div>
+
+          <div class="card-panel" style="border-color: var(--emerald);">
+            <div style="background: #ECFDF5; color: var(--emerald); padding: 6px; border-radius: 9999px; font-size: 13px; font-weight: 800; text-align: center; margin-bottom: 12px;">
+              🎨 TAILWIND CSS v4
+            </div>
+            <ul class="bullet-list" style="gap: 12px; font-size: 13px;">
+              <li>Hệ utility CSS siêu tinh gọn</li>
+              <li>Kiến trúc Tách Nền 3 Tầng</li>
+              <li>Bộ icon Lucide vector nhẹ</li>
+            </ul>
+          </div>
+
+          <div class="card-panel" style="border-color: var(--gold);">
+            <div style="background: #FEF3C7; color: var(--gold); padding: 6px; border-radius: 9999px; font-size: 13px; font-weight: 800; text-align: center; margin-bottom: 12px;">
+              🔄 SOCKET.IO CLIENT
+            </div>
+            <ul class="bullet-list" style="gap: 12px; font-size: 13px;">
+              <li>Kết nối WebSocket 2 chiều</li>
+              <li>Bắt sự kiện đơn mới tức thì</li>
+              <li>Cập nhật giao diện không cần F5</li>
+            </ul>
+          </div>
+
+          <div class="card-panel" style="border-color: var(--purple);">
+            <div style="background: #F5F3FF; color: var(--purple); padding: 6px; border-radius: 9999px; font-size: 13px; font-weight: 800; text-align: center; margin-bottom: 12px;">
+              📁 TỔ CHỨC MÃ NGUỒN
+            </div>
+            <ul class="bullet-list" style="gap: 12px; font-size: 13px;">
+              <li>Tách biệt Pages & Components</li>
+              <li>React Context API (Auth & Socket)</li>
+              <li>Axios tự động gắn Bearer Token</li>
+            </ul>
+          </div>
+
+        </div>
+        <div class="slide-footer">
+          <span>Đồ Án Chuyên Đề Front-End: Royal Bistro  |  Sinh viên: Nguyễn Hoàng Hưng – MSSV: 501250384</span>
+          <span class="page-num">Trang 4/12</span>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 5: THỰC HIỆN HOÁ – LIỆT KÊ CHỨC NĂNG -->
+      <!-- ========================================== -->
+      <div class="slide-view" id="slide-5">
+        <div class="slide-header">
+          <span class="pill-tag">04. Thực Hiện Hoá: Liệt Kê Chức Năng</span>
+          <h2>Danh Mục Các Phân Hệ Chức Năng Front-End</h2>
+          <p>Tổng quan toàn bộ màn hình chức năng phục vụ vận hành nhà hàng</p>
+        </div>
+        <div class="slide-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          
+          <div class="card-panel" style="border-color: var(--vibrant); padding: 10px 14px; flex-direction: row; align-items: center; gap: 12px;">
+            <div style="font-size: 24px; background: #EEF2FF; padding: 10px; border-radius: 10px;">🔐</div>
+            <div>
+              <div style="font-weight: 800; color: var(--vibrant); font-size: 13.5px;">1. Xác Thực Phân Quyền</div>
+              <div style="font-size: 11.5px; color: var(--text-dark);">Đăng nhập 4 vai trò (Admin, Thu Ngân, Bếp, Phục Vụ)</div>
+            </div>
+          </div>
+
+          <div class="card-panel" style="border-color: var(--emerald); padding: 10px 14px; flex-direction: row; align-items: center; gap: 12px;">
+            <div style="font-size: 24px; background: #ECFDF5; padding: 10px; border-radius: 10px;">📊</div>
+            <div>
+              <div style="font-weight: 800; color: var(--emerald); font-size: 13.5px;">2. Dashboard Tổng Quan</div>
+              <div style="font-size: 11.5px; color: var(--text-dark);">Biểu đồ doanh thu ngày, thẻ KPI kinh doanh, popup chuông báo</div>
+            </div>
+          </div>
+
+          <div class="card-panel" style="border-color: var(--gold); padding: 10px 14px; flex-direction: row; align-items: center; gap: 12px;">
+            <div style="font-size: 24px; background: #FEF3C7; padding: 10px; border-radius: 10px;">🪑</div>
+            <div>
+              <div style="font-weight: 800; color: var(--gold); font-size: 13.5px;">3. Sơ Đồ Bàn Ăn</div>
+              <div style="font-size: 11.5px; color: var(--text-dark);">Trực quan hóa 3 màu: Trống (Xanh), Dùng (Đỏ), Đặt (Cam)</div>
+            </div>
+          </div>
+
+          <div class="card-panel" style="border-color: var(--purple); padding: 10px 14px; flex-direction: row; align-items: center; gap: 12px;">
+            <div style="font-size: 24px; background: #F5F3FF; padding: 10px; border-radius: 10px;">🖥️</div>
+            <div>
+              <div style="font-weight: 800; color: var(--purple); font-size: 13.5px;">4. POS Bán Hàng Tại Bàn</div>
+              <div style="font-size: 11.5px; color: var(--text-dark);">Màn hình cảm ứng tìm món nhanh, ghi chú khẩu vị, tạm tính</div>
+            </div>
+          </div>
+
+          <div class="card-panel" style="border-color: var(--red); padding: 10px 14px; flex-direction: row; align-items: center; gap: 12px;">
+            <div style="font-size: 24px; background: #FEF2F2; padding: 10px; border-radius: 10px;">👨‍🍳</div>
+            <div>
+              <div style="font-weight: 800; color: var(--red); font-size: 13.5px;">5. Màn Hình Bếp KDS</div>
+              <div style="font-size: 11.5px; color: var(--text-dark);">Nhận đơn chuông reo, đổi trạng thái: Chờ nấu ➔ Nấu ➔ Xong</div>
+            </div>
+          </div>
+
+          <div class="card-panel" style="border-color: var(--vibrant); padding: 10px 14px; flex-direction: row; align-items: center; gap: 12px;">
+            <div style="font-size: 24px; background: #EEF2FF; padding: 10px; border-radius: 10px;">📱</div>
+            <div>
+              <div style="font-weight: 800; color: var(--vibrant); font-size: 13.5px;">6. Khách Quét Mã QR</div>
+              <div style="font-size: 11.5px; color: var(--text-dark);">Menu điện tử trên điện thoại, tự chọn món & gửi order tại bàn</div>
+            </div>
+          </div>
+
+          <div class="card-panel" style="border-color: var(--emerald); padding: 10px 14px; flex-direction: row; align-items: center; gap: 12px;">
+            <div style="font-size: 24px; background: #ECFDF5; padding: 10px; border-radius: 10px;">📋</div>
+            <div>
+              <div style="font-weight: 800; color: var(--emerald); font-size: 13.5px;">7. Quản Lý Thực Đơn</div>
+              <div style="font-size: 11.5px; color: var(--text-dark);">Thêm, sửa, xóa món ăn, ảnh đại diện, bật/tắt Còn hàng</div>
+            </div>
+          </div>
+
+          <div class="card-panel" style="border-color: var(--gold); padding: 10px 14px; flex-direction: row; align-items: center; gap: 12px;">
+            <div style="font-size: 24px; background: #FEF3C7; padding: 10px; border-radius: 10px;">💳</div>
+            <div>
+              <div style="font-weight: 800; color: var(--gold); font-size: 13.5px;">8. Thanh Toán & VietQR</div>
+              <div style="font-size: 11.5px; color: var(--text-dark);">Hiển thị mã VietQR động, in phiếu tạm tính, thanh toán đa kênh</div>
+            </div>
+          </div>
+
+        </div>
+        <div class="slide-footer">
+          <span>Đồ Án Chuyên Đề Front-End: Royal Bistro  |  Sinh viên: Nguyễn Hoàng Hưng – MSSV: 501250384</span>
+          <span class="page-num">Trang 5/12</span>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 6: NÓI CHỨC NĂNG 1 – QUẢN TRỊ & DASHBOARD -->
+      <!-- ========================================== -->
+      <div class="slide-view" id="slide-6">
+        <div class="slide-header">
+          <span class="pill-tag">04. Thực Hiện Hoá: Nói Chức Năng</span>
+          <h2>Chức Năng Đăng Nhập & Bảng Điều Khiển Dashboard</h2>
+          <p>Giao diện bảo mật và màn hình thống kê chỉ số kinh doanh</p>
+        </div>
+        <div class="slide-body">
+          <div class="card-panel">
+            <div class="card-title" style="color: var(--primary);">
+              🔐 GIAO DIỆN ĐĂNG NHẬP THEO VAI TRÒ
+            </div>
+            <img class="img-preview" src="../assets/screenshots_clean/01_login.png" alt="Giao diện đăng nhập" />
+            <ul class="bullet-list">
+              <li><strong>4 Vai trò:</strong> Admin, Thu Ngân, Bếp, Phục Vụ</li>
+              <li><strong>Tự chuyển trang:</strong> Đúng giao diện theo quyền</li>
+              <li><strong>Đăng nhập nhanh:</strong> Chọn tài khoản mẫu kiểm thử</li>
+            </ul>
+          </div>
+
+          <div class="card-panel">
+            <div class="card-title" style="color: var(--vibrant);">
+              📊 DASHBOARD TỔNG QUAN REAL-TIME
+            </div>
+            <img class="img-preview" src="../assets/screenshots_clean/02_dashboard.png" alt="Dashboard tổng quan" />
+            <ul class="bullet-list">
+              <li><strong>Thẻ chỉ số KPI:</strong> Doanh thu, hóa đơn, số bàn</li>
+              <li><strong>Biểu đồ trực quan:</strong> Thống kê doanh thu theo giờ</li>
+              <li><strong>Chuông reo báo đơn:</strong> Popup nổi khi có order mới</li>
+            </ul>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span>Đồ Án Chuyên Đề Front-End: Royal Bistro  |  Sinh viên: Nguyễn Hoàng Hưng – MSSV: 501250384</span>
+          <span class="page-num">Trang 6/12</span>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 7: NÓI CHỨC NĂNG 2 – SƠ ĐỒ BÀN & POS BÁN HÀNG -->
+      <!-- ========================================== -->
+      <div class="slide-view" id="slide-7">
+        <div class="slide-header">
+          <span class="pill-tag">04. Thực Hiện Hoá: Nói Chức Năng</span>
+          <h2>Chức Năng Sơ Đồ Bàn Ăn & POS Bán Hàng</h2>
+          <p>Giao diện quản lý bàn trực quan và màn hình chọn món cảm ứng</p>
+        </div>
+        <div class="slide-body">
+          <div class="card-panel">
+            <div class="card-title" style="color: var(--primary);">
+              🪑 SƠ ĐỒ BÀN ĂN THỜI GIAN THỰC
+            </div>
+            <img class="img-preview" src="../assets/screenshots_clean/04_tables.png" alt="Sơ đồ bàn" />
+            <ul class="bullet-list">
+              <li><strong>3 Màu trực quan:</strong> Trống (Xanh) - Dùng (Đỏ) - Đặt (Cam)</li>
+              <li><strong>Lọc theo khu vực:</strong> Sảnh chính, Phòng VIP, Ban công</li>
+              <li><strong>Thao tác trực tiếp:</strong> Mở bàn, gọi thêm, xem bill tạm</li>
+            </ul>
+          </div>
+
+          <div class="card-panel">
+            <div class="card-title" style="color: var(--vibrant);">
+              🖥️ GIAO DIỆN POS GỌI MÓN TẠI BÀN
+            </div>
+            <img class="img-preview" src="../assets/screenshots_clean/03_pos_order.png" alt="POS Bán hàng" />
+            <ul class="bullet-list">
+              <li><strong>Tìm & Lọc nhanh:</strong> Theo tên và nhóm danh mục món</li>
+              <li><strong>Ghi chú khẩu vị:</strong> Ít cay, không đường, ăn chay</li>
+              <li><strong>Tính tiền tự động:</strong> Tạm tính, giảm giá, thuế VAT</li>
+            </ul>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span>Đồ Án Chuyên Đề Front-End: Royal Bistro  |  Sinh viên: Nguyễn Hoàng Hưng – MSSV: 501250384</span>
+          <span class="page-num">Trang 7/12</span>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 8: NÓI CHỨC NĂNG 3 – BẾP KDS & KHÁCH QUÉT QR -->
+      <!-- ========================================== -->
+      <div class="slide-view" id="slide-8">
+        <div class="slide-header">
+          <span class="pill-tag">04. Thực Hiện Hoá: Nói Chức Năng</span>
+          <h2>Chức Năng Bếp KDS & Khách Quét Mã QR Gọi Món</h2>
+          <p>Giao diện điều phối nhà bếp và menu tự phục vụ trên di động</p>
+        </div>
+        <div class="slide-body">
+          <div class="card-panel">
+            <div class="card-title" style="color: var(--emerald);">
+              👨‍🍳 MÀN HÌNH BẾP KDS (KITCHEN DISPLAY)
+            </div>
+            <img class="img-preview" src="../assets/screenshots_clean/05_kitchen.png" alt="Màn hình Bếp KDS" />
+            <ul class="bullet-list">
+              <li><strong>Nhận đơn tức thì:</strong> Chuông reo & hiện thẻ bàn</li>
+              <li><strong>3 Trạng thái món:</strong> Chờ nấu ➔ Đang nấu ➔ Hoàn tất</li>
+              <li><strong>Nút chạm cảm ứng:</strong> Cập nhật tiến độ nấu nhanh</li>
+            </ul>
+          </div>
+
+          <div class="card-panel">
+            <div class="card-title" style="color: var(--gold);">
+              📱 GIAO DIỆN KHÁCH QUÉT MÃ QR (MOBILE)
+            </div>
+            <img class="img-preview" src="../assets/screenshots_clean/10_qr_order.png" alt="Khách gọi món QR" />
+            <ul class="bullet-list">
+              <li><strong>Không cần tải app:</strong> Quét camera mở ngay menu</li>
+              <li><strong>Thực đơn trực quan:</strong> Ảnh sắc nét, giá rõ ràng</li>
+              <li><strong>Theo dõi tiến độ:</strong> Khách biết món đang được nấu</li>
+            </ul>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span>Đồ Án Chuyên Đề Front-End: Royal Bistro  |  Sinh viên: Nguyễn Hoàng Hưng – MSSV: 501250384</span>
+          <span class="page-num">Trang 8/12</span>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 9: NÓI CHỨC NĂNG 4 – THỰC ĐƠN & THANH TOÁN -->
+      <!-- ========================================== -->
+      <div class="slide-view" id="slide-9">
+        <div class="slide-header">
+          <span class="pill-tag">04. Thực Hiện Hoá: Nói Chức Năng</span>
+          <h2>Chức Năng Thực Đơn & Thanh Toán Hóa Đơn VietQR</h2>
+          <p>Giao diện cấu hình món ăn và màn hình thanh toán không tiền mặt</p>
+        </div>
+        <div class="slide-body">
+          <div class="card-panel">
+            <div class="card-title" style="color: var(--primary);">
+              📋 GIAO DIỆN QUẢN LÝ THỰC ĐƠN
+            </div>
+            <img class="img-preview" src="../assets/screenshots_clean/06_dishes.png" alt="Quản lý thực đơn" />
+            <ul class="bullet-list">
+              <li><strong>Quản lý món ăn:</strong> Thêm, sửa, đổi ảnh & giá bán</li>
+              <li><strong>Công tắc trạng thái:</strong> Bật/tắt Còn hàng - Hết hàng</li>
+              <li><strong>Phân loại danh mục:</strong> Khai vị, Món chính, Đồ uống</li>
+            </ul>
+          </div>
+
+          <div class="card-panel">
+            <div class="card-title" style="color: var(--emerald);">
+              💳 GIAO DIỆN THANH TOÁN & MÃ VIETQR ĐỘNG
+            </div>
+            <img class="img-preview" src="../assets/screenshots_clean/11_bill_payment.png" alt="Thanh toán hóa đơn VietQR" />
+            <ul class="bullet-list">
+              <li><strong>Mã VietQR động:</strong> Tự tạo mã có sẵn số tiền chuyển</li>
+              <li><strong>Đa phương thức:</strong> Tiền mặt, Thẻ, Quét mã QR</li>
+              <li><strong>In hóa đơn:</strong> Xem trước và xuất phiếu in bill</li>
+            </ul>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span>Đồ Án Chuyên Đề Front-End: Royal Bistro  |  Sinh viên: Nguyễn Hoàng Hưng – MSSV: 501250384</span>
+          <span class="page-num">Trang 9/12</span>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 10: KHÓ KHĂN & THÁCH THỨC -->
+      <!-- ========================================== -->
+      <div class="slide-view" id="slide-10">
+        <div class="slide-header">
+          <span class="pill-tag">05. Khó Khăn & Thách Thức</span>
+          <h2>Thách Thức Kỹ Thuật Front-End & Giải Pháp Khắc Phục</h2>
+          <p>Các bài toán lập trình giao diện thực tế và cách xử lý</p>
+        </div>
+        <div class="slide-body">
+          
+          <div class="card-panel" style="border-color: var(--vibrant);">
+            <div class="card-title" style="color: var(--vibrant); justify-content: center; font-size: 14px;">
+              🔄 ĐỒNG BỘ REAL-TIME
+            </div>
+            <div style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; padding: 10px; margin-bottom: 12px; flex: 1;">
+              <div style="color: var(--red); font-weight: 800; font-size: 11px; margin-bottom: 4px;">⚠️ KHÓ KHĂN KỸ THUẬT</div>
+              <div style="font-size: 13px; color: var(--text-dark); line-height: 1.35; font-weight: 600;">
+                Trạng thái bàn và bếp cần cập nhật tức thời không reload trang.
+              </div>
+            </div>
+            <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 8px; padding: 10px; flex: 1;">
+              <div style="color: var(--emerald); font-weight: 800; font-size: 11px; margin-bottom: 4px;">💡 GIẢI PHÁP ĐÃ ÁP DỤNG</div>
+              <div style="font-size: 13px; color: var(--text-dark); line-height: 1.35; font-weight: 600;">
+                Bắt sự kiện Socket.io cập nhật state React cục bộ mượt mà.
+              </div>
+            </div>
+          </div>
+
+          <div class="card-panel" style="border-color: var(--gold);">
+            <div class="card-title" style="color: var(--gold); justify-content: center; font-size: 14px;">
+              ⚡ TỐI ƯU HIỆU NĂNG ẢNH
+            </div>
+            <div style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; padding: 10px; margin-bottom: 12px; flex: 1;">
+              <div style="color: var(--red); font-weight: 800; font-size: 11px; margin-bottom: 4px;">⚠️ KHÓ KHĂN KỸ THUẬT</div>
+              <div style="font-size: 13px; color: var(--text-dark); line-height: 1.35; font-weight: 600;">
+                Render danh sách nhiều ảnh lớn dễ gây giật layout (CLS cao).
+              </div>
+            </div>
+            <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 8px; padding: 10px; flex: 1;">
+              <div style="color: var(--emerald); font-weight: 800; font-size: 11px; margin-bottom: 4px;">💡 GIẢI PHÁP ĐÃ ÁP DỤNG</div>
+              <div style="font-size: 13px; color: var(--text-dark); line-height: 1.35; font-weight: 600;">
+                Lazy loading + Cố định kích thước ảnh + Nén WebP tối ưu.
+              </div>
+            </div>
+          </div>
+
+          <div class="card-panel" style="border-color: var(--emerald);">
+            <div class="card-title" style="color: var(--emerald); justify-content: center; font-size: 14px;">
+              📱 RESPONSIVE ĐA THIẾT BỊ
+            </div>
+            <div style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; padding: 10px; margin-bottom: 12px; flex: 1;">
+              <div style="color: var(--red); font-weight: 800; font-size: 11px; margin-bottom: 4px;">⚠️ KHÓ KHĂN KỸ THUẬT</div>
+              <div style="font-size: 13px; color: var(--text-dark); line-height: 1.35; font-weight: 600;">
+                Màn hình PC/POS nằm ngang, màn hình khách QR lại dọc trên điện thoại.
+              </div>
+            </div>
+            <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 8px; padding: 10px; flex: 1;">
+              <div style="color: var(--emerald); font-weight: 800; font-size: 11px; margin-bottom: 4px;">💡 GIẢI PHÁP ĐÃ ÁP DỤNG</div>
+              <div style="font-size: 13px; color: var(--text-dark); line-height: 1.35; font-weight: 600;">
+                Thiết kế Mobile-first cho QR & Tailwind Flex/Grid thích ứng.
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="slide-footer">
+          <span>Đồ Án Chuyên Đề Front-End: Royal Bistro  |  Sinh viên: Nguyễn Hoàng Hưng – MSSV: 501250384</span>
+          <span class="page-num">Trang 10/12</span>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 11: HƯỚNG PHÁT TRIỂN -->
+      <!-- ========================================== -->
+      <div class="slide-view" id="slide-11">
+        <div class="slide-header">
+          <span class="pill-tag">06. Hướng Phát Triển</span>
+          <h2>Định Hướng Nâng Cấp Tính Năng Giao Diện Người Dùng</h2>
+          <p>Lộ trình hoàn thiện trải nghiệm ứng dụng Web</p>
+        </div>
+        <div class="slide-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+          
+          <div class="card-panel" style="border-color: var(--vibrant);">
+            <div style="background: #EEF2FF; color: var(--vibrant); padding: 5px; border-radius: 9999px; font-size: 13px; font-weight: 800; text-align: center; margin-bottom: 12px;">
+              📲 ỨNG DỤNG PWA (PROGRESSIVE WEB APP)
+            </div>
+            <ul class="bullet-list" style="gap: 12px; font-size: 13px;">
+              <li>Cài icon trực tiếp lên màn hình chính điện thoại</li>
+              <li>Hỗ trợ chạy ngoại tuyến & Web Push Notification</li>
+            </ul>
+          </div>
+
+          <div class="card-panel" style="border-color: var(--gold);">
+            <div style="background: #FEF3C7; color: var(--gold); padding: 5px; border-radius: 9999px; font-size: 13px; font-weight: 800; text-align: center; margin-bottom: 12px;">
+              🌙 CHẾ ĐỘ GIAO DIỆN TỐI (DARK MODE)
+            </div>
+            <ul class="bullet-list" style="gap: 12px; font-size: 13px;">
+              <li>Tùy chọn giao diện nền tối dịu mắt</li>
+              <li>Phù hợp môi trường nhà bếp và quầy bar thiếu sáng</li>
+            </ul>
+          </div>
+
+          <div class="card-panel" style="border-color: var(--emerald);">
+            <div style="background: #ECFDF5; color: var(--emerald); padding: 5px; border-radius: 9999px; font-size: 13px; font-weight: 800; text-align: center; margin-bottom: 12px;">
+              🌐 HỖ TRỢ ĐA NGÔN NGỮ (I18N)
+            </div>
+            <ul class="bullet-list" style="gap: 12px; font-size: 13px;">
+              <li>Chuyển đổi giao diện song ngữ Tiếng Việt – Tiếng Anh</li>
+              <li>Hỗ trợ khách du lịch nước ngoài quét mã QR gọi món</li>
+            </ul>
+          </div>
+
+          <div class="card-panel" style="border-color: var(--purple);">
+            <div style="background: #F5F3FF; color: var(--purple); padding: 5px; border-radius: 9999px; font-size: 13px; font-weight: 800; text-align: center; margin-bottom: 12px;">
+              🤖 TRỢ LÝ AI GỢI Ý MÓN TRÊN GIAO DIỆN
+            </div>
+            <ul class="bullet-list" style="gap: 12px; font-size: 13px;">
+              <li>Popup gợi ý món ăn kèm thông minh</li>
+              <li>Đề xuất món đặc sản theo thời tiết và khung giờ</li>
+            </ul>
+          </div>
+
+        </div>
+        <div class="slide-footer">
+          <span>Đồ Án Chuyên Đề Front-End: Royal Bistro  |  Sinh viên: Nguyễn Hoàng Hưng – MSSV: 501250384</span>
+          <span class="page-num">Trang 11/12</span>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 12: KẾT LUẬN & HỎI ĐÁP -->
+      <!-- ========================================== -->
+      <div class="slide-view" id="slide-12">
+        <div style="height: 8px; background: var(--vibrant); width: 100%;"></div>
+        <div style="padding: 20px 36px; display: flex; flex-direction: column; height: 100%;">
+          
+          <div class="card-panel" style="align-items: center; justify-content: center; text-align: center; flex: 1.3; border-color: #C7D2FE;">
+            <div style="color: var(--vibrant); font-size: 15px; font-weight: 800; margin-bottom: 8px;">
+              🎉 HOÀN THÀNH TOÀN DIỆN MỤC TIÊU ĐỒ ÁN FRONT-END
+            </div>
+            <h1 style="font-size: 32px; font-weight: 900; color: var(--primary); margin-bottom: 10px;">
+              XIN CHÂN THÀNH CẢM ƠN QUÝ THẦY CÔ!
+            </h1>
+            <p style="font-size: 15px; color: var(--text-muted); margin-bottom: 24px; font-weight: 600;">
+              Kính chúc Quý Thầy Cô trong Hội đồng thật nhiều sức khỏe và thành công!
+            </p>
+
+            <div style="background: #FFFBEB; border: 1.5px solid var(--gold); border-radius: 12px; padding: 14px 28px; max-width: 680px; width: 100%;">
+              <div style="font-size: 18px; font-weight: 800; color: var(--gold); margin-bottom: 4px;">
+                ❓ PHẦN HỎI & ĐÁP (Q & A)
+              </div>
+              <p style="font-size: 13.5px; color: var(--text-dark); line-height: 1.4; font-weight: 500;">
+                Em rất mong nhận được những góp ý quý báu của Quý Thầy Cô để hoàn thiện đề tài.
+              </p>
+            </div>
+          </div>
+
+          <div class="card-panel" style="background: #EEF2FF; border-color: #C7D2FE; margin-top: 14px; padding: 14px 24px; text-align: center; flex: 0.6; justify-content: center;">
+            <div style="font-size: 14px; font-weight: 800; color: var(--primary); margin-bottom: 4px;">
+              👤 Sinh viên: NGUYỄN HOÀNG HƯNG   |   MSSV: 501250384   |   Lớp: Khóa K25 – Công nghệ Phần mềm
+            </div>
+            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 4px;">
+              👨‍🏫 GVHD: ThS. HÀ MĨ TRINH & ThS. NGUYỄN MINH HẢI   |   Khoa: CNTT – ĐT (ITC)
+            </div>
+            <div style="font-size: 12.5px; font-weight: 700; color: var(--vibrant);">
+              🍽️ Đề tài: Phần Mềm Quản Lý Nhà Hàng & Gọi Món (Royal Bistro Restaurant System)
+            </div>
+          </div>
+
+          <div class="slide-footer" style="padding: 0; margin-top: 10px;">
+            <span>Đồ Án Chuyên Đề Front-End: Royal Bistro  |  Sinh viên: Nguyễn Hoàng Hưng – MSSV: 501250384</span>
+            <span class="page-num">Trang 12/12</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom Thumbnails -->
+  <div class="thumb-strip" id="thumbStrip">
+    <div class="thumb-item active" onclick="goToSlide(1)">1. Trang Bìa</div>
+    <div class="thumb-item" onclick="goToSlide(2)">2. Đặt Vấn Đề</div>
+    <div class="thumb-item" onclick="goToSlide(3)">3. Bài Toán</div>
+    <div class="thumb-item" onclick="goToSlide(4)">4. Kiến Trúc FE</div>
+    <div class="thumb-item" onclick="goToSlide(5)">5. Liệt Kê CN</div>
+    <div class="thumb-item" onclick="goToSlide(6)">6. Quản Trị & Dash</div>
+    <div class="thumb-item" onclick="goToSlide(7)">7. Sơ Đồ Bàn & POS</div>
+    <div class="thumb-item" onclick="goToSlide(8)">8. Bếp KDS & QR</div>
+    <div class="thumb-item" onclick="goToSlide(9)">9. Thực Đơn & Bill</div>
+    <div class="thumb-item" onclick="goToSlide(10)">10. Khó Khăn</div>
+    <div class="thumb-item" onclick="goToSlide(11)">11. Phát Triển</div>
+    <div class="thumb-item" onclick="goToSlide(12)">12. Q&A & Cảm Ơn</div>
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 12;
+
+    function resizeCanvas() {
+      const viewport = document.getElementById('viewport');
+      const canvas = document.getElementById('slideCanvas');
+      if (!viewport || !canvas) return;
+
+      const availWidth = viewport.clientWidth - 32;
+      const availHeight = viewport.clientHeight - 32;
+      const targetWidth = 1280;
+      const targetHeight = 720;
+
+      const scale = Math.min(availWidth / targetWidth, availHeight / targetHeight);
+      canvas.style.transform = `scale(${scale})`;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('DOMContentLoaded', resizeCanvas);
+
+    function showSlide(n) {
+      if (n < 1) n = 1;
+      if (n > totalSlides) n = totalSlides;
+      currentSlide = n;
+
+      document.querySelectorAll('.slide-view').forEach((el, idx) => {
+        el.classList.toggle('active', idx + 1 === currentSlide);
+      });
+
+      document.querySelectorAll('.thumb-item').forEach((el, idx) => {
+        el.classList.toggle('active', idx + 1 === currentSlide);
+      });
+
+      document.getElementById('slideCount').innerText = `${currentSlide} / ${totalSlides}`;
+
+      const activeThumb = document.querySelectorAll('.thumb-item')[currentSlide - 1];
+      if (activeThumb) {
+        activeThumb.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        showSlide(currentSlide + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        showSlide(currentSlide - 1);
+      }
+    }
+
+    function goToSlide(n) {
+      showSlide(n);
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.error(err);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'Backspace') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        showSlide(1);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        showSlide(totalSlides);
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullScreen();
+      }
+    });
+
+    setTimeout(resizeCanvas, 50);
+  </script>
+</body>
+</html>

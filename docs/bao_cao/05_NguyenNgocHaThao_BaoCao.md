@@ -6,7 +6,7 @@
 **GIẢNG VIÊN HƯỚNG DẪN:** Cô HÀ MĨ TRINH  
 **NHÓM THỰC HIỆN:** NHÓM 05  
 **DANH SÁCH THÀNH VIÊN:**
-1. **Nguyễn Ngọc Hà Thảo** (Trưởng nhóm)
+1. **Nguyễn Hoàng Hưng** (Trưởng nhóm)
 2. **Nguyễn Hoàng Hưng** – MSSV: **501250384**
 3. **Cao Trần Xuân Diệu**
 
@@ -276,7 +276,7 @@ Hệ thống được xây dựng phục vụ mô hình kinh doanh ẩm thực n
 
 | STT | MSSV | Họ Tên | Nội Dung Thực Hiện | Trưởng Nhóm |
 | :-: | :-: | :--- | :--- | :-: |
-| 1 | 501250000 | **Nguyễn Ngọc Hà Thảo** | • Quản lý tiến độ chung của nhóm.<br>• Khảo sát thực tế nghiệp vụ F&B, xác định đối tượng, chức năng, quy trình và biểu mẫu chứng từ.<br>• Thiết kế Lược đồ quan hệ dữ liệu (Relational Schema), chuẩn hóa 3NF và thiết lập các ràng buộc toàn vẹn (PK, FK, CHECK, UNIQUE).<br>• Soạn thảo và hoàn thiện toàn bộ Báo cáo đồ án (.docx) và Slide thuyết trình (.pptx). | **X** |
+| 1 | 501250000 | **Nguyễn Hoàng Hưng** | • Quản lý tiến độ chung của nhóm.<br>• Khảo sát thực tế nghiệp vụ F&B, xác định đối tượng, chức năng, quy trình và biểu mẫu chứng từ.<br>• Thiết kế Lược đồ quan hệ dữ liệu (Relational Schema), chuẩn hóa 3NF và thiết lập các ràng buộc toàn vẹn (PK, FK, CHECK, UNIQUE).<br>• Soạn thảo và hoàn thiện toàn bộ Báo cáo đồ án (.docx) và Slide thuyết trình (.pptx). | **X** |
 | 2 | 501250384 | **Nguyễn Hoàng Hưng** | • Hiện thực kịch bản DDL tạo Database và 7 Tables chuẩn mực trên hệ quản trị MySQL / MariaDB (InnoDB).<br>• Tạo tập dữ liệu mẫu lớn thực tế (> 1.250 records bảng nghiệp vụ hoa_don, > 3.200 records chi_tiet_hoa_don).<br>• Thiết lập và kiểm thử hệ thống 8 Index tối ưu hóa truy vấn hiệu năng cao.<br>• Phân tích và cài đặt 3 Transactions đảm bảo tính toàn vẹn dữ liệu ACID (Mở bàn, Quyết toán, Chuyển bàn). | |
 | 3 | 501250001 | **Cao Trần Xuân Diệu** | • Thiết kế và cài đặt hệ thống 4 Stored Procedure nghiệp vụ (sp_ThemMonVaoHoaDon, sp_ThanhToanHoaDon, sp_ThongKeDoanhThuVaTopMon, sp_TraCuuThucDon).<br>• Thiết kế và cài đặt 4 Hàm Function tính toán tự động (fn_TinhTongThanhToan, fn_XepHangThanhVien, fn_KiemTraBanKhaDung, fn_DoanhThuTheoNgay).<br>• Phân tích các hiện tượng Concurrency (Lost Update, Dirty Read, Phantom Read) và thiết lập mô phỏng 2 Session song song.<br>• Kiểm thử các chức năng trên ứng dụng web thực tế và chụp ảnh minh chứng. | |
 | 4 | Nhóm 05 | **Tập thể Nhóm 05** | • Kiểm thử toàn diện toàn bộ CSDL và ứng dụng web.<br>• Đối chiếu dữ liệu thực tế và các ràng buộc toàn vẹn.<br>• Đóng gói toàn bộ sản phẩm đồ án: .sql, .docx và .pptx theo quy chuẩn. | |

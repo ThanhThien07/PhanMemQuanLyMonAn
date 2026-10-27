@@ -3,7 +3,7 @@
  * @description Middleware tự động ghi nhận nhật ký (Request Logging) cho từng yêu cầu HTTP gửi đến máy chủ.
  * Đo lường chính xác thời gian xử lý (Response Time - Duration ms), phương thức HTTP, đường dẫn URL và mã trạng thái HTTP trả về.
  * @module middlewares/ghiNhatKyYeuCau
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import { ghiLog } from '../utils/ghiNhatKyLog.js';

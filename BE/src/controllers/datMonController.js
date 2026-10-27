@@ -8,7 +8,7 @@
  * 4. capNhatTrangThaiDonMon (updateOrderStatus): Đổi trạng thái chế biến (chờ -> đang nấu -> đã phục vụ), TỰ ĐỘNG TRỪ KHO nguyên liệu theo công thức BOM.
  * 5. thanhToanHoaDon (payBill): Tính tổng tiền các món, áp dụng giảm trừ tích điểm CRM, cập nhật trạng thái hoàn thành, đưa bàn về 'trong' và phát Socket.
  * @module controllers/datMonController
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import { DatMon, BanAn, MonAn, KhachHang, MonAnNguyenLieu, NguyenLieu, layMaSoTiepTheo } from '../models/moHinhDuLieu.js';

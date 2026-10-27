@@ -4,7 +4,7 @@
  * Tiếp nhận thông tin khách hàng đặt tiệc/hẹn trước ngày giờ (thoi_gian_hen), số lượng khách dự kiến,
  * bàn được chỉ định (ban_id), số tiền cọc (tien_coc), ghi chú đặc biệt và trạng thái phiếu (da_xac_nhan -> da_den / da_huy).
  * @module models/DatBanTruoc
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import mongoose from 'mongoose';

@@ -4,7 +4,7 @@
  * Ngăn chặn lỗi render của các component con làm sập trắng toàn bộ ứng dụng,
  * hiển thị giao diện thông báo lịch sự kèm nút Tải Lại Ứng Dụng.
  * @module components/common/BatLoiGiaoDien
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React from 'react';

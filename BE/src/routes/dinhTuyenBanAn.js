@@ -10,7 +10,7 @@
  * - POST  /api/tables/:id/request-payment: Khách gửi yêu cầu thanh toán
  * - POST  /api/tables/:id/review: Khách gửi đánh giá bữa ăn
  * @module routes/dinhTuyenBanAn
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import express from 'express';

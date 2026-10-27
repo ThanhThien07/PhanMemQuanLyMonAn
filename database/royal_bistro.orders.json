@@ -1,0 +1,390 @@
+[{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88698"
+  },
+  "id": 1,
+  "ban_id": 2,
+  "mon_an_id": 1,
+  "khach_hang_id": 1,
+  "so_luong": 2,
+  "don_gia": 450000,
+  "tong_tien": 900000,
+  "options_json": "{\"do_chin\":\"Medium Rare\",\"sot\":\"Tieu den\"}",
+  "ghi_chu": "Nấu ít cay",
+  "trang_thai": "hoan_thanh",
+  "phuong_thuc_thanh_toan": "tien_mat",
+  "session_token": "",
+  "thu_tu_uu_tien": 1,
+  "so_luong_khach": 3,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.824Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-20T01:35:02.615Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88699"
+  },
+  "id": 2,
+  "ban_id": 2,
+  "mon_an_id": 4,
+  "khach_hang_id": 1,
+  "so_luong": 1,
+  "don_gia": 135000,
+  "tong_tien": 135000,
+  "options_json": "{}",
+  "ghi_chu": "Sốt để riêng",
+  "trang_thai": "hoan_thanh",
+  "phuong_thuc_thanh_toan": "tien_mat",
+  "session_token": "",
+  "thu_tu_uu_tien": 2,
+  "so_luong_khach": 3,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.824Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-20T01:35:02.615Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8869a"
+  },
+  "id": 3,
+  "ban_id": 2,
+  "mon_an_id": 10,
+  "khach_hang_id": 1,
+  "so_luong": 3,
+  "don_gia": 45000,
+  "tong_tien": 135000,
+  "options_json": "{\"da\":\"Ít đá\",\"duong\":\"70%\"}",
+  "ghi_chu": "",
+  "trang_thai": "hoan_thanh",
+  "phuong_thuc_thanh_toan": "tien_mat",
+  "session_token": "",
+  "thu_tu_uu_tien": 1,
+  "so_luong_khach": 3,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.824Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-20T01:35:02.615Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8869b"
+  },
+  "id": 4,
+  "ban_id": 4,
+  "mon_an_id": 2,
+  "khach_hang_id": 3,
+  "so_luong": 1,
+  "don_gia": 680000,
+  "tong_tien": 680000,
+  "options_json": "{\"sot\":\"Bo toi\"}",
+  "ghi_chu": "Làm nóng",
+  "trang_thai": "hoan_thanh",
+  "phuong_thuc_thanh_toan": "tien_mat",
+  "session_token": "",
+  "thu_tu_uu_tien": 1,
+  "so_luong_khach": 5,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.824Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-20T01:35:14.111Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8869c"
+  },
+  "id": 5,
+  "ban_id": 4,
+  "mon_an_id": 3,
+  "khach_hang_id": 3,
+  "so_luong": 1,
+  "don_gia": 520000,
+  "tong_tien": 520000,
+  "options_json": "{\"cay\":\"Vừa\"}",
+  "ghi_chu": "",
+  "trang_thai": "hoan_thanh",
+  "phuong_thuc_thanh_toan": "tien_mat",
+  "session_token": "",
+  "thu_tu_uu_tien": 2,
+  "so_luong_khach": 5,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.824Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-20T01:35:14.111Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecfa592d3dc8cd963cc08"
+  },
+  "id": 6,
+  "ban_id": 1,
+  "mon_an_id": 10,
+  "khach_hang_id": null,
+  "so_luong": 1,
+  "don_gia": 45000,
+  "tong_tien": 45000,
+  "options_json": "{\"Đá\":\"Ít đá\",\"Đường\":\"70%\"}",
+  "ghi_chu": "",
+  "trang_thai": "hoan_thanh",
+  "phuong_thuc_thanh_toan": "tien_mat",
+  "session_token": "",
+  "thu_tu_uu_tien": 1,
+  "so_luong_khach": 1,
+  "createdAt": {
+    "$date": "2026-10-14T00:41:09.994Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-20T01:35:07.109Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad6c4b13ea3f939f7db9c61"
+  },
+  "id": 7,
+  "ban_id": 3,
+  "mon_an_id": 10,
+  "khach_hang_id": null,
+  "so_luong": 1,
+  "don_gia": 45000,
+  "tong_tien": 45000,
+  "options_json": "{\"Đá\":\"Ít đá\",\"Đường\":\"70%\"}",
+  "ghi_chu": "",
+  "trang_thai": "hoan_thanh",
+  "phuong_thuc_thanh_toan": "tien_mat",
+  "session_token": "",
+  "thu_tu_uu_tien": 1,
+  "so_luong_khach": 1,
+  "createdAt": {
+    "$date": "2026-10-20T01:32:33.758Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-20T01:34:36.132Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6adf5e86ba1a49aa7f789d7b"
+  },
+  "id": 10,
+  "ban_id": 1,
+  "mon_an_id": 13,
+  "khach_hang_id": null,
+  "so_luong": 1,
+  "don_gia": 50000,
+  "tong_tien": 50000,
+  "options_json": "{}",
+  "ghi_chu": "",
+  "trang_thai": "hoan_thanh",
+  "phuong_thuc_thanh_toan": "tien_mat",
+  "session_token": "",
+  "thu_tu_uu_tien": 1,
+  "so_luong_khach": 1,
+  "createdAt": {
+    "$date": "2026-10-26T14:07:02.306Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-26T14:07:32.326Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6adf5eb4ba1a49aa7f789d7c"
+  },
+  "id": 11,
+  "ban_id": 2,
+  "mon_an_id": 11,
+  "khach_hang_id": null,
+  "so_luong": 1,
+  "don_gia": 850000,
+  "tong_tien": 850000,
+  "options_json": "{}",
+  "ghi_chu": "",
+  "trang_thai": "hoan_thanh",
+  "phuong_thuc_thanh_toan": "tien_mat",
+  "session_token": "",
+  "thu_tu_uu_tien": 1,
+  "so_luong_khach": 1,
+  "createdAt": {
+    "$date": "2026-10-26T14:07:48.232Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-26T14:07:52.939Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6adf5ec9ba1a49aa7f789d7d"
+  },
+  "id": 12,
+  "ban_id": 10,
+  "mon_an_id": 2,
+  "khach_hang_id": null,
+  "so_luong": 1,
+  "don_gia": 680000,
+  "tong_tien": 680000,
+  "options_json": "{}",
+  "ghi_chu": "",
+  "trang_thai": "hoan_thanh",
+  "phuong_thuc_thanh_toan": "tien_mat",
+  "session_token": "",
+  "thu_tu_uu_tien": 1,
+  "so_luong_khach": 1,
+  "createdAt": {
+    "$date": "2026-10-26T14:08:09.711Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-26T14:08:14.299Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6adfef7ce0f16c8a85789ded"
+  },
+  "id": 13,
+  "ban_id": 3,
+  "mon_an_id": 9,
+  "khach_hang_id": null,
+  "so_luong": 2,
+  "don_gia": 65000,
+  "tong_tien": 130000,
+  "options_json": "{}",
+  "ghi_chu": "",
+  "trang_thai": "cho_xac_nhan",
+  "phuong_thuc_thanh_toan": "chua_thanh_toan",
+  "session_token": "",
+  "thu_tu_uu_tien": 1,
+  "so_luong_khach": 1,
+  "createdAt": {
+    "$date": "2026-10-27T00:25:32.328Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T00:25:32.328Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6adfeffaff6fc8fec18becf0"
+  },
+  "id": 14,
+  "ban_id": 7,
+  "mon_an_id": 5,
+  "khach_hang_id": null,
+  "so_luong": 1,
+  "don_gia": 280000,
+  "tong_tien": 280000,
+  "options_json": "{}",
+  "ghi_chu": "",
+  "trang_thai": "hoan_thanh",
+  "phuong_thuc_thanh_toan": "tien_mat",
+  "session_token": "",
+  "thu_tu_uu_tien": 1,
+  "so_luong_khach": 1,
+  "createdAt": {
+    "$date": "2026-10-27T00:27:38.556Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T00:29:28.793Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6adfeffaff6fc8fec18becf1"
+  },
+  "id": 15,
+  "ban_id": 7,
+  "mon_an_id": 7,
+  "khach_hang_id": null,
+  "so_luong": 1,
+  "don_gia": 260000,
+  "tong_tien": 260000,
+  "options_json": "{}",
+  "ghi_chu": "nấu ít cay",
+  "trang_thai": "hoan_thanh",
+  "phuong_thuc_thanh_toan": "tien_mat",
+  "session_token": "",
+  "thu_tu_uu_tien": 1,
+  "so_luong_khach": 1,
+  "createdAt": {
+    "$date": "2026-10-27T00:27:38.582Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T00:29:28.793Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6adff0e2ff6fc8fec18becf2"
+  },
+  "id": 16,
+  "ban_id": 7,
+  "mon_an_id": 13,
+  "khach_hang_id": null,
+  "so_luong": 1,
+  "don_gia": 50000,
+  "tong_tien": 50000,
+  "options_json": "{}",
+  "ghi_chu": "",
+  "trang_thai": "hoan_thanh",
+  "phuong_thuc_thanh_toan": "tien_mat",
+  "session_token": "",
+  "thu_tu_uu_tien": 1,
+  "so_luong_khach": 1,
+  "createdAt": {
+    "$date": "2026-10-27T00:31:30.786Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T00:31:46.536Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6adff0e2ff6fc8fec18becf3"
+  },
+  "id": 17,
+  "ban_id": 7,
+  "mon_an_id": 11,
+  "khach_hang_id": null,
+  "so_luong": 1,
+  "don_gia": 850000,
+  "tong_tien": 850000,
+  "options_json": "{}",
+  "ghi_chu": "",
+  "trang_thai": "hoan_thanh",
+  "phuong_thuc_thanh_toan": "tien_mat",
+  "session_token": "",
+  "thu_tu_uu_tien": 1,
+  "so_luong_khach": 1,
+  "createdAt": {
+    "$date": "2026-10-27T00:31:30.793Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T00:31:46.536Z"
+  },
+  "__v": 0
+}]

@@ -5,7 +5,7 @@
  * 1. layDanhSachKhachHang (getCustomers): Lấy danh sách thành viên nhà hàng, hỗ trợ tìm kiếm theo tên hoặc số điện thoại, xếp hạng theo điểm tích lũy.
  * 2. taoKhachHangMoi (createCustomer): Đăng ký thông tin khách hàng mới, khởi tạo số điểm tích lũy ban đầu và cấp hạng thẻ thành viên.
  * @module controllers/khachHangController
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import { KhachHang, layMaSoTiepTheo } from '../models/moHinhDuLieu.js';

@@ -7,9 +7,9 @@
 -- =========================================================================
 -- THÔNG TIN NHÓM THỰC HIỆN:
 --   - Nhóm: Nhóm 05
---   - Trưởng nhóm: NGUYỄN NGỌC HÀ THẢO
+--   - Trưởng nhóm: NGUYỄN HOÀNG HƯNG
 --   - Thành viên: 
---       1. Nguyễn Ngọc Hà Thảo (Trưởng nhóm - Khảo sát nghiệp vụ, Thiết kế CSDL 3NF, Báo cáo & Slide)
+--       1. Nguyễn Hoàng Hưng (Trưởng nhóm - Khảo sát nghiệp vụ, Thiết kế CSDL 3NF, Báo cáo & Slide)
 --       2. Nguyễn Hoàng Hưng - MSSV: 501250384 (Cài đặt DDL, DML 1.250+ records, Index, Transactions)
 --       3. Cao Trần Xuân Diệu (Cài đặt 4 Stored Procedures, 4 Functions, Concurrency Control mô phỏng 2 Session)
 -- HỆ QUẢN TRỊ CSDL: MySQL 8.0+ / MariaDB 10.4+ (Storage Engine: InnoDB, Charset: utf8mb4)
@@ -172,7 +172,7 @@ CREATE INDEX `idx_khachhang_sdt` ON `khach_hang`(`so_dien_thoai`);
 
 -- 1. Chèn danh mục nhân viên
 INSERT INTO `nhan_vien` (`id`, `ma_nv`, `ho_ten`, `chuc_vu`, `so_dien_thoai`, `email`, `trang_thai`) VALUES
-(1, 'NV001', 'Nguyễn Ngọc Hà Thảo', 'QuanLy', '0901234567', 'hathao.manager@royalbistro.vn', 'hoat_dong'),
+(1, 'NV001', 'Nguyễn Hoàng Hưng', 'QuanLy', '0901234567', 'hoanghung.manager@royalbistro.vn', 'hoat_dong'),
 (2, 'NV002', 'Nguyễn Ngọc Hưng', 'QuanLy', '0902345678', 'hoanghung.tech@royalbistro.vn', 'hoat_dong'),
 (3, 'NV003', 'Trần Thị Mai Phương', 'ThuNgan', '0903456789', 'maiphuong.cashier@royalbistro.vn', 'hoat_dong'),
 (4, 'NV004', 'Lê Hoàng Nam', 'ThuNgan', '0904567890', 'hoangnam.cashier@royalbistro.vn', 'hoat_dong'),

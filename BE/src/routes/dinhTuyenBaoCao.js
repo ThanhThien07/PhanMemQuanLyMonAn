@@ -3,7 +3,7 @@
  * @description Định tuyến các API liên quan đến Báo cáo Doanh thu & Thống kê Dashboard (Report Routes).
  * - GET /api/reports/summary: Tổng hợp doanh thu, cơ cấu bàn, cảnh báo kho, top món bán chạy
  * @module routes/dinhTuyenBaoCao
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import express from 'express';

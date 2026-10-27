@@ -4,7 +4,7 @@
  * Quản lý số bàn, sức chứa khách, khu vực phân bổ (Sảnh chính, Tầng 2, Sân vườn, VIP),
  * trạng thái hiện tại (trong, co_khach, da_dat), số lượng khách đang ngồi và cờ yêu cầu thanh toán.
  * @module models/BanAn
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import mongoose from 'mongoose';

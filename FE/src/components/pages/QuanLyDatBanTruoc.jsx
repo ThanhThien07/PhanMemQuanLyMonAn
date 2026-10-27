@@ -3,7 +3,7 @@
  * @description Màn hình Quản Lý Đặt Bàn Trước (Reservation) của nhà hàng Royal Bistro.
  * Cho phép tiếp nhận thông tin khách đặt chỗ, số lượng khách, tiền cọc, thời gian hẹn, thực hiện check-in đón khách hoặc hủy đặt chỗ.
  * @module pages/QuanLyDatBanTruoc
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React, { useEffect, useState } from 'react';

@@ -4,7 +4,7 @@
  * Vai trò phân quyền (VAI_TRO), Trạng thái bàn ăn (TRANG_THAI_BAN), Trạng thái đơn gọi món (TRANG_THAI_DAT_MON),
  * Phương thức thanh toán (PHUONG_THUC_THANH_TOAN) và Trạng thái đặt bàn trước (TRANG_THAI_DAT_BAN).
  * @module constants/hangSoHeThong
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 /**

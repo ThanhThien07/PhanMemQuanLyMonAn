@@ -1,7 +1,7 @@
 <?php
 /**
  * Điểm chuyển tiếp thông minh cho Laragon Apache Server (PhanMemQuanLyMonAn.test)
- * Tác giả: Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * Tác giả: Nguyễn Hoàng Hưng
  * 
  * Tự động chuyển hướng trực tiếp tới FE/dist/index.html của hệ thống
  */

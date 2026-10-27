@@ -9,7 +9,7 @@
  * 5. Mở Hộp thoại In Hóa Đơn (ModalInHoaDon) để thanh toán.
  * 6. Mở Popup Mã QR Bàn Ăn (sử dụng ảnh QR chuẩn nhà hàng /ma_qr.jpg) cho khách quét gọi món.
  * @module pages/QuanLySoDoBan
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React, { useEffect, useState } from 'react';

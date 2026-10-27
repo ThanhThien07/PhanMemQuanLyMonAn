@@ -14,7 +14,7 @@
  * - Báo Cáo Doanh Thu (Reports)
  * Tự động ẩn hiện các mục menu theo quyền hạn (roles) của tài khoản đang đăng nhập.
  * @module components/ThanhMenuDieuHuong
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React from 'react';

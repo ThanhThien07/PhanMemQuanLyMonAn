@@ -94,7 +94,7 @@ Trước hết, em xin gửi lời cảm ơn chân thành và sâu sắc nhất 
 
 Em cũng xin trân trọng cảm ơn các quý Thầy Cô trong Khoa Công nghệ Thông tin – Điện tử, Trường Cao đẳng Công nghệ Thông tin TP. Hồ Chí Minh đã tận tâm truyền đạt nền tảng kiến thức vững chắc về lập trình web, cơ sở dữ liệu, mạng máy tính và quy trình phát triển phần mềm trong suốt các năm học vừa qua. Đây chính là hành trang kiến thức cốt lõi giúp em thực hiện đồ án này.
 
-Bên cạnh đó, em xin cảm ơn các bạn sinh viên trong Nhóm 5 (Trưởng nhóm: Nguyễn Ngọc Hà Thảo) cùng toàn thể các bạn sinh viên lớp K25 đã nhiệt tình trao đổi kinh nghiệm, chia sẻ dữ liệu khảo sát nghiệp vụ thực tế và phối hợp kiểm thử liên phân hệ để hệ thống đạt được sự hoàn thiện cao nhất.
+Bên cạnh đó, em xin cảm ơn các bạn sinh viên trong Nhóm 5 (Trưởng nhóm: Nguyễn Hoàng Hưng) cùng toàn thể các bạn sinh viên lớp K25 đã nhiệt tình trao đổi kinh nghiệm, chia sẻ dữ liệu khảo sát nghiệp vụ thực tế và phối hợp kiểm thử liên phân hệ để hệ thống đạt được sự hoàn thiện cao nhất.
 
 Dù đã nỗ lực hết mình nhưng đồ án chắc chắn vẫn còn những hạn chế nhất định. Em kính mong nhận được thêm những lời nhận xét, góp ý quý báu của quý Thầy Cô để đồ án ngày một hoàn thiện hơn.
 
@@ -2391,7 +2391,7 @@ DANH MỤC TÀI LIỆU THAM KHẢO
 
 [8] Bcrypt.js Open Source Project (2024). Bcrypt Salt Hashing Algorithm Implementation for JavaScript. Truy cập tại: https://github.com/dcodeIO/bcrypt.js
 
-[9] Nguyễn Ngọc Hà Thảo & Nhóm 5 (2026). Báo cáo Khảo sát Nghiệp vụ và Thiết kế Cơ sở Dữ liệu Hệ thống Quản Lý Nhà Hàng Royal Bistro, Trường Cao đẳng Công nghệ Thông tin TP.HCM.
+[9] Nguyễn Hoàng Hưng & Nhóm 5 (2026). Báo cáo Khảo sát Nghiệp vụ và Thiết kế Cơ sở Dữ liệu Hệ thống Quản Lý Nhà Hàng Royal Bistro, Trường Cao đẳng Công nghệ Thông tin TP.HCM.
 
 [10] ThS. Nguyễn Minh Hải (2025). Bài giảng Chuyên Đề Back-End & Hướng dẫn phát triển ứng dụng Web thời gian thực, Trường Cao đẳng Công nghệ Thông tin TP.HCM.
 

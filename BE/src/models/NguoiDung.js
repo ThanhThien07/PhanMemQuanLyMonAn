@@ -6,7 +6,7 @@
  * và trạng thái tài khoản ('hoat_dong' hoặc 'tam_khoa').
  * Khi chuyển sang định dạng JSON, trường mật khẩu nhạy cảm tự động bị loại bỏ hoàn toàn.
  * @module models/NguoiDung
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import mongoose from 'mongoose';

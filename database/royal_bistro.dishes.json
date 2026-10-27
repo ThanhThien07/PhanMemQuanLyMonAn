@@ -1,0 +1,260 @@
+[{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88666"
+  },
+  "id": 1,
+  "loai_mon_id": 3,
+  "ten_mon": "Bò Wagyu A5 Nướng Sốt Tiêu Đen",
+  "gia": 450000,
+  "mo_ta": "Thịt bò Wagyu vân mỡ tuyệt hảo nướng than hoa kèm sốt tiêu Phú Quốc đặc biệt",
+  "hinh_anh": "https://images.unsplash.com/photo-1544025162-d76694265947?w=500",
+  "trang_thai": "con_hang",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.745Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T01:07:46.417Z"
+  },
+  "thoi_gian_nau": 20
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88667"
+  },
+  "id": 2,
+  "loai_mon_id": 4,
+  "ten_mon": "Tôm Hùm Alaska Sốt Bơ Tỏi",
+  "gia": 680000,
+  "mo_ta": "Tôm hùm Alaska tươi nguyên con nướng bơ tỏi thơm lừng kèm bánh mì nướng",
+  "hinh_anh": "https://images.unsplash.com/photo-1559847844-5315695dadae?w=500",
+  "trang_thai": "con_hang",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.745Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T01:07:46.419Z"
+  },
+  "thoi_gian_nau": 25
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88668"
+  },
+  "id": 3,
+  "loai_mon_id": 4,
+  "ten_mon": "Lẩu Hải Sản Hoàng Gia",
+  "gia": 520000,
+  "mo_ta": "Nước dùng chua cay đậm đà, tôm sú, mực ống, cua biển và nấm tươi",
+  "hinh_anh": "https://images.unsplash.com/photo-1547592180-85f173990554?w=500",
+  "trang_thai": "con_hang",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.745Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T01:07:46.421Z"
+  },
+  "thoi_gian_nau": 25
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88669"
+  },
+  "id": 4,
+  "loai_mon_id": 1,
+  "ten_mon": "Salad Cá Hồi Xông Khói Sốt Mè Rang",
+  "gia": 135000,
+  "mo_ta": "Cá hồi Na Uy xông khói, xà lách Romanie, trứng cá chuồn sốt mè Nhật Bản",
+  "hinh_anh": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500",
+  "trang_thai": "con_hang",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.745Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T01:07:46.422Z"
+  },
+  "thoi_gian_nau": 10
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8866a"
+  },
+  "id": 5,
+  "loai_mon_id": 1,
+  "ten_mon": "Súp Bào Ngư Vi Cá Thượng Hạng",
+  "gia": 280000,
+  "mo_ta": "Bào ngư tươi hầm nước cốt gà thượng hạng thơm bùi bổ dưỡng",
+  "hinh_anh": "https://images.unsplash.com/photo-1547592180-85f173990554?w=500",
+  "trang_thai": "con_hang",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.745Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T01:07:46.422Z"
+  },
+  "thoi_gian_nau": 15
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8866b"
+  },
+  "id": 6,
+  "loai_mon_id": 3,
+  "ten_mon": "Sườn Heo Nướng Tảng BBQ",
+  "gia": 320000,
+  "mo_ta": "Sườn heo ướp sốt BBQ đậm vị nướng chậm 4 tiếng mềm tan trong miệng",
+  "hinh_anh": "https://images.unsplash.com/photo-1544025162-d76694265947?w=500",
+  "trang_thai": "con_hang",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.745Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T01:07:46.423Z"
+  },
+  "thoi_gian_nau": 20
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8866c"
+  },
+  "id": 7,
+  "loai_mon_id": 2,
+  "ten_mon": "Gà Ta Hấp Muối Hoa Tiêu",
+  "gia": 260000,
+  "mo_ta": "Gà đồi hấp muối hột giữ trọn độ ngọt dai tự nhiên kèm muối ớt chanh",
+  "hinh_anh": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=500",
+  "trang_thai": "con_hang",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.745Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T01:07:46.424Z"
+  },
+  "thoi_gian_nau": 20
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8866d"
+  },
+  "id": 8,
+  "loai_mon_id": 2,
+  "ten_mon": "Cơm Chiên Hải Sản Hoàng Bào",
+  "gia": 160000,
+  "mo_ta": "Cơm chiên hạt ngọc, tôm, mực, cồi sò điệp gói trong lớp trứng mỏng",
+  "hinh_anh": "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500",
+  "trang_thai": "con_hang",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.745Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T01:07:46.425Z"
+  },
+  "thoi_gian_nau": 15
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8866e"
+  },
+  "id": 9,
+  "loai_mon_id": 5,
+  "ten_mon": "Bánh Mousse Chanh Leo Tráng Miệng",
+  "gia": 65000,
+  "mo_ta": "Bánh mềm xốp chua ngọt thanh mát giải ngấy sau bữa tiệc",
+  "hinh_anh": "https://images.unsplash.com/photo-1508737027454-e6454ef45afd?w=500",
+  "trang_thai": "con_hang",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.745Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T01:07:46.426Z"
+  },
+  "thoi_gian_nau": 8
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8866f"
+  },
+  "id": 10,
+  "loai_mon_id": 6,
+  "ten_mon": "Trà Đào Cam Sả Tươi",
+  "gia": 45000,
+  "mo_ta": "Trà đen Ceylon ủ lạnh kết hợp đào miếng giòn ngọt và cam vàng sả tươi",
+  "hinh_anh": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500",
+  "trang_thai": "con_hang",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.745Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T01:07:46.426Z"
+  },
+  "thoi_gian_nau": 5
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88670"
+  },
+  "id": 11,
+  "loai_mon_id": 6,
+  "ten_mon": "Rượu Vang Đỏ Cabernet Sauvignon",
+  "gia": 850000,
+  "mo_ta": "Vang đỏ Chile 2020 hậu vị tannin mượt mà, kết hợp hoàn hảo với bò Wagyu",
+  "hinh_anh": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=500",
+  "trang_thai": "con_hang",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.745Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T01:07:46.427Z"
+  },
+  "thoi_gian_nau": 5
+},
+{
+  "_id": {
+    "$oid": "6ad6d012014baf04be119208"
+  },
+  "id": 13,
+  "loai_mon_id": 2,
+  "ten_mon": "Cá kho tiêu",
+  "gia": 50000,
+  "mo_ta": "",
+  "hinh_anh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiYnY4OLpcCA5UI-VKMs-b0R3l2q0km_MD7M1zdjHEog&s=10",
+  "trang_thai": "con_hang",
+  "createdAt": {
+    "$date": "2026-10-20T02:21:06.558Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T01:07:46.428Z"
+  },
+  "__v": 0,
+  "thoi_gian_nau": 18
+},
+{
+  "_id": {
+    "$oid": "6adff1ebff6fc8fec18becf4"
+  },
+  "id": 14,
+  "loai_mon_id": 2,
+  "ten_mon": "Cá chiên",
+  "gia": 75000,
+  "mo_ta": "",
+  "hinh_anh": "data:image/jpeg;base64,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",
+  "trang_thai": "con_hang",
+  "createdAt": {
+    "$date": "2026-10-27T00:35:55.826Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T01:07:46.428Z"
+  },
+  "__v": 0,
+  "thoi_gian_nau": 15
+}]

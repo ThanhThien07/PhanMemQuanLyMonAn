@@ -7,7 +7,7 @@
  * - table:updated (Khi mở bàn, có khách vào, hoặc thanh toán giải phóng bàn)
  * - staff:called (Khi khách tại bàn bấm chuông gọi nhân viên phục vụ)
  * @module utils/truyenThongSocket
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 // Thực thể máy chủ Socket.io toàn cục

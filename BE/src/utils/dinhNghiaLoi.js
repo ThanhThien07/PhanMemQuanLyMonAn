@@ -4,7 +4,7 @@
  * Giúp mã nguồn phân loại lỗi rõ ràng, gắn mã trạng thái HTTP Status Code (400, 401, 403, 404, 500) tương ứng
  * và chuẩn hóa thông báo lỗi thân thiện gửi về Client.
  * @module utils/dinhNghiaLoi
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 /**

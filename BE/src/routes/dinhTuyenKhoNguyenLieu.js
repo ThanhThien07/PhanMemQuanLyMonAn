@@ -6,7 +6,7 @@
  * - PATCH /api/inventory/ingredients/:id/stock: Nhập thêm / điều chỉnh tồn kho
  * - GET   /api/inventory/suppliers: Danh sách nhà cung cấp
  * @module routes/dinhTuyenKhoNguyenLieu
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import express from 'express';

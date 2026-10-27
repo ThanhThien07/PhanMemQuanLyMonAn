@@ -5,7 +5,7 @@
  * trạng thái chế biến tại bếp KDS (cho_xac_nhan -> dang_che_bien -> da_phuc_vu -> hoan_thanh),
  * phương thức thanh toán (tien_mat, chuyen_khoan) và độ ưu tiên phục vụ.
  * @module models/DatMon
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import mongoose from 'mongoose';

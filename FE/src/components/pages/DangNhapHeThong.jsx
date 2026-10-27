@@ -8,7 +8,7 @@
  * 4. Đăng nhập nhanh 1-Click Demo cho 4 vai trò: Admin (Quản lý), Thu Ngân, Bếp Trưởng, Phục Vụ.
  * 5. Lối tắt quét mã QR gọi món tại bàn (?table=1).
  * @module pages/DangNhapHeThong
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React, { useState } from 'react';

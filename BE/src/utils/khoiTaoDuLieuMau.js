@@ -13,7 +13,7 @@
  * - 5 Đơn gọi món mẫu đang phục vụ tại bàn 2 và bàn 4
  * - Bộ đếm Counter khởi tạo giá trị tuần tự cho các bảng
  * @module utils/khoiTaoDuLieuMau
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import bcrypt from 'bcryptjs';

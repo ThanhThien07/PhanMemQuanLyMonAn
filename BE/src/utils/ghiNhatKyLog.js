@@ -4,7 +4,7 @@
  * Hỗ trợ các cấp độ log tiêu chuẩn: INFO, SUCCESS, WARN, ERROR, DEBUG và HTTP access log kèm đo lường thời gian (ms).
  * Tự động gắn mốc thời gian (Timestamp) chuẩn ISO để tiện tra cứu và giám sát hệ thống.
  * @module utils/ghiNhatKyLog
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 // Bảng mã màu ANSI phục vụ in log màu sắc trên Terminal / Console

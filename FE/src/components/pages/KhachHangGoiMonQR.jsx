@@ -12,7 +12,7 @@
  * 8. Xem hóa đơn tạm tính và thanh toán chuyển khoản VietQR tự động qua ảnh mã QR chuẩn nhà hàng (/ma_qr.jpg).
  * 9. Gửi nhận xét và chấm sao đánh giá chất lượng dịch vụ (1 - 5 sao).
  * @module pages/KhachHangGoiMonQR
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React, { useState, useEffect } from 'react';
@@ -35,7 +35,7 @@ const THONG_TIN_NGAN_HANG = {
   tenNganHang: 'MB Bank (Ngân hàng TMCP Quân Đội)',
   maBin: '970422',
   soTaiKhoan: '0374685094',
-  chuTaiKhoan: 'ROYAL BISTRO (NGUYEN NGOC HA THAO)'
+  chuTaiKhoan: 'ROYAL BISTRO (NGUYEN HOANG HUNG)'
 };
 
 export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff, isEmbedded = false }) {
@@ -351,6 +351,7 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff,
           ten_mon: customizingDish.ten_mon,
           gia: customizingDish.gia,
           hinh_anh: customizingDish.hinh_anh,
+          thoi_gian_nau: customizingDish.thoi_gian_nau || 15,
           so_luong: dishQty,
           ghi_chu: dishNote,
           options: dishOptions
@@ -740,6 +741,14 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff,
                         <p className="text-[11px] sm:text-xs text-slate-500 line-clamp-2 mt-1 min-h-[32px]">
                           {dish.mo_ta || 'Món ăn thượng hạng được chế biến từ đầu bếp 5 sao.'}
                         </p>
+
+                        {/* Thời gian làm món dự kiến để khách biết trước */}
+                        <div className="flex items-center gap-1.5 mt-2">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 text-amber-900 border border-amber-200/90 shadow-2xs">
+                            <Clock className="w-3 h-3 text-amber-600 shrink-0" />
+                            <span>Làm ~{dish.thoi_gian_nau || 15} phút</span>
+                          </span>
+                        </div>
                       </div>
                     </div>
 
@@ -885,9 +894,17 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff,
                           <h5 className="font-extrabold text-xs text-slate-900">
                             {order.ten_mon} <span className="text-amber-800">x{order.so_luong}</span>
                           </h5>
-                          <p className="text-[11px] text-slate-500 font-semibold mt-0.5">
-                            {dinhDangTienTe(order.tong_tien)}
-                          </p>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <span className="text-[11px] text-slate-500 font-semibold">
+                              {dinhDangTienTe(order.tong_tien)}
+                            </span>
+                            {(order.trang_thai === 'cho_xac_nhan' || order.trang_thai === 'dang_che_bien') && (
+                              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-900 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                                <Clock className="w-2.5 h-2.5 text-amber-600" />
+                                <span>~{order.thoi_gian_nau || 15} phút</span>
+                              </span>
+                            )}
+                          </div>
                           {order.ghi_chu && (
                             <span className="inline-block text-[10px] text-amber-700 font-semibold bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 mt-1">
                               Ghi chú: {order.ghi_chu}
@@ -995,8 +1012,14 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff,
                     />
                     <div>
                       <h5 className="font-extrabold text-xs text-slate-900">{item.ten_mon}</h5>
-                      <p className="text-xs text-amber-800 font-bold">{dinhDangTienTe(item.gia)}</p>
-                      {item.ghi_chu && <span className="text-[10px] text-amber-700 italic">*{item.ghi_chu}</span>}
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <span className="text-xs text-amber-800 font-bold">{dinhDangTienTe(item.gia)}</span>
+                        <span className="text-[10px] text-slate-500 font-semibold flex items-center gap-0.5">
+                          <Clock className="w-2.5 h-2.5 text-amber-600" />
+                          <span>~{item.thoi_gian_nau || 15}p</span>
+                        </span>
+                      </div>
+                      {item.ghi_chu && <span className="text-[10px] text-amber-700 italic block mt-0.5">*{item.ghi_chu}</span>}
                     </div>
                   </div>
 
@@ -1019,7 +1042,18 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff,
               ))}
             </div>
 
-            <div className="p-4 bg-slate-50 border-t border-slate-200 space-y-3">
+            <div className="p-4 bg-slate-50 border-t border-slate-200 space-y-2.5">
+              {/* Thời gian chờ dự kiến toàn đơn */}
+              <div className="flex justify-between items-center text-xs font-bold text-amber-900 bg-amber-50 px-3 py-2 rounded-xl border border-amber-200/80">
+                <span className="flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-amber-600" />
+                  <span>Thời gian chờ dự kiến:</span>
+                </span>
+                <span className="font-black text-amber-800">
+                  ~{cart.length > 0 ? Math.max(...cart.map(i => i.thoi_gian_nau || 15)) : 15} phút
+                </span>
+              </div>
+
               <div className="flex justify-between items-center text-sm font-bold">
                 <span className="text-slate-600">Tổng cộng giỏ hàng:</span>
                 <span className="text-lg font-black text-black">{dinhDangTienTe(totalCartPrice)}</span>
@@ -1054,7 +1088,13 @@ export default function KhachHangGoiMonQR({ tableId: propTableId, onExitToStaff,
                 />
                 <div>
                   <h3 className="font-extrabold text-sm text-slate-900">{customizingDish.ten_mon}</h3>
-                  <div className="text-sm font-black text-amber-800">{dinhDangTienTe(customizingDish.gia)}</div>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="text-sm font-black text-amber-800">{dinhDangTienTe(customizingDish.gia)}</span>
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-900 border border-amber-200">
+                      <Clock className="w-2.5 h-2.5 text-amber-600" />
+                      <span>~{customizingDish.thoi_gian_nau || 15} phút</span>
+                    </span>
+                  </div>
                 </div>
               </div>
               <button onClick={() => setCustomizingDish(null)} className="p-1 rounded-xl text-slate-400 hover:bg-slate-100">

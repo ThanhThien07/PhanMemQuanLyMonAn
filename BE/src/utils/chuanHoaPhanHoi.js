@@ -5,7 +5,7 @@
  * { success: Boolean, statusCode: Number, message: String, data: Object|Array, errors: Any }
  * Giúp Frontend dễ dàng bắt lỗi và bóc tách dữ liệu mà không bị lỗi undefined.
  * @module utils/chuanHoaPhanHoi
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 /**

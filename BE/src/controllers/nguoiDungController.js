@@ -8,7 +8,7 @@
  * 4. doiTrangThaiTaiKhoan: Khóa hoặc mở khóa tài khoản ('hoat_dong' <-> 'tam_khoa')
  * 5. xoaTaiKhoan: Xóa vĩnh viễn tài khoản khỏi hệ thống
  * @module controllers/nguoiDungController
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import bcrypt from 'bcryptjs';

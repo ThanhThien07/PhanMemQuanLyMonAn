@@ -8,7 +8,7 @@
  * - 'order:status_updated': Cập nhật trạng thái món (đang nấu, đã xong)
  * - 'table:updated': Đồng bộ sơ đồ bàn khi có khách, mở bàn hoặc thanh toán
  * @module context/SocketRealtimeContext
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React, { createContext, useContext, useEffect, useState, useRef } from 'react';

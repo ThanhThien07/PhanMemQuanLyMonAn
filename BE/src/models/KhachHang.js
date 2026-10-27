@@ -5,7 +5,7 @@
  * phân hạng thành viên (Đồng, Bạc, Vàng, Kim Cương) và tổng chi tiêu lũy kế tại nhà hàng.
  * Phục vụ chính sách ưu đãi giảm giá và chăm sóc khách hàng VIP.
  * @module models/KhachHang
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import mongoose from 'mongoose';

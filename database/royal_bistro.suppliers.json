@@ -1,0 +1,57 @@
+[{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88693"
+  },
+  "id": 1,
+  "ma_ncc": "NCC_WAGYU",
+  "ten_ncc": "Công Ty Thực Phẩm Sạch Wagyu Japan",
+  "so_dien_thoai": "0283899999",
+  "email": "contact@wagyuvn.com",
+  "dia_chi": "120 Nguyễn Thị Minh Khai, Q.3, TP.HCM",
+  "danh_gia_sao": 4.9,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.815Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.815Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88694"
+  },
+  "id": 2,
+  "ma_ncc": "NCC_SEAFOOD",
+  "ten_ncc": "Vựa Hải Sản Biển Đông Cao Cấp",
+  "so_dien_thoai": "0908887766",
+  "email": "sales@haisanbiendong.vn",
+  "dia_chi": "45 Cảng Cát Lái, TP.Thủ Đức",
+  "danh_gia_sao": 4.8,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.815Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.815Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88695"
+  },
+  "id": 3,
+  "ma_ncc": "NCC_ORGANIC",
+  "ten_ncc": "Nông Trại Rau Củ Quả Đà Lạt GAP",
+  "so_dien_thoai": "0263388888",
+  "email": "dalatfarm@organic.vn",
+  "dia_chi": "Thung Lũng Tình Yêu, TP.Đà Lạt",
+  "danh_gia_sao": 4.7,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.815Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.815Z"
+  }
+}]

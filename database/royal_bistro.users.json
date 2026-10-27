@@ -1,0 +1,95 @@
+[{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8865c"
+  },
+  "id": 1,
+  "name": "Nguyễn Ngọc Hà Thảo (Quản Lý)",
+  "email": "admin@nhahang.com",
+  "password": "$2b$10$VuMa4/Jdf4DPQhkXg8VnPuwWlT.Zf7f.NBmgGTuQNNqGzhXCqivr2",
+  "role": "admin",
+  "so_dien_thoai": "0901234567",
+  "trang_thai": "hoat_dong",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.669Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T01:07:46.396Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8865d"
+  },
+  "id": 2,
+  "name": "Trần Văn Thu Ngân",
+  "email": "thungan@nhahang.com",
+  "password": "$2b$10$VuMa4/Jdf4DPQhkXg8VnPuwWlT.Zf7f.NBmgGTuQNNqGzhXCqivr2",
+  "role": "thu_ngan",
+  "so_dien_thoai": "0902345678",
+  "trang_thai": "hoat_dong",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.671Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T01:07:46.395Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8865e"
+  },
+  "id": 3,
+  "name": "Lê Bếp Trưởng",
+  "email": "bep@nhahang.com",
+  "password": "$2b$10$VuMa4/Jdf4DPQhkXg8VnPuwWlT.Zf7f.NBmgGTuQNNqGzhXCqivr2",
+  "role": "bep",
+  "so_dien_thoai": "0903456789",
+  "trang_thai": "hoat_dong",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.671Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T01:07:46.396Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8865f"
+  },
+  "id": 4,
+  "name": "Phạm Phục Vụ",
+  "email": "phucvu@nhahang.com",
+  "password": "$2b$10$VuMa4/Jdf4DPQhkXg8VnPuwWlT.Zf7f.NBmgGTuQNNqGzhXCqivr2",
+  "role": "phuc_vu",
+  "so_dien_thoai": "0904567890",
+  "trang_thai": "hoat_dong",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.671Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-27T01:07:46.396Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6ad6d459629b3f79181f11e4"
+  },
+  "id": 5,
+  "name": "Ad",
+  "email": "a@gmail.com",
+  "password": "$2b$10$N1Ertvs./o/yBIpZjVTDSu3.mOxqnRCUSimKcq/bKbmwGfnfhvw2q",
+  "role": "khach_hang",
+  "so_dien_thoai": "0934567890",
+  "trang_thai": "hoat_dong",
+  "createdAt": {
+    "$date": "2026-10-20T02:39:21.844Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-20T03:38:02.394Z"
+  },
+  "__v": 0
+}]

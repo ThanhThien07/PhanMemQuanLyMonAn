@@ -7,7 +7,7 @@
  * 3. khachNhanBanCheckIn (checkinReservation): Tiếp đón khách tới nhà hàng, chuyển phiếu sang 'da_den' và chuyển bàn sang 'co_khach'.
  * 4. huyLichDatBan (cancelReservation): Hủy phiếu đặt bàn và tự động trả bàn về trạng thái 'trong' để đón khách vãng lai.
  * @module controllers/datBanController
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import { DatBanTruoc, BanAn, layMaSoTiepTheo } from '../models/moHinhDuLieu.js';

@@ -5,7 +5,7 @@
  *    ghi vết chi tiết (Stack trace) trên server và trả về phản hồi JSON an toàn cho Client.
  * 2. xuLyKhongTimThay (notFoundHandler): Bắt các yêu cầu truy cập sai đường dẫn URL (HTTP 404 Route Not Found).
  * @module middlewares/xuLyLoiHeThong
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import { phanHoiLoi } from '../utils/chuanHoaPhanHoi.js';

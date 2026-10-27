@@ -4,7 +4,7 @@
  * Thiết lập các Context Provider: Bắt lỗi giao diện (BatLoiGiaoDien), Xác thực người dùng (NguoiDungContext),
  * Kết nối Realtime Socket.io (SocketRealtimeContext), và Thông báo hệ thống Toast (ThongBaoToastContext).
  * @module main
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React from 'react';

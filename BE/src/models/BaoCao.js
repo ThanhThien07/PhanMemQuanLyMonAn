@@ -5,7 +5,7 @@
  * tổng số hóa đơn thanh toán, tổng lượng khách phục vụ, tổng doanh thu thực thu,
  * phân tích cơ cấu doanh thu theo tiền mặt và chuyển khoản VietQR Napas247.
  * @module models/BaoCao
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import mongoose from 'mongoose';

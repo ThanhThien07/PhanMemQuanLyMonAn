@@ -4,7 +4,7 @@
  * - GET  /api/customers: Danh sách khách hàng thân thiết
  * - POST /api/customers: Đăng ký khách hàng mới
  * @module routes/dinhTuyenKhachHang
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import express from 'express';

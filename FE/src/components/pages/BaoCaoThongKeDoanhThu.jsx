@@ -8,7 +8,7 @@
  * 4. Sơ đồ doanh thu trực quan theo từng ngày (Daily Revenue Timeline Chart).
  * 5. Bảng chi tiết món ăn đã bán và lượt bán hàng chuẩn Layered Depth 3 tầng, không rớt dòng chữ.
  * @module pages/BaoCaoThongKeDoanhThu
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React, { useEffect, useState, useMemo } from 'react';

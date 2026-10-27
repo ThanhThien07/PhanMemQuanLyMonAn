@@ -3,7 +3,7 @@
  * @description Tập hợp và xuất khẩu toàn bộ các Mô hình Lược đồ Cơ sở Dữ liệu (MongoDB Mongoose Models)
  * phục vụ cho bài toán quản lý nhà hàng Royal Bistro.
  * @module models/moHinhDuLieu
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import NguoiDung, { User } from './NguoiDung.js';

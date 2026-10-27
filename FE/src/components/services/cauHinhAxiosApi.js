@@ -5,7 +5,7 @@
  * 1. Request Interceptor: Tự động trích xuất chuỗi JWT Bearer Token từ localStorage và gắn vào Header Authorization.
  * 2. Response Interceptor: Bóc tách trường data từ gói phản hồi và bắt lỗi phiên làm việc 401 khi token hết hạn.
  * @module services/cauHinhAxiosApi
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import axios from 'axios';

@@ -5,7 +5,7 @@
  * Số sao chấm điểm (1 đến 5 sao), nội dung nhận xét góp ý và cờ cảnh báo đỏ (canh_bao_do)
  * khi khách hàng không hài lòng (dưới 3 sao) để quản lý kịp thời đến chăm sóc khách hàng tại bàn.
  * @module models/DanhGia
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import mongoose from 'mongoose';

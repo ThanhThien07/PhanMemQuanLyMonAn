@@ -2,7 +2,7 @@
  * @file KhungDuLieuRong.jsx
  * @description Component hiển thị trạng thái danh sách trống (Empty State Placeholder).
  * @module components/common/KhungDuLieuRong
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React from 'react';

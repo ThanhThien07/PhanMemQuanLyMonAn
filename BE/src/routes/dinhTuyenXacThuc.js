@@ -6,7 +6,7 @@
  * - GET  /api/auth/me: Lấy thông tin cá nhân
  * - GET  /api/auth/demo-accounts: Lấy danh sách tài khoản demo
  * @module routes/dinhTuyenXacThuc
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import express from 'express';

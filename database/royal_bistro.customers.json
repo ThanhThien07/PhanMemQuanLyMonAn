@@ -1,0 +1,76 @@
+[{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8868f"
+  },
+  "id": 1,
+  "ho_ten": "Nguyễn Văn An",
+  "so_dien_thoai": "0912345678",
+  "email": "an.nguyen@gmail.com",
+  "diem_tich_luy": 450,
+  "hang_thanh_vien": "Vang",
+  "tong_chi_tieu": 14500000,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.788Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.788Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88690"
+  },
+  "id": 2,
+  "ho_ten": "Trần Thị Bích",
+  "so_dien_thoai": "0987654321",
+  "email": "bich.tran@gmail.com",
+  "diem_tich_luy": 820,
+  "hang_thanh_vien": "KimCuong",
+  "tong_chi_tieu": 32000000,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.788Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.788Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88691"
+  },
+  "id": 3,
+  "ho_ten": "Lê Hoàng Nam",
+  "so_dien_thoai": "0933112233",
+  "email": "nam.le@gmail.com",
+  "diem_tich_luy": 120,
+  "hang_thanh_vien": "Dong",
+  "tong_chi_tieu": 2800000,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.788Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.788Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88692"
+  },
+  "id": 4,
+  "ho_ten": "Vũ Thùy Dương",
+  "so_dien_thoai": "0977889900",
+  "email": "duong.vu@gmail.com",
+  "diem_tich_luy": 260,
+  "hang_thanh_vien": "Bac",
+  "tong_chi_tieu": 6500000,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.788Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.788Z"
+  }
+}]

@@ -4,7 +4,7 @@
  * Nhận đơn gọi món theo thời gian thực (Realtime WebSockets), thông báo chuông âm thanh khi có món mới,
  * cho phép chuyển trạng thái 'Đang chế biến' (tự động trừ kho nguyên liệu theo định lượng BOM) và 'Nấu xong & Báo phục vụ'.
  * @module pages/ManHinhBepKDS
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React, { useEffect, useState } from 'react';
@@ -223,15 +223,21 @@ export default function ManHinhBepKDS() {
                         </div>
                       )}
 
-                      {/* Thời gian nhận đơn */}
-                      <div className="text-xs text-slate-500 font-semibold mt-2.5 d-flex align-items-center gap-1.5">
-                        <i className="bi bi-clock"></i>
-                        <span>
-                          Nhận lúc:{' '}
-                          {new Date(mon.thoi_gian_dat || Date.now()).toLocaleTimeString('vi-VN', {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
+                      {/* Thời gian nhận đơn & Định mức thời gian chế biến */}
+                      <div className="text-xs text-slate-500 font-semibold mt-2.5 d-flex align-items-center justify-content-between gap-1.5 flex-wrap">
+                        <div className="d-flex align-items-center gap-1.5">
+                          <i className="bi bi-clock"></i>
+                          <span>
+                            Nhận lúc:{' '}
+                            {new Date(mon.thoi_gian_dat || Date.now()).toLocaleTimeString('vi-VN', {
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </span>
+                        </div>
+                        <span className="badge bg-amber-50 text-amber-900 border border-amber-200/90 rounded-pill px-2.5 py-1 text-[11px] font-black d-flex align-items-center gap-1">
+                          <i className="bi bi-stopwatch text-amber-600"></i>
+                          <span>Định mức: ~{mon.thoi_gian_nau || 15} phút</span>
                         </span>
                       </div>
                     </div>

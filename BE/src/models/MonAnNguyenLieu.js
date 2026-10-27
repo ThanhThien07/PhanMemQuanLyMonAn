@@ -5,7 +5,7 @@
  * Quy định rõ một đĩa/phần món ăn cần tiêu hao bao nhiêu nguyên liệu (so_luong_can),
  * là cơ sở để hệ thống tự động trừ kho chính xác khi đầu bếp bấm nấu món tại KDS.
  * @module models/MonAnNguyenLieu
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import mongoose from 'mongoose';

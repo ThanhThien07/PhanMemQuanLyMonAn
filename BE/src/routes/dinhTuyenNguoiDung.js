@@ -8,7 +8,7 @@
  * - PATCH  /api/users/:id/status: Đổi trạng thái khóa / mở khóa tài khoản
  * - DELETE /api/users/:id: Xóa tài khoản
  * @module routes/dinhTuyenNguoiDung
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import express from 'express';

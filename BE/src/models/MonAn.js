@@ -4,7 +4,7 @@
  * Quản lý tên món, thuộc danh mục nào (loai_mon_id), giá bán niêm yết, mô tả hương vị,
  * link hình ảnh món ăn và trạng thái sẵn sàng phục vụ (con_hang / het_hang).
  * @module models/MonAn
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import mongoose from 'mongoose';

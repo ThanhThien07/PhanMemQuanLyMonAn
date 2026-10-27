@@ -7,7 +7,7 @@
  * 3. layThongTinCaNhan (getMe): Truy xuất hồ sơ tài khoản hiện tại từ token giải mã req.user.
  * 4. layTaiKhoanDemo (getDemoAccounts): Cung cấp danh sách tài khoản mẫu phục vụ kiểm thử nhanh (1-Click Login).
  * @module controllers/xacThucController
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import bcrypt from 'bcryptjs';

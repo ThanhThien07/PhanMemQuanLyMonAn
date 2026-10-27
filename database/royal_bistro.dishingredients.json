@@ -1,0 +1,136 @@
+[{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88687"
+  },
+  "id": 1,
+  "mon_an_id": 1,
+  "nguyen_lieu_id": 1,
+  "so_luong_can": 0.25,
+  "don_vi_tinh": "kg",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.784Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.784Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88688"
+  },
+  "id": 2,
+  "mon_an_id": 1,
+  "nguyen_lieu_id": 8,
+  "so_luong_can": 0.02,
+  "don_vi_tinh": "kg",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.784Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.784Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b88689"
+  },
+  "id": 3,
+  "mon_an_id": 2,
+  "nguyen_lieu_id": 2,
+  "so_luong_can": 0.5,
+  "don_vi_tinh": "kg",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.784Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.784Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8868a"
+  },
+  "id": 4,
+  "mon_an_id": 2,
+  "nguyen_lieu_id": 7,
+  "so_luong_can": 0.05,
+  "don_vi_tinh": "kg",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.784Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.784Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8868b"
+  },
+  "id": 5,
+  "mon_an_id": 4,
+  "nguyen_lieu_id": 3,
+  "so_luong_can": 0.12,
+  "don_vi_tinh": "kg",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.784Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.784Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8868c"
+  },
+  "id": 6,
+  "mon_an_id": 4,
+  "nguyen_lieu_id": 9,
+  "so_luong_can": 0.15,
+  "don_vi_tinh": "kg",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.784Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.784Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8868d"
+  },
+  "id": 7,
+  "mon_an_id": 6,
+  "nguyen_lieu_id": 4,
+  "so_luong_can": 0.4,
+  "don_vi_tinh": "kg",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.784Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.784Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6acecd63cf87f03ff1b8868e"
+  },
+  "id": 8,
+  "mon_an_id": 7,
+  "nguyen_lieu_id": 5,
+  "so_luong_can": 1,
+  "don_vi_tinh": "con",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-10-14T00:31:31.784Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-14T00:31:31.784Z"
+  }
+}]

@@ -10,7 +10,7 @@
  * - /api/customers -> dinhTuyenKhachHang
  * - /api/reports -> dinhTuyenBaoCao
  * @module routes/dinhTuyenTongHop
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import express from 'express';

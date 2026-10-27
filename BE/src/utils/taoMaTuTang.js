@@ -6,7 +6,7 @@
  * 2. Mã ObjectId 24 ký tự Hexadecimal mặc định của MongoDB (ví dụ: _id = "65f1a2b3c4d5e6f7a8b9c0d1")
  * Giúp ngăn ngừa tuyệt đối lỗi ngoại lệ CastError (Cast to ObjectId failed).
  * @module utils/taoMaTuTang
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 /**

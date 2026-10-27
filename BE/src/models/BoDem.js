@@ -4,7 +4,7 @@
  * Phục vụ sinh mã định danh số tự tăng tuần tự (Auto-increment integer ID: 1, 2, 3...)
  * cho các bộ sưu tập (Collections), đảm bảo tính tuần tự giống hệt AUTO_INCREMENT trong MySQL.
  * @module models/BoDem
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import mongoose from 'mongoose';

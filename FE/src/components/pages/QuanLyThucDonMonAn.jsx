@@ -10,7 +10,7 @@
  * 6. Xóa món ăn khỏi thực đơn an toàn kèm cảnh báo xác nhận.
  * 7. Tích hợp Toast notification thông báo kết quả tức thì.
  * @module pages/QuanLyThucDonMonAn
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React, { useEffect, useState } from 'react';

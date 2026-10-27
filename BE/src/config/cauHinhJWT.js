@@ -3,7 +3,7 @@
  * @description Quản lý cấu hình, phát hành và xác thực JSON Web Token (JWT) cho hệ thống.
  * Áp dụng thuật toán HMAC-SHA256 để ký số và bảo vệ an toàn cho các phiên làm việc của nhân viên.
  * @module config/cauHinhJWT
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import jwt from 'jsonwebtoken';

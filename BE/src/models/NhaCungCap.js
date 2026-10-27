@@ -4,7 +4,7 @@
  * Lưu trữ thông tin đối tác cung ứng: mã NCC, tên công ty, số điện thoại liên hệ, email, địa chỉ kho
  * và điểm đánh giá chất lượng sản phẩm (1-5 sao).
  * @module models/NhaCungCap
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import mongoose from 'mongoose';

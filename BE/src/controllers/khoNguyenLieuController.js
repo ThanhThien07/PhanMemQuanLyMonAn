@@ -7,7 +7,7 @@
  * 3. themNguyenLieuMoi (createIngredient): Khởi tạo nguyên liệu thô mới vào danh mục quản lý kho.
  * 4. layDanhSachNhaCungCap (getSuppliers): Xem danh sách các đối tác cung ứng thực phẩm cho nhà hàng.
  * @module controllers/khoNguyenLieuController
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import { NguyenLieu, NhaCungCap, layMaSoTiepTheo } from '../models/moHinhDuLieu.js';

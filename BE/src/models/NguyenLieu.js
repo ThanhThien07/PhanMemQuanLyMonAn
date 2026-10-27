@@ -5,7 +5,7 @@
  * số lượng tồn kho thực tế, đơn giá nhập trung bình, định mức tồn kho tối thiểu (cảnh báo cạn kiệt)
  * và hạn sử dụng của nguyên liệu.
  * @module models/NguyenLieu
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import mongoose from 'mongoose';

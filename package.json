@@ -15,6 +15,7 @@
     "clean": "node -e \"const fs=require('fs'); ['node_modules','BE/node_modules','FE/node_modules','FE/dist'].forEach(p=>{if(fs.existsSync(p)){console.log('Deleting',p);fs.rmSync(p,{recursive:true,force:true})}}); console.log('All node_modules and dist cleaned successfully!')\""
   },
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "pptxgenjs": "^4.0.1"
   }
 }

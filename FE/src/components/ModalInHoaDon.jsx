@@ -8,7 +8,7 @@
  * 4. Hỗ trợ 2 phương thức thanh toán: Tiền mặt hoặc Quét mã VietQR chuyển khoản (sử dụng ảnh QR chuẩn của nhà hàng).
  * 5. Cập nhật giải phóng bàn và thông báo realtime cho quầy thu ngân.
  * @module components/ModalInHoaDon
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React, { useState } from 'react';
@@ -22,7 +22,7 @@ const THONG_TIN_NGAN_HANG = {
   tenNganHang: 'MB Bank (Ngân hàng TMCP Quân Đội)',
   maBin: '970422',
   soTaiKhoan: '0374685094',
-  chuTaiKhoan: 'ROYAL BISTRO (NGUYEN NGOC HA THAO)'
+  chuTaiKhoan: 'ROYAL BISTRO (NGUYEN HOANG HUNG)'
 };
 
 export default function ModalInHoaDon({ table, orders, onClose, onSuccess }) {

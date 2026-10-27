@@ -1,0 +1,55 @@
+[{
+  "_id": "user_id",
+  "seq": 5,
+  "__v": 0
+},
+{
+  "_id": "category_id",
+  "seq": 6,
+  "__v": 0
+},
+{
+  "_id": "dish_id",
+  "seq": 14,
+  "__v": 0
+},
+{
+  "_id": "table_id",
+  "seq": 12,
+  "__v": 0
+},
+{
+  "_id": "ingredient_id",
+  "seq": 10,
+  "__v": 0
+},
+{
+  "_id": "dish_ingredient_id",
+  "seq": 8,
+  "__v": 0
+},
+{
+  "_id": "customer_id",
+  "seq": 4,
+  "__v": 0
+},
+{
+  "_id": "supplier_id",
+  "seq": 3,
+  "__v": 0
+},
+{
+  "_id": "reservation_id",
+  "seq": 2,
+  "__v": 0
+},
+{
+  "_id": "order_id",
+  "seq": 17,
+  "__v": 0
+},
+{
+  "_id": "review_id",
+  "seq": 0,
+  "__v": 0
+}]

@@ -3,7 +3,7 @@
  * @description Lược đồ phân loại danh mục món ăn (Category Schema) trong thực đơn nhà hàng:
  * Khai vị, Món chính, Hải sản, Tráng miệng, Đồ uống...
  * @module models/LoaiMon
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import mongoose from 'mongoose';

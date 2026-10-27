@@ -5,7 +5,7 @@
  * 1. Phân hệ 1 - Hồ Sơ Khách Hàng Thân Thiết (CRM): Quản lý điểm thưởng tích lũy, phân hạng thành viên (Đồng, Bạc, Vàng, Kim Cương), tổng chi tiêu, thêm, sửa, xóa hồ sơ.
  * 2. Phân hệ 2 - Quản Lý Tài Khoản Khách Hàng & Nhân Sự: Quản lý danh sách tài khoản đăng nhập (Khách Hàng, Nhân Viên, Thu Ngân, Bếp, Admin), khóa/mở khóa tài khoản, tạo tài khoản mới, cập nhật vai trò, đổi mật khẩu và xóa tài khoản.
  * @module pages/QuanLyKhachHang
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React, { useEffect, useState, useMemo } from 'react';

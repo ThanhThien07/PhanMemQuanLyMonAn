@@ -3,7 +3,7 @@
  * @description Màn hình Thu Ngân & Gọi Món Tại Bàn (POS Order) dành cho nhân viên phục vụ / thu ngân.
  * Cho phép chọn bàn, tìm kiếm món ăn theo danh mục, thêm ghi chú chi tiết, gửi món đến KDS bếp thời gian thực và thanh toán hóa đơn.
  * @module pages/GoiMonTaiBanPOS
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React, { useEffect, useState } from 'react';
@@ -18,7 +18,8 @@ import {
   Utensils, 
   Users,
   Trash2,
-  ShoppingBag
+  ShoppingBag,
+  Clock
 } from 'lucide-react';
 import ModalInHoaDon from '../ModalInHoaDon';
 import { dinhDangTienTe } from '../utils/dinhDangDuLieu';
@@ -334,6 +335,10 @@ export default function GoiMonTaiBanPOS() {
                   <img
                     src={mon.hinh_anh || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300'}
                     alt={mon.ten_mon}
+                    width="300"
+                    height="144"
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   {/* Chỉ hiển thị Tag đỏ khi món có GIẢM GIÁ */}
@@ -353,6 +358,12 @@ export default function GoiMonTaiBanPOS() {
                     <p className="text-[11px] text-slate-500 line-clamp-2 mt-1">
                       {mon.mo_ta || 'Món ăn đặc sản tươi ngon chuẩn vị nhà hàng'}
                     </p>
+                    <div className="mt-1.5 flex items-center gap-1">
+                      <span className="text-[10px] text-slate-600 font-bold inline-flex items-center gap-1 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">
+                        <Clock className="w-2.5 h-2.5 text-amber-600" />
+                        <span>~{mon.thoi_gian_nau || 15}p</span>
+                      </span>
+                    </div>
                   </div>
 
                   <div className="mt-3 flex items-center justify-between pt-2 border-t border-slate-100">

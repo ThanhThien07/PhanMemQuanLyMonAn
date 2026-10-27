@@ -6,7 +6,7 @@
  * 3. dinhDangNgay (formatDate): Định dạng ngày tháng năm (dd/mm/yyyy).
  * 4. dinhDangGio (formatTime): Định dạng giờ phút (hh:mm).
  * @module utils/dinhDangDuLieu
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 /**

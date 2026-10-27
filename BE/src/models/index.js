@@ -1,7 +1,7 @@
 /**
  * @file index.js
  * @description Điểm tập kết xuất khẩu mô hình CSDL (Re-export từ moHinhDuLieu.js)
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 export * from './moHinhDuLieu.js';

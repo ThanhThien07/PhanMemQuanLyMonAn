@@ -11,7 +11,7 @@
  * 7. guiDanhGiaPhanHoi (submitReview): Khách gửi chấm sao đánh giá, tự động kích hoạt CẢNH BÁO ĐỎ nếu đánh giá kém.
  * 8. taoBanMoi (createTable): Thêm bàn ăn mới vào sơ đồ nhà hàng (chỉ dành cho Admin).
  * @module controllers/banAnController
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import { BanAn, DatMon, DanhGia, MonAn, layMaSoTiepTheo } from '../models/moHinhDuLieu.js';

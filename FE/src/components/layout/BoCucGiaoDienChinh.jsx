@@ -4,7 +4,7 @@
  * Bao bọc Thanh điều hướng bên (ThanhMenuDieuHuong), Thanh tiêu đề trên (ThanhDieuHuongTren)
  * và phân vùng nội dung chính có thanh cuộn độc lập.
  * @module components/layout/BoCucGiaoDienChinh
- * @author Nhóm 5 - Nguyễn Ngọc Hà Thảo
+ * @author Nguyễn Hoàng Hưng
  */
 
 import React, { useState } from 'react';
